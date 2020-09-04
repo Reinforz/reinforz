@@ -12,12 +12,14 @@ export interface QuizInputFull extends Required<QuizInputPartial> {
   questions: QuestionInputsFull
 }
 
-export type QuestionType = 'text' | 'markdown' | 'html';
+export type QuestionType = 'MCQ' | 'MS' | 'FIB' | 'Snippet';
+export type QuestionFormat = 'text' | 'markdown' | 'html';
 export type Difficulty = 'Beginner' | 'Intermediate' | 'Advanced';
 
 export interface QuestionInputPartial {
   question: string,
-  type: QuestionType,
+  type?: QuestionType,
+  format?: QuestionFormat,
   image?: string,
   weight?: number,
   add_to_score?: boolean,
