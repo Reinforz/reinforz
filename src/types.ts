@@ -16,8 +16,13 @@ export type QuestionType = 'MCQ' | 'MS' | 'FIB' | 'Snippet';
 export type QuestionFormat = 'text' | 'markdown' | 'html';
 export type Difficulty = 'Beginner' | 'Intermediate' | 'Advanced';
 
-export interface QuestionInputPartial {
+export interface QuestionInputCommon {
   question: string,
+  options?: string[],
+  answers: (number | string)[],
+}
+
+export interface QuestionInput {
   type?: QuestionType,
   format?: QuestionFormat,
   image?: string,
@@ -25,16 +30,17 @@ export interface QuestionInputPartial {
   add_to_score?: boolean,
   time_allocated?: number,
   difficulty?: Difficulty,
-  answers: string[],
-  options?: string[],
   correct_answer_message?: string,
   incorrect_answer_message?: string,
   explanation?: string,
   key?: string
 }
 
+export interface QuestionInputPartial extends QuestionInputCommon, Partial<QuestionInput> { }
+
 export type QuestionInputKeys = Array<keyof QuestionInputPartial>;
-export type QuestionInputFull = Required<QuestionInputPartial>
+
+export interface QuestionInputFull extends Required<QuestionInput>, QuestionInputCommon { }
 
 export type QuestionInputsPartial = QuestionInputPartial[];
 export type QuestionInputsFull = QuestionInputFull[];

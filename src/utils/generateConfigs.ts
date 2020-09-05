@@ -21,7 +21,7 @@ export function generateQuestionInputConfigs(
   question: QuestionInputPartial,
 ) {
   const res = JSON.parse(JSON.stringify(question));
-  checkRequiredFields(res, ['question', 'answers', 'options']);
+  checkRequiredFields(res, ['question', 'answers']);
 
   setObjectValues(res, [
     ['type', 'MCQ'],
