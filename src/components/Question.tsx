@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import React, { useState } from "react";
 
+import Timer from "./Timer";
 import { QuestionInputPartial, QuestionInputKeys } from "../types";
 import { generateQuestionInputConfigs } from "../utils/generateConfigs";
 import { RadioGroup, FormControlLabel, Radio, FormGroup, Checkbox, TextField } from "@material-ui/core";
@@ -131,7 +132,7 @@ export default function Question(props: QuestionInputPartial): JSX.Element {
             changeUserAnswers([...user_answers])
           }} /></QuestionContainerOptionItem>)
 
-    else if(type === "Snippet")
+    else if (type === "Snippet")
       return <QuestionContainerOptionItem className={`Question-container-options-item`}>
         <TextField fullWidth value={user_answers[0]} onChange={e => {
           user_answers[0] = e.target.value;
@@ -139,12 +140,17 @@ export default function Question(props: QuestionInputPartial): JSX.Element {
         }} /></QuestionContainerOptionItem>
   }
 
-  return <QuestionContainer className="Question-container">
-    <QuestionContainerStats className="Question-container-stats Question-container-item">
-      {(["index", "total", "type", "format", "weight", "add_to_score", "time_allocated", "difficulty"] as QuestionInputKeys).map(stat => <QuestionContainerStatsItem key={`question-${stat}`} className={`Question-container-stats-item Question-container-stats-${stat}`}>{generated_question_inputs[stat]}</QuestionContainerStatsItem>)}
-    </QuestionContainerStats>
-    {image && <div className="Question-container-item Question-container-image"><img src={image} /></div>}
-    {generateQuestion()}
-    {generateOptions()}
-  </QuestionContainer>
+  return <Timer timeout={5} onTimerEnd={props.changeCounter}>
+    {(props: any) => {
+      return <QuestionContainer className="Question-container">
+        <QuestionContainerStats className="Question-container-stats Question-container-item">
+          {(["index", "total", "type", "format", "weight", "add_to_score", "time_allocated", "difficulty"] as QuestionInputKeys).map(stat => <QuestionContainerStatsItem key={`question-${stat}`} className={`Question-container-stats-item Question-container-stats-${stat}`}>{generated_question_inputs[stat]}</QuestionContainerStatsItem>)}
+        </QuestionContainerStats>
+        {image && <div className="Question-container-item Question-container-image"><img src={image} /></div>}
+        {generateQuestion()}
+        {generateOptions()}
+        {props.timer}
+      </QuestionContainer>
+    }}
+  </Timer>
 }

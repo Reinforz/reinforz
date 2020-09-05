@@ -36,7 +36,8 @@ export interface QuestionInput {
   key?: string,
   total?: number,
   index?: number
-  hints?: string[]
+  hints?: string[],
+  changeCounter: any
 }
 
 export interface QuestionInputPartial extends QuestionInputCommon, Partial<QuestionInput> { }
