@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import React, { useState } from "react";
+import Button from "@material-ui/core/Button"
 
 import Timer from "./Timer";
 import { QuestionInputPartial, QuestionInputKeys } from "../types";
@@ -79,8 +80,7 @@ const QuestionContainerOptionsFormGroup = styled(FormGroup)`
 
 export default function Question(props: QuestionInputPartial): JSX.Element {
   const generated_question_inputs = generateQuestionInputConfigs(props);
-
-  const { question, type, image, format, answers, options } = generated_question_inputs;
+  const { question, type, image, format, answers, options,index,total } = generated_question_inputs;
 
   const generateQuestion = () => {
     if (format === "html") return <QuestionContainerQuestion hasHTMLLiteral={true} className="Question-container-item Question-container-question" dangerouslySetInnerHTML={{ __html: question }} />
@@ -139,9 +139,12 @@ export default function Question(props: QuestionInputPartial): JSX.Element {
           changeUserAnswers([...user_answers])
         }} /></QuestionContainerOptionItem>
   }
+  const exhausted_questions = index >= total;
 
-  return <Timer timeout={5} onTimerEnd={props.changeCounter}>
-    {(props: any) => {
+  return <Timer timeout={generated_question_inputs.time_allocated} onTimerEnd={()=>{
+    if(!exhausted_questions) props.changeCounter(generated_question_inputs,answers)
+  }}>
+    {(timerprops: any) => {
       return <QuestionContainer className="Question-container">
         <QuestionContainerStats className="Question-container-stats Question-container-item">
           {(["index", "total", "type", "format", "weight", "add_to_score", "time_allocated", "difficulty"] as QuestionInputKeys).map(stat => <QuestionContainerStatsItem key={`question-${stat}`} className={`Question-container-stats-item Question-container-stats-${stat}`}>{generated_question_inputs[stat]}</QuestionContainerStatsItem>)}
@@ -149,7 +152,11 @@ export default function Question(props: QuestionInputPartial): JSX.Element {
         {image && <div className="Question-container-item Question-container-image"><img src={image} /></div>}
         {generateQuestion()}
         {generateOptions()}
-        {props.timer}
+        {timerprops.timer}
+        <Button className="Quiz-container-button" variant="contained" color="primary" onClick={() => {
+          if(!exhausted_questions)
+            props.changeCounter(generated_question_inputs, answers)
+        }}>{!exhausted_questions ? "Next" : "Report"}</Button>
       </QuestionContainer>
     }}
   </Timer>

@@ -48,3 +48,10 @@ export interface QuestionInputFull extends Required<QuestionInput>, QuestionInpu
 
 export type QuestionInputsPartial = QuestionInputPartial[];
 export type QuestionInputsFull = QuestionInputFull[];
+
+export interface Result {
+  user_answers: string[],
+  verdict: boolean,
+  score: number,
+  add_to_score: boolean
+}
