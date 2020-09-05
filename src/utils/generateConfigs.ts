@@ -22,9 +22,8 @@ export function generateQuestionInputConfigs(
 ) {
   const res = JSON.parse(JSON.stringify(question));
   checkRequiredFields(res, ['question', 'answers']);
-
   setObjectValues(res, [
-    ['type', 'MCQ'],
+    'options',
     ['format', 'text'],
     'image',
     ['weight', 1],
@@ -33,8 +32,12 @@ export function generateQuestionInputConfigs(
     ['difficulty', 'Beginner'],
     ['correct_answer_message', 'Congrats on the correct answer'],
     ['incorrect_answer_message', 'Try again'],
-    'explanation'
+    ['explanation', 'No explanation available'],
+    ['hints', ['No hints available']],
   ]);
+
+  if (res.answers.length === 1) res.type = res.options ? "MCQ" : "Snippet";
+  else res.type = res.options ? "MS" : "FIB"
 
   return res as QuestionInputFull;
 }
