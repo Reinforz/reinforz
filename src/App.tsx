@@ -13,7 +13,7 @@ const QuizData: QuizInputPartial={
       "question": "Which of the following are not basic types in TS",
       "answers": [
         6,
-        7
+        // 7
       ],
       "options": [
         "void",
@@ -21,11 +21,11 @@ const QuizData: QuizInputPartial={
         "enums",
         "undefined",
         "null",
-        "class",
-        "generic"
+        "generic",
+        "class"
       ],
     },
-    {
+    /* {
       "question": "Which extra basic type is provided in TS",
       "answers": [
         "enum"
@@ -62,7 +62,7 @@ const QuizData: QuizInputPartial={
       "answers": [
         "number"
       ]
-    }
+    } */
   ]
 };
 
