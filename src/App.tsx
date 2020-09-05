@@ -13,7 +13,7 @@ const QuizData: QuizInputPartial={
       "question": "Which of the following are not basic types in TS",
       "answers": [
         6,
-        // 7
+        7
       ],
       "options": [
         "void",
@@ -25,44 +25,44 @@ const QuizData: QuizInputPartial={
         "class"
       ],
     },
-    /* {
-      "question": "Which extra basic type is provided in TS",
-      "answers": [
-        "enum"
-      ],
-    },
-    {
-      "question": "What is the most basic type in TS",
-      "answers": [
-        "boolean"
-      ],
-    },
-    {
-      "question": "<pre>let isDone = false</pre> <div>What is the type of <pre>isDone</pre></div>",
-      "format": "html",
-      "answers": [
-        "boolean"
-      ],
-    },
+    // {
+    //   "question": "Which extra basic type is provided in TS",
+    //   "answers": [
+    //     "enum"
+    //   ],
+    // },
+    // {
+    //   "question": "What is the most basic type in TS",
+    //   "answers": [
+    //     "boolean"
+    //   ],
+    // },
+    // {
+    //   "question": "<pre>let isDone = false</pre> <div>What is the type of <pre>isDone</pre></div>",
+    //   "format": "html",
+    //   "answers": [
+    //     "boolean"
+    //   ],
+    // },
     {
       "question": "All numbers in TS are either ${_} or ${_}?",
       "answers": [
         "floating point",
-        "bigintegers"
+        // "bigintegers"
       ],
     },
-    {
-      "question": "How many basic types are there in TS to represent numbers",
-      "answers": [
-        2
-      ],
-    },
-    {
-      "question": "Floating point numbers get which type?",
-      "answers": [
-        "number"
-      ]
-    } */
+    // {
+    //   "question": "How many basic types are there in TS to represent numbers",
+    //   "answers": [
+    //     2
+    //   ],
+    // },
+    // {
+    //   "question": "Floating point numbers get which type?",
+    //   "answers": [
+    //     "number"
+    //   ]
+    // }
   ]
 };
 

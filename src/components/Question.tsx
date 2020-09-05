@@ -3,8 +3,7 @@ import React, { useState } from "react";
 
 import { QuestionInputPartial, QuestionInputKeys } from "../types";
 import { generateQuestionInputConfigs } from "../utils/generateConfigs";
-import { RadioGroup, FormControlLabel, Radio, FormGroup, Checkbox } from "@material-ui/core";
-import { formatWithOptions } from "util";
+import { RadioGroup, FormControlLabel, Radio, FormGroup, Checkbox, TextField } from "@material-ui/core";
 
 interface QuestionContainerQuestionProps {
   hasHTMLLiteral: boolean
@@ -60,7 +59,9 @@ const QuestionContainerOptionItem = styled.div`
   color: #ddd;
   display: flex;
   justify-content: flex-start;
-
+  .MuiInputBase-root{
+    color: #ddd;
+  }
   .MuiTypography-body1{
     font-size: 1.25rem;
     font-weight: 500;
@@ -85,7 +86,8 @@ export default function Question(props: QuestionInputPartial): JSX.Element {
     else return <QuestionContainerQuestion hasHTMLLiteral={false} className="Question-container-item Question-container-question">{question}</QuestionContainerQuestion>
   }
 
-  const [user_answers, changeUserAnswers] = useState(['']);
+  const [user_answers, changeUserAnswers] = useState(type === "FIB" ? Array(question.match(/(\$\{\_\})/g)?.length ?? 1).fill('') as string[] : ['']);
+
   const generateOptions = () => {
     if (type === "MCQ" && options)
       return <QuestionContainerOptionsRadioGroup className="Question-container-options" defaultValue={undefined} value={user_answers[0] === '' ? [''] : user_answers[0]} onChange={(e) => {
@@ -102,22 +104,39 @@ export default function Question(props: QuestionInputPartial): JSX.Element {
           </QuestionContainerOptionItem>
         ))}
       </QuestionContainerOptionsRadioGroup>
-    else if (type === "MS" && options)
+    else if (type === "MS" && options) {
+      const temp_user_answers = [...(user_answers as string[])];
       return <QuestionContainerOptionsFormGroup row>
         {options.map((option, index) => (
           <QuestionContainerOptionItem className={`Question-container-options-item`} key={option + index}>
             <FormControlLabel
-              control={<Checkbox checked={user_answers.includes(`${index}`)} value={`${index}`} onChange={(e) => {
+              control={<Checkbox checked={temp_user_answers.includes(`${index}`)} value={`${index}`} onChange={(e) => {
                 if (e.target.checked) {
-                  (user_answers as string[]).push(`${index}`);
-                  changeUserAnswers([...user_answers])
+                  temp_user_answers.push(`${index}`);
+                  changeUserAnswers([...temp_user_answers])
                 }
                 else
-                  changeUserAnswers(user_answers.filter(user_answer => user_answer !== `${index}`));
+                  changeUserAnswers(temp_user_answers.filter(temp_user_answer => temp_user_answer !== `${index}`));
               }} />}
               label={option}
             /></QuestionContainerOptionItem>))}
       </QuestionContainerOptionsFormGroup>
+    }
+
+    else if (type === "FIB")
+      return (question.match(/(\$\{\_\})/g) as string[]).map((_, i) =>
+        <QuestionContainerOptionItem className={`Question-container-options-item`} key={_ + i}>
+          <TextField fullWidth value={user_answers[i]} onChange={e => {
+            user_answers[i] = e.target.value;
+            changeUserAnswers([...user_answers])
+          }} /></QuestionContainerOptionItem>)
+
+    else if(type === "Snippet")
+      return <QuestionContainerOptionItem className={`Question-container-options-item`}>
+        <TextField fullWidth value={user_answers[0]} onChange={e => {
+          user_answers[0] = e.target.value;
+          changeUserAnswers([...user_answers])
+        }} /></QuestionContainerOptionItem>
   }
 
   return <QuestionContainer className="Question-container">
