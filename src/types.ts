@@ -26,12 +26,14 @@ export interface QuestionInputPartial {
   time_allocated?: number,
   difficulty?: Difficulty,
   answers: string[],
-  options: string[],
+  options?: string[],
   correct_answer_message?: string,
   incorrect_answer_message?: string,
-  explanation?: string
+  explanation?: string,
+  key?: string
 }
 
+export type QuestionInputKeys = Array<keyof QuestionInputPartial>;
 export type QuestionInputFull = Required<QuestionInputPartial>
 
 export type QuestionInputsPartial = QuestionInputPartial[];

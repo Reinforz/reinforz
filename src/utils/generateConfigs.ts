@@ -1,4 +1,4 @@
-import { QuestionInputPartial } from '../types';
+import { QuestionInputPartial, QuestionInputFull } from '../types';
 
 function setObjectValues(
   parent: any,
@@ -20,9 +20,10 @@ function checkRequiredFields(check: Record<string, any>, fields: string[]) {
 export function generateQuestionInputConfigs(
   question: QuestionInputPartial,
 ) {
-  checkRequiredFields(question, ['question', 'answers', 'options']);
+  const res = JSON.parse(JSON.stringify(question));
+  checkRequiredFields(res, ['question', 'answers', 'options']);
 
-  setObjectValues(question, [
+  setObjectValues(res, [
     ['type', 'MCQ'],
     ['format', 'text'],
     'image',
@@ -32,8 +33,8 @@ export function generateQuestionInputConfigs(
     ['difficulty', 'Beginner'],
     ['correct_answer_message', 'Congrats on the correct answer'],
     ['incorrect_answer_message', 'Try again'],
-    'explanation',
+    'explanation'
   ]);
 
-  return question;
+  return res as QuestionInputFull;
 }
