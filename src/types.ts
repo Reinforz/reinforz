@@ -50,8 +50,9 @@ export type QuestionInputsPartial = QuestionInputPartial[];
 export type QuestionInputsFull = QuestionInputFull[];
 
 export interface Result {
-  user_answers: string[],
+  user_answers: (number | string)[],
   verdict: boolean,
   score: number,
-  add_to_score: boolean
+  add_to_score: boolean,
+  answers: (number | string)[]
 }

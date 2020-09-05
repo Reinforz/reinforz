@@ -142,7 +142,7 @@ export default function Question(props: QuestionInputPartial): JSX.Element {
   const exhausted_questions = index >= total;
 
   return <Timer timeout={generated_question_inputs.time_allocated} onTimerEnd={()=>{
-    if(!exhausted_questions) props.changeCounter(generated_question_inputs,answers)
+    props.changeCounter(generated_question_inputs,user_answers)
   }}>
     {(timerprops: any) => {
       return <QuestionContainer className="Question-container">
@@ -154,8 +154,7 @@ export default function Question(props: QuestionInputPartial): JSX.Element {
         {generateOptions()}
         {timerprops.timer}
         <Button className="Quiz-container-button" variant="contained" color="primary" onClick={() => {
-          if(!exhausted_questions)
-            props.changeCounter(generated_question_inputs, answers)
+          props.changeCounter(generated_question_inputs, user_answers)
         }}>{!exhausted_questions ? "Next" : "Report"}</Button>
       </QuestionContainer>
     }}
