@@ -33,7 +33,9 @@ export interface QuestionInput {
   correct_answer_message?: string,
   incorrect_answer_message?: string,
   explanation?: string,
-  key?: string
+  key?: string,
+  total?: number,
+  index?: number
 }
 
 export interface QuestionInputPartial extends QuestionInputCommon, Partial<QuestionInput> { }
