@@ -11,7 +11,7 @@ export default function Quiz(props: QuizInputPartial) {
   const [results, setResults] = useState([] as Result[]);
   const total_questions = props.questions.length;
 
-  const validateAnswer = ({ weight, type, question, format, time_allocated, answers, add_to_score, explanation }: QuestionInputFull, user_answers: (number | string)[], time_taken: number) => {
+  const validateAnswer = ({ weight, type, question, format, time_allocated, answers, add_to_score, explanation }: QuestionInputFull, user_answers: string[], time_taken: number) => {
     user_answers = user_answers.filter(user_answer => user_answer !== "");
     let verdict = decideVerdict(type, answers, user_answers);
     setResults([...results, {

@@ -14,7 +14,7 @@ function Report(props: { results: Result[] }) {
     if (header !== "verdict") return value?.toString() ?? "N/A";
     else
       return <div style={{
-        fontWeight: 'bolder', color: value === false ? "red" : "green"
+        fontWeight: 'bolder', color: value === false ? "#ff3223" : "#36e336"
       }}>{value === false ? "Incorrect" : "Correct"}</div>
   }
   return (

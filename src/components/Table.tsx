@@ -23,13 +23,15 @@ const useStyles = makeStyles({
     color: "rgba(255,255,255,0.75)",
     userSelect: "none",
     borderBottom: 0,
+    textAlign: 'center'
   },
   td: {
     backgroundColor: "#2c2c2c",
     color: "#dddddd",
     fontWeight: 500,
     userSelect: "none",
-    borderBottom: 0
+    borderBottom: 0,
+    textAlign: 'center'
   },
   tr: {
     borderBottom: 0

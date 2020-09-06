@@ -42,7 +42,8 @@ export function generateQuestionInputConfigs(
   ]);
 
   if (res.answers.length === 1) res.type = res.options ? "MCQ" : "Snippet";
-  else res.type = res.options ? "MS" : "FIB"
+  else res.type = res.options ? "MS" : "FIB";
+  res.answers = res.answers.map((a: (string | number)) => a.toString());
 
   return res as QuestionInputFull;
 }

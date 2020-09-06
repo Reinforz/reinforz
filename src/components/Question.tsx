@@ -101,14 +101,14 @@ export default function Question(props: QuestionInputPartial): JSX.Element {
   const generateOptions = () => {
     if (type === "MCQ" && options)
       return <QuestionContainerOptionsRadioGroup className="Question-container-options" defaultValue={undefined} value={user_answers[0] === '' ? [''] : user_answers[0]} row>
-        {options.map((option, index) => (
-          <QuestionContainerOptionItem className={`Question-container-options-item`} key={_id + "option" + index} onClick={(e) => {
+        {options.map((option, i) => (
+          <QuestionContainerOptionItem className={`Question-container-options-item`} key={`${_id}option${index}${i}`} onClick={(e) => {
             const input = (e.target as any).tagName !== "INPUT" ? (e.target as any).querySelector("input") : e.target;
             changeUserAnswers([input.value])
           }}>
             <FormControlLabel
               control={<Radio color="primary" className={classes.radio_root} />}
-              value={`${index}`}
+              value={`${i}`}
               label={option.toString()}
               labelPlacement="end"
             />
@@ -118,19 +118,19 @@ export default function Question(props: QuestionInputPartial): JSX.Element {
     else if (type === "MS" && options) {
       const temp_user_answers = [...(user_answers as string[])];
       return <QuestionContainerOptionsFormGroup row>
-        {options.map((option, index) => (
-          <QuestionContainerOptionItem className={`Question-container-options-item`} key={_id + "option" + index} onClick={(e) => {
+        {options.map((option, i) => (
+          <QuestionContainerOptionItem className={`Question-container-options-item`} key={`${_id}option${index}${i}`} onClick={(e) => {
             const clicked_on_input = (e.target as any).tagName === "INPUT"
             const input = clicked_on_input ? e.target : (e.target as any).querySelector("input");
             if ((clicked_on_input && input.checked) || (!clicked_on_input && !input.checked)) {
-              temp_user_answers.push(`${index}`);
+              temp_user_answers.push(`${i}`);
               changeUserAnswers([...temp_user_answers])
             }
             else
-              changeUserAnswers(temp_user_answers.filter(temp_user_answer => temp_user_answer !== `${index}`));
+              changeUserAnswers(temp_user_answers.filter(temp_user_answer => temp_user_answer !== `${i}`));
           }}>
             <FormControlLabel
-              control={<Checkbox className={classes.radio_root} checked={temp_user_answers.includes(`${index}`)} value={`${index}`} />}
+              control={<Checkbox className={classes.radio_root} checked={temp_user_answers.includes(`${i}`)} value={`${i}`} />}
               label={option.toString()}
             /></QuestionContainerOptionItem>))}
       </QuestionContainerOptionsFormGroup>
@@ -138,7 +138,7 @@ export default function Question(props: QuestionInputPartial): JSX.Element {
 
     else if (type === "FIB")
       return (question.match(/(\$\{_\})/g) as string[]).map((_, i) =>
-        <QuestionContainerOptionItem className={`Question-container-options-item`} key={_id + "option" + index}>
+        <QuestionContainerOptionItem className={`Question-container-options-item`} key={`${_id}option${index}${i}`}>
           <TextField fullWidth value={user_answers[i]} onChange={e => {
             user_answers[i] = e.target.value;
             changeUserAnswers([...user_answers])

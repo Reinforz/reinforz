@@ -21,7 +21,7 @@ export type Difficulty = 'Beginner' | 'Intermediate' | 'Advanced';
 export interface QuestionInputCommon {
   question: string,
   options?: string[],
-  answers: (number | string)[],
+  answers: string[],
 }
 
 export interface QuestionInput {
@@ -52,11 +52,11 @@ export type QuestionInputsPartial = QuestionInputPartial[];
 export type QuestionInputsFull = QuestionInputFull[];
 
 export interface Result {
-  user_answers: (number | string)[],
+  user_answers: string[],
   verdict: boolean,
   score: number,
   add_to_score: boolean,
-  answers: (number | string)[],
+  answers: string[],
   question: string,
   type: QuestionType,
   time_allocated: number,
