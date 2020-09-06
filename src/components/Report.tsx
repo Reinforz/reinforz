@@ -10,12 +10,21 @@ const ReportContainer = styled.div`
 `;
 
 function Report(props: { results: Result[] }) {
-  const transformValue = (header: string, value: any) => {
-    if (header !== "verdict") return value?.toString() ?? "N/A";
-    else
-      return <div style={{
-        fontWeight: 'bolder', color: value === false ? "#ff3223" : "#36e336"
-      }}>{value === false ? "Incorrect" : "Correct"}</div>
+  const transformValue = (header: string, content: any) => {
+    const value = content[header];
+    switch (header) {
+      case "verdict":
+        return <div style={{
+          fontWeight: 'bolder', color: value === false ? "#ff3223" : "#36e336"
+        }}>{value === false ? "Incorrect" : "Correct"}</div>
+      case "answers":
+      case "user_answers":
+        if (content.type.match(/(MS|FIB)/))
+          return value.map((value: any, index: number) => <div key={value + index}>{value.replace(/^_(\w{2}\s?)*_/g, '')}</div>);
+        else return value
+      default:
+        return value?.toString() ?? "N/A";
+    }
   }
   return (
     <div className="Report">

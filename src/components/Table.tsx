@@ -40,7 +40,7 @@ const useStyles = makeStyles({
 
 interface Table_RowCommonProps {
   collapseContents: string[]
-  transformValue: (header: string, value: any) => string
+  transformValue: (header: string, content: any) => string
   headers: string[],
 
 }
@@ -66,7 +66,7 @@ function Rows(props: RowProps) {
         </IconButton>
       </TableCell>
       <TableCell className={classes.td}>{index + 1}</TableCell>
-      {headers.map((header, index) => <TableCell className={classes.td} key={header + 'row' + index} align="center">{transformValue(header, content[header])}</TableCell>)}
+      {headers.map((header, index) => <TableCell className={classes.td} key={header + 'row' + index} align="center">{transformValue(header, content)}</TableCell>)}
     </TableRow>
     <TableRow className={classes.tr}>
       <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={headers.length} className={classes.td}>
