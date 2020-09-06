@@ -18,12 +18,22 @@ const useStyles = makeStyles({
   },
   th: {
     fontWeight: 'bolder',
+    backgroundColor: '#1f1f1f',
+    fontSize: '1.15rem',
+    color: "rgba(255,255,255,0.75)",
+    userSelect: "none",
+    borderBottom: 0,
   },
-  root: {
-    '& > *': {
-      borderBottom: 'unset',
-    },
+  td:{
+    backgroundColor: "#2c2c2c",
+    color: "#dddddd",
+    fontWeight: 500,
+    userSelect: "none",
+    borderBottom: 0
   },
+  tr:{
+    borderBottom: 0
+  }
 });
 
 interface TableProps<Values> {
@@ -45,17 +55,17 @@ function Rows(props: RowProps) {
   const classes = useStyles();
   const { content, headers, index, collapseContents } = props;
   return <Fragment>
-    <TableRow className={classes.root}>
-      <TableCell>
+    <TableRow className={classes.tr} >
+      <TableCell className={classes.td}>
         <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
           {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
         </IconButton>
       </TableCell>
-      <TableCell>{index + 1}</TableCell>
-      {headers.map((header, index) => <TableCell key={header + 'row' + index} align="center">{content[header]?.toString() ?? "N/A"}</TableCell>)}
+      <TableCell className={classes.td}>{index + 1}</TableCell>
+      {headers.map((header, index) => <TableCell className={classes.td} key={header + 'row' + index} align="center">{content[header]?.toString() ?? "N/A"}</TableCell>)}
     </TableRow>
-    <TableRow>
-      <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={headers.length}>
+    <TableRow className={classes.tr}>
+      <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={headers.length} className={classes.td}>
         <Collapse in={open} timeout="auto" unmountOnExit>
           {collapseContents.map((collapseContent, collapseContentIndex) => <div key={index + "collapse" + collapseContent + collapseContentIndex}>
             <div>
@@ -78,7 +88,7 @@ export default function SimpleTable(props: TableProps<Record<string, any>>) {
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
         <TableHead >
-          <TableRow>
+          <TableRow className={classes.tr}>
             <TableCell className={classes.th}></TableCell>
             <TableCell className={classes.th}>No.</TableCell>
             {props.headers.map((header, index) => <TableCell className={classes.th} key={header + index} align="center">{header.split("_").map(c => c.charAt(0).toUpperCase() + c.substr(1)).join(" ")}</TableCell>)}

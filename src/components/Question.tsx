@@ -31,6 +31,10 @@ const QuestionContainerStats = styled.div`
   display: flex;
   justify-content: space-evenly;
   margin-bottom: 10px;
+  background-color : #1b1b1b;
+  border-radius: 3px;
+  margin: 20px;
+  padding: 5px;
 `;
 
 const QuestionContainerQuestion = styled.div`
