@@ -22,9 +22,14 @@ export function generateQuestionInputConfigs(
 ) {
   const res = JSON.parse(JSON.stringify(question));
   checkRequiredFields(res, ['question', 'answers']);
+  let format = 'text';
+  if (question.question.match(/<pre>/g)) {
+    question.question = question.question.replace(/<\/?pre>/g, '');
+    format = 'html';
+  }
   setObjectValues(res, [
     'options',
-    ['format', 'text'],
+    ['format', format],
     'image',
     ['weight', 1],
     ['add_to_score', true],

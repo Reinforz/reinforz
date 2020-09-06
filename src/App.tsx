@@ -1,78 +1,24 @@
-import React from 'react';
+import React,{useState} from 'react';
+import yaml from 'js-yaml';
+import shortid from "shortid"
 
 import Quiz from "./components/Quiz"
 
 import './App.css';
-import { QuizInputPartial } from './types';
 import shuffle from './utils/arrayShuffler';
 
-const QuizData: QuizInputPartial={
-  title: "Typescript Basic Types",
-  subject: "Typescript",
-  questions: [
-    {
-      "question": "Which of the following are not basic types in TS",
-      "answers": [
-        5,
-      ],
-      "options": [
-        "void",
-        "struct",
-        "enums",
-        "undefined",
-        "null",
-        "generic",
-        "class"
-      ],
-      explanation: "Generic and classes are built out of basic types"
-    },
-    // {
-    //   "question": "Which extra basic type is provided in TS",
-    //   "answers": [
-    //     "enum"
-    //   ],
-    // },
-    // {
-    //   "question": "What is the most basic type in TS",
-    //   "answers": [
-    //     "boolean"
-    //   ],
-    // },
-    // {
-    //   "question": "<pre>let isDone = false</pre> <div>What is the type of <pre>isDone</pre></div>",
-    //   "format": "html",
-    //   "answers": [
-    //     "boolean"
-    //   ],
-    // },
-    // {
-    //   "question": "All numbers in TS are either ${_} or ${_}?",
-    //   "answers": [
-    //     "floating point",
-    //     "bigintegers"
-    //   ],
-    // },
-    // {
-    //   "question": "How many basic types are there in TS to represent numbers",
-    //   "answers": [
-    //     2
-    //   ],
-    // },
-    {
-      "question": "Floating point numbers get which type?",
-      "answers": [
-        "number"
-      ]
-    }
-  ]
-};
-
-
 function App() {
-  QuizData.questions = shuffle(QuizData.questions);
+  let [QuizData, setQuizData] = useState({} as any)
+  if(!QuizData.title)
+    fetch("http://localhost:3000/test.yaml").then(data=>data.text()).then(data=>{
+      QuizData = yaml.safeLoad(data)
+      QuizData.questions = shuffle(QuizData.questions);
+      QuizData.questions.forEach((question:any)=>question._id = shortid())
+      setQuizData(QuizData);
+    });
   return (
     <div className="App">
-      <Quiz {...QuizData}/>
+      {QuizData.title ? <Quiz {...QuizData}/> : 'Loading data'}
     </div>
   );
 }

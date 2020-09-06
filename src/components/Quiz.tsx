@@ -11,7 +11,6 @@ export default function Quiz(props: QuizInputPartial) {
   const total_questions = props.questions.length;
 
   const validateAnswer = ({weight,type,question,time_allocated,answers,add_to_score,explanation}: QuestionInputFull, user_answers: (number | string)[],time_taken: number) => {
-    console.log(explanation)
     user_answers = user_answers.filter(user_answer=>user_answer!=="");
     let verdict = null;
     switch (type) {
@@ -45,8 +44,7 @@ export default function Quiz(props: QuizInputPartial) {
   const generateContent = () => {
     if (current_question !== total_questions) {
       const question = props.questions[current_question];
-      const key = current_question + question.question.toLowerCase().replace(/\s/g, '');
-      return <Question key={key} {...question} total={total_questions} index={current_question + 1} changeCounter={(generated_question: QuestionInputFull, user_answers: string[],time_taken: number) => {
+      return <Question key={question._id} {...question} total={total_questions} index={current_question + 1} changeCounter={(generated_question: QuestionInputFull, user_answers: string[],time_taken: number) => {
         validateAnswer(generated_question, user_answers,time_taken)
         setCurrentQuestion(current_question + 1)
       }} />

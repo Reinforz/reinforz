@@ -35,7 +35,7 @@ export interface QuestionInput {
   correct_answer_message?: string,
   incorrect_answer_message?: string,
   explanation?: string,
-  key?: string,
+  _id?: string,
   total?: number,
   index?: number
   hints?: string[],

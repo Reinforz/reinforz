@@ -1,15 +1,19 @@
 import styled from "styled-components";
 import React, { useState } from "react";
 import Button from "@material-ui/core/Button"
+import { makeStyles } from "@material-ui/styles";
 
 import Timer from "./Timer";
-import { QuestionInputPartial, QuestionInputKeys,TimerRProps } from "../types";
+import { QuestionInputPartial, QuestionInputKeys, TimerRProps } from "../types";
 import { generateQuestionInputConfigs } from "../utils/generateConfigs";
 import { RadioGroup, FormControlLabel, Radio, FormGroup, Checkbox, TextField } from "@material-ui/core";
+import Highlighter from "./Highlighter";
 
-interface QuestionContainerQuestionProps {
-  hasHTMLLiteral: boolean
-}
+const styles = makeStyles({
+  radio_root: {
+    color: 'rgba(255,255,255,0.75)'
+  }
+});
 
 const QuestionContainer = styled.div`
   user-select: none;
@@ -29,15 +33,15 @@ const QuestionContainerStats = styled.div`
   margin-bottom: 10px;
 `;
 
-const QuestionContainerQuestion = styled.div<QuestionContainerQuestionProps>`
+const QuestionContainerQuestion = styled.div`
   user-select: none;
   font-weight: bolder;
   font-size: 1.5rem;
   height: 150px;
-  ${props => !props.hasHTMLLiteral ? `display: flex;
+  display: flex;
   justify-content: center;
-  align-items: center;` : ''}
-` as any;
+  align-items: center;
+`;
 
 const QuestionContainerStatsItem = styled.div`
   user-select: none;
@@ -80,14 +84,15 @@ const QuestionContainerOptionsFormGroup = styled(FormGroup)`
 
 export default function Question(props: QuestionInputPartial): JSX.Element {
   const generated_question_inputs = generateQuestionInputConfigs(props);
-  const { question, type, image, format, time_allocated, options,index,total } = generated_question_inputs;
+  const { question, type, image, format, time_allocated, options, index, total, _id } = generated_question_inputs;
+  const classes = styles();
 
   const generateQuestion = () => {
-    if (format === "html") return <QuestionContainerQuestion hasHTMLLiteral={true} className="Question-container-item Question-container-question" dangerouslySetInnerHTML={{ __html: question }} />
-    else return <QuestionContainerQuestion hasHTMLLiteral={false} className="Question-container-item Question-container-question">{question}</QuestionContainerQuestion>
+    if (format === "html") return <Highlighter language={"javascript"} code={question} />
+    else return <QuestionContainerQuestion className="Question-container-item Question-container-question">{question}</QuestionContainerQuestion>
   }
 
-  const [user_answers, changeUserAnswers] = useState(type === "FIB" ? Array(question.match(/(\$\{\_\})/g)?.length ?? 1).fill('') as string[] : ['']);
+  const [user_answers, changeUserAnswers] = useState(type === "FIB" ? Array(question.match(/(\$\{_\})/g)?.length ?? 1).fill('') as string[] : ['']);
 
   const generateOptions = () => {
     if (type === "MCQ" && options)
@@ -95,11 +100,11 @@ export default function Question(props: QuestionInputPartial): JSX.Element {
         changeUserAnswers([e.target.value])
       }} row>
         {options.map((option, index) => (
-          <QuestionContainerOptionItem className={`Question-container-options-item`} key={option + index}>
+          <QuestionContainerOptionItem className={`Question-container-options-item`} key={_id + "option" + index}>
             <FormControlLabel
-              control={<Radio color="primary" />}
+              control={<Radio color="primary" className={classes.radio_root}/>}
               value={`${index}`}
-              label={option}
+              label={option.toString()}
               labelPlacement="end"
             />
           </QuestionContainerOptionItem>
@@ -109,9 +114,9 @@ export default function Question(props: QuestionInputPartial): JSX.Element {
       const temp_user_answers = [...(user_answers as string[])];
       return <QuestionContainerOptionsFormGroup row>
         {options.map((option, index) => (
-          <QuestionContainerOptionItem className={`Question-container-options-item`} key={option + index}>
+          <QuestionContainerOptionItem className={`Question-container-options-item`} key={_id + "option" + index}>
             <FormControlLabel
-              control={<Checkbox checked={temp_user_answers.includes(`${index}`)} value={`${index}`} onChange={(e) => {
+              control={<Checkbox className={classes.radio_root} checked={temp_user_answers.includes(`${index}`)} value={`${index}`} onChange={(e) => {
                 if (e.target.checked) {
                   temp_user_answers.push(`${index}`);
                   changeUserAnswers([...temp_user_answers])
@@ -119,14 +124,14 @@ export default function Question(props: QuestionInputPartial): JSX.Element {
                 else
                   changeUserAnswers(temp_user_answers.filter(temp_user_answer => temp_user_answer !== `${index}`));
               }} />}
-              label={option}
+              label={option.toString()}
             /></QuestionContainerOptionItem>))}
       </QuestionContainerOptionsFormGroup>
     }
 
     else if (type === "FIB")
-      return (question.match(/(\$\{\_\})/g) as string[]).map((_, i) =>
-        <QuestionContainerOptionItem className={`Question-container-options-item`} key={_ + i}>
+      return (question.match(/(\$\{_\})/g) as string[]).map((_, i) =>
+        <QuestionContainerOptionItem className={`Question-container-options-item`} key={_id + "option" + index}>
           <TextField fullWidth value={user_answers[i]} onChange={e => {
             user_answers[i] = e.target.value;
             changeUserAnswers([...user_answers])
@@ -141,20 +146,20 @@ export default function Question(props: QuestionInputPartial): JSX.Element {
   }
   const exhausted_questions = index >= total;
 
-  return <Timer timeout={time_allocated} onTimerEnd={()=>{
-    props.changeCounter(generated_question_inputs,user_answers,time_allocated)
+  return <Timer timeout={time_allocated} onTimerEnd={() => {
+    props.changeCounter(generated_question_inputs, user_answers, time_allocated)
   }}>
     {(timerprops: TimerRProps) => {
       return <QuestionContainer className="Question-container">
         <QuestionContainerStats className="Question-container-stats Question-container-item">
-          {(["index", "total", "type", "format", "weight", "add_to_score", "time_allocated", "difficulty"] as QuestionInputKeys).map(stat => <QuestionContainerStatsItem key={`question-${stat}`} className={`Question-container-stats-item Question-container-stats-${stat}`}>{generated_question_inputs[stat]}</QuestionContainerStatsItem>)}
+          {(["index", "total", "type", "format", "weight", "add_to_score", "time_allocated", "difficulty"] as QuestionInputKeys).map(stat => <QuestionContainerStatsItem key={`${_id}question-${stat}`} className={`Question-container-stats-item Question-container-stats-${stat}`}>{generated_question_inputs[stat]}</QuestionContainerStatsItem>)}
         </QuestionContainerStats>
-        {image && <div className="Question-container-item Question-container-image"><img src={image} /></div>}
+        {image && <div className="Question-container-item Question-container-image"><img src={image} alt="question" /></div>}
         {generateQuestion()}
         {generateOptions()}
         {timerprops.timer}
         <Button className="Quiz-container-button" variant="contained" color="primary" onClick={() => {
-          props.changeCounter(generated_question_inputs, user_answers,time_allocated - timerprops.currentTime)
+          props.changeCounter(generated_question_inputs, user_answers, time_allocated - timerprops.currentTime)
         }}>{!exhausted_questions ? "Next" : "Report"}</Button>
       </QuestionContainer>
     }}
