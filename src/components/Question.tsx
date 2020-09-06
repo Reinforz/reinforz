@@ -80,6 +80,9 @@ const QuestionContainerOptionItem = styled.div`
     font-size: 1.25rem;
     font-weight: 500;
   }
+  .MuiFormControlLabel-root{
+    width: 100%;
+  }
 `;
 
 const QuestionContainerOptionsRadioGroup = styled(RadioGroup)`
@@ -107,7 +110,12 @@ export default function Question(props: QuestionInputPartial): JSX.Element {
       return <QuestionContainerOptionsRadioGroup className="Question-container-options" defaultValue={undefined} value={user_answers[0] === '' ? [''] : user_answers[0]} row>
         {options.map((option, i) => (
           <QuestionContainerOptionItem className={`Question-container-options-item`} key={`${_id}option${index}${i}`} onClick={(e) => {
-            const input = (e.target as any).tagName !== "INPUT" ? (e.target as any).querySelector("input") : e.target;
+            const tagname = (e.target as any).tagName;
+            const clicked_on_input = tagname === "INPUT";
+            let input = null;
+            if (clicked_on_input) input = e.target;
+            else if (tagname === "SPAN") input = (e.target as any).previousElementSibling.querySelector("input")
+            else input = (e.target as any).querySelector("input");
             changeUserAnswers([input.value])
           }}>
             <FormControlLabel
@@ -124,9 +132,13 @@ export default function Question(props: QuestionInputPartial): JSX.Element {
       return <QuestionContainerOptionsFormGroup row>
         {options.map((option, i) => (
           <QuestionContainerOptionItem className={`Question-container-options-item`} key={`${_id}option${index}${i}`} onClick={(e) => {
-            const clicked_on_input = (e.target as any).tagName === "INPUT"
-            const input = clicked_on_input ? e.target : (e.target as any).querySelector("input");
-            if ((clicked_on_input && input.checked) || (!clicked_on_input && !input.checked)) {
+            const tagname = (e.target as any).tagName;
+            const clicked_on_input = tagname === "INPUT";
+            let input = null;
+            if (clicked_on_input) input = e.target;
+            else if (tagname === "SPAN") input = (e.target as any).previousElementSibling.querySelector("input")
+            else input = (e.target as any).querySelector("input");
+            if ((clicked_on_input && input.checked) || (!clicked_on_input && input.checked)) {
               temp_user_answers.push(`${i}`);
               changeUserAnswers([...temp_user_answers])
             }
