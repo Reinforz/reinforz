@@ -12,8 +12,7 @@ const QuizData: QuizInputPartial={
     {
       "question": "Which of the following are not basic types in TS",
       "answers": [
-        6,
-        7
+        5,
       ],
       "options": [
         "void",
@@ -44,13 +43,13 @@ const QuizData: QuizInputPartial={
     //     "boolean"
     //   ],
     // },
-    {
-      "question": "All numbers in TS are either ${_} or ${_}?",
-      "answers": [
-        "floating point",
-        // "bigintegers"
-      ],
-    },
+    // {
+    //   "question": "All numbers in TS are either ${_} or ${_}?",
+    //   "answers": [
+    //     "floating point",
+    //     "bigintegers"
+    //   ],
+    // },
     // {
     //   "question": "How many basic types are there in TS to represent numbers",
     //   "answers": [
