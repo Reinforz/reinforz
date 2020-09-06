@@ -26,10 +26,23 @@ function Report(props: { results: Result[] }) {
         return value?.toString() ?? "N/A";
     }
   }
+
+  const accumulator = (header: string, contents: Array<any>) => {
+    switch (header) {
+      case "time_allocated":
+      case "score":
+      case "time_taken":
+        return contents.reduce((acc, cur) => acc + parseInt(cur), 0) / contents.length;
+      case "verdict":
+        return contents.filter(content => content).length;
+      default:
+        return null;
+    }
+  }
   return (
     <div className="Report">
       <ReportContainer className="Report-container">
-        <Table transformValue={transformValue} contents={props.results} collapseContents={["explanation"]} headers={["question", "type", "verdict", "score", "time_allocated", "time_taken", "answers", "user_answers"]} keycreator={({ answers }, index) => answers.join("") + index} />
+        <Table accumulator={accumulator} transformValue={transformValue} contents={props.results} collapseContents={["explanation"]} headers={["question", "type", "verdict", "score", "time_allocated", "time_taken", "answers", "user_answers"]} keycreator={({ answers }, index) => answers.join("") + index} />
       </ReportContainer>
     </div>
   );

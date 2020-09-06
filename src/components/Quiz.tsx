@@ -24,14 +24,14 @@ export default function Quiz(props: QuizInputPartial) {
       type,
       time_allocated,
       time_taken,
-      explanation
+      explanation,
     }])
   }
 
   const generateContent = () => {
     if (current_question !== total_questions) {
       const question = props.questions[current_question];
-      return <Question key={question._id} {...question} total={total_questions} index={current_question + 1} changeCounter={(generated_question: QuestionInputFull, user_answers: string[], time_taken: number) => {
+      return <Question results={results} key={question._id} {...question} total={total_questions} index={current_question + 1} changeCounter={(generated_question: QuestionInputFull, user_answers: string[], time_taken: number) => {
         validateAnswer(generated_question, user_answers, time_taken)
         setCurrentQuestion(current_question + 1)
       }} />

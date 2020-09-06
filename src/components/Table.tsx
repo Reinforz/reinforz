@@ -11,6 +11,7 @@ import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import { TableFooter } from '@material-ui/core';
 
 const useStyles = makeStyles({
   table: {
@@ -42,11 +43,11 @@ interface Table_RowCommonProps {
   collapseContents: string[]
   transformValue: (header: string, content: any) => string
   headers: string[],
-
 }
 interface TableProps<Values> extends Table_RowCommonProps {
   contents: Values[],
   keycreator: (data: Values, index: number) => string,
+  accumulator: (header: string, contents: Array<any>) => string | null | number
 }
 
 interface RowProps extends Table_RowCommonProps {
@@ -88,6 +89,12 @@ function Rows(props: RowProps) {
 
 export default function SimpleTable(props: TableProps<Record<string, any>>) {
   const classes = useStyles();
+  const accumulator: Record<string, Array<any>> = {};
+  props.headers.forEach(header => {
+    accumulator[header] = [];
+    props.contents.forEach(content => accumulator[header].push(content[header]))
+  });
+
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
@@ -95,12 +102,19 @@ export default function SimpleTable(props: TableProps<Record<string, any>>) {
           <TableRow className={classes.tr}>
             <TableCell className={classes.th}></TableCell>
             <TableCell className={classes.th}>No.</TableCell>
-            {props.headers.map((header, index) => <TableCell className={classes.th} key={header + index} align="center">{header.split("_").map(c => c.charAt(0).toUpperCase() + c.substr(1)).join(" ")}</TableCell>)}
+            {props.headers.map((header, index) => <TableCell className={classes.th} key={header + "header" + index} align="center">{header.split("_").map(c => c.charAt(0).toUpperCase() + c.substr(1)).join(" ")}</TableCell>)}
           </TableRow>
         </TableHead>
         <TableBody>
           {props.contents.map((content, index) => <Rows transformValue={props.transformValue} collapseContents={props.collapseContents} key={props.keycreator(content, index)} content={content} headers={props.headers} index={index} />)}
         </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TableCell className={classes.th}></TableCell>
+            <TableCell className={classes.th}>{props.contents.length}</TableCell>
+            {props.headers.map((header, index) => <TableCell className={classes.th} key={header + "footer" + index} align="center">{props.accumulator(header, accumulator[header])}</TableCell>)}
+          </TableRow>
+        </TableFooter>
       </Table>
     </TableContainer>
   );

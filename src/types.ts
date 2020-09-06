@@ -40,6 +40,7 @@ export interface QuestionInput {
   index?: number
   hints?: string[],
   changeCounter: any,
+  results: Result[]
 }
 
 export interface QuestionInputPartial extends QuestionInputCommon, Partial<QuestionInput> { }
@@ -61,7 +62,7 @@ export interface Result {
   type: QuestionType,
   time_allocated: number,
   time_taken: number,
-  explanation: string
+  explanation: string,
 }
 
 export interface TimerRProps {

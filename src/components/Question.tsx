@@ -25,9 +25,6 @@ const QuestionContainer = styled.div`
 
 const QuestionContainerStats = styled.div`
   user-select: none;
-  width: 50%;
-  min-width: 250px;
-  max-width: 500px;
   display: flex;
   justify-content: space-evenly;
   margin-bottom: 10px;
@@ -51,6 +48,13 @@ const QuestionContainerStatsItem = styled.div`
   user-select: none;
   font-weight: 500;
   font-size: 1rem;
+  padding: 5px;
+
+  .value{
+    padding: 2px 5px;
+    border-radius: 3px; 
+    background-color: #2c2c2c;
+  }
 `;
 
 const QuestionContainerOptions = `
@@ -88,7 +92,7 @@ const QuestionContainerOptionsFormGroup = styled(FormGroup)`
 
 export default function Question(props: QuestionInputPartial): JSX.Element {
   const generated_question_inputs = generateQuestionInputConfigs(props);
-  const { question, type, image, format, time_allocated, options, index, total, _id } = generated_question_inputs;
+  const { results, question, type, image, format, time_allocated, options, index, total, _id } = generated_question_inputs;
   const classes = styles();
 
   const generateQuestion = () => {
@@ -152,14 +156,15 @@ export default function Question(props: QuestionInputPartial): JSX.Element {
         }} /></QuestionContainerOptionItem>
   }
   const exhausted_questions = index >= total;
-
+  const total_correct = results.filter(result => result.verdict).length;
   return <Timer timeout={time_allocated} onTimerEnd={() => {
     props.changeCounter(generated_question_inputs, user_answers, time_allocated)
   }}>
     {(timerprops: TimerRProps) => {
       return <QuestionContainer className="Question-container">
         <QuestionContainerStats className="Question-container-stats Question-container-item">
-          {(["index", "total", "type", "format", "weight", "add_to_score", "time_allocated", "difficulty"] as QuestionInputKeys).map(stat => <QuestionContainerStatsItem key={`${_id}question-${stat}`} className={`Question-container-stats-item Question-container-stats-${stat}`}>{generated_question_inputs[stat]}</QuestionContainerStatsItem>)}
+          <QuestionContainerStatsItem key={`${_id}question-total_correct`} className={`Question-container-stats-item Question-container-stats-total_correct`}><span>Total Correct: </span><span style={{ color: "#36e336" }} className={"value"}>{total_correct.toString()}</span></QuestionContainerStatsItem>
+          {(["index", "total", "type", "format", "weight", "add_to_score", "time_allocated", "difficulty"] as QuestionInputKeys).map(stat => <QuestionContainerStatsItem key={`${_id}question-${stat}`} className={`Question-container-stats-item Question-container-stats-${stat}`}><span>{stat.split("_").map(c => c.charAt(0).toUpperCase() + c.substr(1)).join(" ") + ": "}</span><span className={"value"}>{generated_question_inputs[stat].toString()}</span></QuestionContainerStatsItem>)}
         </QuestionContainerStats>
         {image && <div className="Question-container-item Question-container-image"><img src={image} alt="question" /></div>}
         {generateQuestion()}
