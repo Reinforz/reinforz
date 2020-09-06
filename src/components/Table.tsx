@@ -24,51 +24,53 @@ const useStyles = makeStyles({
     userSelect: "none",
     borderBottom: 0,
   },
-  td:{
+  td: {
     backgroundColor: "#2c2c2c",
     color: "#dddddd",
     fontWeight: 500,
     userSelect: "none",
     borderBottom: 0
   },
-  tr:{
+  tr: {
     borderBottom: 0
   }
 });
 
-interface TableProps<Values> {
+interface Table_RowCommonProps {
+  collapseContents: string[]
+  transformValue: (header: string, value: any) => string
+  headers: string[],
+
+}
+interface TableProps<Values> extends Table_RowCommonProps {
   contents: Values[],
   keycreator: (data: Values, index: number) => string,
-  headers: string[],
-  collapseContents: string[]
 }
 
-interface RowProps {
+interface RowProps extends Table_RowCommonProps {
   content: any,
   index: number,
-  headers: string[],
-  collapseContents: string[],
 }
 
 function Rows(props: RowProps) {
   const [open, setOpen] = React.useState(false);
   const classes = useStyles();
-  const { content, headers, index, collapseContents } = props;
+  const { content, headers, index, collapseContents, transformValue } = props;
   return <Fragment>
     <TableRow className={classes.tr} >
       <TableCell className={classes.td}>
-        <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+        <IconButton aria-label="expand row" size="small" style={{ color: 'white' }} onClick={() => setOpen(!open)}>
           {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
         </IconButton>
       </TableCell>
       <TableCell className={classes.td}>{index + 1}</TableCell>
-      {headers.map((header, index) => <TableCell className={classes.td} key={header + 'row' + index} align="center">{content[header]?.toString() ?? "N/A"}</TableCell>)}
+      {headers.map((header, index) => <TableCell className={classes.td} key={header + 'row' + index} align="center">{transformValue(header, content[header])}</TableCell>)}
     </TableRow>
     <TableRow className={classes.tr}>
       <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={headers.length} className={classes.td}>
         <Collapse in={open} timeout="auto" unmountOnExit>
           {collapseContents.map((collapseContent, collapseContentIndex) => <div key={index + "collapse" + collapseContent + collapseContentIndex}>
-            <div>
+            <div style={{ margin: 5, textTransform: "capitalize" }}>
               {collapseContent}
             </div>
             <div>
@@ -95,7 +97,7 @@ export default function SimpleTable(props: TableProps<Record<string, any>>) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.contents.map((content, index) => <Rows collapseContents={props.collapseContents} key={props.keycreator(content, index)} content={content} headers={props.headers} index={index} />)}
+          {props.contents.map((content, index) => <Rows transformValue={props.transformValue} collapseContents={props.collapseContents} key={props.keycreator(content, index)} content={content} headers={props.headers} index={index} />)}
         </TableBody>
       </Table>
     </TableContainer>

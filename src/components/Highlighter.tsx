@@ -7,7 +7,8 @@ const Pre = styled.pre`
   text-align: left;
   margin: 1em 0;
   padding: 0.5em;
-  overflow: scroll;
+  overflow: auto;
+  font-family:"Consolas"
 `;
 
 const Line = styled.div`

@@ -92,7 +92,7 @@ export default function Question(props: QuestionInputPartial): JSX.Element {
   const classes = styles();
 
   const generateQuestion = () => {
-    if (format === "html") return <Highlighter language={"javascript"} code={question} />
+    if (format === "html") return <Highlighter language={"typescript"} code={question} />
     else return <QuestionContainerQuestion className="Question-container-item Question-container-question">{question}</QuestionContainerQuestion>
   }
 

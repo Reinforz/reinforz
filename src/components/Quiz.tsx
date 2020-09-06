@@ -10,7 +10,7 @@ export default function Quiz(props: QuizInputPartial) {
   const [results, setResults] = useState([] as Result[]);
   const total_questions = props.questions.length;
 
-  const validateAnswer = ({weight,type,question,time_allocated,answers,add_to_score,explanation}: QuestionInputFull, user_answers: (number | string)[],time_taken: number) => {
+  const validateAnswer = ({weight,type,question,format,time_allocated,answers,add_to_score,explanation}: QuestionInputFull, user_answers: (number | string)[],time_taken: number) => {
     user_answers = user_answers.filter(user_answer=>user_answer!=="");
     let verdict = null;
     switch (type) {
@@ -33,7 +33,7 @@ export default function Quiz(props: QuizInputPartial) {
         verdict,
         add_to_score,
         score: weight * (verdict ? 1 : 0),
-        question,
+        question: format!=="html" ? question: "Code",
         type,
         time_allocated,
         time_taken,
