@@ -34,7 +34,7 @@ interface HighlighterProps {
 }
 
 export default function Highlighter(props: HighlighterProps) {
-  return <Highlight {...defaultProps} theme={vsDark} code={props.code} language={props.language}>
+  return <Highlight {...defaultProps} theme={vsDark} code={props.code.trim()} language={props.language}>
     {({ className, style, tokens, getLineProps, getTokenProps }) => (
       <Pre className={className} style={style}>
         {tokens.map((line, i) => (
