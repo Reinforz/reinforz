@@ -96,13 +96,14 @@ export default function Question(props: QuestionInputPartial): JSX.Element {
 
   const generateOptions = () => {
     if (type === "MCQ" && options)
-      return <QuestionContainerOptionsRadioGroup className="Question-container-options" defaultValue={undefined} value={user_answers[0] === '' ? [''] : user_answers[0]} onChange={(e) => {
-        changeUserAnswers([e.target.value])
-      }} row>
+      return <QuestionContainerOptionsRadioGroup className="Question-container-options" defaultValue={undefined} value={user_answers[0] === '' ? [''] : user_answers[0]} row>
         {options.map((option, index) => (
-          <QuestionContainerOptionItem className={`Question-container-options-item`} key={_id + "option" + index}>
+          <QuestionContainerOptionItem className={`Question-container-options-item`} key={_id + "option" + index} onClick={(e) => {
+            const input = (e.target as any).tagName !== "INPUT" ? (e.target as any).querySelector("input") : e.target;
+            changeUserAnswers([input.value])
+          }}>
             <FormControlLabel
-              control={<Radio color="primary" className={classes.radio_root}/>}
+              control={<Radio color="primary" className={classes.radio_root} />}
               value={`${index}`}
               label={option.toString()}
               labelPlacement="end"
@@ -114,16 +115,18 @@ export default function Question(props: QuestionInputPartial): JSX.Element {
       const temp_user_answers = [...(user_answers as string[])];
       return <QuestionContainerOptionsFormGroup row>
         {options.map((option, index) => (
-          <QuestionContainerOptionItem className={`Question-container-options-item`} key={_id + "option" + index}>
+          <QuestionContainerOptionItem className={`Question-container-options-item`} key={_id + "option" + index} onClick={(e) => {
+            const clicked_on_input = (e.target as any).tagName === "INPUT"
+            const input = clicked_on_input ? e.target : (e.target as any).querySelector("input");
+            if ((clicked_on_input && input.checked) || (!clicked_on_input && !input.checked)) {
+              temp_user_answers.push(`${index}`);
+              changeUserAnswers([...temp_user_answers])
+            }
+            else
+              changeUserAnswers(temp_user_answers.filter(temp_user_answer => temp_user_answer !== `${index}`));
+          }}>
             <FormControlLabel
-              control={<Checkbox className={classes.radio_root} checked={temp_user_answers.includes(`${index}`)} value={`${index}`} onChange={(e) => {
-                if (e.target.checked) {
-                  temp_user_answers.push(`${index}`);
-                  changeUserAnswers([...temp_user_answers])
-                }
-                else
-                  changeUserAnswers(temp_user_answers.filter(temp_user_answer => temp_user_answer !== `${index}`));
-              }} />}
+              control={<Checkbox className={classes.radio_root} checked={temp_user_answers.includes(`${index}`)} value={`${index}`} />}
               label={option.toString()}
             /></QuestionContainerOptionItem>))}
       </QuestionContainerOptionsFormGroup>

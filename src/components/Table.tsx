@@ -79,6 +79,7 @@ export default function SimpleTable(props: TableProps<Record<string, any>>) {
       <Table className={classes.table} aria-label="simple table">
         <TableHead >
           <TableRow>
+            <TableCell className={classes.th}></TableCell>
             <TableCell className={classes.th}>No.</TableCell>
             {props.headers.map((header, index) => <TableCell className={classes.th} key={header + index} align="center">{header.split("_").map(c => c.charAt(0).toUpperCase() + c.substr(1)).join(" ")}</TableCell>)}
           </TableRow>
