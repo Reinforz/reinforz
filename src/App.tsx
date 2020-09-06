@@ -4,6 +4,7 @@ import Quiz from "./components/Quiz"
 
 import './App.css';
 import { QuizInputPartial } from './types';
+import shuffle from './utils/arrayShuffler';
 
 const QuizData: QuizInputPartial={
   title: "Typescript Basic Types",
@@ -56,17 +57,18 @@ const QuizData: QuizInputPartial={
     //     2
     //   ],
     // },
-    // {
-    //   "question": "Floating point numbers get which type?",
-    //   "answers": [
-    //     "number"
-    //   ]
-    // }
+    {
+      "question": "Floating point numbers get which type?",
+      "answers": [
+        "number"
+      ]
+    }
   ]
 };
 
 
 function App() {
+  QuizData.questions = shuffle(QuizData.questions);
   return (
     <div className="App">
       <Quiz {...QuizData}/>
