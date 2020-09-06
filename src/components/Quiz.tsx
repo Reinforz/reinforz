@@ -26,7 +26,7 @@ export default function Quiz(props: QuizInputPartial) {
       time_taken,
       explanation,
     }])
-  }
+  };
 
   const generateContent = () => {
     if (current_question !== total_questions) {
