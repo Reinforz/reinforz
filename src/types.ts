@@ -5,7 +5,7 @@ export interface QuizInputPartial {
   subject: string,
   source?: string,
   image?: string,
-  description?: string,
+  explanation?: string,
   questions: QuestionInputsPartial
 }
 
@@ -39,7 +39,7 @@ export interface QuestionInput {
   total?: number,
   index?: number
   hints?: string[],
-  changeCounter: any
+  changeCounter: any,
 }
 
 export interface QuestionInputPartial extends QuestionInputCommon, Partial<QuestionInput> { }
@@ -60,7 +60,8 @@ export interface Result {
   question: string,
   type: QuestionType,
   time_allocated: number,
-  time_taken: number
+  time_taken: number,
+  explanation: string
 }
 
 export interface TimerRProps {

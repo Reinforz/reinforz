@@ -39,7 +39,7 @@ export default function SimpleTable(props: TableProps<Record<string,any>>) {
             const key=props.keycreator(content,index);
             return <TableRow key={key}>
               <TableCell>{index+1}</TableCell>
-              {props.headers.map((header,index)=><TableCell key={key+header+index} align="center">{content[header].toString() || "N/A"}</TableCell>)}
+              {props.headers.map((header,index)=><TableCell key={key+header+index} align="center">{content[header]?.toString() ?? "N/A"}</TableCell>)}
             </TableRow>
           })}
         </TableBody>

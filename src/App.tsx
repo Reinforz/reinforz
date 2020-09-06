@@ -24,6 +24,7 @@ const QuizData: QuizInputPartial={
         "generic",
         "class"
       ],
+      explanation: "Generic and classes are built out of basic types"
     },
     // {
     //   "question": "Which extra basic type is provided in TS",
