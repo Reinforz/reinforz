@@ -12,23 +12,26 @@ const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
+  th:{
+    fontWeight: 'bolder',
+  }
 });
 
-interface TableProps {
-  contents: Record<string,any>[],
-  keycreator: (data:Record<string,any>,index: number) => string
+interface TableProps<Values> {
+  contents: Values[],
+  keycreator: (data:Values,index: number) => string,
+  headers: string[]
 }
 
-export default function SimpleTable(props: TableProps) {
+export default function SimpleTable(props: TableProps<Record<string,any>>) {
   const classes = useStyles();
-  const headers = Object.keys(props.contents[0]);
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
-        <TableHead>
+        <TableHead >
           <TableRow>
-            <TableCell>No.</TableCell>
-            {headers.map((header,index)=><TableCell key={header+index} align="center">{header.split("_").map(c=>c.charAt(0).toUpperCase()+c.substr(1)).join(" ")}</TableCell>)}
+            <TableCell className={classes.th}>No.</TableCell>
+            {props.headers.map((header,index)=><TableCell className={classes.th} key={header+index} align="center">{header.split("_").map(c=>c.charAt(0).toUpperCase()+c.substr(1)).join(" ")}</TableCell>)}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -36,7 +39,7 @@ export default function SimpleTable(props: TableProps) {
             const key=props.keycreator(content,index);
             return <TableRow key={key}>
               <TableCell>{index+1}</TableCell>
-              {headers.map((header,index)=><TableCell key={key+header+index} align="center">{content[header].toString() || "N/A"}</TableCell>)}
+              {props.headers.map((header,index)=><TableCell key={key+header+index} align="center">{content[header].toString() || "N/A"}</TableCell>)}
             </TableRow>
           })}
         </TableBody>

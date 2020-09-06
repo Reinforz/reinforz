@@ -10,29 +10,33 @@ export default function Quiz(props: QuizInputPartial) {
   const [results, setResults] = useState([] as Result[]);
   const total_questions = props.questions.length;
 
-  const validateAnswer = (generated_question: QuestionInputFull, user_answers: (number | string)[]) => {
+  const validateAnswer = ({weight,type,question,time_allocated,answers,add_to_score}: QuestionInputFull, user_answers: (number | string)[],time_taken: number) => {
     user_answers = user_answers.filter(user_answer=>user_answer!=="");
     let verdict = null;
-    switch (generated_question.type) {
+    switch (type) {
       case "MCQ":
       case "Snippet":
-        verdict = generated_question.answers.length === user_answers.length && generated_question.answers[0].toString() === user_answers[0].toString();
+        verdict = answers.length === user_answers.length && answers[0].toString() === user_answers[0].toString();
         break;
       case "MS":
         user_answers = user_answers.map(user_answer => parseInt(user_answer as string)).sort();
-        generated_question.answers = generated_question.answers.map(answer => parseInt(answer as string)).sort();
-        verdict = user_answers.length === generated_question.answers.length && user_answers.every((user_answer, i) => user_answer === generated_question.answers[i]);
+        answers = answers.map(answer => parseInt(answer as string)).sort();
+        verdict = user_answers.length === answers.length && user_answers.every((user_answer, i) => user_answer === answers[i]);
         break;
       case "FIB":
-        verdict = user_answers.length === generated_question.answers.length && user_answers.every((user_answer, i) => user_answer === generated_question.answers[i]);
+        verdict = user_answers.length === answers.length && user_answers.every((user_answer, i) => user_answer === answers[i]);
         break;
       }
       setResults([...results, {
         user_answers,
-        answers: generated_question.answers,
+        answers,
         verdict,
-        add_to_score: generated_question.add_to_score,
-        score: generated_question.weight * (verdict ? 1 : 0)
+        add_to_score,
+        score: weight * (verdict ? 1 : 0),
+        question,
+        type,
+        time_allocated,
+        time_taken
       }])
   }
 
@@ -40,8 +44,8 @@ export default function Quiz(props: QuizInputPartial) {
     if (current_question !== total_questions) {
       const question = props.questions[current_question];
       const key = current_question + question.question.toLowerCase().replace(/\s/g, '');
-      return <Question key={key} {...question} total={total_questions} index={current_question + 1} changeCounter={(generated_question: QuestionInputFull, user_answers: string[]) => {
-        validateAnswer(generated_question, user_answers)
+      return <Question key={key} {...question} total={total_questions} index={current_question + 1} changeCounter={(generated_question: QuestionInputFull, user_answers: string[],time_taken: number) => {
+        validateAnswer(generated_question, user_answers,time_taken)
         setCurrentQuestion(current_question + 1)
       }} />
     }

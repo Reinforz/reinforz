@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface QuizInputPartial {
   title: string,
   subject: string,
@@ -54,5 +56,15 @@ export interface Result {
   verdict: boolean,
   score: number,
   add_to_score: boolean,
-  answers: (number | string)[]
+  answers: (number | string)[],
+  question: string,
+  type: QuestionType,
+  time_allocated: number,
+  time_taken: number
+}
+
+export interface TimerRProps {
+  timer: ReactNode,
+  currentTime: number,
+  clearInterval: any
 }
