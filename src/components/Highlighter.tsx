@@ -1,14 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 import Highlight, { defaultProps, Language } from "prism-react-renderer";
-import theme from "prism-react-renderer/themes/nightOwl";
+import vsDark from "prism-react-renderer/themes/vsDark";
 
 const Pre = styled.pre`
   text-align: left;
   margin: 1em 0;
   padding: 0.5em;
   overflow: auto;
-  font-family:"Consolas"
+  font-family:"Consolas";
+  width: calc(100% - 50px);
 `;
 
 const Line = styled.div`
@@ -27,13 +28,13 @@ const LineContent = styled.span`
   display: table-cell;
 `;
 
-interface HighlighterProps{
+interface HighlighterProps {
   code: string,
   language: Language
 }
 
-export default function Highlighter(props:HighlighterProps) {
-  return <Highlight {...defaultProps} theme={theme} code={props.code} language={props.language}>
+export default function Highlighter(props: HighlighterProps) {
+  return <Highlight {...defaultProps} theme={vsDark} code={props.code} language={props.language}>
     {({ className, style, tokens, getLineProps, getTokenProps }) => (
       <Pre className={className} style={style}>
         {tokens.map((line, i) => (
