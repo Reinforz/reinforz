@@ -18,6 +18,17 @@ const ListItemField = styled.div`
   font-size: 1.15rem;
 `;
 
+const CancelIconW = styled(CancelIcon)`
+  margin: 5px;
+  cursor: pointer;
+  fill: #F44336 !important;
+  transition: transform 200ms ease-in-out;
+  &:hover{
+    transform: scale(1.15);
+    transition: transform 200ms ease-in-out;
+  }
+`;
+
 interface ListProps<T> {
   items: T[],
   fields: (string | ((data: T) => string))[],
@@ -28,7 +39,7 @@ export default function (props: ListProps<Record<string, any>>) {
   return <List className="List">
     {props.items.map(item => {
       return <ListItem key={item._id}>
-        <CancelIcon onClick={() => {
+        <CancelIconW onClick={() => {
           const items = props.items.filter(_item => _item._id !== item._id);
           props.setItems([...items]);
         }}/>

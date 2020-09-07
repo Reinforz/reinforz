@@ -2,7 +2,8 @@ import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import yaml from 'js-yaml';
 import shortid from "shortid"
-import { useDropzone, DropzoneState } from 'react-dropzone'
+import { useDropzone, DropzoneState } from 'react-dropzone';
+import {useSnackbar,OptionsObject } from "notistack";
 
 import shuffle from '../utils/arrayShuffler';
 import List from "./List";
@@ -42,9 +43,17 @@ const Container = styled.div`
 ` as any;
 
 const trimLower = (data: string) => data.replace(/\s/g, '').toLowerCase();
+const centerBottomErrorNotistack = {
+    variant: 'error',
+    anchorOrigin: {
+        vertical: 'bottom',
+        horizontal: 'center',
+    },
+} as OptionsObject;
 
 export default function Upload(props: UploadProps) {
   const { currentQuizzes, setQuizzes } = props;
+  const { enqueueSnackbar } = useSnackbar();
   const prepareData = (QuizData: any) => {
     QuizData._id = shortid();
     QuizData.questions = shuffle(QuizData.questions);
@@ -64,11 +73,16 @@ export default function Upload(props: UploadProps) {
           if (result) {
             const QuizData = ext.match(/(yaml|yml)/) ? yaml.safeLoad(result as string) as any : JSON.parse(result.toString());
             const isAdded = currentQuizzes.find((currentQuiz: any) => trimLower(currentQuiz.title) === trimLower(QuizData.title) && trimLower(currentQuiz.subject) === trimLower(QuizData.subject));
-            if (!isAdded) {
+            if((QuizData?.questions ?? []).length === 0)
+              enqueueSnackbar(`${file.name} is has no questions`, centerBottomErrorNotistack);
+            else if (isAdded ) 
+              enqueueSnackbar(`${file.name} has already been added`, centerBottomErrorNotistack);
+            else{
               prepareData(QuizData);
               resolve(QuizData);
             }
-          }
+          }else
+            enqueueSnackbar(`${file.name} is empty`, centerBottomErrorNotistack);
         }
         reader.readAsText(file);
       });
