@@ -48,7 +48,7 @@ const App = (props: RouteChildrenProps) => {
 
     </NavBar>
     <Switch location={location}>
-      <Route exact path="/" render={() => <div>Go to Upload page to Upload Quizzes or Quiz page to play quizzes</div>} />
+      <Route exact path="/" render={() => <div style={{fontSize:"1.5rem",display: 'flex',justifyContent:'center',alignItems:'center',fontWeight:"bolder",margin: 20,userSelect: "none"}}>{currentQuizzes.length === 0 ? "Go to upload page and upload some quizzes" : `You've uploaded ${currentQuizzes.length} quizzes. Go to quiz page to play them`}</div>} />
       <Route path="/upload" render={() => <Upload currentQuizzes={currentQuizzes} setQuizzes={setQuizzes} />} />
       {/* <Route path="/quiz" render={() => QuizData.title ? <Quiz {...QuizData} /> : <div>No quiz has been uploaded yet</div>} /> */}
     </Switch>
