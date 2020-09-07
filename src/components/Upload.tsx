@@ -118,7 +118,7 @@ export default function Upload(props: UploadProps) {
             <p>Drag 'n' drop some files here, or click to select files</p>
         }
       </Container>
-      <List icons={[(index, _id) => <CancelIconW key={_id + "icon" + index} onClick={() => {
+      <List header="Uploaded Quizzes" icons={[(index, _id) => <CancelIconW key={_id + "icon" + index} onClick={() => {
         const items = currentQuizzes.filter(currentQuiz => currentQuiz._id !== _id);
         setQuizzes([...items]);
       }} />]} items={currentQuizzes} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]} />

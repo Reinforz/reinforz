@@ -8,4 +8,10 @@ export default createMuiTheme({
     "fontWeightRegular": 400,
     "fontWeightMedium": 500
   },
+  palette: {
+    text: {
+      primary: '#ddd',
+      secondary: '#ccccccd1'
+    }
+  }
 });

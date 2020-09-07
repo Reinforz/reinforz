@@ -12,6 +12,7 @@
     "@testing-library/user-event": "^7.1.2",
     "formik": "^2.1.5",
     "js-yaml": "^3.14.0",
+    "node-sass": "^4.14.1",
     "notistack": "^1.0.0",
     "prism-react-renderer": "^1.1.1",
     "react": "^16.13.1",

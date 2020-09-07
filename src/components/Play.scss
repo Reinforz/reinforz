@@ -1,0 +1,27 @@
+.Play {
+  height: calc(100vh - 50px);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  .List{
+    width: 75%;
+    overflow: auto;
+    background: #1b1b1b;
+    margin: 5px;
+    border-radius: 5px;
+  }
+
+  &-options{
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    background: #161616;
+    margin: 5px;
+    padding: 5px;
+    &-header{
+      font-weight: bold;
+      font-size: 1.25em;
+      margin: 5px 0px;
+    }
+  }
+}

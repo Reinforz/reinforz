@@ -18,17 +18,19 @@ function PlayOptions(props: PlayOptionsProps) {
   return (
     props.children({
       play_options,
-      PlayOptions: <div className="PlayOptions">{Object.keys(play_options_obj).map((key, index) => <FormControlLabel key={key + index}
-        control={
-          <Checkbox
-            checked={play_options[key as play_options_keys]}
-            onChange={handleChange}
-            name={key}
-            color="primary"
-          />
-        }
-        label={key.split("_").map(k => k.charAt(0).toUpperCase() + k.substr(1)).join(" ")}
-      />)}
+      PlayOptions: <div className="Play-options">
+        <div className="Play-options-header">Options</div>
+        {Object.keys(play_options_obj).map((key, index) => <FormControlLabel key={key + index}
+          control={
+            <Checkbox
+              checked={play_options[key as play_options_keys]}
+              onChange={handleChange}
+              name={key}
+              color="primary"
+            />
+          }
+          label={key.split("_").map(k => k.charAt(0).toUpperCase() + k.substr(1)).join(" ")}
+        />)}
       </div>
     })
 
