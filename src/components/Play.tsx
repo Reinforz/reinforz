@@ -1,7 +1,9 @@
 import React, { useState, Fragment } from "react";
-import { Checkbox, Button } from "@material-ui/core";
-import { useSnackbar } from "notistack";
+import { Checkbox } from "@material-ui/core";
+import CancelIcon from '@material-ui/icons/Cancel';
+import styled from 'styled-components';
 
+import Upload from "./Upload";
 import Quiz from "./Quiz";
 import PlayOptions from "./PlayOptions";
 import "./Play.scss";
@@ -12,40 +14,41 @@ import {
 } from "../types";
 
 interface PlayProps {
-  quizzes: QuizInputPartial[]
+  quizzes: QuizInputPartial[],
+  setQuizzes: (data: any[]) => any
 }
+
+const CancelIconW = styled(CancelIcon)`
+  margin: 5px;
+  cursor: pointer;
+  fill: #F44336 !important;
+  transition: transform 200ms ease-in-out;
+  &:hover{
+    transform: scale(1.15);
+    transition: transform 200ms ease-in-out;
+  }
+`;
 
 function Play(props: PlayProps) {
   const [playing, setPlaying] = useState(false);
   const [selectedQuizzes, setSelectedQuizzes] = useState([] as any[]);
-  const { enqueueSnackbar } = useSnackbar();
 
   return (
-    <PlayOptions>
+    <PlayOptions setPlaying={setPlaying} selectedQuizzes={selectedQuizzes}>
       {({ PlayOptions }: PlayOptionsRProps) => {
         return <Fragment>
           {!playing ?
             <div className="Play">
-              <div style={{ display: 'flex', height: 'calc(100vh - 100px)' }}>
-                <List header="Uploaded Quizzes" items={props.quizzes} icons={[(index, _id) => {
-                  return <Checkbox key={_id + "checkbox" + index} onClick={(e) => {
-                    if ((e.target as any).checked) setSelectedQuizzes([...selectedQuizzes, _id])
-                    else setSelectedQuizzes(selectedQuizzes.filter(selectedQuiz => selectedQuiz !== _id))
-                  }} checked={selectedQuizzes.includes(_id)} value={_id} />
-                }]} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]} />
-                {PlayOptions}
-              </div>
-              <Button color="primary" style={{ margin: "0 auto", fontSize: "1rem" }} variant="contained" onClick={() => {
-                if (selectedQuizzes.length > 0)
-                  setPlaying(true)
-                else enqueueSnackbar('You must have atleast one quiz selected', {
-                  variant: 'error',
-                  anchorOrigin: {
-                    vertical: 'bottom',
-                    horizontal: 'center',
-                  },
-                })
-              }}>Start</Button>
+              <Upload {...props} />
+              <List header="Uploaded Quizzes" items={props.quizzes} icons={[(index, _id) => {
+                return <Checkbox key={_id + "checkbox" + index} onClick={(e) => {
+                  if ((e.target as any).checked) setSelectedQuizzes([...selectedQuizzes, _id])
+                  else setSelectedQuizzes(selectedQuizzes.filter(selectedQuiz => selectedQuiz !== _id))
+                }} checked={selectedQuizzes.includes(_id)} value={_id} />
+              }, (index, _id) => <CancelIconW key={_id + "icon" + index} onClick={() => {
+                props.setQuizzes(props.quizzes.filter(quiz => quiz._id !== _id));
+              }} />]} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]} />
+              {PlayOptions}
             </div>
             : <Quiz quizzes={props.quizzes.filter(quiz => selectedQuizzes.includes(quiz._id))} />}
         </Fragment>

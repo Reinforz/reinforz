@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import styled from "styled-components";
 import { ThemeProvider } from '@material-ui/styles';
-import { Switch, Route, BrowserRouter as Router, withRouter, RouteChildrenProps, NavLink } from "react-router-dom";
+import { Switch, Route, BrowserRouter as Router, withRouter, RouteChildrenProps } from "react-router-dom";
 import { SnackbarProvider } from "notistack";
 
 import './index.css';
@@ -11,50 +10,14 @@ import './App.css';
 import GlobalCss from './utils/globalCSS';
 import THEME from "./utils/theme";
 import Play from "./components/Play"
-import Upload from "./components/Upload"
-
-const NavBar = styled.div`
-  width: 100vw;
-  display: flex;
-  justify-content: space-evenly;
-  font-size: 1.25rem;
-`;
-
-const NavBarLink = styled(NavLink)`
-  text-decoration: none;
-  color: #ddd;
-  padding: 5px;
-  background: #383838;
-  width: 50%;
-  text-align: center;
-  margin: 5px;
-  border-radius: 5px;
-  font-weight: bolder;
-  text-transform: uppercase;
-`;
 
 const App = (props: RouteChildrenProps) => {
-  let [currentQuizzes, setQuizzes] = useState([] as any[]);
+  let [quizzes, setQuizzes] = useState([] as any[]);
   const { location } = props;
   return <div className="App">
     <GlobalCss />
-    <NavBar>
-      <NavBarLink
-        to="/upload"
-      >
-        Upload
-      </NavBarLink>
-      <NavBarLink
-        to="/play"
-      >
-        Play
-      </NavBarLink>
-
-    </NavBar>
     <Switch location={location}>
-      <Route exact path="/" render={() => <div style={{ fontSize: "1.5rem", display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: "bolder", margin: 20, userSelect: "none" }}>{currentQuizzes.length === 0 ? "Go to upload page and upload some quizzes" : `You've uploaded ${currentQuizzes.length} quizzes. Go to play page to play them`}</div>} />
-      <Route path="/upload" render={() => <Upload currentQuizzes={currentQuizzes} setQuizzes={setQuizzes} />} />
-      <Route path="/play" render={() => currentQuizzes.length > 0 ? <Play quizzes={currentQuizzes} /> : <div>No quiz has been uploaded yet</div>} />
+      <Route path="/" render={() => <Play quizzes={quizzes} setQuizzes={setQuizzes} />} />
     </Switch>
   </div>
 }

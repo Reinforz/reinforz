@@ -4,14 +4,12 @@ import yaml from 'js-yaml';
 import shortid from "shortid"
 import { useDropzone, DropzoneState } from 'react-dropzone';
 import { useSnackbar, OptionsObject } from "notistack";
-import CancelIcon from '@material-ui/icons/Cancel';
 
 import shuffle from '../utils/arrayShuffler';
-import List from "./List";
 
 interface UploadProps {
   setQuizzes: (data: any[]) => any,
-  currentQuizzes: any[]
+  quizzes: any[]
 }
 
 const getColor = (props: DropzoneState) => {
@@ -43,17 +41,6 @@ const Container = styled.div`
   transition: border .24s ease-in-out;
 ` as any;
 
-const CancelIconW = styled(CancelIcon)`
-  margin: 5px;
-  cursor: pointer;
-  fill: #F44336 !important;
-  transition: transform 200ms ease-in-out;
-  &:hover{
-    transform: scale(1.15);
-    transition: transform 200ms ease-in-out;
-  }
-`;
-
 const trimLower = (data: string) => data.replace(/\s/g, '').toLowerCase();
 const centerBottomErrorNotistack = {
   variant: 'error',
@@ -64,7 +51,7 @@ const centerBottomErrorNotistack = {
 } as OptionsObject;
 
 export default function Upload(props: UploadProps) {
-  const { currentQuizzes, setQuizzes } = props;
+  const { quizzes, setQuizzes } = props;
   const { enqueueSnackbar } = useSnackbar();
   const prepareData = (QuizData: any) => {
     QuizData._id = shortid();
@@ -84,7 +71,7 @@ export default function Upload(props: UploadProps) {
           const { result } = reader;
           if (result) {
             const QuizData = ext.match(/(yaml|yml)/) ? yaml.safeLoad(result as string) as any : JSON.parse(result.toString());
-            const isAdded = currentQuizzes.find((currentQuiz: any) => trimLower(currentQuiz.title) === trimLower(QuizData.title) && trimLower(currentQuiz.subject) === trimLower(QuizData.subject));
+            const isAdded = quizzes.find((currentQuiz: any) => trimLower(currentQuiz.title) === trimLower(QuizData.title) && trimLower(currentQuiz.subject) === trimLower(QuizData.subject));
             if ((QuizData?.questions ?? []).length === 0)
               enqueueSnackbar(`${file.name} is has no questions`, centerBottomErrorNotistack);
             else if (isAdded)
@@ -102,9 +89,9 @@ export default function Upload(props: UploadProps) {
     });
 
     Promise.all(filePromises).then(data => {
-      setQuizzes([...currentQuizzes, ...data]);
+      setQuizzes([...quizzes, ...data]);
     });
-  }, [currentQuizzes, setQuizzes, enqueueSnackbar]);
+  }, [quizzes, setQuizzes, enqueueSnackbar]);
 
   const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({ onDrop, accept: [".yml", ".yaml", "application/json"] })
 
@@ -118,10 +105,6 @@ export default function Upload(props: UploadProps) {
             <p>Drag 'n' drop some files here, or click to select files</p>
         }
       </Container>
-      <List header="Uploaded Quizzes" icons={[(index, _id) => <CancelIconW key={_id + "icon" + index} onClick={() => {
-        const items = currentQuizzes.filter(currentQuiz => currentQuiz._id !== _id);
-        setQuizzes([...items]);
-      }} />]} items={currentQuizzes} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]} />
     </div>
   )
 }

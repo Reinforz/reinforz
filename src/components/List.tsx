@@ -14,11 +14,11 @@ const ListHeader = styled.div`
   font-weight: bold;
   background: #161616;
   padding: 10px 0px;
+  height: 25px;
 `;
 
 const ListContent = styled.div`
-  padding: 5px;
-  height: 550px;
+  height: calc(100% - 25px);
   margin: 5px;
   overflow: auto;
   background: #373737;
@@ -41,7 +41,7 @@ const ListContentItemField = styled.div`
 interface ListProps<T> {
   items: T[],
   fields: (string | ((data: T) => string))[],
-  icons?: ((index: number, _id: number) => void)[],
+  icons?: ((index: number, _id: string) => void)[],
   header: string
 }
 

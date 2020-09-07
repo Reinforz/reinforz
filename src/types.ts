@@ -1,6 +1,5 @@
 import { ReactNode } from "react";
 import { TypeBackground } from "@material-ui/core/styles/createPalette";
-import { ThemeOptions, Theme, } from "@material-ui/core";
 
 export interface QuizInputPartial {
   title: string,
