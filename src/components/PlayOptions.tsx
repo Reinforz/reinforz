@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { FormControlLabel, Checkbox } from "@material-ui/core";
+import { IPlayOptions } from "../types";
 
 interface PlayOptionsProps {
   children: any
 }
 
 function PlayOptions(props: PlayOptionsProps) {
-  const [play_options, setPlayOptions] = useState({ shuffle_options: false, shuffle_quizzes: false, shuffle_questions: false });
+  const play_options_obj = { shuffle_options: true, shuffle_quizzes: false, shuffle_questions: true, instant_feedback: true };
+  type play_options_keys = keyof IPlayOptions;
+  const [play_options, setPlayOptions] = useState(play_options_obj as IPlayOptions);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     setPlayOptions({ ...play_options, [event.target.name]: checked });
@@ -15,39 +18,17 @@ function PlayOptions(props: PlayOptionsProps) {
   return (
     props.children({
       play_options,
-      PlayOptions: <div className="PlayOptions"><FormControlLabel
+      PlayOptions: <div className="PlayOptions">{Object.keys(play_options_obj).map((key, index) => <FormControlLabel key={key + index}
         control={
           <Checkbox
-            checked={play_options.shuffle_options}
+            checked={play_options[key as play_options_keys]}
             onChange={handleChange}
-            name="shuffle_options"
+            name={key}
             color="primary"
           />
         }
-        label="Shuffle Options"
-      />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={play_options.shuffle_quizzes}
-              onChange={handleChange}
-              name="shuffle_quizzes"
-              color="primary"
-            />
-          }
-          label="Shuffle Quizzes"
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={play_options.shuffle_questions}
-              onChange={handleChange}
-              name="shuffle_questions"
-              color="primary"
-            />
-          }
-          label="Shuffle Questions"
-        />
+        label={key.split("_").map(k => k.charAt(0).toUpperCase() + k.substr(1)).join(" ")}
+      />)}
       </div>
     })
 

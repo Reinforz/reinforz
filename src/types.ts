@@ -71,3 +71,15 @@ export interface TimerRProps {
   currentTime: number,
   clearInterval: any
 }
+
+export interface IPlayOptions {
+  shuffle_options: boolean,
+  shuffle_quizzes: boolean,
+  shuffle_questions: boolean,
+  instant_feedback: boolean,
+}
+
+export interface PlayOptionsRProps {
+  PlayOptions: JSX.Element,
+  play_options: IPlayOptions
+}

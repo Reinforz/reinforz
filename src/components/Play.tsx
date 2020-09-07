@@ -4,7 +4,10 @@ import { Checkbox, Button } from "@material-ui/core";
 import Quiz from "./Quiz";
 import PlayOptions from "./PlayOptions";
 import List from "./List";
-import { QuizInputPartial } from "../types";
+import {
+  QuizInputPartial,/* IPlayOptions, */
+  PlayOptionsRProps
+} from "../types";
 
 interface PlayProps {
   quizzes: QuizInputPartial[]
@@ -23,7 +26,7 @@ function Play(props: PlayProps) {
         }} checked={selectedQuizzes.includes(_id)} value={_id} />
       }]} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]} />
       <PlayOptions>
-        {({ PlayOptions, play_options }: any) => {
+        {({ PlayOptions }: PlayOptionsRProps) => {
           return <Fragment>
             {PlayOptions}
             {!playing ? <Button variant="contained" onClick={() => setPlaying(true)}>Start</Button> : <Quiz quizzes={props.quizzes.filter(quiz => selectedQuizzes.includes(quiz._id))} />}
