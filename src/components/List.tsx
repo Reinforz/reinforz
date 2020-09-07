@@ -17,16 +17,21 @@ const ListItemField = styled.div`
   font-size: 1.15rem;
 `;
 
-interface ListProps {
-  items: any[],
-  fields: string[]
+interface ListProps<T> {
+  items: T[],
+  fields: (string | ((data: T) => string))[],
+  setItems: (data: T[]) => any
 }
 
-export default function (props: ListProps) {
+export default function (props: ListProps<Record<string, any>>) {
   return <List className="List">
     {props.items.map(item => {
       return <ListItem key={item._id}>
-        {props.fields.map((field, index) => <ListItemField key={item._id + field + index}>{item[field]}</ListItemField>)}
+        <ListItemField onClick={() => {
+          const items = props.items.filter(_item => _item._id !== item._id);
+          props.setItems([...items]);
+        }}>X</ListItemField>
+        {props.fields.map((field, index) => <ListItemField key={item._id + field + index}>{typeof field === "string" ? item[field] : field(item)}</ListItemField>)}
       </ListItem>
     })}
   </List>

@@ -92,7 +92,7 @@ export default function Upload(props: UploadProps) {
             <p>Drag 'n' drop some files here, or click to select files</p>
         }
       </Container>
-      <List items={currentQuizzes} fields={["title", "subject", "questions.length"]} />
+      <List setItems={setQuizzes} items={currentQuizzes} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]} />
     </div>
   )
 }
