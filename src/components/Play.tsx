@@ -68,7 +68,7 @@ function Play(props: PlayProps) {
               }} />]} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]} />
               {PlayOptions}
             </div>
-            : <Quiz all_questions={renderQuiz(play_options)} />}
+            : <Quiz play_options={play_options} all_questions={renderQuiz(play_options)} />}
         </Fragment>
       }}
     </PlayOptions>

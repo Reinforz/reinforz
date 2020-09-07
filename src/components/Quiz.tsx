@@ -1,19 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 
-import { QuestionInputFull, QuestionInputPartial } from "../types";
+import { Result, QuestionInputFull, QuestionInputPartial, IPlayOptions } from "../types";
 import Question from "./Question";
 import Report from "./Report";
-import { Result } from "../types";
+import Stats from "./Stats";
 import decideVerdict from "../utils/decideVerdict";
+import { generateQuestionInputConfigs } from "../utils/generateConfigs";
 
 interface QuizProps {
   all_questions: QuestionInputPartial[],
+  play_options: IPlayOptions
 }
 
 export default function Quiz(props: QuizProps) {
   const [current_question, setCurrentQuestion] = useState(0);
   const [results, setResults] = useState([] as Result[]);
-  const { all_questions } = props;
+  const { all_questions, play_options } = props;
   const total_questions = all_questions.length;
 
   const validateAnswer = ({ weight, type, question, format, time_allocated, answers, add_to_score, explanation }: QuestionInputFull, user_answers: string[], time_taken: number) => {
@@ -33,13 +35,23 @@ export default function Quiz(props: QuizProps) {
     }])
   };
 
+
   const generateContent = () => {
     if (current_question !== total_questions) {
-      const question = all_questions[current_question];
-      return <Question results={results} key={question._id} {...question} total={total_questions} index={current_question + 1} changeCounter={(generated_question: QuestionInputFull, user_answers: string[], time_taken: number) => {
-        validateAnswer(generated_question, user_answers, time_taken)
-        setCurrentQuestion(current_question + 1)
-      }} />
+      const generated_question = generateQuestionInputConfigs(all_questions[current_question]);
+      generated_question.total = total_questions;
+      generated_question.index = current_question + 1;
+      const stat_item: Record<string, any> = { ...generated_question };
+      const total_correct = results.filter(result => result.verdict).length;
+      if (play_options.instant_feedback) stat_item.total_correct = total_correct;
+
+      return <Fragment>
+        <Stats item={stat_item} stats={["quiz", "subject", "index", "total", "type", "format", "weight", "add_to_score", "time_allocated", "difficulty"]} />
+        <Question hasEnd={current_question >= total_questions} key={generated_question._id} question={generated_question} changeCounter={(user_answers: string[], time_taken: number) => {
+          validateAnswer(generated_question, user_answers, time_taken)
+          setCurrentQuestion(current_question + 1)
+        }} />
+      </Fragment>
     }
     else return <Report results={results} />
   }
