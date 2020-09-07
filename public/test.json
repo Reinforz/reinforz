@@ -1,0 +1,18 @@
+{
+  "title": "Typescript Basic Types",
+  "subject": "Typescript",
+  "questions": [
+    {
+      "question": "Which scenerio validates the usage of any",
+      "options": [
+        "Not all type information is available",
+        "declaration of type would take inappropriate amount of effort",
+        "Whenever possible"
+      ],
+      "answers": [
+        0,
+        1
+      ]
+    }
+  ]
+}
