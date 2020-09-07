@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import { Checkbox, Button } from "@material-ui/core";
 
 import Quiz from "./Quiz";
+import PlayOptions from "./PlayOptions";
 import List from "./List";
 import { QuizInputPartial } from "../types";
 
@@ -21,7 +22,14 @@ function Play(props: PlayProps) {
           else setSelectedQuizzes(selectedQuizzes.filter(selectedQuiz => selectedQuiz !== _id))
         }} checked={selectedQuizzes.includes(_id)} value={_id} />
       }]} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]} />
-      {!playing ? <Button variant="contained" onClick={() => setPlaying(true)}>Start</Button> : <Quiz quizzes={props.quizzes.filter(quiz => selectedQuizzes.includes(quiz._id))} />}
+      <PlayOptions>
+        {({ PlayOptions, play_options }: any) => {
+          return <Fragment>
+            {PlayOptions}
+            {!playing ? <Button variant="contained" onClick={() => setPlaying(true)}>Start</Button> : <Quiz quizzes={props.quizzes.filter(quiz => selectedQuizzes.includes(quiz._id))} />}
+          </Fragment>
+        }}
+      </PlayOptions>
     </div>
   );
 }
