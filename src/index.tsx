@@ -19,13 +19,15 @@ const NavBar = styled.div`
 
 const NavBarLink = styled(NavLink)`
   text-decoration: none;
-  color: white;
+  color: #ddd;
   padding: 5px;
   background: #383838;
   width: 50%;
   text-align: center;
   margin: 5px;
   border-radius: 5px;
+  font-weight: bolder;
+  text-transform: uppercase;
 `;
 
 
