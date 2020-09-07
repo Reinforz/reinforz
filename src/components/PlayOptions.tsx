@@ -7,12 +7,12 @@ interface PlayOptionsProps {
 }
 
 function PlayOptions(props: PlayOptionsProps) {
-  const play_options_obj = { shuffle_options: true, shuffle_quizzes: false, shuffle_questions: true, instant_feedback: true };
+  const play_options_state = { shuffle_options: true, shuffle_quizzes: false, shuffle_questions: true, instant_feedback: true, flatten_mix: false };
   type play_options_keys = keyof IPlayOptions;
-  const [play_options, setPlayOptions] = useState(play_options_obj as IPlayOptions);
+  const [play_options, setPlayOptions] = useState(play_options_state as IPlayOptions);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-    setPlayOptions({ ...play_options, [event.target.name]: checked });
+
   }
 
   return (
@@ -20,17 +20,23 @@ function PlayOptions(props: PlayOptionsProps) {
       play_options,
       PlayOptions: <div className="Play-options">
         <div className="Play-options-header">Options</div>
-        {Object.keys(play_options_obj).map((key, index) => <FormControlLabel key={key + index}
-          control={
-            <Checkbox
-              checked={play_options[key as play_options_keys]}
-              onChange={handleChange}
-              name={key}
-              color="primary"
-            />
-          }
-          label={key.split("_").map(k => k.charAt(0).toUpperCase() + k.substr(1)).join(" ")}
-        />)}
+        {Object.keys(play_options_state).map((key, index) => {
+          return <FormControlLabel key={key + index}
+            control={
+              <Checkbox
+                disabled={Boolean(key.match(/(shuffle_questions|shuffle_quizzes)/) && play_options.flatten_mix)}
+                checked={play_options[key as play_options_keys]}
+                onChange={(event, checked) => {
+                  if (key === "flatten_mix") setPlayOptions({ ...play_options, [event.target.name]: checked, shuffle_questions: checked, shuffle_quizzes: checked })
+                  else setPlayOptions({ ...play_options, [event.target.name]: checked })
+                }}
+                name={key}
+                color="primary"
+              />
+            }
+            label={key.split("_").map(k => k.charAt(0).toUpperCase() + k.substr(1)).join(" ")}
+          />
+        })}
       </div>
     })
 

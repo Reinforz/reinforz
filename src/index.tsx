@@ -7,6 +7,8 @@ import { SnackbarProvider } from "notistack";
 
 import './index.css';
 import './App.css';
+
+import GlobalCss from './utils/globalCSS';
 import THEME from "./utils/theme";
 import Play from "./components/Play"
 import Upload from "./components/Upload"
@@ -35,6 +37,7 @@ const App = (props: RouteChildrenProps) => {
   let [currentQuizzes, setQuizzes] = useState([] as any[]);
   const { location } = props;
   return <div className="App">
+    <GlobalCss />
     <NavBar>
       <NavBarLink
         to="/upload"

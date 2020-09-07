@@ -1,4 +1,6 @@
 import { ReactNode } from "react";
+import { TypeBackground } from "@material-ui/core/styles/createPalette";
+import { ThemeOptions, Theme, } from "@material-ui/core";
 
 export interface QuizInputPartial {
   title: string,
@@ -77,9 +79,16 @@ export interface IPlayOptions {
   shuffle_quizzes: boolean,
   shuffle_questions: boolean,
   instant_feedback: boolean,
+  flatten_mix: boolean
 }
 
 export interface PlayOptionsRProps {
   PlayOptions: JSX.Element,
   play_options: IPlayOptions
+}
+
+export interface ExtendedTypeBackground extends TypeBackground {
+  dark: string[],
+  main: string[],
+  light: string[],
 }
