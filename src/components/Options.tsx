@@ -21,6 +21,7 @@ const OptionsContainerItem = styled.div`
   }
   .MuiFormControlLabel-root{
     width: 100%;
+    margin: 0px;
   }
 `;
 
@@ -50,17 +51,9 @@ function Options(props: OptionsProps) {
 
   const generateOptions = () => {
     if (type === "MCQ" && options)
-      return <OptionsContainerRadioGroup className="Options-container" defaultValue={undefined} value={user_answers[0] === '' ? [''] : user_answers[0]} row>
+      return <OptionsContainerRadioGroup className="Options-container" defaultValue={undefined} value={user_answers[0] === '' ? [''] : user_answers[0]} onChange={e => changeOption([e.target.value])} row>
         {options.map((option, i) => (
-          <OptionsContainerItem className={`Options-container-item`} key={`${_id}option${index}${i}`} onClick={(e) => {
-            const tagname = (e.target as any).tagName;
-            const clicked_on_input = tagname === "INPUT";
-            let input = null;
-            if (clicked_on_input) input = e.target;
-            else if (tagname === "SPAN") input = (e.target as any).previousElementSibling.querySelector("input")
-            else input = (e.target as any).querySelector("input");
-            changeOption([input.value])
-          }}>
+          <OptionsContainerItem key={`${_id}option${index}${i}`}>
             <FormControlLabel
               control={<Radio color="primary" />}
               value={`${i}`}
@@ -72,22 +65,16 @@ function Options(props: OptionsProps) {
       </OptionsContainerRadioGroup>
     else if (type === "MS" && options) {
       const temp_user_answers = [...(user_answers as string[])];
-      return <OptionsContainerFormGroup row>
+      return <OptionsContainerFormGroup row onChange={(e: any) => {
+        if (e.target.checked) {
+          temp_user_answers.push(e.target.value);
+          changeOption([...temp_user_answers])
+        }
+        else
+          changeOption(temp_user_answers.filter(temp_user_answer => temp_user_answer !== e.target.value));
+      }}>
         {options.map((option, i) => (
-          <OptionsContainerItem className={`Options-container-item`} key={`${_id}option${index}${i}`} onClick={(e) => {
-            const tagname = (e.target as any).tagName;
-            const clicked_on_input = tagname === "INPUT";
-            let input = null;
-            if (clicked_on_input) input = e.target;
-            else if (tagname === "SPAN") input = (e.target as any).previousElementSibling.querySelector("input")
-            else input = (e.target as any).querySelector("input");
-            if ((clicked_on_input && input.checked) || (!clicked_on_input && input.checked)) {
-              temp_user_answers.push(`${i}`);
-              changeOption([...temp_user_answers])
-            }
-            else
-              changeOption(temp_user_answers.filter(temp_user_answer => temp_user_answer !== `${i}`));
-          }}>
+          <OptionsContainerItem className={`Options-container-item`} key={`${_id}option${index}${i}`}>
             <FormControlLabel
               control={<Checkbox checked={temp_user_answers.includes(`${i}`)} value={`${i}`} />}
               label={option.toString()}

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 
 import Button from "@material-ui/core/Button"
 import Timer from "./Timer";
@@ -40,19 +40,22 @@ export default function Question(props: QuestionProps): JSX.Element {
   }
 
   const [user_answers, changeUserAnswers] = useState(type === "FIB" ? Array(_question.match(/(\$\{_\})/g)?.length ?? 1).fill('') as string[] : ['']);
-  return <Timer timeout={time_allocated} onTimerEnd={() => {
-    props.changeCounter(user_answers, time_allocated)
-  }}>
-    {(timerprops: TimerRProps) => {
-      return <QuestionContainer className="Question-container">
-        {image && <div className="Question-container-item Question-container-image"><img src={image} alt="question" /></div>}
-        {generateQuestion()}
-        <Options changeOption={changeUserAnswers} user_answers={user_answers} question={question} />
-        {timerprops.timer}
-        <Button className="Quiz-container-button" variant="contained" color="primary" onClick={() => {
-          props.changeCounter(user_answers, time_allocated - timerprops.currentTime)
-        }}>{!hasEnd ? "Next" : "Report"}</Button>
-      </QuestionContainer>
-    }}
-  </Timer>
+  return <QuestionContainer className="Question-container">
+    {image && <div className="Question-container-item Question-container-image"><img src={image} alt="question" /></div>}
+    {generateQuestion()}
+    <Options changeOption={changeUserAnswers} user_answers={user_answers} question={question} />
+    <Timer timeout={time_allocated} onTimerEnd={() => {
+      props.changeCounter(user_answers, time_allocated)
+    }}>
+      {(timerprops: TimerRProps) => {
+        return <Fragment>
+          <Button className="Quiz-container-button" variant="contained" color="primary" onClick={() => {
+            props.changeCounter(user_answers, time_allocated - timerprops.currentTime)
+          }}>{!hasEnd ? "Next" : "Report"}</Button>
+          {timerprops.timer}
+        </Fragment>
+      }}
+    </Timer>
+
+  </QuestionContainer>
 }
