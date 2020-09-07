@@ -3,12 +3,12 @@ import ReactDOM from 'react-dom';
 import styled from "styled-components";
 import { ThemeProvider } from '@material-ui/styles';
 import { Switch, Route, BrowserRouter as Router, withRouter, RouteChildrenProps, NavLink } from "react-router-dom";
-import {SnackbarProvider} from "notistack";
+import { SnackbarProvider } from "notistack";
 
 import './index.css';
 import './App.css';
 import THEME from "./utils/theme";
-import Quiz from "./components/Quiz"
+import Play from "./components/Play"
 import Upload from "./components/Upload"
 
 const NavBar = styled.div`
@@ -42,16 +42,16 @@ const App = (props: RouteChildrenProps) => {
         Upload
       </NavBarLink>
       <NavBarLink
-        to="/quiz"
+        to="/play"
       >
-        Quiz
+        Play
       </NavBarLink>
 
     </NavBar>
     <Switch location={location}>
-      <Route exact path="/" render={() => <div style={{fontSize:"1.5rem",display: 'flex',justifyContent:'center',alignItems:'center',fontWeight:"bolder",margin: 20,userSelect: "none"}}>{currentQuizzes.length === 0 ? "Go to upload page and upload some quizzes" : `You've uploaded ${currentQuizzes.length} quizzes. Go to quiz page to play them`}</div>} />
+      <Route exact path="/" render={() => <div style={{ fontSize: "1.5rem", display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: "bolder", margin: 20, userSelect: "none" }}>{currentQuizzes.length === 0 ? "Go to upload page and upload some quizzes" : `You've uploaded ${currentQuizzes.length} quizzes. Go to play page to play them`}</div>} />
       <Route path="/upload" render={() => <Upload currentQuizzes={currentQuizzes} setQuizzes={setQuizzes} />} />
-      {/* <Route path="/quiz" render={() => QuizData.title ? <Quiz {...QuizData} /> : <div>No quiz has been uploaded yet</div>} /> */}
+      <Route path="/play" render={() => currentQuizzes.length > 0 ? <Play quizzes={currentQuizzes} /> : <div>No quiz has been uploaded yet</div>} />
     </Switch>
   </div>
 }

@@ -6,7 +6,8 @@ export interface QuizInputPartial {
   source?: string,
   image?: string,
   explanation?: string,
-  questions: QuestionInputsPartial
+  questions: QuestionInputsPartial,
+  _id: string,
 }
 
 export interface QuizInputFull extends Required<QuizInputPartial> {

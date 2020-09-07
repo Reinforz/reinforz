@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import yaml from 'js-yaml';
 import shortid from "shortid"
 import { useDropzone, DropzoneState } from 'react-dropzone';
-import {useSnackbar,OptionsObject } from "notistack";
+import { useSnackbar, OptionsObject } from "notistack";
+import CancelIcon from '@material-ui/icons/Cancel';
 
 import shuffle from '../utils/arrayShuffler';
 import List from "./List";
@@ -42,13 +43,24 @@ const Container = styled.div`
   transition: border .24s ease-in-out;
 ` as any;
 
+const CancelIconW = styled(CancelIcon)`
+  margin: 5px;
+  cursor: pointer;
+  fill: #F44336 !important;
+  transition: transform 200ms ease-in-out;
+  &:hover{
+    transform: scale(1.15);
+    transition: transform 200ms ease-in-out;
+  }
+`;
+
 const trimLower = (data: string) => data.replace(/\s/g, '').toLowerCase();
 const centerBottomErrorNotistack = {
-    variant: 'error',
-    anchorOrigin: {
-        vertical: 'bottom',
-        horizontal: 'center',
-    },
+  variant: 'error',
+  anchorOrigin: {
+    vertical: 'bottom',
+    horizontal: 'center',
+  },
 } as OptionsObject;
 
 export default function Upload(props: UploadProps) {
@@ -65,23 +77,23 @@ export default function Upload(props: UploadProps) {
     acceptedFiles.forEach((file: File) => {
       let filePromise = new Promise((resolve, reject) => {
         const reader = new FileReader()
-        reader.onabort = () => console.log('file reading was aborted');
-        reader.onerror = () => console.log('file reading has failed');
+        reader.onabort = () => reject('file reading was aborted');
+        reader.onerror = () => reject('file reading has failed');
         reader.onload = () => {
           const ext = file.name.split(".")[1];
           const { result } = reader;
           if (result) {
             const QuizData = ext.match(/(yaml|yml)/) ? yaml.safeLoad(result as string) as any : JSON.parse(result.toString());
             const isAdded = currentQuizzes.find((currentQuiz: any) => trimLower(currentQuiz.title) === trimLower(QuizData.title) && trimLower(currentQuiz.subject) === trimLower(QuizData.subject));
-            if((QuizData?.questions ?? []).length === 0)
+            if ((QuizData?.questions ?? []).length === 0)
               enqueueSnackbar(`${file.name} is has no questions`, centerBottomErrorNotistack);
-            else if (isAdded ) 
+            else if (isAdded)
               enqueueSnackbar(`${file.name} has already been added`, centerBottomErrorNotistack);
-            else{
+            else {
               prepareData(QuizData);
               resolve(QuizData);
             }
-          }else
+          } else
             enqueueSnackbar(`${file.name} is empty`, centerBottomErrorNotistack);
         }
         reader.readAsText(file);
@@ -92,7 +104,7 @@ export default function Upload(props: UploadProps) {
     Promise.all(filePromises).then(data => {
       setQuizzes([...currentQuizzes, ...data]);
     });
-  }, [currentQuizzes, setQuizzes]);
+  }, [currentQuizzes, setQuizzes, enqueueSnackbar]);
 
   const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({ onDrop, accept: [".yml", ".yaml", "application/json"] })
 
@@ -106,7 +118,11 @@ export default function Upload(props: UploadProps) {
             <p>Drag 'n' drop some files here, or click to select files</p>
         }
       </Container>
-      <List setItems={setQuizzes} items={currentQuizzes} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]} />
+      <List icons={[(index, _id) => <CancelIconW key={_id + "icon" + index} onClick={() => {
+        const items = currentQuizzes.filter(currentQuiz => currentQuiz._id !== _id);
+        setQuizzes([...items]);
+      }} />]} items={currentQuizzes} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]} />
     </div>
   )
 }
+
