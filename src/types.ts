@@ -42,7 +42,9 @@ export interface QuestionInput {
   index?: number
   hints?: string[],
   changeCounter: any,
-  results: Result[]
+  results: Result[],
+  quiz: string,
+  subject: string,
 }
 
 export interface QuestionInputPartial extends QuestionInputCommon, Partial<QuestionInput> { }

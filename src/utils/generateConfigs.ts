@@ -22,7 +22,7 @@ export function generateQuestionInputConfigs(
 ) {
   const res = JSON.parse(JSON.stringify(question));
   checkRequiredFields(res, ['question', 'answers']);
-  let format = 'text';
+  let format = 'text', time_allocated = 15;
   if (res.question.match(/<pre>/g)) {
     res.question = res.question.replace(/<\/?pre>/g, '');
     format = 'html';
@@ -33,7 +33,6 @@ export function generateQuestionInputConfigs(
     'image',
     ['weight', 1],
     ['add_to_score', true],
-    ['time_allocated', 30],
     ['difficulty', 'Beginner'],
     ['correct_answer_message', 'Congrats on the correct answer'],
     ['incorrect_answer_message', 'Try again'],
@@ -44,6 +43,23 @@ export function generateQuestionInputConfigs(
   if (res.answers.length === 1) res.type = res.options ? "MCQ" : "Snippet";
   else res.type = res.options ? "MS" : "FIB";
   res.answers = res.answers.map((a: (string | number)) => a.toString());
+
+  switch (res.type) {
+    case "MCQ":
+      time_allocated = 15;
+      break;
+    case "MS":
+      time_allocated = 30;
+      break;
+    case "Snippet":
+      time_allocated = 45;
+      break;
+    case "FIB":
+      time_allocated = 60;
+      break;
+  }
+
+  res.time_allocated = time_allocated;
 
   return res as QuestionInputFull;
 }

@@ -9,9 +9,11 @@ import PlayOptions from "./PlayOptions";
 import "./Play.scss";
 import List from "./List";
 import {
-  QuizInputPartial,/* IPlayOptions, */
+  QuestionInputPartial,
+  QuizInputPartial, IPlayOptions,
   PlayOptionsRProps
 } from "../types";
+import shuffle from "../utils/arrayShuffler";
 
 interface PlayProps {
   quizzes: QuizInputPartial[],
@@ -33,9 +35,25 @@ function Play(props: PlayProps) {
   const [playing, setPlaying] = useState(false);
   const [selectedQuizzes, setSelectedQuizzes] = useState([] as any[]);
 
+  function renderQuiz(play_options: IPlayOptions) {
+    let quizzes = props.quizzes.filter(quiz => selectedQuizzes.includes(quiz._id))
+    let all_questions: QuestionInputPartial[] = [];
+    if (play_options.shuffle_quizzes && !play_options.flatten_mix) quizzes = shuffle(quizzes);
+    if (play_options.shuffle_questions && !play_options.flatten_mix) quizzes.forEach(quiz => quiz.questions = shuffle(quiz.questions));
+    quizzes.forEach(quiz => {
+      quiz.questions.forEach(question => {
+        question.quiz = quiz.title;
+        question.subject = quiz.subject;
+      });
+      all_questions.push(...quiz.questions);
+    });
+    if (play_options.flatten_mix) all_questions = shuffle(all_questions);
+    return all_questions;
+  }
+
   return (
     <PlayOptions setPlaying={setPlaying} selectedQuizzes={selectedQuizzes}>
-      {({ PlayOptions }: PlayOptionsRProps) => {
+      {({ PlayOptions, play_options }: PlayOptionsRProps) => {
         return <Fragment>
           {!playing ?
             <div className="Play">
@@ -50,7 +68,7 @@ function Play(props: PlayProps) {
               }} />]} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]} />
               {PlayOptions}
             </div>
-            : <Quiz quizzes={props.quizzes.filter(quiz => selectedQuizzes.includes(quiz._id))} />}
+            : <Quiz all_questions={renderQuiz(play_options)} />}
         </Fragment>
       }}
     </PlayOptions>

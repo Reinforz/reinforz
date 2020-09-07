@@ -5,8 +5,6 @@ import shortid from "shortid"
 import { useDropzone, DropzoneState } from 'react-dropzone';
 import { useSnackbar, OptionsObject } from "notistack";
 
-import shuffle from '../utils/arrayShuffler';
-
 interface UploadProps {
   setQuizzes: (data: any[]) => any,
   quizzes: any[]
@@ -55,7 +53,6 @@ export default function Upload(props: UploadProps) {
   const { enqueueSnackbar } = useSnackbar();
   const prepareData = (QuizData: any) => {
     QuizData._id = shortid();
-    QuizData.questions = shuffle(QuizData.questions);
     QuizData.questions.forEach((question: any) => question._id = shortid())
   }
   const onDrop = useCallback(acceptedFiles => {

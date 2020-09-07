@@ -22,10 +22,13 @@ function PlayOptions(props: PlayOptionsProps) {
         <div className="Play-options-header">Options</div>
         <div className="Play-options-content">
           {Object.keys(play_options_state).map((key, index) => {
+            let isDisabled = false;
+            if (Boolean(key.match(/(shuffle_questions|shuffle_quizzes)/) && play_options.flatten_mix)) isDisabled = true;
+            if (props.selectedQuizzes.length <= 1 && key === "shuffle_quizzes") isDisabled = true;
             return <FormControlLabel key={key + index}
               control={
                 <Checkbox
-                  disabled={Boolean(key.match(/(shuffle_questions|shuffle_quizzes)/) && play_options.flatten_mix)}
+                  disabled={isDisabled}
                   checked={play_options[key as play_options_keys]}
                   onChange={(event, checked) => {
                     if (key === "flatten_mix") setPlayOptions({ ...play_options, [event.target.name]: checked, shuffle_questions: checked, shuffle_quizzes: checked })
