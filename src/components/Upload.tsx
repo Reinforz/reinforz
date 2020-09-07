@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import yaml from 'js-yaml';
 import shortid from "shortid"
@@ -7,8 +7,8 @@ import { useDropzone, DropzoneState } from 'react-dropzone'
 import shuffle from '../utils/arrayShuffler';
 
 interface UploadProps {
-  setQuiz: (data: any) => any,
-  currentQuiz: any
+  setQuizzes: (data: any[]) => any,
+  currentQuizzes: any[]
 }
 
 const getColor = (props: DropzoneState) => {
@@ -42,7 +42,12 @@ const Container = styled.div`
 
 
 export default function Upload(props: UploadProps) {
-  const { currentQuiz, setQuiz } = props;
+  const { currentQuizzes, setQuizzes } = props;
+  const prepareData = (QuizData: any) => {
+    QuizData._id = shortid();
+    QuizData.questions = shuffle(QuizData.questions);
+    QuizData.questions.forEach((question: any) => question._id = shortid())
+  }
   const onDrop = useCallback(acceptedFiles => {
     acceptedFiles.forEach((file: File) => {
       const reader = new FileReader()
@@ -52,28 +57,35 @@ export default function Upload(props: UploadProps) {
         const ext = file.name.split(".")[1];
         const { result } = reader;
         if (result) {
-          if (ext.match(/(yaml|yml)/)) {
-            const QuizData = yaml.safeLoad(result as string) as any;
-            QuizData.questions = shuffle(QuizData.questions);
-            QuizData.questions.forEach((question: any) => question._id = shortid())
-            setQuiz(QuizData);
-          } else if (ext === "json") setQuiz(JSON.parse(result.toString()));
+          const QuizData = ext.match(/(yaml|yml)/) ? yaml.safeLoad(result as string) as any : JSON.parse(result.toString());
+          const isAdded = currentQuizzes.find((currentQuiz: any) => currentQuiz.title === QuizData.title && currentQuiz.subject === QuizData.subject);
+          if (!isAdded) {
+            prepareData(QuizData);
+            setQuizzes([...currentQuizzes, QuizData]);
+          }
         }
       }
-      reader.readAsText(file)
+      reader.readAsText(file);
     })
-  }, [currentQuiz]);
+  }, [currentQuizzes, setQuizzes]);
 
   const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({ onDrop, accept: [".yml", ".yaml", "application/json"] })
 
   return (
-    <Container {...getRootProps({ isDragActive, isDragAccept, isDragReject })}>
-      <input {...getInputProps()} />
-      {
-        isDragActive ?
-          <p>Drop the files here ...</p> :
-          <p>Drag 'n' drop some files here, or click to select files</p>
-      }
-    </Container>
+    <div className="Upload">
+      <Container {...getRootProps({ isDragActive, isDragAccept, isDragReject })}>
+        <input {...getInputProps()} />
+        {
+          isDragActive ?
+            <p>Drop the files here ...</p> :
+            <p>Drag 'n' drop some files here, or click to select files</p>
+        }
+      </Container>
+      <div>{currentQuizzes.map(currentQuiz => <div key={currentQuiz._id}>
+        {currentQuiz.title}
+        {currentQuiz.subject}
+        {currentQuiz.questions.length}
+      </div>)}</div>
+    </div>
   )
 }

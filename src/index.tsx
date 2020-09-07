@@ -30,9 +30,8 @@ const NavBarLink = styled(NavLink)`
   text-transform: uppercase;
 `;
 
-
 const App = (props: RouteChildrenProps) => {
-  let [QuizData, setQuizData] = useState({} as any);
+  let [currentQuizzes, setQuizzes] = useState([] as any[]);
   const { location } = props;
   return <div className="App">
     <NavBar>
@@ -49,9 +48,9 @@ const App = (props: RouteChildrenProps) => {
 
     </NavBar>
     <Switch location={location}>
-      <Route exact path="/" render={() => <div>Home</div>} />
-      <Route path="/upload" render={() => <Upload currentQuiz={QuizData} setQuiz={setQuizData} />} />
-      <Route path="/quiz" render={() => QuizData.title ? <Quiz {...QuizData} /> : <div>No quiz has been uploaded yet</div>} />
+      <Route exact path="/" render={() => <div>Go to Upload page to Upload Quizzes or Quiz page to play quizzes</div>} />
+      <Route path="/upload" render={() => <Upload currentQuizzes={currentQuizzes} setQuizzes={setQuizzes} />} />
+      {/* <Route path="/quiz" render={() => QuizData.title ? <Quiz {...QuizData} /> : <div>No quiz has been uploaded yet</div>} /> */}
     </Switch>
   </div>
 }
