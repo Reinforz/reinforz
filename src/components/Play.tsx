@@ -1,5 +1,6 @@
 import React, { useState, Fragment } from "react";
 import { Checkbox, Button } from "@material-ui/core";
+import { useSnackbar } from "notistack";
 
 import Quiz from "./Quiz";
 import PlayOptions from "./PlayOptions";
@@ -17,6 +18,7 @@ interface PlayProps {
 function Play(props: PlayProps) {
   const [playing, setPlaying] = useState(false);
   const [selectedQuizzes, setSelectedQuizzes] = useState([] as any[]);
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <PlayOptions>
@@ -33,7 +35,17 @@ function Play(props: PlayProps) {
                 }]} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]} />
                 {PlayOptions}
               </div>
-              <Button color="primary" style={{ margin: "0 auto", fontSize: "1rem" }} variant="contained" onClick={() => setPlaying(true)}>Start</Button>
+              <Button color="primary" style={{ margin: "0 auto", fontSize: "1rem" }} variant="contained" onClick={() => {
+                if (selectedQuizzes.length > 0)
+                  setPlaying(true)
+                else enqueueSnackbar('You must have atleast one quiz selected', {
+                  variant: 'error',
+                  anchorOrigin: {
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                  },
+                })
+              }}>Start</Button>
             </div>
             : <Quiz quizzes={props.quizzes.filter(quiz => selectedQuizzes.includes(quiz._id))} />}
         </Fragment>
