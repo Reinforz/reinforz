@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { TypeBackground } from "@material-ui/core/styles/createPalette";
+import { Type } from "js-yaml";
 
 export interface QuizInputPartial {
   title: string,
@@ -82,11 +83,17 @@ export interface IPlayOptions {
   shuffle_quizzes: boolean,
   shuffle_questions: boolean,
   instant_feedback: boolean,
-  flatten_mix: boolean
+  flatten_mix: boolean,
 }
 
-export interface PlayOptionsRProps {
-  PlayOptions: JSX.Element,
+export interface IPlayFilters {
+  time_allocated: [number, number],
+  excluded_difficulty: Difficulty[],
+  excluded_types: QuestionType[],
+}
+
+export interface PlaySettingsRProps {
+  PlaySettings: JSX.Element,
   play_options: IPlayOptions
 }
 

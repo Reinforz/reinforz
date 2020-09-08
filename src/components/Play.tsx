@@ -4,7 +4,7 @@ import "./Play.scss";
 
 import Upload from "./Upload";
 import Quiz from "./Quiz";
-import PlayOptions from "./PlayOptions";
+import PlaySettings from "./PlaySettings";
 import QuestionStats from "./QuestionStats";
 import List from "./List";
 import shuffle from "../utils/arrayShuffler";
@@ -13,7 +13,7 @@ import {
   QuestionInputFull,
   IPlayOptions,
   QuizInputPartial,
-  PlayOptionsRProps,
+  PlaySettingsRProps,
   ListRProps
 } from "../types";
 
@@ -42,20 +42,20 @@ function Play() {
   return (
     <List header="Uploaded Quizzes" items={quizzes} setItems={setQuizzes} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]}>
       {({ ListComponent, list_state, list_manips }: ListRProps) => {
-        return <PlayOptions setPlaying={setPlaying} selectedQuizzes={list_state.selectedItems}>
-          {({ PlayOptions, play_options }: PlayOptionsRProps) => {
+        return <PlaySettings setPlaying={setPlaying} selectedQuizzes={list_state.selectedItems}>
+          {({ PlaySettings, play_options }: PlaySettingsRProps) => {
             return <Fragment>
               {!playing ?
                 <div className="Play">
                   <QuestionStats quizzes={quizzes} />
                   <Upload selectedItems={list_state.selectedItems} setSelectedItems={list_manips.setSelectedItems} setItems={setQuizzes} items={quizzes} />
                   {ListComponent}
-                  {PlayOptions}
+                  {PlaySettings}
                 </div>
                 : <Quiz play_options={play_options} all_questions={renderQuiz(list_state.selectedItems, play_options)} />}
             </Fragment>
           }}
-        </PlayOptions>
+        </PlaySettings>
       }}
     </List>
   );
