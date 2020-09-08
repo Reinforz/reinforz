@@ -19,7 +19,10 @@ function PlaySettings(props: PlaySettingsProps) {
 
   return (
     props.children({
-      play_options,
+      play_state: {
+        play_options,
+        play_filters,
+      },
       PlaySettings: <div className="Play-options">
         <div className="Play-options-header">Options</div>
         <div className="Play-options-content">

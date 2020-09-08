@@ -1,6 +1,5 @@
 import { ReactNode } from "react";
 import { TypeBackground } from "@material-ui/core/styles/createPalette";
-import { Type } from "js-yaml";
 
 export interface QuizInputPartial {
   title: string,
@@ -92,9 +91,14 @@ export interface IPlayFilters {
   excluded_types: QuestionType[],
 }
 
+export interface IPlaySettingsState {
+  play_options: IPlayOptions,
+  play_filters: IPlayFilters,
+}
+
 export interface PlaySettingsRProps {
   PlaySettings: JSX.Element,
-  play_options: IPlayOptions
+  play_state: IPlaySettingsState,
 }
 
 export interface ExtendedTypeBackground extends TypeBackground {
