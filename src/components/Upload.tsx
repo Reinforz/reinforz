@@ -99,7 +99,7 @@ export default function Upload(props: UploadProps) {
         {
           isDragActive ?
             <p>Drop the files here ...</p> :
-            <p>Drag 'n' drop some files here, or click to select files</p>
+            <p>Drag 'n' drop some files here, or click to select files (.json or .yaml files)</p>
         }
       </Container>
     </div>

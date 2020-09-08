@@ -3,10 +3,11 @@ import { RadioGroup, FormControlLabel, Radio, FormGroup, Checkbox, TextField } f
 import styled from "styled-components";
 import { QuestionInputFull } from '../types';
 
-const OptionsContainerItem = styled.div`
+export const OptionsContainerItem = styled.div`
   padding: 5px;
   cursor: pointer;
   margin: 5px;
+  width: 100%;
   background: #353232;
   border-radius: 5px;
   color: #ddd;
@@ -25,19 +26,23 @@ const OptionsContainerItem = styled.div`
   }
 `;
 
-const OptionsContainerOptions = `
+export const OptionsContainerOptionsStyle = `
   display: grid !important; 
   width: 100%;
   grid-template-columns: 1fr 1fr;
   background: #1b1b1b;
 `;
 
+export const OptionsContainerOptions = styled.div`
+  ${OptionsContainerOptionsStyle}
+`;
+
 const OptionsContainerRadioGroup = styled(RadioGroup)`
-  ${OptionsContainerOptions}
+  ${OptionsContainerOptionsStyle}
 `;
 
 const OptionsContainerFormGroup = styled(FormGroup)`
-  ${OptionsContainerOptions}
+  ${OptionsContainerOptionsStyle}
 `;
 
 const OptionsContainer = styled.div`
@@ -51,7 +56,7 @@ interface OptionsProps {
 }
 
 function Options(props: OptionsProps) {
-  const { changeOption, user_answers, question: { index, _id, type, question, options } } = props;
+  const { changeOption, user_answers, question: { index, _id, type, options } } = props;
   const generateOptions = () => {
     if (type === "MCQ" && options)
       return <OptionsContainerRadioGroup className="Options-container" defaultValue={undefined} value={user_answers[0] === '' ? [''] : user_answers[0]} onChange={e => changeOption([e.target.value])} row>
@@ -84,14 +89,6 @@ function Options(props: OptionsProps) {
             /></OptionsContainerItem>))}
       </OptionsContainerFormGroup>
     }
-
-    else if (type === "FIB")
-      return (question.match(/(\$\{_\})/g) as string[]).map((_, i) =>
-        <OptionsContainerItem className={`Options-container-item`} key={`${_id}option${index}${i}`}>
-          <TextField fullWidth value={user_answers[i]} onChange={e => {
-            user_answers[i] = e.target.value;
-            changeOption([...user_answers])
-          }} /></OptionsContainerItem>)
 
     else if (type === "Snippet")
       return <OptionsContainerItem className={`Options-container-item`}>
