@@ -6,8 +6,8 @@ import { useDropzone, DropzoneState } from 'react-dropzone';
 import { useSnackbar, OptionsObject } from "notistack";
 
 interface UploadProps {
-  setQuizzes: (data: any[]) => any,
-  quizzes: any[]
+  setItems: (data: any[]) => any,
+  items: any[]
 }
 
 const getColor = (props: DropzoneState) => {
@@ -49,7 +49,7 @@ const centerBottomErrorNotistack = {
 } as OptionsObject;
 
 export default function Upload(props: UploadProps) {
-  const { quizzes, setQuizzes } = props;
+  const { items: quizzes, setItems: setQuizzes } = props;
   const { enqueueSnackbar } = useSnackbar();
   const prepareData = (QuizData: any) => {
     QuizData._id = shortid();

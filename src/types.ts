@@ -102,3 +102,10 @@ export interface HintsRProps {
   HintsButton: JSX.Element,
   HintsList: JSX.Element,
 }
+
+export interface ListRProps {
+  ListComponent: JSX.Element,
+  list_state: {
+    selectedItems: string[]
+  }
+}

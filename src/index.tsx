@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { ThemeProvider } from '@material-ui/styles';
 import { Switch, Route, BrowserRouter as Router, withRouter, RouteChildrenProps } from "react-router-dom";
@@ -12,12 +12,11 @@ import THEME from "./utils/theme";
 import Play from "./components/Play"
 
 const App = (props: RouteChildrenProps) => {
-  let [quizzes, setQuizzes] = useState([] as any[]);
   const { location } = props;
   return <div className="App">
     <GlobalCss />
     <Switch location={location}>
-      <Route path="/" render={() => <Play quizzes={quizzes} setQuizzes={setQuizzes} />} />
+      <Route path="/" render={() => <Play />} />
     </Switch>
   </div>
 }

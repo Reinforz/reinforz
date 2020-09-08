@@ -1,5 +1,7 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useState } from "react";
+import { Checkbox } from "@material-ui/core";
+import CancelIcon from '@material-ui/icons/Cancel';
+import styled from 'styled-components';
 
 const List = styled.div`
   display:flex;
@@ -38,23 +40,52 @@ const ListContentItemField = styled.div`
   align-items: center;
 `;
 
+const CancelIconW = styled(CancelIcon)`
+  margin: 5px;
+  cursor: pointer;
+  fill: #F44336 !important;
+  transition: transform 200ms ease-in-out;
+  &:hover{
+    transform: scale(1.15);
+    transition: transform 200ms ease-in-out;
+  }
+`;
+
 interface ListProps<T> {
   items: T[],
   fields: (string | ((data: T) => string))[],
   icons?: ((index: number, _id: string) => void)[],
-  header: string
+  header: string,
+  setItems: (data: T[]) => void,
+  children: any
 }
 
+
 export default function (props: ListProps<Record<string, any>>) {
-  return <List className="List">
-    <ListHeader className="List-header">{props.header}</ListHeader>
-    <ListContent className="List-content">
-      {props.items.length > 0 ? props.items.map((item, index) => {
-        return <ListContentItem key={item._id}>
-          {props?.icons?.map(icon => icon(index, item._id))}
-          {props.fields.map((field, index) => <ListContentItemField key={item._id + field + index}>{typeof field === "string" ? item[field] : field(item)}</ListContentItemField>)}
-        </ListContentItem>
-      }) : <div style={{ fontSize: "1.25em", fontWeight: "bold", position: "absolute", transform: "translate(-50%,-50%)", top: "50%", left: "50%" }}>No quizzes uploaded</div>}
-    </ListContent>
-  </List>
+  const { children, items, setItems, header, fields, icons } = props;
+  const [selectedItems, setSelectedItems] = useState([] as any[]);
+  return children({
+    ListComponent: <List className="List">
+      <ListHeader className="List-header">{header}</ListHeader>
+      <ListContent className="List-content">
+        {items.length > 0 ? items.map((item, index) => {
+          const { _id } = item;
+          return <ListContentItem key={_id}>
+            {icons?.map(icon => icon(index, _id))}
+            <Checkbox key={_id + "checkbox" + index} onClick={(e) => {
+              if ((e.target as any).checked) setSelectedItems([...selectedItems, _id])
+              else setSelectedItems(selectedItems.filter(item => item !== _id))
+            }} checked={selectedItems.includes(_id)} value={_id} />
+            <CancelIconW key={_id + "icon" + index} onClick={() => {
+              setItems(items.filter(item => item._id !== _id));
+            }} />
+            {fields.map((field, index) => <ListContentItemField key={_id + field + index}>{typeof field === "string" ? item[field] : field(item)}</ListContentItemField>)}
+          </ListContentItem>
+        }) : <div style={{ fontSize: "1.25em", fontWeight: "bold", position: "absolute", transform: "translate(-50%,-50%)", top: "50%", left: "50%" }}>No quizzes uploaded</div>}
+      </ListContent>
+    </List>,
+    list_state: {
+      selectedItems
+    }
+  })
 }
