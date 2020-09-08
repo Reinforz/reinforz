@@ -1,6 +1,6 @@
 import React, { useState, Fragment } from "react";
 
-import { Result, QuestionInputFull, QuestionInputPartial, IPlayOptions } from "../types";
+import { Result, QuestionInputPartial, IPlayOptions } from "../types";
 import Question from "./Question";
 import Report from "./Report";
 import Stats from "./Stats";
@@ -18,24 +18,6 @@ export default function Quiz(props: QuizProps) {
   const { all_questions, play_options } = props;
   const total_questions = all_questions.length;
 
-  const validateAnswer = ({ weight, type, question, format, time_allocated, answers, add_to_score, explanation }: QuestionInputFull, user_answers: string[], time_taken: number) => {
-    user_answers = user_answers.filter(user_answer => user_answer !== "");
-    let verdict = decideVerdict(type, answers, user_answers);
-    setResults([...results, {
-      user_answers,
-      answers,
-      verdict,
-      add_to_score,
-      score: weight * (verdict ? 1 : 0),
-      question: format !== "html" ? question : "Code",
-      type,
-      time_allocated,
-      time_taken,
-      explanation,
-    }])
-  };
-
-
   const generateContent = () => {
     if (current_question !== total_questions) {
       const generated_question = generateQuestionInputConfigs(all_questions[current_question]);
@@ -47,8 +29,23 @@ export default function Quiz(props: QuizProps) {
 
       return <Fragment>
         <Stats item={stat_item} stats={["quiz", "subject", "index", "total", "type", "format", "weight", "add_to_score", "time_allocated", "difficulty"]} />
-        <Question hasEnd={current_question >= total_questions} key={generated_question._id} question={generated_question} changeCounter={(user_answers: string[], time_taken: number) => {
-          validateAnswer(generated_question, user_answers, time_taken)
+        <Question hasEnd={current_question >= total_questions} key={generated_question._id} question={generated_question} changeCounter={(user_answers: string[], time_taken: number, hints_used: number) => {
+          const { weight, type, question, format, time_allocated, answers, add_to_score, explanation } = generated_question;
+          user_answers = user_answers.filter(user_answer => user_answer !== "");
+          let verdict = decideVerdict(type, answers, user_answers);
+          setResults([...results, {
+            user_answers,
+            answers,
+            verdict,
+            add_to_score,
+            score: weight * (verdict ? 1 : 0),
+            question: format !== "html" ? question : "Code",
+            type,
+            time_allocated,
+            time_taken,
+            explanation,
+            hints_used
+          }])
           setCurrentQuestion(current_question + 1)
         }} />
       </Fragment>

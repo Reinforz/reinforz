@@ -67,6 +67,7 @@ export interface Result {
   time_allocated: number,
   time_taken: number,
   explanation: string,
+  hints_used: number
 }
 
 export interface TimerRProps {
@@ -92,4 +93,12 @@ export interface ExtendedTypeBackground extends TypeBackground {
   dark: string[],
   main: string[],
   light: string[],
+}
+
+export interface HintsRProps {
+  hints_state: {
+    hints_used: number
+  },
+  HintsButton: JSX.Element,
+  HintsList: JSX.Element,
 }

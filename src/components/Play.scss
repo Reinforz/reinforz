@@ -30,6 +30,8 @@
     }
     &-content{
       height: calc(100% - 75px);
+      display: flex;
+      flex-direction: column;
     }
   }
 }

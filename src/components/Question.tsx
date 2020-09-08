@@ -3,9 +3,10 @@ import React, { useState, Fragment } from "react";
 
 import Button from "@material-ui/core/Button"
 import Timer from "./Timer";
-import { TimerRProps, QuestionInputFull } from "../types";
+import { TimerRProps, QuestionInputFull, HintsRProps } from "../types";
 import Highlighter from "./Highlighter";
 import Options from "./Options";
+import Hints from "./Hints";
 
 const QuestionContainer = styled.div`
   user-select: none;
@@ -27,12 +28,12 @@ const QuestionContainerQuestion = styled.div`
 
 interface QuestionProps {
   question: QuestionInputFull,
-  changeCounter: (user_answers: string[], time_taken: number) => void,
+  changeCounter: (user_answers: string[], time_taken: number, hints_used: number) => void,
   hasEnd: boolean
 };
 
 export default function Question(props: QuestionProps): JSX.Element {
-  const { hasEnd, question, question: { question: _question, type, image, format, time_allocated } } = props;
+  const { hasEnd, question, question: { question: _question, type, image, format, time_allocated, hints } } = props;
 
   const generateQuestion = () => {
     if (format === "html") return <Highlighter language={"typescript"} code={_question} />
@@ -44,18 +45,26 @@ export default function Question(props: QuestionProps): JSX.Element {
     {image && <div className="Question-container-item Question-container-image"><img src={image} alt="question" /></div>}
     {generateQuestion()}
     <Options changeOption={changeUserAnswers} user_answers={user_answers} question={question} />
-    <Timer timeout={time_allocated} onTimerEnd={() => {
-      props.changeCounter(user_answers, time_allocated)
-    }}>
-      {(timerprops: TimerRProps) => {
+    <Hints hints={hints}>
+      {({ HintsButton, HintsList, hints_state }: HintsRProps) => {
         return <Fragment>
-          <Button className="Quiz-container-button" variant="contained" color="primary" onClick={() => {
-            props.changeCounter(user_answers, time_allocated - timerprops.currentTime)
-          }}>{!hasEnd ? "Next" : "Report"}</Button>
-          {timerprops.timer}
+          <Timer timeout={time_allocated} onTimerEnd={() => {
+            props.changeCounter(user_answers, time_allocated, hints_state.hints_used)
+          }}>
+            {(timerprops: TimerRProps) => {
+              return <Fragment>
+                {timerprops.timer}
+                <Button className="Quiz-container-button" variant="contained" color="primary" onClick={() => {
+                  props.changeCounter(user_answers, time_allocated - timerprops.currentTime, hints_state.hints_used)
+                }}>{!hasEnd ? "Next" : "Report"}</Button>
+              </Fragment>
+            }}
+          </Timer>
+          {HintsButton}
+          {HintsList}
         </Fragment>
       }}
-    </Timer>
+    </Hints>
 
   </QuestionContainer>
 }

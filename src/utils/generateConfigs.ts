@@ -37,7 +37,7 @@ export function generateQuestionInputConfigs(
     ['correct_answer_message', 'Congrats on the correct answer'],
     ['incorrect_answer_message', 'Try again'],
     ['explanation', 'No explanation available'],
-    ['hints', ['No hints available']],
+    ['hints', []],
   ]);
 
   if (res.answers.length === 1) res.type = res.options ? "MCQ" : "Snippet";
@@ -58,8 +58,8 @@ export function generateQuestionInputConfigs(
       time_allocated = 60;
       break;
   }
-
-  res.time_allocated = time_allocated;
+  if (!res.time_allocated)
+    res.time_allocated = time_allocated;
 
   return res as QuestionInputFull;
 }
