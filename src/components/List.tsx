@@ -11,13 +11,18 @@ const List = styled.div`
 
 const ListHeader = styled.div`
   width: 100%;
-  text-align: center;
+  background: #161616;
+  display: flex;
+  align-items: center;
+`;
+
+const ListHeaderTitle = styled.div`
   font-size: 1.25em;
   font-weight: bold;
-  background: #161616;
   padding: 10px 0px;
-  height: 25px;
-`;
+  text-align: center;
+  margin: 0 auto;
+`
 
 const ListContent = styled.div`
   height: calc(100% - 25px);
@@ -51,6 +56,9 @@ const CancelIconW = styled(CancelIcon)`
   }
 `;
 
+const ListHeaderIcons = styled.div`
+  display: flex;
+`
 interface ListProps<T> {
   items: T[],
   fields: (string | ((data: T) => string))[],
@@ -66,7 +74,21 @@ export default function (props: ListProps<Record<string, any>>) {
   const [selectedItems, setSelectedItems] = useState([] as any[]);
   return children({
     ListComponent: <List className="List">
-      <ListHeader className="List-header">{header}</ListHeader>
+      <ListHeader className="List-header">
+        <Checkbox key={"checkbox"} onClick={(e) => {
+          if ((e.target as any).checked) setSelectedItems(items.map(item => item._id));
+          else setSelectedItems([])
+        }} checked={items.length !== 0 && selectedItems.length === items.length} />
+        {selectedItems.length}/{items.length}
+        <ListHeaderTitle>{header}</ListHeaderTitle>
+        <ListHeaderIcons>
+          <CancelIconW key={"deleteicon"} onClick={() => {
+            const remaining_items = items.filter(item => !selectedItems.includes(item._id))
+            setItems(remaining_items);
+            setSelectedItems([])
+          }} />
+        </ListHeaderIcons>
+      </ListHeader>
       <ListContent className="List-content">
         {items.length > 0 ? items.map((item, index) => {
           const { _id } = item;
