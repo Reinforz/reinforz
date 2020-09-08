@@ -24,15 +24,16 @@ const QuestionContainerQuestion = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
 `;
 
 interface QuestionProps {
   question: QuestionInputFull,
   changeCounter: (user_answers: string[], time_taken: number, hints_used: number) => void,
-  hasEnd: boolean
+  hasEnd: boolean,
 };
 
-export default function Question(props: QuestionProps): JSX.Element {
+export default function Question(props: QuestionProps) {
   const { hasEnd, question, question: { question: _question, type, image, format, time_allocated, hints } } = props;
 
   const generateQuestion = () => {
@@ -49,13 +50,13 @@ export default function Question(props: QuestionProps): JSX.Element {
       {({ HintsButton, HintsList, hints_state }: HintsRProps) => {
         return <Fragment>
           <Timer timeout={time_allocated} onTimerEnd={() => {
-            props.changeCounter(user_answers, time_allocated, hints_state.hints_used)
+            props.changeCounter(user_answers.filter(user_answer => user_answer !== ""), time_allocated, hints_state.hints_used)
           }}>
             {(timerprops: TimerRProps) => {
               return <Fragment>
                 {timerprops.timer}
                 <Button className="Quiz-container-button" variant="contained" color="primary" onClick={() => {
-                  props.changeCounter(user_answers, time_allocated - timerprops.currentTime, hints_state.hints_used)
+                  props.changeCounter(user_answers.filter(user_answer => user_answer !== ""), time_allocated - timerprops.currentTime, hints_state.hints_used)
                 }}>{!hasEnd ? "Next" : "Report"}</Button>
               </Fragment>
             }}

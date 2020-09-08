@@ -40,15 +40,18 @@ const OptionsContainerFormGroup = styled(FormGroup)`
   ${OptionsContainerOptions}
 `;
 
+const OptionsContainer = styled.div`
+  width: 100%;
+`;
+
 interface OptionsProps {
   changeOption: (val: string[]) => any,
   user_answers: string[],
-  question: QuestionInputFull
+  question: QuestionInputFull,
 }
 
 function Options(props: OptionsProps) {
-  const { changeOption, user_answers, question: { index, _id, type, options, question } } = props;
-
+  const { changeOption, user_answers, question: { index, _id, type, question, options } } = props;
   const generateOptions = () => {
     if (type === "MCQ" && options)
       return <OptionsContainerRadioGroup className="Options-container" defaultValue={undefined} value={user_answers[0] === '' ? [''] : user_answers[0]} onChange={e => changeOption([e.target.value])} row>
@@ -99,9 +102,9 @@ function Options(props: OptionsProps) {
   }
 
   return (
-    <div className="Options">
+    <OptionsContainer className="Options">
       {generateOptions()}
-    </div>
+    </OptionsContainer>
   );
 }
 
