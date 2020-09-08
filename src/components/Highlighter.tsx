@@ -38,7 +38,6 @@ export default function Highlighter(props: HighlighterProps) {
     {({ className, style, tokens, getLineProps, getTokenProps }) => (
       <Pre className={className} style={style}>
         {tokens.map((line, i) => {
-          console.log(line);
           return <Line key={i} {...getLineProps({ line, key: i })}>
             <LineNo>{i + 1}</LineNo>
             <LineContent>

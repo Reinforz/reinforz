@@ -3,17 +3,19 @@ import styled from "styled-components";
 import GetAppIcon from '@material-ui/icons/GetApp';
 
 import Table from "./Table";
-import { Result } from "../types";
+import { Result, QuestionInputFull } from "../types";
 import { InputLabel, FormControl, Select, MenuItem } from '@material-ui/core';
+import download from "../utils/download";
+import { safeDump } from 'js-yaml';
 
 const ReportContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-function Report(props: { results: Result[] }) {
+function Report(props: { results: Result[], all_questions: QuestionInputFull[] }) {
   const [export_type, setExportType] = useState('Original');
-  const [export_as, setExportAs] = useState('yaml');
+  const [export_as, setExportAs] = useState('YAML');
 
   const transformValue = (header: string, content: any) => {
     const value = content[header];
@@ -44,6 +46,7 @@ function Report(props: { results: Result[] }) {
         return null;
     }
   }
+
   return (
     <div className="Report">
       <ReportContainer className="Report-container">
@@ -64,11 +67,12 @@ function Report(props: { results: Result[] }) {
               value={export_as}
               onChange={(e) => setExportAs((e.target as any).value)}
             >
-              {['HTML', 'YAML', 'JSON'].map((type => <MenuItem value={type}>{type}</MenuItem>))}
+              {['YAML', 'JSON'].map(((type, index) => <MenuItem value={type} key={type + index}>{type}</MenuItem>))}
             </Select>
           </FormControl>
           <GetAppIcon onClick={() => {
-            // Code here
+            console.log(props.all_questions)
+            export_as === "JSON" ? download(`$Report${Date.now()}.json`, JSON.stringify(export_type === "Report" ? props.results : props.all_questions)) : download(`Report${Date.now()}.yaml`, safeDump(export_type === "Report" ? props.results : props.all_questions));
           }} />
         </div>
         <Table accumulator={accumulator} transformValue={transformValue} contents={props.results} collapseContents={["explanation"]} headers={["question", "type", "verdict", "score", "time_allocated", "time_taken", "answers", "user_answers", "hints_used"]} keycreator={({ answers }, index) => answers.join("") + index} />

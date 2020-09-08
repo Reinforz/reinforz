@@ -28,9 +28,9 @@ export function generateQuestionInputConfigs(
     format = 'html';
   }
   setObjectValues(res, [
-    'options',
+    ['options', null],
     ['format', format],
-    'image',
+    ['image', null],
     ['weight', 1],
     ['add_to_score', true],
     ['difficulty', 'Beginner'],

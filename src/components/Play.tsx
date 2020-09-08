@@ -7,13 +7,14 @@ import PlayOptions from "./PlayOptions";
 import "./Play.scss";
 import List from "./List";
 import {
-  QuestionInputPartial,
+  QuestionInputFull,
   IPlayOptions,
   QuizInputPartial,
   PlayOptionsRProps,
   ListRProps
 } from "../types";
 import shuffle from "../utils/arrayShuffler";
+import { generateQuestionInputConfigs } from "../utils/generateConfigs";
 
 function Play() {
   const [playing, setPlaying] = useState(false);
@@ -21,18 +22,20 @@ function Play() {
 
   function renderQuiz(selectedQuizzes: string[], play_options: IPlayOptions) {
     let filtered_quizzes = quizzes.filter(quiz => selectedQuizzes.includes(quiz._id)) as QuizInputPartial[];
-    let all_questions: QuestionInputPartial[] = [];
+    const all_questions: QuestionInputFull[] = [];
     if (play_options.shuffle_quizzes && !play_options.flatten_mix) filtered_quizzes = shuffle(filtered_quizzes);
     if (play_options.shuffle_questions && !play_options.flatten_mix) filtered_quizzes.forEach(quiz => quiz.questions = shuffle(quiz.questions));
     filtered_quizzes.forEach(quiz => {
-      quiz.questions.forEach((question) => {
-        question.quiz = quiz.title;
-        question.subject = quiz.subject;
+      quiz.questions = quiz.questions.map((question) => {
+        return {
+          ...generateQuestionInputConfigs(question),
+          quiz: quiz.title,
+          subject: quiz.subject
+        }
       });
-      all_questions.push(...quiz.questions);
+      all_questions.push(...quiz.questions as QuestionInputFull[]);
     });
-    if (play_options.flatten_mix) all_questions = shuffle(all_questions);
-    return all_questions;
+    return play_options.flatten_mix ? shuffle(all_questions) : all_questions;
   }
 
   return (
