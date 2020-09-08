@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from "styled-components";
+import GetAppIcon from '@material-ui/icons/GetApp';
 
 import Table from "./Table";
 import { Result } from "../types";
+import { InputLabel, FormControl, Select, MenuItem } from '@material-ui/core';
 
 const ReportContainer = styled.div`
   display: flex;
@@ -10,6 +12,9 @@ const ReportContainer = styled.div`
 `;
 
 function Report(props: { results: Result[] }) {
+  const [export_type, setExportType] = useState('Original');
+  const [export_as, setExportAs] = useState('yaml');
+
   const transformValue = (header: string, content: any) => {
     const value = content[header];
     switch (header) {
@@ -42,6 +47,30 @@ function Report(props: { results: Result[] }) {
   return (
     <div className="Report">
       <ReportContainer className="Report-container">
+        <div>
+          <FormControl >
+            <InputLabel >Export Type</InputLabel>
+            <Select
+              value={export_type}
+              onChange={(e) => setExportType((e.target as any).value)}
+            >
+              <MenuItem value={'Original'}>Original</MenuItem>
+              <MenuItem value={'Report'}>Report</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl >
+            <InputLabel >Export As</InputLabel>
+            <Select
+              value={export_as}
+              onChange={(e) => setExportAs((e.target as any).value)}
+            >
+              {['HTML', 'YAML', 'JSON'].map((type => <MenuItem value={type}>{type}</MenuItem>))}
+            </Select>
+          </FormControl>
+          <GetAppIcon onClick={() => {
+            // Code here
+          }} />
+        </div>
         <Table accumulator={accumulator} transformValue={transformValue} contents={props.results} collapseContents={["explanation"]} headers={["question", "type", "verdict", "score", "time_allocated", "time_taken", "answers", "user_answers", "hints_used"]} keycreator={({ answers }, index) => answers.join("") + index} />
       </ReportContainer>
     </div>
