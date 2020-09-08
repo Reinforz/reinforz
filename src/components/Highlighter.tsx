@@ -37,8 +37,9 @@ export default function Highlighter(props: HighlighterProps) {
   return <Highlight {...defaultProps} theme={vsDark} code={props.code.trim()} language={props.language}>
     {({ className, style, tokens, getLineProps, getTokenProps }) => (
       <Pre className={className} style={style}>
-        {tokens.map((line, i) => (
-          <Line key={i} {...getLineProps({ line, key: i })}>
+        {tokens.map((line, i) => {
+          console.log(tokens)
+          return <Line key={i} {...getLineProps({ line, key: i })}>
             <LineNo>{i + 1}</LineNo>
             <LineContent>
               {line.map((token, key) => (
@@ -46,7 +47,7 @@ export default function Highlighter(props: HighlighterProps) {
               ))}
             </LineContent>
           </Line>
-        ))}
+        })}
       </Pre>
     )}
   </Highlight>

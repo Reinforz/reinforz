@@ -108,6 +108,9 @@ export default function (props: ListProps<Record<string, any>>) {
     </List>,
     list_state: {
       selectedItems
+    },
+    list_manips: {
+      setSelectedItems
     }
   })
 }

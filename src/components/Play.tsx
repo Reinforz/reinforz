@@ -37,13 +37,13 @@ function Play() {
 
   return (
     <List header="Uploaded Quizzes" items={quizzes} setItems={setQuizzes} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]}>
-      {({ ListComponent, list_state }: ListRProps) => {
+      {({ ListComponent, list_state, list_manips }: ListRProps) => {
         return <PlayOptions setPlaying={setPlaying} selectedQuizzes={list_state.selectedItems}>
           {({ PlayOptions, play_options }: PlayOptionsRProps) => {
             return <Fragment>
               {!playing ?
                 <div className="Play">
-                  <Upload setItems={setQuizzes} items={quizzes} />
+                  <Upload selectedItems={list_state.selectedItems} setSelectedItems={list_manips.setSelectedItems} setItems={setQuizzes} items={quizzes} />
                   {ListComponent}
                   {PlayOptions}
                 </div>

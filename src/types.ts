@@ -107,5 +107,8 @@ export interface ListRProps {
   ListComponent: JSX.Element,
   list_state: {
     selectedItems: string[]
+  },
+  list_manips: {
+    setSelectedItems: (items: any[]) => void
   }
 }

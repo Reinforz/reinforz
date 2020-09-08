@@ -6,8 +6,10 @@ import { useDropzone, DropzoneState } from 'react-dropzone';
 import { useSnackbar, OptionsObject } from "notistack";
 
 interface UploadProps {
-  setItems: (data: any[]) => any,
-  items: any[]
+  setItems: (items: any[]) => any,
+  items: any[],
+  setSelectedItems: (items: any[]) => void,
+  selectedItems: string[]
 }
 
 const getColor = (props: DropzoneState) => {
@@ -21,6 +23,7 @@ const getColor = (props: DropzoneState) => {
 }
 
 const Container = styled.div`
+  font-size: 1.25em;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -49,7 +52,7 @@ const centerBottomErrorNotistack = {
 } as OptionsObject;
 
 export default function Upload(props: UploadProps) {
-  const { items: quizzes, setItems: setQuizzes } = props;
+  const { items: quizzes, setItems: setQuizzes, setSelectedItems, selectedItems } = props;
   const { enqueueSnackbar } = useSnackbar();
   const prepareData = (QuizData: any) => {
     QuizData._id = shortid();
@@ -87,8 +90,9 @@ export default function Upload(props: UploadProps) {
 
     Promise.all(filePromises).then(data => {
       setQuizzes([...quizzes, ...data]);
+      setSelectedItems([...selectedItems, ...data.map(data => data._id)])
     });
-  }, [quizzes, setQuizzes, enqueueSnackbar]);
+  }, [quizzes, setQuizzes, setSelectedItems, enqueueSnackbar, selectedItems]);
 
   const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({ onDrop, accept: [".yml", ".yaml", "application/json"] })
 
