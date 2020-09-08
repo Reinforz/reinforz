@@ -67,7 +67,8 @@ export interface Result {
   time_allocated: number,
   time_taken: number,
   explanation: string,
-  hints_used: number
+  hints_used: number,
+  _id: string
 }
 
 export interface TimerRProps {

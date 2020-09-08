@@ -4,6 +4,7 @@ import yaml from 'js-yaml';
 import shortid from "shortid"
 import { useDropzone, DropzoneState } from 'react-dropzone';
 import { useSnackbar, OptionsObject } from "notistack";
+import { generateQuestionInputConfigs } from '../utils/generateConfigs';
 
 interface UploadProps {
   setItems: (items: any[]) => any,
@@ -26,7 +27,6 @@ const Container = styled.div`
   font-size: 1.25em;
   flex: 1;
   display: flex;
-  flex-direction: column;
   align-items: center;
   padding: 20px;
   border-width: 2px;
@@ -56,7 +56,7 @@ export default function Upload(props: UploadProps) {
   const { enqueueSnackbar } = useSnackbar();
   const prepareData = (QuizData: any) => {
     QuizData._id = shortid();
-    QuizData.questions.forEach((question: any) => question._id = shortid())
+    QuizData.questions = QuizData.questions.map((question: any) => ({ ...generateQuestionInputConfigs(question), _id: shortid() }))
   }
   const onDrop = useCallback(acceptedFiles => {
     let filePromises: Promise<any>[] = [];

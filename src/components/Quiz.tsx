@@ -7,6 +7,7 @@ import Report from "./Report";
 import Stats from "./Stats";
 import decideVerdict from "../utils/decideVerdict";
 import shuffle from "../utils/arrayShuffler";
+import shortid from "shortid";
 
 interface QuizProps {
   all_questions: QuestionInputFull[],
@@ -48,7 +49,8 @@ export default function Quiz(props: QuizProps) {
             time_allocated,
             time_taken,
             explanation,
-            hints_used
+            hints_used,
+            _id: shortid()
           }])
           setCurrentQuestion(current_question_index + 1)
         }} />

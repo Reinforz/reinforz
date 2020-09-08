@@ -40,14 +40,15 @@ const useStyles = makeStyles({
 });
 
 interface Table_RowCommonProps {
-  collapseContents: string[]
-  transformValue: (header: string, content: any) => string
+  collapseContents?: string[]
+  transformValue?: (header: string, content: any) => string
   headers: string[],
+  title?: string
 }
 interface TableProps<Values> extends Table_RowCommonProps {
   contents: Values[],
-  keycreator: (data: Values, index: number) => string,
-  accumulator: (header: string, contents: Array<any>) => string | null | number
+  accumulator: (header: string, contents: Array<any>) => string | null | number,
+  className?: string
 }
 
 interface RowProps extends Table_RowCommonProps {
@@ -58,18 +59,19 @@ interface RowProps extends Table_RowCommonProps {
 function Rows(props: RowProps) {
   const [open, setOpen] = React.useState(false);
   const classes = useStyles();
-  const { content, headers, index, collapseContents, transformValue } = props;
+  const { title, content, headers, index, collapseContents, transformValue } = props;
   return <Fragment>
+    {title && <div className="Table-title">{title}</div>}
     <TableRow className={classes.tr} >
-      <TableCell className={classes.td}>
+      {collapseContents && <TableCell className={classes.td}>
         <IconButton aria-label="expand row" size="small" style={{ color: 'white' }} onClick={() => setOpen(!open)}>
           {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
         </IconButton>
-      </TableCell>
+      </TableCell>}
       <TableCell className={classes.td}>{index + 1}</TableCell>
-      {headers.map((header, index) => <TableCell className={classes.td} key={header + 'row' + index} align="center">{transformValue(header, content)}</TableCell>)}
+      {headers.map((header, index) => <TableCell className={classes.td} key={header + 'row' + index} align="center">{transformValue ? transformValue(header, content) : content[header]?.toString() ?? "N/A"}</TableCell>)}
     </TableRow>
-    <TableRow className={classes.tr}>
+    {collapseContents && <TableRow className={classes.tr}>
       <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={headers.length} className={classes.td}>
         <Collapse in={open} timeout="auto" unmountOnExit>
           {collapseContents.map((collapseContent, collapseContentIndex) => <div key={index + "collapse" + collapseContent + collapseContentIndex}>
@@ -82,7 +84,7 @@ function Rows(props: RowProps) {
           </div>)}
         </Collapse>
       </TableCell>
-    </TableRow>
+    </TableRow>}
   </Fragment>
 }
 
@@ -94,25 +96,24 @@ export default function SimpleTable(props: TableProps<Record<string, any>>) {
     accumulator[header] = [];
     props.contents.forEach(content => accumulator[header].push(content[header]))
   });
-
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} className={`Table ${props.className || ''}`}>
       <Table className={classes.table} aria-label="simple table">
         <TableHead >
           <TableRow className={classes.tr}>
-            <TableCell className={classes.th}></TableCell>
+            {props.collapseContents && <TableCell className={classes.th}></TableCell>}
             <TableCell className={classes.th}>No.</TableCell>
             {props.headers.map((header, index) => <TableCell className={classes.th} key={header + "header" + index} align="center">{header.split("_").map(c => c.charAt(0).toUpperCase() + c.substr(1)).join(" ")}</TableCell>)}
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.contents.map((content, index) => <Rows transformValue={props.transformValue} collapseContents={props.collapseContents} key={props.keycreator(content, index)} content={content} headers={props.headers} index={index} />)}
+          {props.contents.map((content, index) => <Rows transformValue={props.transformValue} collapseContents={props.collapseContents} key={content._id} content={content} headers={props.headers} index={index} />)}
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TableCell className={classes.th}></TableCell>
+            {props.collapseContents && <TableCell className={classes.th}></TableCell>}
             <TableCell className={classes.th}>{props.contents.length}</TableCell>
-            {props.headers.map((header, index) => <TableCell className={classes.th} key={header + "footer" + index} align="center">{props.accumulator(header, accumulator[header])}</TableCell>)}
+            {props.headers.map((header, index) => <TableCell className={classes.th} key={header + "footer" + index} align="center">{props.accumulator(header, accumulator[header])?.toString() ?? "N/A"}</TableCell>)}
           </TableRow>
         </TableFooter>
       </Table>

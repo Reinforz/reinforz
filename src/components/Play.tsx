@@ -1,11 +1,14 @@
 import React, { useState, Fragment } from "react";
 
+import "./Play.scss";
 
 import Upload from "./Upload";
 import Quiz from "./Quiz";
 import PlayOptions from "./PlayOptions";
-import "./Play.scss";
+import QuestionStats from "./QuestionStats";
 import List from "./List";
+import shuffle from "../utils/arrayShuffler";
+
 import {
   QuestionInputFull,
   IPlayOptions,
@@ -13,8 +16,6 @@ import {
   PlayOptionsRProps,
   ListRProps
 } from "../types";
-import shuffle from "../utils/arrayShuffler";
-import { generateQuestionInputConfigs } from "../utils/generateConfigs";
 
 function Play() {
   const [playing, setPlaying] = useState(false);
@@ -28,7 +29,7 @@ function Play() {
     filtered_quizzes.forEach(quiz => {
       quiz.questions = quiz.questions.map((question) => {
         return {
-          ...generateQuestionInputConfigs(question),
+          ...question,
           quiz: quiz.title,
           subject: quiz.subject
         }
@@ -46,6 +47,7 @@ function Play() {
             return <Fragment>
               {!playing ?
                 <div className="Play">
+                  <QuestionStats quizzes={quizzes} />
                   <Upload selectedItems={list_state.selectedItems} setSelectedItems={list_manips.setSelectedItems} setItems={setQuizzes} items={quizzes} />
                   {ListComponent}
                   {PlayOptions}

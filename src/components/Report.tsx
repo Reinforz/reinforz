@@ -75,7 +75,7 @@ function Report(props: { results: Result[], all_questions: QuestionInputFull[] }
             export_as === "JSON" ? download(`$Report${Date.now()}.json`, JSON.stringify(export_type === "Report" ? props.results : props.all_questions)) : download(`Report${Date.now()}.yaml`, safeDump(export_type === "Report" ? props.results : props.all_questions));
           }} />
         </div>
-        <Table accumulator={accumulator} transformValue={transformValue} contents={props.results} collapseContents={["explanation"]} headers={["question", "type", "verdict", "score", "time_allocated", "time_taken", "answers", "user_answers", "hints_used"]} keycreator={({ answers }, index) => answers.join("") + index} />
+        <Table accumulator={accumulator} transformValue={transformValue} contents={props.results} collapseContents={["explanation"]} headers={["question", "type", "verdict", "score", "time_allocated", "time_taken", "answers", "user_answers", "hints_used"]} />
       </ReportContainer>
     </div>
   );
