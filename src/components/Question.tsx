@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useRef, createRef, RefObject } from "react";
 import { Button, TextField } from "@material-ui/core";
 
 import "./Question.scss";
@@ -18,10 +18,12 @@ interface QuestionProps {
 
 export default function Question(props: QuestionProps) {
   const { hasEnd, question: { question, index, _id, type, image, format, time_allocated, hints } } = props;
-  const [user_answers, changeUserAnswers] = useState(type === "FIB" ? Array(question.match(/(%_%)/g)?.length ?? 1).fill('') as string[] : ['']);
+  const total_fibs = question.match(/(%_%)/g)?.length;
+  const [user_answers, changeUserAnswers] = useState(type === "FIB" ? Array(total_fibs ?? 1).fill('') as string[] : ['']);
+  const fibRefs = useRef(Array(total_fibs).fill(0).map(() => createRef() as RefObject<HTMLInputElement>));
 
   const generateQuestion = () => {
-    if (format === "html") return <Highlighter language={"typescript"} code={question} />
+    if (format === "html") return <Highlighter format={format} fibRefs={fibRefs} type={type} language={"typescript"} code={question} />
     else {
       if (type !== "FIB") return <div className="Question-container-item Question-container-question">{question}</div>;
       else {
@@ -57,13 +59,13 @@ export default function Question(props: QuestionProps) {
       {({ HintsButton, HintsList, hints_state }: HintsRProps) => {
         return <Fragment>
           <Timer timeout={time_allocated} onTimerEnd={() => {
-            props.changeCounter(user_answers.filter(user_answer => user_answer !== ""), time_allocated, hints_state.hints_used)
+            props.changeCounter(type !== "FIB" ? user_answers.filter(user_answer => user_answer !== "") : fibRefs.current.map(fibRef => fibRef?.current?.value ?? ""), time_allocated, hints_state.hints_used)
           }}>
             {(timerprops: TimerRProps) => {
               return <Fragment>
                 {timerprops.timer}
                 <Button className="Quiz-container-button" variant="contained" color="primary" onClick={() => {
-                  props.changeCounter(user_answers.filter(user_answer => user_answer !== ""), time_allocated - timerprops.currentTime, hints_state.hints_used)
+                  props.changeCounter(type !== "FIB" ? user_answers.filter(user_answer => user_answer !== "") : fibRefs.current.map(fibRef => fibRef?.current?.value ?? ""), time_allocated - timerprops.currentTime, hints_state.hints_used)
                 }}>{!hasEnd ? "Next" : "Report"}</Button>
               </Fragment>
             }}
