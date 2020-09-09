@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { InputLabel, FormGroup, TextField, RadioGroup, FormControlLabel, Radio, Checkbox } from '@material-ui/core';
-import { ReportFilterState, Difficulty, QuestionType } from "../../../types";
+import { ReportFilterState, QuestionDifficulty, QuestionType } from "../../../types";
 
 export default function (props: { children: any }) {
   const [report_filter_state, setReportFilterState] = useState({ time_taken: [0, 60], verdict: 'mixed', hints_used: 'any', excluded_types: [], excluded_difficulty: [] } as ReportFilterState);
@@ -21,10 +21,10 @@ export default function (props: { children: any }) {
         {["0", "1", "2", "any"].map((hints, index) => <FormControlLabel onClick={(e: any) => setReportFilterState({ ...report_filter_state, hints_used: e.target.value })} key={hints + index} value={hints} control={<Radio color="primary" />} label={hints} />)}
       </RadioGroup>
       <FormGroup>
-        <InputLabel>Exluded Difficulty</InputLabel>
-        {['Beginner', 'Intermediate', 'Advanced'].map((difficulty, index) => <FormControlLabel key={difficulty + index} label={difficulty} control={<Checkbox checked={report_filter_state.excluded_difficulty.includes(difficulty as Difficulty)} name={difficulty} onChange={(e) => {
+        <InputLabel>Exluded QuestionDifficulty</InputLabel>
+        {['Beginner', 'Intermediate', 'Advanced'].map((difficulty, index) => <FormControlLabel key={difficulty + index} label={difficulty} control={<Checkbox checked={report_filter_state.excluded_difficulty.includes(difficulty as QuestionDifficulty)} name={difficulty} onChange={(e) => {
           if ((e.target as any).checked)
-            setReportFilterState({ ...report_filter_state, excluded_difficulty: report_filter_state.excluded_difficulty.concat(difficulty as Difficulty) });
+            setReportFilterState({ ...report_filter_state, excluded_difficulty: report_filter_state.excluded_difficulty.concat(difficulty as QuestionDifficulty) });
           else setReportFilterState({ ...report_filter_state, excluded_difficulty: report_filter_state.excluded_difficulty.filter(excluded_difficulty => excluded_difficulty !== difficulty) })
         }}
           color="primary" />} />)}

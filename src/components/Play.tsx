@@ -15,7 +15,7 @@ import {
   QuizInputFull,
   PlaySettingsRProps,
   ListRProps,
-  Difficulty,
+  QuestionDifficulty,
   QuestionType
 } from "../types";
 import ErrorLog from "./ErrorLog";
@@ -31,7 +31,7 @@ function Play() {
     if (play_options.shuffle_quizzes && !play_options.flatten_mix) filtered_quizzes = shuffle(filtered_quizzes);
     if (play_options.shuffle_questions && !play_options.flatten_mix) filtered_quizzes.forEach(quiz => quiz.questions = shuffle(quiz.questions));
     filtered_quizzes.forEach(quiz => {
-      quiz.questions = quiz.questions.filter(question => !play_filters.excluded_difficulty.includes(question.difficulty as Difficulty) && !play_filters.excluded_types.includes(question.type as QuestionType) && play_filters.time_allocated[0] <= question.time_allocated && play_filters.time_allocated[1] >= question.time_allocated).map((question) => {
+      quiz.questions = quiz.questions.filter(question => !play_filters.excluded_difficulty.includes(question.difficulty as QuestionDifficulty) && !play_filters.excluded_types.includes(question.type as QuestionType) && play_filters.time_allocated[0] <= question.time_allocated && play_filters.time_allocated[1] >= question.time_allocated).map((question) => {
         return {
           ...question,
           quiz: quiz.title,

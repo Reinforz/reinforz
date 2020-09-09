@@ -18,7 +18,7 @@ export interface QuizInputFull extends Required<QuizInputPartial> {
 
 export type QuestionType = 'MCQ' | 'MS' | 'FIB' | 'Snippet';
 export type QuestionFormat = 'text' | 'markdown' | 'html';
-export type Difficulty = 'Beginner' | 'Intermediate' | 'Advanced';
+export type QuestionDifficulty = 'Beginner' | 'Intermediate' | 'Advanced';
 
 export interface QuestionInputCommon {
   question: string,
@@ -33,7 +33,7 @@ export interface QuestionInput {
   weight?: number,
   add_to_score?: boolean,
   time_allocated?: number,
-  difficulty?: Difficulty,
+  difficulty?: QuestionDifficulty,
   correct_answer_message?: string,
   incorrect_answer_message?: string,
   explanation?: string,
@@ -68,7 +68,7 @@ export interface Result {
   time_taken: number,
   explanation: string,
   hints_used: number,
-  difficulty: Difficulty,
+  difficulty: QuestionDifficulty,
   _id: string,
   question_id: string,
 }
@@ -89,7 +89,7 @@ export interface IPlayOptions {
 
 export interface IPlayFilters {
   time_allocated: [number, number],
-  excluded_difficulty: Difficulty[],
+  excluded_difficulty: QuestionDifficulty[],
   excluded_types: QuestionType[],
 }
 
@@ -132,7 +132,7 @@ export interface ReportFilterState {
   verdict: boolean | 'mixed',
   hints_used: number | 'any',
   excluded_types: QuestionType[],
-  excluded_difficulty: Difficulty[]
+  excluded_difficulty: QuestionDifficulty[]
 }
 
 export interface ReportFilterRProps {

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, FormControlLabel, Checkbox, FormGroup, TextField, InputLabel } from "@material-ui/core";
-import { IPlayOptions, IPlayFilters, Difficulty, QuestionType } from "../types";
+import { IPlayOptions, IPlayFilters, QuestionDifficulty, QuestionType } from "../types";
 import { useSnackbar } from "notistack";
 
 interface PlaySettingsProps {
@@ -11,7 +11,7 @@ interface PlaySettingsProps {
 
 function PlaySettings(props: PlaySettingsProps) {
   const play_options_state = { shuffle_options: true, shuffle_quizzes: false, shuffle_questions: true, instant_feedback: true, flatten_mix: false };
-  const play_filters_state = { time_allocated: [15, 60], excluded_difficulty: [] as Difficulty[], excluded_types: [] as QuestionType[] } as IPlayFilters;
+  const play_filters_state = { time_allocated: [15, 60], excluded_difficulty: [] as QuestionDifficulty[], excluded_types: [] as QuestionType[] } as IPlayFilters;
   type play_options_keys = keyof IPlayOptions;
   const [play_options, setPlayOptions] = useState(play_options_state as IPlayOptions);
   const [play_filters, setPlayFilters] = useState(play_filters_state);
@@ -56,10 +56,10 @@ function PlaySettings(props: PlaySettingsProps) {
             <TextField type="number" inputProps={{ min: play_filters.time_allocated[0], step: 5, max: 60 }} value={play_filters.time_allocated[1]} onChange={(e) => setPlayFilters({ ...play_filters, time_allocated: [play_filters.time_allocated[0], (e.target as any).value,] })} label="Time Allocated max" />
           </FormGroup>
           <FormGroup>
-            <InputLabel>Exluded Difficulty</InputLabel>
-            {['Beginner', 'Intermediate', 'Advanced'].map((difficulty, index) => <FormControlLabel key={difficulty + index} label={difficulty} control={<Checkbox checked={play_filters.excluded_difficulty.includes(difficulty as Difficulty)} name={difficulty} onChange={(e) => {
+            <InputLabel>Exluded QuestionDifficulty</InputLabel>
+            {['Beginner', 'Intermediate', 'Advanced'].map((difficulty, index) => <FormControlLabel key={difficulty + index} label={difficulty} control={<Checkbox checked={play_filters.excluded_difficulty.includes(difficulty as QuestionDifficulty)} name={difficulty} onChange={(e) => {
               if ((e.target as any).checked)
-                setPlayFilters({ ...play_filters, excluded_difficulty: play_filters.excluded_difficulty.concat(difficulty as Difficulty) });
+                setPlayFilters({ ...play_filters, excluded_difficulty: play_filters.excluded_difficulty.concat(difficulty as QuestionDifficulty) });
               else setPlayFilters({ ...play_filters, excluded_difficulty: play_filters.excluded_difficulty.filter(excluded_difficulty => excluded_difficulty !== difficulty) })
             }}
               color="primary" />} />)}

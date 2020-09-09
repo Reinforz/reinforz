@@ -6,7 +6,7 @@ import Table from "./Table"
 function QuestionStats(props: { quizzes: QuizInputFull[] }) {
   return (
     <div className="QuestionStats">
-      <Table className="QuestionStats-table QuestionStats-table--difficulty" title={"Difficulty based Table"} accumulator={(header, contents) => {
+      <Table className="QuestionStats-table QuestionStats-table--difficulty" title={"QuestionDifficulty based Table"} accumulator={(header, contents) => {
         switch (header) {
           case "Beginner":
           case "Intermediate":
