@@ -124,3 +124,16 @@ export interface ListRProps {
     setSelectedItems: (items: any[]) => void
   }
 }
+
+export interface ReportFilterState {
+  time_taken: [number, number],
+  verdict: 'correct' | 'incorrect' | 'mixed',
+  hints_used: number | 'any',
+  excluded_types: QuestionType[],
+  excluded_difficulty: Difficulty[]
+}
+
+export interface ReportFilterRProps {
+  report_filter_state: ReportFilterState,
+  ReportFilter: JSX.Element
+}

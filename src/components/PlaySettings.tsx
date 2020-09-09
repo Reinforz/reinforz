@@ -65,7 +65,7 @@ function PlaySettings(props: PlaySettingsProps) {
               color="primary" />} />)}
           </FormGroup>
           <FormGroup>
-            <InputLabel>Exluded Difficulty</InputLabel>
+            <InputLabel>Exluded Type</InputLabel>
             {['FIB', 'MS', 'MCQ', "Snippet"].map((type, index) => <FormControlLabel key={type + index} label={type} control={<Checkbox checked={play_filters.excluded_types.includes(type as QuestionType)} name={type} onChange={(e) => {
               if ((e.target as any).checked)
                 setPlayFilters({ ...play_filters, excluded_types: play_filters.excluded_types.concat(type as QuestionType) });

@@ -3,7 +3,7 @@ import md5 from "md5";
 
 import { Result, IPlayOptions, QuestionInputFull } from "../types";
 import Question from "./Question";
-import Report from "./Report";
+import Report from "./Report/Report";
 import Stats from "./Stats";
 import decideVerdict from "../utils/decideVerdict";
 import shuffle from "../utils/arrayShuffler";
