@@ -57,6 +57,7 @@ function Play() {
                   <Upload selectedItems={list_state.selectedItems} setSelectedItems={list_manips.setSelectedItems} setItems={setQuizzes} items={quizzes} />
                   {ListComponent}
                   {PlaySettings}
+                  <div className="Help">Need help, <a href="http://github.com/Devorein/reinforz" rel="noopener noreferrer" target="_blank">click here</a> to go to the doc</div>
                 </div>
                 : <Quiz play_options={play_state.play_options} all_questions={renderQuiz(list_state.selectedItems, play_state)} />}
             </Fragment>

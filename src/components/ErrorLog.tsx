@@ -47,31 +47,30 @@ export default React.memo((props: ErrorLogProps) => {
     const error_promises: Promise<ErrorLog>[] = [];
     quizzes.forEach(quiz => {
       quiz.questions.forEach((question, index) => {
-        error_promises.push(new Promise((resolve) => {
+        error_promises.push(new Promise((resolve,) => {
           if (question.type.match(/(MS|MCQ)/))
-            OptionedQuestionSchema.validate(question).catch(err =>
-              resolve({
-                quiz: question.quiz,
-                question_name: question.question,
-                question_number: index,
-                message: err.message
-              })
-            )
-          else OptionLessQuestionSchema.validate(question).catch(err =>
-            error_promises.push(new Promise((resolve) => resolve({
+            OptionedQuestionSchema.validate(question).then(() => resolve(undefined)).catch(err => resolve({
               quiz: question.quiz,
               question_name: question.question,
               question_number: index,
               message: err.message
-            })))
+            })
+            )
+          else OptionLessQuestionSchema.validate(question).then(() => resolve(undefined)).catch(err =>
+            resolve({
+              quiz: question.quiz,
+              question_name: question.question,
+              question_number: index,
+              message: err.message
+            })
           )
         }))
       })
     });
-
-    Promise.all(error_promises).then((errors: ErrorLog[]) => {
-      setErrorLogs(errors)
-    })
+    if (error_promises.length !== 0)
+      Promise.all(error_promises).then((errors: ErrorLog[]) => {
+        setErrorLogs(errors.filter(error => error))
+      })
   }, [quizzes]);
 
   return (
