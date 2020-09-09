@@ -18,6 +18,7 @@ import {
   Difficulty,
   QuestionType
 } from "../types";
+import ErrorLog from "./ErrorLog";
 
 function Play() {
   const [playing, setPlaying] = useState(false);
@@ -52,6 +53,7 @@ function Play() {
               {!playing ?
                 <div className="Play">
                   <QuestionStats quizzes={quizzes} />
+                  <ErrorLog quizzes={quizzes} />
                   <Upload selectedItems={list_state.selectedItems} setSelectedItems={list_manips.setSelectedItems} setItems={setQuizzes} items={quizzes} />
                   {ListComponent}
                   {PlaySettings}

@@ -1,18 +1,18 @@
 .Play {
   height: 100%;
   display: grid;
-  grid-template-columns: 3fr 2fr 1.5fr;
+  grid-template-columns: 1.5fr 1.5fr 550px 1.5fr;
   grid-template-rows: 100px 1fr;
   .QuestionStats {
-    grid-area: 1/2/3/3;
+    grid-area: 1/3/3/4;
     margin: 5px 0px;
   }
   .Upload {
-    grid-area: 1/1/2/2;
+    grid-area: 1/1/2/3;
     margin: 5px 0px;
   }
   .List {
-    grid-area: 2/1/3/2;
+    grid-area: 2/2/3/3;
     width: 100%;
     overflow: auto;
     background: #1b1b1b;
@@ -21,7 +21,7 @@
 
   &-options,
   &-filters {
-    grid-area: 1/3/3/4;
+    grid-area: 1/4/3/5;
     display: flex;
     flex-direction: column;
     background: #161616;

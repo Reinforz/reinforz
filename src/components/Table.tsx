@@ -20,7 +20,7 @@ const useStyles = makeStyles({
   th: {
     fontWeight: 'bolder',
     backgroundColor: '#1f1f1f',
-    fontSize: '1.15rem',
+    fontSize: '1rem',
     color: "rgba(255,255,255,0.75)",
     userSelect: "none",
     borderBottom: 0,

@@ -28,7 +28,6 @@ const Container = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
-  padding: 20px;
   border-width: 2px;
   border-radius: 2px;
   border-color: ${(props: DropzoneState) => getColor(props)};
@@ -40,6 +39,10 @@ const Container = styled.div`
   cursor: pointer;
   outline: none;
   transition: border .24s ease-in-out;
+  height: 100%;
+  p{
+    margin: 5px 10px;
+  }
 ` as any;
 
 const trimLower = (data: string) => data.replace(/\s/g, '').toLowerCase();
@@ -56,7 +59,7 @@ export default function Upload(props: UploadProps) {
   const { enqueueSnackbar } = useSnackbar();
   const prepareData = (QuizData: any) => {
     QuizData._id = shortid();
-    QuizData.questions = QuizData.questions.map((question: any) => ({ ...generateQuestionInputConfigs(question), _id: shortid() }))
+    QuizData.questions = QuizData.questions.map((question: any) => ({ ...generateQuestionInputConfigs(question), _id: shortid(), subject: QuizData.subject, title: QuizData.title }))
   }
   const onDrop = useCallback(acceptedFiles => {
     let filePromises: Promise<any>[] = [];
