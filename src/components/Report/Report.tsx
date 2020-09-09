@@ -55,6 +55,8 @@ function Report(props: { results: Result[], all_questions: QuestionInputFull[] }
     <div className="Report">
       <ReportFilter>
         {({ report_filter_state, ReportFilter }: ReportFilterRProps) => {
+          const { excluded_types, excluded_difficulty, verdict, hints_used, time_taken } = report_filter_state;
+          const filtered_results = props.results.filter(result => !excluded_types.includes(result.type) && !excluded_difficulty.includes(result.difficulty) && (verdict === "mixed" || verdict.toString() === result.verdict.toString()) && (hints_used === "any" || result.hints_used <= hints_used) && time_taken[0] <= result.time_taken && time_taken[1] >= result.time_taken)
           return <Fragment>
             {ReportFilter}
             <ReportContainer className="Report-container">
@@ -79,15 +81,14 @@ function Report(props: { results: Result[], all_questions: QuestionInputFull[] }
                   </Select>
                 </FormControl>
                 <GetAppIcon onClick={() => {
-                  export_as === "JSON" ? download(`$Report${Date.now()}.json`, JSON.stringify(export_type === "Report" ? props.results : props.all_questions)) : download(`Report${Date.now()}.yaml`, safeDump(export_type === "Report" ? props.results : props.all_questions));
+                  export_as === "JSON" ? download(`$Report${Date.now()}.json`, JSON.stringify(export_type === "Report" ? filtered_results : props.all_questions)) : download(`Report${Date.now()}.yaml`, safeDump(export_type === "Report" ? filtered_results : props.all_questions));
                 }} />
               </div>
-              <Table accumulator={accumulator} transformValue={transformValue} contents={props.results} collapseContents={["explanation"]} headers={["question", "type", "verdict", "score", "time_allocated", "time_taken", "answers", "user_answers", "hints_used"]} />
+              <Table accumulator={accumulator} transformValue={transformValue} contents={filtered_results} collapseContents={["explanation"]} headers={["question", "type", "difficulty", "verdict", "score", "time_allocated", "time_taken", "answers", "user_answers", "hints_used"]} />
             </ReportContainer>
           </Fragment>
         }}
       </ReportFilter>
-
     </div>
   );
 }

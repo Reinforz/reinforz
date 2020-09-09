@@ -9,12 +9,12 @@ export default function (props: { children: any }) {
     ReportFilter: <div className="Report-filter">
       <FormGroup>
         <InputLabel>Time taken range</InputLabel>
-        <TextField type="number" inputProps={{ max: report_filter_state.time_taken[1], step: 5 }} value={report_filter_state.time_taken[0]} onChange={(e) => setReportFilterState({ ...report_filter_state, time_taken: [(e.target as any).value, report_filter_state.time_taken[1]] })} label="Time Taken min" />
-        <TextField type="number" inputProps={{ min: report_filter_state.time_taken[0], step: 5 }} value={report_filter_state.time_taken[1]} onChange={(e) => setReportFilterState({ ...report_filter_state, time_taken: [report_filter_state.time_taken[0], (e.target as any).value,] })} label="Time Taken max" />
+        <TextField type="number" inputProps={{ max: report_filter_state.time_taken[1], step: 5, min: 0 }} value={report_filter_state.time_taken[0]} onChange={(e) => setReportFilterState({ ...report_filter_state, time_taken: [(e.target as any).value, report_filter_state.time_taken[1]] })} label="Time Taken min" />
+        <TextField type="number" inputProps={{ min: report_filter_state.time_taken[0], step: 5, max: 60 }} value={report_filter_state.time_taken[1]} onChange={(e) => setReportFilterState({ ...report_filter_state, time_taken: [report_filter_state.time_taken[0], (e.target as any).value,] })} label="Time Taken max" />
       </FormGroup>
       <RadioGroup name="verdict" value={report_filter_state.verdict} >
         <InputLabel>Verdict</InputLabel>
-        {["correct", "incorrect", "mixed"].map((verdict, index) => <FormControlLabel onClick={(e: any) => setReportFilterState({ ...report_filter_state, verdict: e.target.value })} key={verdict + index} value={verdict} control={<Radio color="primary" />} label={verdict} />)}
+        {[true, false, "mixed"].map((verdict, index) => <FormControlLabel onClick={(e: any) => setReportFilterState({ ...report_filter_state, verdict: e.target.value })} key={verdict.toString() + index} value={verdict.toString()} control={<Radio color="primary" />} label={verdict.toString()} />)}
       </RadioGroup>
       <RadioGroup name="hints_used" value={report_filter_state.hints_used} >
         <InputLabel>Hints Used</InputLabel>

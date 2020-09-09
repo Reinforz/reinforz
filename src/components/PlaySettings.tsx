@@ -52,8 +52,8 @@ function PlaySettings(props: PlaySettingsProps) {
         </div>
         <div className="Play-filters-content">
           <FormGroup>
-            <TextField type="number" inputProps={{ max: play_filters.time_allocated[1], step: 5 }} value={play_filters.time_allocated[0]} onChange={(e) => setPlayFilters({ ...play_filters, time_allocated: [(e.target as any).value, play_filters.time_allocated[1]] })} label="Time Allocated min" />
-            <TextField type="number" inputProps={{ min: play_filters.time_allocated[0], step: 5 }} value={play_filters.time_allocated[1]} onChange={(e) => setPlayFilters({ ...play_filters, time_allocated: [play_filters.time_allocated[0], (e.target as any).value,] })} label="Time Allocated max" />
+            <TextField type="number" inputProps={{ max: play_filters.time_allocated[1], step: 5, min: 0 }} value={play_filters.time_allocated[0]} onChange={(e) => setPlayFilters({ ...play_filters, time_allocated: [(e.target as any).value, play_filters.time_allocated[1]] })} label="Time Allocated min" />
+            <TextField type="number" inputProps={{ min: play_filters.time_allocated[0], step: 5, max: 60 }} value={play_filters.time_allocated[1]} onChange={(e) => setPlayFilters({ ...play_filters, time_allocated: [play_filters.time_allocated[0], (e.target as any).value,] })} label="Time Allocated max" />
           </FormGroup>
           <FormGroup>
             <InputLabel>Exluded Difficulty</InputLabel>

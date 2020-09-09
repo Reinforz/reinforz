@@ -68,6 +68,7 @@ export interface Result {
   time_taken: number,
   explanation: string,
   hints_used: number,
+  difficulty: Difficulty,
   _id: string
 }
 
@@ -127,7 +128,7 @@ export interface ListRProps {
 
 export interface ReportFilterState {
   time_taken: [number, number],
-  verdict: 'correct' | 'incorrect' | 'mixed',
+  verdict: boolean | 'mixed',
   hints_used: number | 'any',
   excluded_types: QuestionType[],
   excluded_difficulty: Difficulty[]

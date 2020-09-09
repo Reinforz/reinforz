@@ -1,4 +1,10 @@
 .Report {
-  &-Filter {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  &-filter {
+    padding: 10px;
+    overflow: auto;
+    height: calc(100vh - 30px);
+    margin-right: 10px;
   }
 }
