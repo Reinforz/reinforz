@@ -19,6 +19,9 @@ export default function Quiz(props: QuizProps) {
   const [results, setResults] = useState([] as Result[]);
   const { all_questions, play_options } = props;
   const total_questions = all_questions.length;
+  const all_questions_map: Record<string, QuestionInputFull> = {};
+  all_questions.forEach(question => all_questions_map[question._id] = question);
+
   const generateContent = () => {
     if (current_question_index !== total_questions) {
       const current_question = all_questions[current_question_index];
@@ -32,10 +35,11 @@ export default function Quiz(props: QuizProps) {
         current_question.options.forEach((option, index) => options_md5_map[md5(option)] = index);
         current_question.options = play_options.shuffle_options ? shuffle(current_question.options) : current_question.options;
       }
+
       return <Fragment>
         <Stats item={stat_item} stats={["quiz", "subject", "index", "total", "type", "format", "weight", "add_to_score", "time_allocated", "difficulty"]} />
         <Question hasEnd={current_question_index >= total_questions - 1} key={current_question._id} question={current_question} changeCounter={(user_answers: string[], time_taken: number, hints_used: number) => {
-          const { difficulty, weight, type, question, format, time_allocated, answers, add_to_score, explanation } = current_question;
+          const { difficulty, _id, weight, type, question, format, time_allocated, answers, add_to_score, explanation } = current_question;
           user_answers = user_answers.filter(user_answer => user_answer !== "");
           let verdict = decideVerdict(type, answers, user_answers, current_question.options, options_md5_map);
           setResults([...results, {
@@ -51,13 +55,14 @@ export default function Quiz(props: QuizProps) {
             explanation,
             hints_used,
             difficulty,
+            question_id: _id,
             _id: shortid()
           }])
           setCurrentQuestion(current_question_index + 1)
         }} />
       </Fragment>
     }
-    else return <Report results={results} all_questions={all_questions} />
+    else return <Report results={results} all_questions_map={all_questions_map} />
   }
 
   return <div className="Quiz-container">

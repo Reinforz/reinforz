@@ -69,7 +69,8 @@ export interface Result {
   explanation: string,
   hints_used: number,
   difficulty: Difficulty,
-  _id: string
+  _id: string,
+  question_id: string,
 }
 
 export interface TimerRProps {

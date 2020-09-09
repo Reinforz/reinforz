@@ -17,7 +17,11 @@ const ReportContainer = styled.div`
   flex-direction: column;
 `;
 
-function Report(props: { results: Result[], all_questions: QuestionInputFull[] }) {
+interface ReportProps {
+  results: Result[],
+  all_questions_map: Record<string, QuestionInputFull>
+}
+function Report(props: ReportProps) {
   const [export_type, setExportType] = useState('Original');
   const [export_as, setExportAs] = useState('YAML');
 
@@ -81,7 +85,7 @@ function Report(props: { results: Result[], all_questions: QuestionInputFull[] }
                   </Select>
                 </FormControl>
                 <GetAppIcon onClick={() => {
-                  export_as === "JSON" ? download(`$Report${Date.now()}.json`, JSON.stringify(export_type === "Report" ? filtered_results : props.all_questions)) : download(`Report${Date.now()}.yaml`, safeDump(export_type === "Report" ? filtered_results : props.all_questions));
+                  export_as === "JSON" ? download(`$Report${Date.now()}.json`, JSON.stringify(export_type === "Report" ? filtered_results : filtered_results.map(filtered_result => props.all_questions_map[filtered_result.question_id]))) : download(`Report${Date.now()}.yaml`, safeDump(export_type === "Report" ? filtered_results : filtered_results.map(filtered_result => props.all_questions_map[filtered_result.question_id])));
                 }} />
               </div>
               <Table accumulator={accumulator} transformValue={transformValue} contents={filtered_results} collapseContents={["explanation"]} headers={["question", "type", "difficulty", "verdict", "score", "time_allocated", "time_taken", "answers", "user_answers", "hints_used"]} />
