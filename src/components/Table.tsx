@@ -14,21 +14,14 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { TableFooter } from '@material-ui/core';
 
 const useStyles = makeStyles({
-  table: {
-    minWidth: 650,
-  },
   th: {
     fontWeight: 'bolder',
-    backgroundColor: '#1f1f1f',
     fontSize: '1rem',
-    color: "rgba(255,255,255,0.75)",
     userSelect: "none",
     borderBottom: 0,
     textAlign: 'center'
   },
   td: {
-    backgroundColor: "#2c2c2c",
-    color: "#dddddd",
     fontWeight: 500,
     userSelect: "none",
     borderBottom: 0,
@@ -98,8 +91,8 @@ export default function SimpleTable(props: TableProps<Record<string, any>>) {
   });
   return (
     <TableContainer component={Paper} className={`Table ${props.className || ''}`}>
-      <Table className={classes.table} aria-label="simple table">
-        <TableHead >
+      <Table stickyHeader>
+        <TableHead className="Table-header">
           <TableRow className={classes.tr}>
             {props.collapseContents && <TableCell className={classes.th}></TableCell>}
             <TableCell className={classes.th}>No.</TableCell>

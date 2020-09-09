@@ -68,7 +68,6 @@ interface ListProps<T> {
   children: any
 }
 
-
 export default function (props: ListProps<Record<string, any>>) {
   const { children, items, setItems, header, fields, icons } = props;
   const [selectedItems, setSelectedItems] = useState([] as any[]);
@@ -99,6 +98,7 @@ export default function (props: ListProps<Record<string, any>>) {
               else setSelectedItems(selectedItems.filter(item => item !== _id))
             }} checked={selectedItems.includes(_id)} value={_id} />
             <CancelIconW key={_id + "icon" + index} onClick={() => {
+              setSelectedItems(selectedItems.filter(item => item !== _id))
               setItems(items.filter(item => item._id !== _id));
             }} />
             {fields.map((field, index) => <ListContentItemField key={_id + field + index}>{typeof field === "string" ? item[field] : field(item)}</ListContentItemField>)}
