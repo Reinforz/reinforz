@@ -26,9 +26,9 @@ function PlaySettings(props: PlaySettingsProps) {
         play_options,
         play_filters,
       },
-      PlaySettings: <div className="Play-options">
-        <div className="Play-options-header">Options</div>
-        <div className="Play-options-content">
+      PlaySettings: <div className="PlaySettings">
+        <div className="PlaySettings-header">Options</div>
+        <div className="PlaySettings-content">
           {Object.keys(play_options_state).map((key, index) => {
             let isDisabled = false;
             if (Boolean(key.match(/(shuffle_questions|shuffle_quizzes)/) && play_options.flatten_mix)) isDisabled = true;

@@ -1,16 +1,6 @@
-import styled from "styled-components";
 import React from "react";
 
 import "./Timer.scss";
-
-const TimerDisplay = styled.div`
-	padding: 5px 20px;
-	margin: 5px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	font-weight: bold;
-`;
 
 interface TimerProps {
   timeout: number,
@@ -68,7 +58,7 @@ export default class Timer extends React.Component<TimerProps, TimerState> {
   render() {
     const { timeout } = this.state;
     return this.props.children({
-      timer: <TimerDisplay>{this.displayTime(timeout)}</TimerDisplay>,
+      timer: <div className="Timer">{this.displayTime(timeout)}</div>,
       currentTime: timeout,
       clearInterval: this.clearInterval
     });

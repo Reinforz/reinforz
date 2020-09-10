@@ -11,3 +11,27 @@
   font-family: "Consolas";
   font-size: 1.15em;
 }
+
+.QuestionHighlighter {
+  &-pre {
+    text-align: left;
+    margin: 1em 0;
+    padding: 0.5em;
+    overflow: auto;
+    font-family: "Consolas";
+    width: calc(100% - 50px);
+    &-line {
+      display: table-row;
+      &-num {
+        display: table-cell;
+        text-align: right;
+        padding-right: 1em;
+        user-select: none;
+        opacity: 0.5;
+      }
+      &-content {
+        display: table-cell;
+      }
+    }
+  }
+}

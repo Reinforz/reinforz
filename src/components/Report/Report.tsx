@@ -1,31 +1,19 @@
-import React, { useState, Fragment } from 'react';
-import styled from "styled-components";
-import GetAppIcon from '@material-ui/icons/GetApp';
-import { InputLabel, FormControl, Select, MenuItem } from '@material-ui/core';
-import { safeDump } from 'js-yaml';
+import React, { Fragment } from 'react';
 
 import Table from "../Basic/Table";
 import ReportFilter from './ReportFilter/ReportFilter';
-
-import download from "../../utils/download";
+import ReportExport from './ReportExport/ReportExport';
 
 import { ReportFilterRProps, Result, QuestionInputFull } from "../../types";
 
 import "./Report.scss";
 
-const ReportContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
 interface ReportProps {
   results: Result[],
   all_questions_map: Record<string, QuestionInputFull>
 }
-function Report(props: ReportProps) {
-  const [export_type, setExportType] = useState('Original');
-  const [export_as, setExportAs] = useState('YAML');
 
+export default function (props: ReportProps) {
   const transformValue = (header: string, content: any) => {
     const value = content[header];
     switch (header) {
@@ -64,38 +52,11 @@ function Report(props: ReportProps) {
           const filtered_results = props.results.filter(result => !excluded_types.includes(result.type) && !excluded_difficulty.includes(result.difficulty) && (verdict === "mixed" || verdict.toString() === result.verdict.toString()) && (hints_used === "any" || result.hints_used <= hints_used) && time_taken[0] <= result.time_taken && time_taken[1] >= result.time_taken)
           return <Fragment>
             {ReportFilter}
-            <ReportContainer className="Report-container">
-              <div>
-                <FormControl >
-                  <InputLabel >Export Type</InputLabel>
-                  <Select
-                    value={export_type}
-                    onChange={(e) => setExportType((e.target as any).value)}
-                  >
-                    <MenuItem value={'Original'}>Original</MenuItem>
-                    <MenuItem value={'Report'}>Report</MenuItem>
-                  </Select>
-                </FormControl>
-                <FormControl >
-                  <InputLabel >Export As</InputLabel>
-                  <Select
-                    value={export_as}
-                    onChange={(e) => setExportAs((e.target as any).value)}
-                  >
-                    {['YAML', 'JSON'].map(((type, index) => <MenuItem value={type} key={type + index}>{type}</MenuItem>))}
-                  </Select>
-                </FormControl>
-                <GetAppIcon onClick={() => {
-                  export_as === "JSON" ? download(`$Report${Date.now()}.json`, JSON.stringify(export_type === "Report" ? filtered_results : filtered_results.map(filtered_result => props.all_questions_map[filtered_result.question_id]))) : download(`Report${Date.now()}.yaml`, safeDump(export_type === "Report" ? filtered_results : filtered_results.map(filtered_result => props.all_questions_map[filtered_result.question_id])));
-                }} />
-              </div>
-              <Table accumulator={accumulator} transformValue={transformValue} contents={filtered_results} collapseContents={["explanation"]} headers={["question", "type", "difficulty", "verdict", "score", "time_allocated", "time_taken", "answers", "user_answers", "hints_used"]} />
-            </ReportContainer>
+            <ReportExport filtered_results={filtered_results} all_questions_map={props.all_questions_map} />
+            <Table accumulator={accumulator} transformValue={transformValue} contents={filtered_results} collapseContents={["explanation"]} headers={["question", "type", "difficulty", "verdict", "score", "time_allocated", "time_taken", "answers", "user_answers", "hints_used"]} />
           </Fragment>
         }}
       </ReportFilter>
     </div>
   );
 }
-
-export default Report;

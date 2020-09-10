@@ -3,7 +3,7 @@ import { Button, TextField } from "@material-ui/core";
 
 import Timer from "../Basic/Timer";
 import QuestionHighlighter from "./QuestionHighlighter/QuestionHighlighter";
-import QuestionOptions, { OptionsContainerItem } from "./QuestionOptions/QuestionOptions";
+import QuestionOptions from "./QuestionOptions/QuestionOptions";
 import QuestionHints from "./QuestionHints/QuestionHints";
 
 import { TimerRProps, QuestionInputFull, HintsRProps } from "../../types";
@@ -33,7 +33,7 @@ export default function Question(props: QuestionProps) {
           message = message.substr(last_index + 4);
           total_fib++;
         };
-        return <OptionsContainerItem>
+        return <div className="QuestionOptions-container-item">
           {messages.map((message, i) => {
             return <Fragment key={`${_id}option${index}${i}`}>
               <div className="Question-container-question--FIB">{message}</div>
@@ -46,7 +46,7 @@ export default function Question(props: QuestionProps) {
             </Fragment>
           })}
           {messages.length > total_fib ? messages[messages.length - 1] : null}
-        </OptionsContainerItem>
+        </div>
       }
     }
   }

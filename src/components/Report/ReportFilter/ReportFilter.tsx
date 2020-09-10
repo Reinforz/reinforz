@@ -8,7 +8,7 @@ import "./ReportFilter.scss";
 export default function (props: { children: any }) {
   const [report_filter_state, setReportFilterState] = useState({ time_taken: [0, 60], verdict: 'mixed', hints_used: 'any', excluded_types: [], excluded_difficulty: [] } as ReportFilterState);
   return props.children({
-    ReportFilter: <div className="Report-filter">
+    ReportFilter: <div className="ReportFilter">
       <FormGroup>
         <InputLabel>Time taken range</InputLabel>
         <TextField type="number" inputProps={{ max: report_filter_state.time_taken[1], step: 5, min: 0 }} value={report_filter_state.time_taken[0]} onChange={(e) => setReportFilterState({ ...report_filter_state, time_taken: [(e.target as any).value, report_filter_state.time_taken[1]] })} label="Time Taken min" />

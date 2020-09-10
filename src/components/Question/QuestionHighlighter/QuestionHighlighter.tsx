@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 import Highlight, { defaultProps, Language } from "prism-react-renderer";
 import vsDark from "prism-react-renderer/themes/vsDark";
 
@@ -7,32 +6,7 @@ import { QuestionType, QuestionFormat } from "../../../types";
 
 import "./QuestionHighlighter.scss";
 
-const Pre = styled.pre`
-  text-align: left;
-  margin: 1em 0;
-  padding: 0.5em;
-  overflow: auto;
-  font-family:"Consolas";
-  width: calc(100% - 50px);
-`;
-
-const Line = styled.div`
-  display: table-row;
-`;
-
-const LineNo = styled.span`
-  display: table-cell;
-  text-align: right;
-  padding-right: 1em;
-  user-select: none;
-  opacity: 0.5;
-`;
-
-const LineContent = styled.span`
-  display: table-cell;
-`;
-
-interface HighlighterProps {
+interface QuestionHighlighterProps {
   code: string,
   language: Language,
   type: QuestionType,
@@ -40,13 +14,13 @@ interface HighlighterProps {
   fibRefs: React.MutableRefObject<React.RefObject<HTMLInputElement>[]>
 }
 
-export default function Highlighter(props: HighlighterProps) {
+export default function QuestionHighlighter(props: QuestionHighlighterProps) {
   const { code, language, format, type, fibRefs } = props;
 
   return <Highlight {...defaultProps} theme={vsDark} code={code.trim()} language={language}>
     {({ className, style, tokens, getLineProps, getTokenProps }) => {
       let current_fib_index = -1;
-      return <Pre className={className} style={style}>
+      return <pre className={className + " QuestionHighlighter-pre"} style={style}>
         {tokens.map((line, i) => {
           let line_contents = [];
           for (let i = 0; i < line.length; i++) {
@@ -58,14 +32,16 @@ export default function Highlighter(props: HighlighterProps) {
             }
             else line_contents.push(<span key={i} {...getTokenProps({ token, key: i })} />)
           }
-          return <Line key={i} {...getLineProps({ line, key: i })}>
-            <LineNo>{i + 1}</LineNo>
-            <LineContent>
+          const line_props = getLineProps({ line, key: i });
+          line_props.className = `${line_props.className} QuestionHighlighter-pre-line`
+          return <div key={i} {...line_props}>
+            <span className="QuestionHighlighter-pre-line-num">{i + 1}</span>
+            <span className="QuestionHighlighter-pre-content">
               {line_contents.map(line_content => line_content)}
-            </LineContent>
-          </Line>
+            </span>
+          </div>
         })}
-      </Pre>
+      </pre>
     }}
   </Highlight>
 };

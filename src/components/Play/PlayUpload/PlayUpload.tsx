@@ -27,25 +27,9 @@ const getColor = (props: DropzoneState) => {
 }
 
 const Container = styled.div`
-  font-size: 1.25em;
-  flex: 1;
-  display: flex;
-  align-items: center;
-  border-width: 2px;
-  border-radius: 2px;
   border-color: ${(props: DropzoneState) => getColor(props)};
-  border-style: solid;
   background-color: #404040;
   color: #bdbdbd;
-  font-weight: bold;
-  user-select: none;
-  cursor: pointer;
-  outline: none;
-  transition: border .24s ease-in-out;
-  height: 100%;
-  p{
-    margin: 5px 10px;
-  }
 ` as any;
 
 const trimLower = (data: string) => data.replace(/\s/g, '').toLowerCase();
@@ -103,16 +87,14 @@ export default function PlayUpload(props: PlayUploadProps) {
   const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({ onDrop, accept: [".yml", ".yaml", "application/json"] })
 
   return (
-    <div className="PlayUpload">
-      <Container {...getRootProps({ isDragActive, isDragAccept, isDragReject })}>
-        <input {...getInputProps()} />
-        {
-          isDragActive ?
-            <p>Drop the files here ...</p> :
-            <p>Drag 'n' drop some files here, or click to select files (.json or .yaml files)</p>
-        }
-      </Container>
-    </div>
+    <Container className="PlayUpload" {...getRootProps({ isDragActive, isDragAccept, isDragReject })}>
+      <input {...getInputProps()} />
+      {
+        isDragActive ?
+          <p>Drop the files here ...</p> :
+          <p>Drag 'n' drop some files here, or click to select files (.json or .yaml files)</p>
+      }
+    </Container>
   )
 }
 

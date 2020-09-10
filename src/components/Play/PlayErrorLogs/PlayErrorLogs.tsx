@@ -76,7 +76,7 @@ export default React.memo((props: ErrorLogProps) => {
   }, [quizzes]);
 
   return (
-    <div>
+    <div className="PlayErrorLogs">
       {error_logs.map((error_log, index) => <div key={error_log.message + index}>Error Found at {error_log.quiz}:{error_log.question_name}:{error_log.question_number} {error_log.message}</div>)}
     </div>
   );

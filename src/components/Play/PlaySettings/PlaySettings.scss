@@ -1,0 +1,21 @@
+.PlaySettings {
+  grid-area: 1/4/4/5;
+  &-options,
+  &-filters {
+    display: flex;
+    flex-direction: column;
+    background: #161616;
+    margin: 5px;
+    padding: 5px;
+    &-header {
+      font-weight: bold;
+      font-size: 1.25em;
+      margin: 5px auto;
+    }
+    &-content {
+      display: flex;
+      flex-direction: column;
+      margin: 5px 0px;
+    }
+  }
+}

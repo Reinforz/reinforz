@@ -9,7 +9,7 @@ import "./PlayTable.scss";
 function PlayTable(props: { quizzes: QuizInputFull[] }) {
   return (
     <div className="PlayTable">
-      <Table className="PlayTable-table PlayTable-table--difficulty" title={"QuestionDifficulty based Table"} accumulator={(header, contents) => {
+      <Table className="PlayTable--difficulty" title={"QuestionDifficulty based Table"} accumulator={(header, contents) => {
         switch (header) {
           case "Beginner":
           case "Intermediate":
@@ -31,7 +31,7 @@ function PlayTable(props: { quizzes: QuizInputFull[] }) {
         })
         return difficulty_map;
       })} headers={['title', "Beginner", "Intermediate", "Advanced"]} />
-      <Table className="PlayTable-table PlayTable-table--type" title={"Type based Table"} accumulator={(header, contents) => {
+      <Table className="PlayTable--type" title={"Type based Table"} accumulator={(header, contents) => {
         switch (header) {
           case "Snippet":
           case "MS":
@@ -55,7 +55,7 @@ function PlayTable(props: { quizzes: QuizInputFull[] }) {
         })
         return type_map;
       })} headers={['title', "Snippet", "MS", "MCQ", "FIB"]} />
-      <Table className="PlayTable-table PlayTable-table--time_allocated" title={"Time based Table"} accumulator={(header, contents) => {
+      <Table className="PlayTable--time_allocated" title={"Time based Table"} accumulator={(header, contents) => {
         if (header.match(/(title|_id)/)) return null;
         else return contents?.reduce((acc: number, cur: number) => acc + (cur ?? 0), 0);
       }} contents={props.quizzes.map(({ questions, title, _id }) => {

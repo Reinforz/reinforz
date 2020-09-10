@@ -1,0 +1,31 @@
+.QuestionOptions {
+  width: 100%;
+  &-container {
+    display: grid !important;
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    background: #1b1b1b;
+    &-item {
+      padding: 5px;
+      cursor: pointer;
+      margin: 5px;
+      width: 100%;
+      background: #353232;
+      border-radius: 5px;
+      color: #ddd;
+      display: flex;
+      justify-content: flex-start;
+      .MuiInputBase-root {
+        color: #ddd;
+      }
+      .MuiTypography-body1 {
+        font-size: 1.25rem;
+        font-weight: 500;
+      }
+      .MuiFormControlLabel-root {
+        width: 100%;
+        margin: 0px;
+      }
+    }
+  }
+}
