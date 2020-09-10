@@ -6,7 +6,10 @@ import { ReportFilterState, QuestionDifficulty, QuestionType } from "../../../ty
 import "./ReportFilter.scss";
 
 export default function (props: { children: any }) {
-  const [report_filter_state, setReportFilterState] = useState({ time_taken: [0, 60], verdict: 'mixed', hints_used: 'any', excluded_types: [], excluded_difficulty: [] } as ReportFilterState);
+  let REPORT_FILTERS: any = localStorage.getItem('REPORT_FILTERS');
+  REPORT_FILTERS = REPORT_FILTERS ? JSON.parse(REPORT_FILTERS) : undefined;
+
+  const [report_filter_state, setReportFilterState] = useState((REPORT_FILTERS ? REPORT_FILTERS : { time_taken: [0, 60], verdict: 'mixed', hints_used: 'any', excluded_types: [], excluded_difficulty: [] }) as ReportFilterState);
   return props.children({
     ReportFilter: <div className="ReportFilter">
       <FormGroup>

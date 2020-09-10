@@ -11,9 +11,11 @@ import { ReportExportProps } from "../../../types";
 
 export default function (props: ReportExportProps) {
   const { filtered_results, all_questions_map } = props;
+  let REPORT_EXPORT: any = localStorage.getItem('REPORT_EXPORT');
+  REPORT_EXPORT = REPORT_EXPORT ? JSON.parse(REPORT_EXPORT) : undefined;
 
-  const [export_type, setExportType] = useState('Original');
-  const [export_as, setExportAs] = useState('YAML');
+  const [export_type, setExportType] = useState((REPORT_EXPORT ? REPORT_EXPORT.export_type : 'Original') as string);
+  const [export_as, setExportAs] = useState((REPORT_EXPORT ? REPORT_EXPORT.export_as : 'YAML') as string);
   return (
     <div className="ReportExport">
       <FormControl >

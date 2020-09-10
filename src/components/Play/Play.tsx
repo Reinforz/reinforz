@@ -51,6 +51,8 @@ function Play() {
       {({ ListComponent, ListState, ListUtils }: ListRProps) => {
         return <PlaySettings setPlaying={setPlaying} selectedQuizzes={ListState.selectedItems}>
           {({ PlaySettingsComponent, PlaySettingsState }: IPlaySettingsRProps) => {
+            if (playing)
+              localStorage.setItem('PLAY_SETTINGS', JSON.stringify(PlaySettingsState))
             return <Fragment>
               {!playing ?
                 <div className="Play">
