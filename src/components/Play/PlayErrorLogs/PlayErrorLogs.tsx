@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import * as yup from "yup";
+import { useTheme, darken } from '@material-ui/core/styles';
 
 import { PlayErrorLogsProps, PlayErrorLog, PlayErrorLogState } from '../../../types';
 
 import "./PlayErrorLogs.scss";
+import { grey } from '@material-ui/core/colors';
 
 const common_schema = {
   question: yup.string().required(),
@@ -33,6 +35,8 @@ const OptionLessQuestionSchema = yup.object({
 })
 
 export default React.memo((props: PlayErrorLogsProps) => {
+  const theme = useTheme();
+
   const { quizzes } = props;
   const [error_logs, setErrorLogs] = useState([] as PlayErrorLogState);
   useEffect(() => {
@@ -66,7 +70,7 @@ export default React.memo((props: PlayErrorLogsProps) => {
   }, [quizzes]);
 
   return (
-    <div className="PlayErrorLogs">
+    <div className="PlayErrorLogs" style={{ backgroundColor: theme.palette.type === "dark" ? darken(grey[800], .25) : grey[200], color: theme.palette.text.secondary }}>
       {error_logs.map((error_log, index) => <div className="PlayErrorLogs-item" key={error_log.message + index}>Error Found at {error_log.quiz}:{error_log.question_name}:{error_log.question_number} {error_log.message}</div>)}
     </div>
   );

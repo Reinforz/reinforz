@@ -235,12 +235,6 @@ export interface ReportProps {
   all_questions_map: Record<string, QuestionInputFull>
 }
 
-export interface ExtendedTypeBackground extends TypeBackground {
-  dark: string[],
-  main: string[],
-  light: string[],
-}
-
 export interface ReportFilterState {
   time_taken: [number, number],
   verdict: boolean | 'mixed',

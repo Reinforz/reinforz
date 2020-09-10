@@ -4,12 +4,14 @@ import yaml from 'js-yaml';
 import shortid from "shortid"
 import { useDropzone, DropzoneState } from 'react-dropzone';
 import { useSnackbar, OptionsObject } from "notistack";
+import { useTheme } from '@material-ui/core/styles';
 
 import { generateQuestionInputConfigs } from '../../../utils/generateConfigs';
 
 import { PlayUploadProps } from '../../../types';
 
 import "./PlayUpload.scss";
+import { grey } from '@material-ui/core/colors';
 
 const getColor = (props: DropzoneState) => {
   if (props.isDragAccept)
@@ -23,8 +25,6 @@ const getColor = (props: DropzoneState) => {
 
 const Container = styled.div`
   border-color: ${(props: DropzoneState) => getColor(props)};
-  background-color: #404040;
-  color: #bdbdbd;
 ` as any;
 
 const trimLower = (data: string) => data.replace(/\s/g, '').toLowerCase();
@@ -37,6 +37,7 @@ const centerBottomErrorNotistack = {
 } as OptionsObject;
 
 export default function PlayUpload(props: PlayUploadProps) {
+  const theme = useTheme();
   const { items: quizzes, setItems: setQuizzes, setSelectedItems, selectedItems } = props;
   const { enqueueSnackbar } = useSnackbar();
   const prepareData = (QuizData: any) => {
@@ -82,7 +83,7 @@ export default function PlayUpload(props: PlayUploadProps) {
   const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({ onDrop, accept: [".yml", ".yaml", "application/json"] })
 
   return (
-    <Container className="PlayUpload" {...getRootProps({ isDragActive, isDragAccept, isDragReject })}>
+    <Container style={{ backgroundColor: theme.palette.type === "dark" ? grey[800] : grey[200], color: theme.palette.text.secondary }} className="PlayUpload" {...getRootProps({ isDragActive, isDragAccept, isDragReject })}>
       <input {...getInputProps()} />
       {
         isDragActive ?

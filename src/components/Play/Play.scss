@@ -3,13 +3,14 @@
   display: grid;
   grid-template-columns: 1.5fr 1.5fr 550px 1.5fr;
   grid-template-rows: 100px 1fr 30px;
+  grid-gap: 5px;
 
   .List {
     grid-area: 2/2/3/3;
     width: 100%;
     overflow: auto;
-    background: #1b1b1b;
     border-radius: 5px;
+    padding: 0px;
   }
 
   .Help {
@@ -19,10 +20,10 @@
     padding: 5px;
     a {
       text-decoration: none;
-      color: white;
-      background: black;
       padding: 0px 5px;
       cursor: pointer;
+      color: initial;
+      font-weight: bolder;
     }
   }
 }

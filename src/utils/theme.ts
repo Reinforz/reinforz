@@ -1,33 +1,64 @@
-import { createMuiTheme } from '@material-ui/core/styles';
-import { blue, red, pink } from '@material-ui/core/colors';
+import { createMuiTheme, lighten, darken } from '@material-ui/core/styles';
+import { grey } from '@material-ui/core/colors';
 
-import { ExtendedTypeBackground } from '../types';
+export default function (theme: "dark" | "light") {
+  if (theme === "dark")
+    return createMuiTheme({
+      palette: {
+        type: "dark",
+        text: {
+          primary: grey[100],
+          secondary: grey[200]
+        },
+      },
+      typography: {
+        "fontFamily": `"Fira Sans"`,
+        "fontSize": 14,
+      },
+      overrides: {
+        'MuiFormControlLabel': {
+          'label': {
+            color: lighten(grey[200], 0.25)
+          },
+        },
+        'MuiTableRow': {
+          'head': {
+            backgroundColor: darken(grey[700], .25)
+          }
+        }
+      }
+    });
+  else return createMuiTheme({
+    palette: {
+      type: "light",
+      text: {
+        primary: grey[900],
+        secondary: grey[800]
+      },
+    },
+    typography: {
+      "fontFamily": `"Fira Sans"`,
+      "fontSize": 14,
+    },
+    overrides: {
+      'MuiTableCell': {
+        stickyHeader: {
+          backgroundColor: grey[300],
+        }
+      }
+    }
+  });
+}
 
-export default createMuiTheme({
-  typography: {
-    "fontFamily": `"Fira Sans"`,
-    "fontSize": 14,
-    "fontWeightLight": 300,
-    "fontWeightRegular": 400,
-    "fontWeightMedium": 500
-  },
-  palette: {
-    primary: { main: blue['500'] },
-    secondary: { main: pink.A400 },
-    text: {
-      primary: '#ddd',
-      secondary: '#ccccccd1'
-    },
-    error: {
-      main: red[500],
-      dark: red['900']
-    },
-    background: {
-      paper: '#fff',
-      default: '#fafafa',
-      dark: ['#212121', '#424242', '#616161'],
-      main: ['#212121', '#424242', '#616161'],
-      light: ['#9e9e9e', '#bdbdbd', '#e0e0e0']
-    } as ExtendedTypeBackground
-  },
-});
+/*
+        ,
+        '.MuiTableRow-footer': {
+          backgroundColor: ColorMap['D(d.0,25)']
+        },
+        '.MuiTableRow-head .MuiTableCell-stickyHeader': {
+          backgroundColor: ColorMap['D(d.0,25)']
+        },
+        '.MuiTableCell-body': {
+          backgroundColor: ColorMap['D(d.0,15)']
+        }
+*/

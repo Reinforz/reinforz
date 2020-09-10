@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { Popover, SvgIconTypeMap, Typography } from '@material-ui/core';
 import { OverridableComponent } from '@material-ui/core/OverridableComponent';
 import { makeStyles } from '@material-ui/core/styles';
@@ -34,6 +34,12 @@ export default function (props: IconProps) {
     popoverText,
     icon,
   } = props;
+
+  useEffect(() => {
+    return () => {
+      setAnchorEl(null)
+    }
+  }, [])
 
   const Icon = React.createElement(icon, {
     className: `${className ? className + ' ' : ''}icon`,

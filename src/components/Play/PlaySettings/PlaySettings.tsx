@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Button, FormControlLabel, Checkbox, FormGroup, TextField, InputLabel } from "@material-ui/core";
 import { useSnackbar } from "notistack";
+import { useTheme, darken } from '@material-ui/core/styles';
+import { grey } from '@material-ui/core/colors';
 
 import { PlaySettingsProps, QuestionDifficulty, QuestionType, IPlaySettingsOptionsState, IPlaySettingsFiltersState } from "../../../types";
 
@@ -9,6 +11,7 @@ import "./PlaySettings.scss";
 function PlaySettings(props: PlaySettingsProps) {
   let PLAY_SETTINGS: any = localStorage.getItem('PLAY_SETTINGS');
   PLAY_SETTINGS = PLAY_SETTINGS ? JSON.parse(PLAY_SETTINGS) : undefined;
+  const theme = useTheme();
 
   const play_options_state = (PLAY_SETTINGS ? PLAY_SETTINGS.play_options : { shuffle_options: true, shuffle_quizzes: false, shuffle_questions: true, instant_feedback: true, flatten_mix: false }) as IPlaySettingsOptionsState;
   const play_filters_state = (PLAY_SETTINGS ? PLAY_SETTINGS.play_filters : { time_allocated: [15, 60], excluded_difficulty: [] as QuestionDifficulty[], excluded_types: [] as QuestionType[] }) as IPlaySettingsFiltersState;
@@ -23,9 +26,9 @@ function PlaySettings(props: PlaySettingsProps) {
         play_options,
         play_filters,
       },
-      PlaySettingsComponent: <div className="PlaySettings">
-        <div className="PlaySettings-header">Options</div>
-        <div className="PlaySettings-content">
+      PlaySettingsComponent: <div className="PlaySettings" style={{ backgroundColor: theme.palette.type === "dark" ? darken(grey[800], 0.25) : grey[200], color: theme.palette.text.primary }}>
+        <div className="PlaySettings-header PlaySettings-header--options" style={{ backgroundColor: theme.palette.type === "dark" ? grey[900] : grey[300], color: theme.palette.text.primary }}>Options</div>
+        <div className="PlaySettings-content PlaySettings-content--options">
           {Object.keys(play_options_state).map((key, index) => {
             let isDisabled = false;
             if (Boolean(key.match(/(shuffle_questions|shuffle_quizzes)/) && play_options.flatten_mix)) isDisabled = true;
@@ -47,16 +50,16 @@ function PlaySettings(props: PlaySettingsProps) {
             />
           })}
         </div>
-        <div className="Play-filters-header">
+        <div className="PlaySettings-header PlaySettings-header--filters" style={{ backgroundColor: theme.palette.type === "dark" ? grey[900] : grey[300], color: theme.palette.text.primary }}>
           Filters
         </div>
-        <div className="Play-filters-content">
+        <div className="PlaySettings-content PlaySettings-content--filters">
           <FormGroup>
             <TextField type="number" inputProps={{ max: play_filters.time_allocated[1], step: 5, min: 0 }} value={play_filters.time_allocated[0]} onChange={(e) => setPlayFiltersOptions({ ...play_filters, time_allocated: [(e.target as any).value, play_filters.time_allocated[1]] })} label="Time Allocated min" />
             <TextField type="number" inputProps={{ min: play_filters.time_allocated[0], step: 5, max: 60 }} value={play_filters.time_allocated[1]} onChange={(e) => setPlayFiltersOptions({ ...play_filters, time_allocated: [play_filters.time_allocated[0], (e.target as any).value,] })} label="Time Allocated max" />
           </FormGroup>
           <FormGroup>
-            <InputLabel>Exluded QuestionDifficulty</InputLabel>
+            <InputLabel>Exluded Difficulty</InputLabel>
             {['Beginner', 'Intermediate', 'Advanced'].map((difficulty, index) => <FormControlLabel key={difficulty + index} label={difficulty} control={<Checkbox checked={play_filters.excluded_difficulty.includes(difficulty as QuestionDifficulty)} name={difficulty} onChange={(e) => {
               if ((e.target as any).checked)
                 setPlayFiltersOptions({ ...play_filters, excluded_difficulty: play_filters.excluded_difficulty.concat(difficulty as QuestionDifficulty) });
@@ -74,7 +77,7 @@ function PlaySettings(props: PlaySettingsProps) {
               color="primary" />} />)}
           </FormGroup>
         </div>
-        <Button color="primary" style={{ margin: "0 auto", fontSize: "1rem" }} variant="contained" onClick={() => {
+        <Button className="PlaySettings-button" color="primary" variant="contained" onClick={() => {
           if (props.selectedQuizzes.length > 0)
             props.setPlaying(true)
           else enqueueSnackbar('You must have atleast one quiz selected', {
