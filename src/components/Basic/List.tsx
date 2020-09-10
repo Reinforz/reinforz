@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Checkbox } from "@material-ui/core";
 import CancelIcon from '@material-ui/icons/Cancel';
 
+import Icon from "../Basic/Icon"
+
 import { ListProps } from "../../types";
 
 import "./List.scss";
@@ -19,7 +21,7 @@ export default function (props: ListProps<Record<string, any>>) {
         {selectedItems.length}/{items.length}
         <div className="List-header-title">{header}</div>
         <div className="List-header-icons">
-          <CancelIcon className="List-header-icons--cancel" key={"deleteicon"} onClick={() => {
+          <Icon icon={CancelIcon} popoverText={`Remove ${selectedItems.length} selected items`} className={"List-header-icons--cancel"} key={"deleteicon"} onClick={() => {
             const remaining_items = items.filter(item => !selectedItems.includes(item._id))
             setItems(remaining_items);
             setSelectedItems([])
@@ -36,10 +38,10 @@ export default function (props: ListProps<Record<string, any>>) {
                 if ((e.target as any).checked) setSelectedItems([...selectedItems, _id])
                 else setSelectedItems(selectedItems.filter(item => item !== _id))
               }} checked={selectedItems.includes(_id)} value={_id} />
-              <CancelIcon className="List-content-item-icons--cancel" key={_id + "icon" + index} onClick={() => {
+              <Icon icon={CancelIcon} className="List-content-item-icons--cancel" key={_id + "icon" + index} onClick={() => {
                 setSelectedItems(selectedItems.filter(item => item !== _id))
                 setItems(items.filter(item => item._id !== _id));
-              }} />
+              }} popoverText="Delete this item" />
             </div>
             {fields.map((field, index) => <div className="List-content-item-field" key={_id + field + index}>{typeof field === "string" ? item[field] : field(item)}</div>)}
           </div>

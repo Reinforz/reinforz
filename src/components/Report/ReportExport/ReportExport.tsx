@@ -3,6 +3,8 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import { InputLabel, FormControl, Select, MenuItem } from '@material-ui/core';
 import { safeDump } from 'js-yaml';
 
+import Icon from '../../Basic/Icon';
+
 import download from "../../../utils/download";
 
 import { ReportExportProps } from "../../../types";
@@ -33,7 +35,7 @@ export default function (props: ReportExportProps) {
           {['YAML', 'JSON'].map(((type, index) => <MenuItem value={type} key={type + index}>{type}</MenuItem>))}
         </Select>
       </FormControl>
-      <GetAppIcon onClick={() => {
+      <Icon popoverText={`Export ${export_type} as ${export_as}`} icon={GetAppIcon} onClick={() => {
         export_as === "JSON" ? download(`$Report${Date.now()}.json`, JSON.stringify(export_type === "Report" ? filtered_results : filtered_results.map(filtered_result => all_questions_map[filtered_result.question_id]))) : download(`Report${Date.now()}.yaml`, safeDump(export_type === "Report" ? filtered_results : filtered_results.map(filtered_result => all_questions_map[filtered_result.question_id])));
       }} />
     </div>
