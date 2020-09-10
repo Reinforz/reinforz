@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import React from "react";
 
+import "./Stats.scss";
+
 interface StatsProps {
   item: any,
   stats: string[],

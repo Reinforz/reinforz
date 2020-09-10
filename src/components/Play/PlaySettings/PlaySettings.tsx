@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { Button, FormControlLabel, Checkbox, FormGroup, TextField, InputLabel } from "@material-ui/core";
-import { IPlayOptions, IPlayFilters, QuestionDifficulty, QuestionType } from "../types";
 import { useSnackbar } from "notistack";
+
+import { IPlayOptions, IPlayFilters, QuestionDifficulty, QuestionType } from "../../../types";
+
+import "./PlaySettings.scss";
 
 interface PlaySettingsProps {
   children: any,

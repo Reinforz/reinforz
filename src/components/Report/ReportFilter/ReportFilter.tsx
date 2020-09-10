@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { InputLabel, FormGroup, TextField, RadioGroup, FormControlLabel, Radio, Checkbox } from '@material-ui/core';
+
 import { ReportFilterState, QuestionDifficulty, QuestionType } from "../../../types";
+
+import "./ReportFilter.scss";
 
 export default function (props: { children: any }) {
   const [report_filter_state, setReportFilterState] = useState({ time_taken: [0, 60], verdict: 'mixed', hints_used: 'any', excluded_types: [], excluded_difficulty: [] } as ReportFilterState);
-
   return props.children({
     ReportFilter: <div className="Report-filter">
       <FormGroup>

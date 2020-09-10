@@ -3,8 +3,9 @@ import styled from "styled-components";
 import Highlight, { defaultProps, Language } from "prism-react-renderer";
 import vsDark from "prism-react-renderer/themes/vsDark";
 
-import "./Highlighter.scss";
-import { QuestionType, QuestionFormat } from "../types";
+import { QuestionType, QuestionFormat } from "../../../types";
+
+import "./QuestionHighlighter.scss";
 
 const Pre = styled.pre`
   text-align: left;

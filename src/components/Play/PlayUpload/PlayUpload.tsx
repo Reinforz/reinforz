@@ -4,9 +4,12 @@ import yaml from 'js-yaml';
 import shortid from "shortid"
 import { useDropzone, DropzoneState } from 'react-dropzone';
 import { useSnackbar, OptionsObject } from "notistack";
-import { generateQuestionInputConfigs } from '../utils/generateConfigs';
 
-interface UploadProps {
+import { generateQuestionInputConfigs } from '../../../utils/generateConfigs';
+
+import "./PlayUpload.scss";
+
+interface PlayUploadProps {
   setItems: (items: any[]) => any,
   items: any[],
   setSelectedItems: (items: any[]) => void,
@@ -54,7 +57,7 @@ const centerBottomErrorNotistack = {
   },
 } as OptionsObject;
 
-export default function Upload(props: UploadProps) {
+export default function PlayUpload(props: PlayUploadProps) {
   const { items: quizzes, setItems: setQuizzes, setSelectedItems, selectedItems } = props;
   const { enqueueSnackbar } = useSnackbar();
   const prepareData = (QuizData: any) => {
@@ -100,7 +103,7 @@ export default function Upload(props: UploadProps) {
   const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({ onDrop, accept: [".yml", ".yaml", "application/json"] })
 
   return (
-    <div className="Upload">
+    <div className="PlayUpload">
       <Container {...getRootProps({ isDragActive, isDragAccept, isDragReject })}>
         <input {...getInputProps()} />
         {

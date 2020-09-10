@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import * as yup from "yup";
 
-import { QuizInputFull } from '../types';
+import { QuizInputFull } from '../../../types';
+
+import "./PlayErrorLogs.scss";
 
 const common_schema = {
   question: yup.string().required(),

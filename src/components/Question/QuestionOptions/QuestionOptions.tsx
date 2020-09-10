@@ -1,7 +1,10 @@
 import React from 'react';
 import { RadioGroup, FormControlLabel, Radio, FormGroup, Checkbox, TextField } from "@material-ui/core";
 import styled from "styled-components";
-import { QuestionInputFull } from '../types';
+
+import { QuestionInputFull } from '../../../types';
+
+import "./QuestionOptions.scss";
 
 export const OptionsContainerItem = styled.div`
   padding: 5px;

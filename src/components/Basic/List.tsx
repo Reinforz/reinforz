@@ -3,6 +3,8 @@ import { Checkbox } from "@material-ui/core";
 import CancelIcon from '@material-ui/icons/Cancel';
 import styled from 'styled-components';
 
+import "./List.scss";
+
 const List = styled.div`
   display:flex;
   padding: 5px;

@@ -4,13 +4,14 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import { InputLabel, FormControl, Select, MenuItem } from '@material-ui/core';
 import { safeDump } from 'js-yaml';
 
-import "./Report.scss";
-
-import Table from "../Table";
-import download from "../../utils/download";
+import Table from "../Basic/Table";
 import ReportFilter from './ReportFilter/ReportFilter';
 
+import download from "../../utils/download";
+
 import { ReportFilterRProps, Result, QuestionInputFull } from "../../types";
+
+import "./Report.scss";
 
 const ReportContainer = styled.div`
   display: flex;

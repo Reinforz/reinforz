@@ -1,13 +1,17 @@
 import React, { useState, Fragment } from "react";
 import md5 from "md5";
-
-import { Result, IPlayOptions, QuestionInputFull } from "../types";
-import Question from "./Question";
-import Report from "./Report/Report";
-import Stats from "./Stats";
-import decideVerdict from "../utils/decideVerdict";
-import shuffle from "../utils/arrayShuffler";
 import shortid from "shortid";
+
+import Question from "../Question/Question";
+import Report from "../Report/Report";
+import Stats from "../Basic/Stats";
+
+import decideVerdict from "../../utils/decideVerdict";
+import shuffle from "../../utils/arrayShuffler";
+
+import { Result, IPlayOptions, QuestionInputFull } from "../../types";
+
+import "./Quiz.scss";
 
 interface QuizProps {
   all_questions: QuestionInputFull[],

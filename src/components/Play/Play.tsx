@@ -1,13 +1,13 @@
 import React, { useState, Fragment } from "react";
 
-import "./Play.scss";
+import PlayUpload from "./PlayUpload/PlayUpload";
+import Quiz from "../Quiz/Quiz";
+import PlaySettings from "./PlaySettings/PlaySettings";
+import PlayTable from "./PlayTable/PlayTable";
+import List from "../Basic/List";
+import PlayErrorLogs from "./PlayErrorLogs/PlayErrorLogs";
 
-import Upload from "./Upload";
-import Quiz from "./Quiz";
-import PlaySettings from "./PlaySettings";
-import QuestionStats from "./QuestionStats";
-import List from "./List";
-import shuffle from "../utils/arrayShuffler";
+import shuffle from "../../utils/arrayShuffler";
 
 import {
   QuestionInputFull,
@@ -17,8 +17,10 @@ import {
   ListRProps,
   QuestionDifficulty,
   QuestionType
-} from "../types";
-import ErrorLog from "./ErrorLog";
+} from "../../types";
+
+import "./Play.scss";
+
 
 function Play() {
   const [playing, setPlaying] = useState(false);
@@ -52,9 +54,9 @@ function Play() {
             return <Fragment>
               {!playing ?
                 <div className="Play">
-                  <QuestionStats quizzes={quizzes} />
-                  <ErrorLog quizzes={quizzes} />
-                  <Upload selectedItems={list_state.selectedItems} setSelectedItems={list_manips.setSelectedItems} setItems={setQuizzes} items={quizzes} />
+                  <PlayTable quizzes={quizzes} />
+                  <PlayErrorLogs quizzes={quizzes} />
+                  <PlayUpload selectedItems={list_state.selectedItems} setSelectedItems={list_manips.setSelectedItems} setItems={setQuizzes} items={quizzes} />
                   {ListComponent}
                   {PlaySettings}
                   <div className="Help">Need help, <a href="http://github.com/Devorein/reinforz" rel="noopener noreferrer" target="_blank">click here</a> to go to the doc</div>

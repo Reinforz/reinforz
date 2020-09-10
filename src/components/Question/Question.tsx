@@ -1,14 +1,14 @@
 import React, { useState, Fragment, useRef, createRef, RefObject } from "react";
 import { Button, TextField } from "@material-ui/core";
 
-import "./Question.scss";
+import Timer from "../Basic/Timer";
+import QuestionHighlighter from "./QuestionHighlighter/QuestionHighlighter";
+import QuestionOptions, { OptionsContainerItem } from "./QuestionOptions/QuestionOptions";
+import QuestionHints from "./QuestionHints/QuestionHints";
 
-import Timer from "./Timer";
-import Highlighter from "./Highlighter";
-import Options from "./Options";
-import Hints from "./Hints";
-import { OptionsContainerItem } from "./Options";
-import { TimerRProps, QuestionInputFull, HintsRProps } from "../types";
+import { TimerRProps, QuestionInputFull, HintsRProps } from "../../types";
+
+import "./Question.scss";
 
 interface QuestionProps {
   question: QuestionInputFull,
@@ -23,7 +23,7 @@ export default function Question(props: QuestionProps) {
   const fibRefs = useRef(Array(total_fibs).fill(0).map(() => createRef() as RefObject<HTMLInputElement>));
 
   const generateQuestion = () => {
-    if (format === "html") return <Highlighter format={format} fibRefs={fibRefs} type={type} language={"typescript"} code={question} />
+    if (format === "html") return <QuestionHighlighter format={format} fibRefs={fibRefs} type={type} language={"typescript"} code={question} />
     else {
       if (type !== "FIB") return <div className="Question-container-item Question-container-question">{question}</div>;
       else {
@@ -54,8 +54,8 @@ export default function Question(props: QuestionProps) {
   return <div className="Question-container">
     {image && <div className="Question-container-item Question-container-image"><img src={image} alt="question" /></div>}
     {generateQuestion()}
-    {type !== "FIB" && <Options changeOption={changeUserAnswers} user_answers={user_answers} question={props.question} />}
-    <Hints hints={hints}>
+    {type !== "FIB" && <QuestionOptions changeOption={changeUserAnswers} user_answers={user_answers} question={props.question} />}
+    <QuestionHints hints={hints}>
       {({ HintsButton, HintsList, hints_state }: HintsRProps) => {
         return <Fragment>
           <Timer timeout={time_allocated} onTimerEnd={() => {
@@ -74,6 +74,6 @@ export default function Question(props: QuestionProps) {
           {HintsList}
         </Fragment>
       }}
-    </Hints>
+    </QuestionHints>
   </div>
 }

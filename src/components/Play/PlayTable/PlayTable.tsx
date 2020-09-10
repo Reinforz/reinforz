@@ -1,12 +1,15 @@
 import React from 'react';
-import { QuizInputFull } from '../types';
 
-import Table from "./Table"
+import Table from "../../Basic/Table"
 
-function QuestionStats(props: { quizzes: QuizInputFull[] }) {
+import { QuizInputFull } from '../../../types';
+
+import "./PlayTable.scss";
+
+function PlayTable(props: { quizzes: QuizInputFull[] }) {
   return (
-    <div className="QuestionStats">
-      <Table className="QuestionStats-table QuestionStats-table--difficulty" title={"QuestionDifficulty based Table"} accumulator={(header, contents) => {
+    <div className="PlayTable">
+      <Table className="PlayTable-table PlayTable-table--difficulty" title={"QuestionDifficulty based Table"} accumulator={(header, contents) => {
         switch (header) {
           case "Beginner":
           case "Intermediate":
@@ -28,7 +31,7 @@ function QuestionStats(props: { quizzes: QuizInputFull[] }) {
         })
         return difficulty_map;
       })} headers={['title', "Beginner", "Intermediate", "Advanced"]} />
-      <Table className="QuestionStats-table QuestionStats-table--type" title={"Type based Table"} accumulator={(header, contents) => {
+      <Table className="PlayTable-table PlayTable-table--type" title={"Type based Table"} accumulator={(header, contents) => {
         switch (header) {
           case "Snippet":
           case "MS":
@@ -52,7 +55,7 @@ function QuestionStats(props: { quizzes: QuizInputFull[] }) {
         })
         return type_map;
       })} headers={['title', "Snippet", "MS", "MCQ", "FIB"]} />
-      <Table className="QuestionStats-table QuestionStats-table--time_allocated" title={"Time based Table"} accumulator={(header, contents) => {
+      <Table className="PlayTable-table PlayTable-table--time_allocated" title={"Time based Table"} accumulator={(header, contents) => {
         if (header.match(/(title|_id)/)) return null;
         else return contents?.reduce((acc: number, cur: number) => acc + (cur ?? 0), 0);
       }} contents={props.quizzes.map(({ questions, title, _id }) => {
@@ -71,4 +74,4 @@ function QuestionStats(props: { quizzes: QuizInputFull[] }) {
   );
 }
 
-export default QuestionStats;
+export default PlayTable;

@@ -4,12 +4,13 @@ import { ThemeProvider } from '@material-ui/styles';
 import { Switch, Route, BrowserRouter as Router, withRouter, RouteChildrenProps } from "react-router-dom";
 import { SnackbarProvider } from "notistack";
 
-import './index.css';
-import './App.css';
+import Play from "./components/Play/Play"
 
 import GlobalCss from './utils/globalCSS';
 import THEME from "./utils/theme";
-import Play from "./components/Play"
+
+import './index.css';
+import './App.css';
 
 const App = (props: RouteChildrenProps) => {
   const { location } = props;

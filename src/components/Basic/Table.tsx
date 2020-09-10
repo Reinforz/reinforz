@@ -13,6 +13,8 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { TableFooter } from '@material-ui/core';
 
+import "./Table.scss";
+
 const useStyles = makeStyles({
   th: {
     fontWeight: 'bolder',
@@ -91,7 +93,8 @@ export default function SimpleTable(props: TableProps<Record<string, any>>) {
   });
   return (
     <TableContainer component={Paper} className={`Table ${props.className || ''}`}>
-      <Table stickyHeader>
+      <Table stickyHeader
+      >
         <TableHead className="Table-header">
           <TableRow className={classes.tr}>
             {props.collapseContents && <TableCell className={classes.th}></TableCell>}
