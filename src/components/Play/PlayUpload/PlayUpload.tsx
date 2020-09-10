@@ -7,14 +7,9 @@ import { useSnackbar, OptionsObject } from "notistack";
 
 import { generateQuestionInputConfigs } from '../../../utils/generateConfigs';
 
-import "./PlayUpload.scss";
+import { PlayUploadProps } from '../../../types';
 
-interface PlayUploadProps {
-  setItems: (items: any[]) => any,
-  items: any[],
-  setSelectedItems: (items: any[]) => void,
-  selectedItems: string[]
-}
+import "./PlayUpload.scss";
 
 const getColor = (props: DropzoneState) => {
   if (props.isDragAccept)

@@ -13,6 +13,8 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { TableFooter } from '@material-ui/core';
 
+import { TableRowsProps, TableProps } from "../../types"
+
 import "./Table.scss";
 
 const useStyles = makeStyles({
@@ -34,24 +36,7 @@ const useStyles = makeStyles({
   }
 });
 
-interface Table_RowCommonProps {
-  collapseContents?: string[]
-  transformValue?: (header: string, content: any) => string
-  headers: string[],
-  title?: string
-}
-interface TableProps<Values> extends Table_RowCommonProps {
-  contents: Values[],
-  accumulator: (header: string, contents: Array<any>) => string | null | number,
-  className?: string
-}
-
-interface RowProps extends Table_RowCommonProps {
-  content: any,
-  index: number,
-}
-
-function Rows(props: RowProps) {
+function TableRows(props: TableRowsProps) {
   const [open, setOpen] = React.useState(false);
   const classes = useStyles();
   const { title, content, headers, index, collapseContents, transformValue } = props;
@@ -84,7 +69,7 @@ function Rows(props: RowProps) {
 }
 
 
-export default function SimpleTable(props: TableProps<Record<string, any>>) {
+export default function (props: TableProps<Record<string, any>>) {
   const classes = useStyles();
   const accumulator: Record<string, Array<any>> = {};
   props.headers.forEach(header => {
@@ -103,7 +88,7 @@ export default function SimpleTable(props: TableProps<Record<string, any>>) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.contents.map((content, index) => <Rows transformValue={props.transformValue} collapseContents={props.collapseContents} key={content._id} content={content} headers={props.headers} index={index} />)}
+          {props.contents.map((content, index) => <TableRows transformValue={props.transformValue} collapseContents={props.collapseContents} key={content._id} content={content} headers={props.headers} index={index} />)}
         </TableBody>
         <TableFooter>
           <TableRow>

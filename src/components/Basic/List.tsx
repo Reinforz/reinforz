@@ -2,16 +2,9 @@ import React, { useState } from "react";
 import { Checkbox } from "@material-ui/core";
 import CancelIcon from '@material-ui/icons/Cancel';
 
-import "./List.scss";
+import { ListProps } from "../../types";
 
-interface ListProps<T> {
-  items: T[],
-  fields: (string | ((data: T) => string))[],
-  icons?: ((index: number, _id: string) => void)[],
-  header: string,
-  setItems: (data: T[]) => void,
-  children: any
-}
+import "./List.scss";
 
 export default function (props: ListProps<Record<string, any>>) {
   const { children, items, setItems, header, fields, icons } = props;
@@ -53,10 +46,10 @@ export default function (props: ListProps<Record<string, any>>) {
         }) : <div style={{ fontSize: "1.25em", fontWeight: "bold", position: "absolute", transform: "translate(-50%,-50%)", top: "50%", left: "50%" }}>No quizzes uploaded</div>}
       </div>
     </div>,
-    list_state: {
+    ListState: {
       selectedItems
     },
-    list_manips: {
+    ListUtils: {
       setSelectedItems
     }
   })

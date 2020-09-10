@@ -5,12 +5,7 @@ import { safeDump } from 'js-yaml';
 
 import download from "../../../utils/download";
 
-import { Result, QuestionInputFull } from "../../../types";
-
-interface ReportExportProps {
-  filtered_results: Result[],
-  all_questions_map: Record<string, QuestionInputFull>
-}
+import { ReportExportProps } from "../../../types";
 
 export default function (props: ReportExportProps) {
   const { filtered_results, all_questions_map } = props;

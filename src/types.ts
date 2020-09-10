@@ -1,5 +1,129 @@
-import { ReactNode } from "react";
 import { TypeBackground } from "@material-ui/core/styles/createPalette";
+import { Language } from "prism-react-renderer";
+
+// Basic Components
+export interface ListProps<T> {
+  items: T[],
+  fields: (string | ((data: T) => string))[],
+  icons?: ((index: number, _id: string) => void)[],
+  header: string,
+  setItems: (data: T[]) => void,
+  children: any
+}
+
+export interface ListState {
+  selectedItems: string[]
+}
+
+export interface ListUtils {
+  setSelectedItems: (items: string[]) => void
+}
+
+export interface ListRProps {
+  ListComponent: JSX.Element,
+  ListState: ListState,
+  ListUtils: ListUtils
+}
+
+export interface StatsProps {
+  item: any,
+  stats: string[],
+};
+
+interface Table_RowsCommonProps {
+  collapseContents?: string[]
+  transformValue?: (header: string, content: any) => string
+  headers: string[],
+  title?: string
+}
+
+export interface TableProps<Values> extends Table_RowsCommonProps {
+  contents: Values[],
+  accumulator: (header: string, contents: Array<any>) => string | null | number,
+  className?: string
+}
+
+export interface TableRowsProps extends Table_RowsCommonProps {
+  content: any,
+  index: number,
+}
+
+export interface TimerProps {
+  timeout: number,
+  onTimerEnd: any,
+  children: any
+}
+
+export interface TimerState {
+  timeout: number,
+  timer: undefined | number
+}
+
+export interface TimerUtils {
+  clearInterval: (shouldClearInterval: boolean) => void
+}
+
+export interface TimerRProps {
+  TimerComponent: JSX.Element,
+  TimerState: TimerState,
+  TimerUtils: TimerUtils
+}
+
+export interface PlayErrorLogsProps {
+  quizzes: QuizInputFull[]
+}
+
+export interface PlayErrorLog {
+  quiz: string,
+  question_name: string,
+  question_number: number,
+  message: string
+}
+
+export type PlayErrorLogState = PlayErrorLog[];
+
+export interface PlaySettingsProps {
+  children: any,
+  selectedQuizzes: string[],
+  setPlaying: (isPlaying: boolean) => any
+}
+
+export interface IPlaySettingsOptionsState {
+  shuffle_options: boolean,
+  shuffle_quizzes: boolean,
+  shuffle_questions: boolean,
+  instant_feedback: boolean,
+  flatten_mix: boolean,
+}
+
+export interface IPlaySettingsFiltersState {
+  time_allocated: [number, number],
+  excluded_difficulty: QuestionDifficulty[],
+  excluded_types: QuestionType[],
+}
+
+export interface IPlaySettingsState {
+  play_options: IPlaySettingsOptionsState,
+  play_filters: IPlaySettingsFiltersState,
+}
+
+export interface IPlaySettingsRProps {
+  PlaySettingsComponent: JSX.Element,
+  PlaySettingsState: IPlaySettingsState,
+}
+
+export interface PlayUploadProps {
+  setItems: (items: any[]) => any,
+  items: any[],
+  setSelectedItems: (items: any[]) => void,
+  selectedItems: string[]
+}
+
+export interface QuestionProps {
+  question: QuestionInputFull,
+  changeCounter: (user_answers: string[], time_taken: number, hints_used: number) => void,
+  hasEnd: boolean,
+};
 
 export interface QuizInputPartial {
   title: string,
@@ -56,6 +180,39 @@ export interface QuestionInputFull extends Required<QuestionInput>, QuestionInpu
 export type QuestionInputsPartial = QuestionInputPartial[];
 export type QuestionInputsFull = QuestionInputFull[];
 
+export interface QuestionHighlighterProps {
+  code: string,
+  language: Language,
+  type: QuestionType,
+  format: QuestionFormat,
+  fibRefs: React.MutableRefObject<React.RefObject<HTMLInputElement>[]>
+}
+
+export interface QuestionHintsProps {
+  hints: string[],
+  children: any
+}
+
+export interface IQuestionHintsState {
+  hints_used: number
+}
+
+export interface QuestionHintsRProps {
+  QuestionHintsComponent: JSX.Element,
+  QuestionHintsState: IQuestionHintsState
+}
+
+export interface QuestionOptionsProps {
+  changeOption: (val: string[]) => any,
+  user_answers: string[],
+  question: QuestionInputFull,
+}
+
+export interface QuizProps {
+  all_questions: QuestionInputFull[],
+  play_options: IPlaySettingsOptionsState
+}
+
 export interface Result {
   user_answers: string[],
   verdict: boolean,
@@ -73,58 +230,15 @@ export interface Result {
   question_id: string,
 }
 
-export interface TimerRProps {
-  timer: ReactNode,
-  currentTime: number,
-  clearInterval: any
-}
-
-export interface IPlayOptions {
-  shuffle_options: boolean,
-  shuffle_quizzes: boolean,
-  shuffle_questions: boolean,
-  instant_feedback: boolean,
-  flatten_mix: boolean,
-}
-
-export interface IPlayFilters {
-  time_allocated: [number, number],
-  excluded_difficulty: QuestionDifficulty[],
-  excluded_types: QuestionType[],
-}
-
-export interface IPlaySettingsState {
-  play_options: IPlayOptions,
-  play_filters: IPlayFilters,
-}
-
-export interface PlaySettingsRProps {
-  PlaySettings: JSX.Element,
-  play_state: IPlaySettingsState,
+export interface ReportProps {
+  results: Result[],
+  all_questions_map: Record<string, QuestionInputFull>
 }
 
 export interface ExtendedTypeBackground extends TypeBackground {
   dark: string[],
   main: string[],
   light: string[],
-}
-
-export interface HintsRProps {
-  hints_state: {
-    hints_used: number
-  },
-  HintsButton: JSX.Element,
-  HintsList: JSX.Element,
-}
-
-export interface ListRProps {
-  ListComponent: JSX.Element,
-  list_state: {
-    selectedItems: string[]
-  },
-  list_manips: {
-    setSelectedItems: (items: any[]) => void
-  }
 }
 
 export interface ReportFilterState {
@@ -138,4 +252,9 @@ export interface ReportFilterState {
 export interface ReportFilterRProps {
   report_filter_state: ReportFilterState,
   ReportFilter: JSX.Element
+}
+
+export interface ReportExportProps {
+  filtered_results: Result[],
+  all_questions_map: Record<string, QuestionInputFull>
 }

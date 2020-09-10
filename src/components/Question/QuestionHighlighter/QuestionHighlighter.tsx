@@ -1,18 +1,11 @@
 import React from "react";
-import Highlight, { defaultProps, Language } from "prism-react-renderer";
+import Highlight, { defaultProps } from "prism-react-renderer";
 import vsDark from "prism-react-renderer/themes/vsDark";
 
-import { QuestionType, QuestionFormat } from "../../../types";
+import { QuestionHighlighterProps } from "../../../types";
 
 import "./QuestionHighlighter.scss";
 
-interface QuestionHighlighterProps {
-  code: string,
-  language: Language,
-  type: QuestionType,
-  format: QuestionFormat,
-  fibRefs: React.MutableRefObject<React.RefObject<HTMLInputElement>[]>
-}
 
 export default function QuestionHighlighter(props: QuestionHighlighterProps) {
   const { code, language, format, type, fibRefs } = props;

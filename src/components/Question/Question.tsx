@@ -6,15 +6,9 @@ import QuestionHighlighter from "./QuestionHighlighter/QuestionHighlighter";
 import QuestionOptions from "./QuestionOptions/QuestionOptions";
 import QuestionHints from "./QuestionHints/QuestionHints";
 
-import { TimerRProps, QuestionInputFull, HintsRProps } from "../../types";
+import { TimerRProps, QuestionProps, QuestionHintsRProps } from "../../types";
 
 import "./Question.scss";
-
-interface QuestionProps {
-  question: QuestionInputFull,
-  changeCounter: (user_answers: string[], time_taken: number, hints_used: number) => void,
-  hasEnd: boolean,
-};
 
 export default function Question(props: QuestionProps) {
   const { hasEnd, question: { question, index, _id, type, image, format, time_allocated, hints } } = props;
@@ -56,22 +50,21 @@ export default function Question(props: QuestionProps) {
     {generateQuestion()}
     {type !== "FIB" && <QuestionOptions changeOption={changeUserAnswers} user_answers={user_answers} question={props.question} />}
     <QuestionHints hints={hints}>
-      {({ HintsButton, HintsList, hints_state }: HintsRProps) => {
+      {({ QuestionHintsComponent, QuestionHintsState }: QuestionHintsRProps) => {
         return <Fragment>
           <Timer timeout={time_allocated} onTimerEnd={() => {
-            props.changeCounter(type !== "FIB" ? user_answers.filter(user_answer => user_answer !== "") : fibRefs.current.map(fibRef => fibRef?.current?.value ?? ""), time_allocated, hints_state.hints_used)
+            props.changeCounter(type !== "FIB" ? user_answers.filter(user_answer => user_answer !== "") : fibRefs.current.map(fibRef => fibRef?.current?.value ?? ""), time_allocated, QuestionHintsState.hints_used)
           }}>
-            {(timerprops: TimerRProps) => {
+            {({ TimerComponent, TimerState }: TimerRProps) => {
               return <Fragment>
-                {timerprops.timer}
+                {TimerComponent}
                 <Button className="Quiz-container-button" variant="contained" color="primary" onClick={() => {
-                  props.changeCounter(type !== "FIB" ? user_answers.filter(user_answer => user_answer !== "") : fibRefs.current.map(fibRef => fibRef?.current?.value ?? ""), time_allocated - timerprops.currentTime, hints_state.hints_used)
+                  props.changeCounter(type !== "FIB" ? user_answers.filter(user_answer => user_answer !== "") : fibRefs.current.map(fibRef => fibRef?.current?.value ?? ""), time_allocated - TimerState.timeout, QuestionHintsState.hints_used)
                 }}>{!hasEnd ? "Next" : "Report"}</Button>
               </Fragment>
             }}
           </Timer>
-          {HintsButton}
-          {HintsList}
+          {QuestionHintsComponent}
         </Fragment>
       }}
     </QuestionHints>

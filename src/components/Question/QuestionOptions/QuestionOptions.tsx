@@ -1,15 +1,9 @@
 import React from 'react';
 import { RadioGroup, FormControlLabel, Radio, FormGroup, Checkbox, TextField } from "@material-ui/core";
 
-import { QuestionInputFull } from '../../../types';
+import { QuestionOptionsProps } from '../../../types';
 
 import "./QuestionOptions.scss";
-
-interface QuestionOptionsProps {
-  changeOption: (val: string[]) => any,
-  user_answers: string[],
-  question: QuestionInputFull,
-}
 
 export default function (props: QuestionOptionsProps) {
   const { changeOption, user_answers, question: { index, _id, type, options } } = props;

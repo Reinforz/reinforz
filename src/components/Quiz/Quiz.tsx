@@ -9,14 +9,9 @@ import Stats from "../Basic/Stats";
 import decideVerdict from "../../utils/decideVerdict";
 import shuffle from "../../utils/arrayShuffler";
 
-import { Result, IPlayOptions, QuestionInputFull } from "../../types";
+import { Result, QuizProps, QuestionInputFull } from "../../types";
 
 import "./Quiz.scss";
-
-interface QuizProps {
-  all_questions: QuestionInputFull[],
-  play_options: IPlayOptions
-}
 
 export default function Quiz(props: QuizProps) {
   const [current_question_index, setCurrentQuestion] = useState(0);

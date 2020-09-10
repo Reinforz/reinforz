@@ -1,17 +1,8 @@
 import React from "react";
 
+import { TimerProps, TimerState, TimerRProps } from "../../types";
+
 import "./Timer.scss";
-
-interface TimerProps {
-  timeout: number,
-  onTimerEnd: any,
-  children: any
-}
-
-interface TimerState {
-  timeout: number,
-  timer: undefined | number
-}
 
 export default class Timer extends React.Component<TimerProps, TimerState> {
   state = {
@@ -58,9 +49,11 @@ export default class Timer extends React.Component<TimerProps, TimerState> {
   render() {
     const { timeout } = this.state;
     return this.props.children({
-      timer: <div className="Timer">{this.displayTime(timeout)}</div>,
-      currentTime: timeout,
-      clearInterval: this.clearInterval
-    });
+      TimerComponent: <div className="Timer">{this.displayTime(timeout)}</div>,
+      TimerState: this.state,
+      TimerUtils: {
+        clearInterval: this.clearInterval
+      }
+    } as TimerRProps);
   }
 }

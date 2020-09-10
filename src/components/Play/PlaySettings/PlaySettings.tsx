@@ -2,31 +2,25 @@ import React, { useState } from "react";
 import { Button, FormControlLabel, Checkbox, FormGroup, TextField, InputLabel } from "@material-ui/core";
 import { useSnackbar } from "notistack";
 
-import { IPlayOptions, IPlayFilters, QuestionDifficulty, QuestionType } from "../../../types";
+import { PlaySettingsProps, QuestionDifficulty, QuestionType, IPlaySettingsOptionsState, IPlaySettingsFiltersState } from "../../../types";
 
 import "./PlaySettings.scss";
 
-interface PlaySettingsProps {
-  children: any,
-  selectedQuizzes: string[],
-  setPlaying: (isPlaying: boolean) => any
-}
-
 function PlaySettings(props: PlaySettingsProps) {
-  const play_options_state = { shuffle_options: true, shuffle_quizzes: false, shuffle_questions: true, instant_feedback: true, flatten_mix: false };
-  const play_filters_state = { time_allocated: [15, 60], excluded_difficulty: [] as QuestionDifficulty[], excluded_types: [] as QuestionType[] } as IPlayFilters;
-  type play_options_keys = keyof IPlayOptions;
-  const [play_options, setPlayOptions] = useState(play_options_state as IPlayOptions);
-  const [play_filters, setPlayFilters] = useState(play_filters_state);
+  const play_options_state = { shuffle_options: true, shuffle_quizzes: false, shuffle_questions: true, instant_feedback: true, flatten_mix: false } as IPlaySettingsOptionsState;
+  const play_filters_state = { time_allocated: [15, 60], excluded_difficulty: [] as QuestionDifficulty[], excluded_types: [] as QuestionType[] } as IPlaySettingsFiltersState;
+  const [play_options, setPlaySettingsOptions] = useState(play_options_state);
+  const [play_filters, setPlayFiltersOptions] = useState(play_filters_state);
   const { enqueueSnackbar } = useSnackbar();
+  type play_options_keys = keyof IPlaySettingsOptionsState;
 
   return (
     props.children({
-      play_state: {
+      PlaySettingsState: {
         play_options,
         play_filters,
       },
-      PlaySettings: <div className="PlaySettings">
+      PlaySettingsComponent: <div className="PlaySettings">
         <div className="PlaySettings-header">Options</div>
         <div className="PlaySettings-content">
           {Object.keys(play_options_state).map((key, index) => {
@@ -39,8 +33,8 @@ function PlaySettings(props: PlaySettingsProps) {
                   disabled={isDisabled}
                   checked={play_options[key as play_options_keys]}
                   onChange={(event, checked) => {
-                    if (key === "flatten_mix") setPlayOptions({ ...play_options, [event.target.name]: checked, shuffle_questions: checked, shuffle_quizzes: checked })
-                    else setPlayOptions({ ...play_options, [event.target.name]: checked })
+                    if (key === "flatten_mix") setPlaySettingsOptions({ ...play_options, [event.target.name]: checked, shuffle_questions: checked, shuffle_quizzes: checked })
+                    else setPlaySettingsOptions({ ...play_options, [event.target.name]: checked })
                   }}
                   name={key}
                   color="primary"
@@ -55,15 +49,15 @@ function PlaySettings(props: PlaySettingsProps) {
         </div>
         <div className="Play-filters-content">
           <FormGroup>
-            <TextField type="number" inputProps={{ max: play_filters.time_allocated[1], step: 5, min: 0 }} value={play_filters.time_allocated[0]} onChange={(e) => setPlayFilters({ ...play_filters, time_allocated: [(e.target as any).value, play_filters.time_allocated[1]] })} label="Time Allocated min" />
-            <TextField type="number" inputProps={{ min: play_filters.time_allocated[0], step: 5, max: 60 }} value={play_filters.time_allocated[1]} onChange={(e) => setPlayFilters({ ...play_filters, time_allocated: [play_filters.time_allocated[0], (e.target as any).value,] })} label="Time Allocated max" />
+            <TextField type="number" inputProps={{ max: play_filters.time_allocated[1], step: 5, min: 0 }} value={play_filters.time_allocated[0]} onChange={(e) => setPlayFiltersOptions({ ...play_filters, time_allocated: [(e.target as any).value, play_filters.time_allocated[1]] })} label="Time Allocated min" />
+            <TextField type="number" inputProps={{ min: play_filters.time_allocated[0], step: 5, max: 60 }} value={play_filters.time_allocated[1]} onChange={(e) => setPlayFiltersOptions({ ...play_filters, time_allocated: [play_filters.time_allocated[0], (e.target as any).value,] })} label="Time Allocated max" />
           </FormGroup>
           <FormGroup>
             <InputLabel>Exluded QuestionDifficulty</InputLabel>
             {['Beginner', 'Intermediate', 'Advanced'].map((difficulty, index) => <FormControlLabel key={difficulty + index} label={difficulty} control={<Checkbox checked={play_filters.excluded_difficulty.includes(difficulty as QuestionDifficulty)} name={difficulty} onChange={(e) => {
               if ((e.target as any).checked)
-                setPlayFilters({ ...play_filters, excluded_difficulty: play_filters.excluded_difficulty.concat(difficulty as QuestionDifficulty) });
-              else setPlayFilters({ ...play_filters, excluded_difficulty: play_filters.excluded_difficulty.filter(excluded_difficulty => excluded_difficulty !== difficulty) })
+                setPlayFiltersOptions({ ...play_filters, excluded_difficulty: play_filters.excluded_difficulty.concat(difficulty as QuestionDifficulty) });
+              else setPlayFiltersOptions({ ...play_filters, excluded_difficulty: play_filters.excluded_difficulty.filter(excluded_difficulty => excluded_difficulty !== difficulty) })
             }}
               color="primary" />} />)}
           </FormGroup>
@@ -71,8 +65,8 @@ function PlaySettings(props: PlaySettingsProps) {
             <InputLabel>Exluded Type</InputLabel>
             {['FIB', 'MS', 'MCQ', "Snippet"].map((type, index) => <FormControlLabel key={type + index} label={type} control={<Checkbox checked={play_filters.excluded_types.includes(type as QuestionType)} name={type} onChange={(e) => {
               if ((e.target as any).checked)
-                setPlayFilters({ ...play_filters, excluded_types: play_filters.excluded_types.concat(type as QuestionType) });
-              else setPlayFilters({ ...play_filters, excluded_types: play_filters.excluded_types.filter(excluded_type => excluded_type !== type) })
+                setPlayFiltersOptions({ ...play_filters, excluded_types: play_filters.excluded_types.concat(type as QuestionType) });
+              else setPlayFiltersOptions({ ...play_filters, excluded_types: play_filters.excluded_types.filter(excluded_type => excluded_type !== type) })
             }}
               color="primary" />} />)}
           </FormGroup>

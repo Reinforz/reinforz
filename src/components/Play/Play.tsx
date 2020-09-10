@@ -11,12 +11,12 @@ import shuffle from "../../utils/arrayShuffler";
 
 import {
   QuestionInputFull,
-  IPlaySettingsState,
   QuizInputFull,
-  PlaySettingsRProps,
+  IPlaySettingsRProps,
   ListRProps,
   QuestionDifficulty,
-  QuestionType
+  QuestionType,
+  IPlaySettingsState,
 } from "../../types";
 
 import "./Play.scss";
@@ -48,20 +48,20 @@ function Play() {
 
   return (
     <List header="Uploaded Quizzes" items={quizzes} setItems={setQuizzes} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]}>
-      {({ ListComponent, list_state, list_manips }: ListRProps) => {
-        return <PlaySettings setPlaying={setPlaying} selectedQuizzes={list_state.selectedItems}>
-          {({ PlaySettings, play_state }: PlaySettingsRProps) => {
+      {({ ListComponent, ListState, ListUtils }: ListRProps) => {
+        return <PlaySettings setPlaying={setPlaying} selectedQuizzes={ListState.selectedItems}>
+          {({ PlaySettingsComponent, PlaySettingsState }: IPlaySettingsRProps) => {
             return <Fragment>
               {!playing ?
                 <div className="Play">
                   <PlayTable quizzes={quizzes} />
                   <PlayErrorLogs quizzes={quizzes} />
-                  <PlayUpload selectedItems={list_state.selectedItems} setSelectedItems={list_manips.setSelectedItems} setItems={setQuizzes} items={quizzes} />
+                  <PlayUpload selectedItems={ListState.selectedItems} setSelectedItems={ListUtils.setSelectedItems} setItems={setQuizzes} items={quizzes} />
                   {ListComponent}
-                  {PlaySettings}
+                  {PlaySettingsComponent}
                   <div className="Help">Need help, <a href="http://github.com/Devorein/reinforz" rel="noopener noreferrer" target="_blank">click here</a> to go to the doc</div>
                 </div>
-                : <Quiz play_options={play_state.play_options} all_questions={renderQuiz(list_state.selectedItems, play_state)} />}
+                : <Quiz play_options={PlaySettingsState.play_options} all_questions={renderQuiz(ListState.selectedItems, PlaySettingsState)} />}
             </Fragment>
           }}
         </PlaySettings>

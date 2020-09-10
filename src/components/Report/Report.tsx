@@ -4,14 +4,9 @@ import Table from "../Basic/Table";
 import ReportFilter from './ReportFilter/ReportFilter';
 import ReportExport from './ReportExport/ReportExport';
 
-import { ReportFilterRProps, Result, QuestionInputFull } from "../../types";
+import { ReportFilterRProps, ReportProps } from "../../types";
 
 import "./Report.scss";
-
-interface ReportProps {
-  results: Result[],
-  all_questions_map: Record<string, QuestionInputFull>
-}
 
 export default function (props: ReportProps) {
   const transformValue = (header: string, content: any) => {

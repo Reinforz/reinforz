@@ -1,11 +1,8 @@
 import React from "react";
 
-import "./Stats.scss";
+import { StatsProps } from "../../types";
 
-interface StatsProps {
-  item: any,
-  stats: string[],
-};
+import "./Stats.scss";
 
 function Stats(props: StatsProps) {
   const { stats, item } = props;

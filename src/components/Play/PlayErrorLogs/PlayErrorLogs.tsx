@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import * as yup from "yup";
 
-import { QuizInputFull } from '../../../types';
+import { PlayErrorLogsProps, PlayErrorLog, PlayErrorLogState } from '../../../types';
 
 import "./PlayErrorLogs.scss";
 
@@ -22,6 +22,7 @@ const common_schema = {
   title: yup.string().required(),
   subject: yup.string().required(),
 }
+
 const OptionedQuestionSchema = yup.object({
   options: yup.array().of(yup.string()).required().min(2),
   ...common_schema
@@ -31,22 +32,11 @@ const OptionLessQuestionSchema = yup.object({
   ...common_schema
 })
 
-interface ErrorLogProps {
-  quizzes: QuizInputFull[]
-}
-
-interface ErrorLog {
-  quiz: string,
-  question_name: string,
-  question_number: number,
-  message: string
-}
-
-export default React.memo((props: ErrorLogProps) => {
+export default React.memo((props: PlayErrorLogsProps) => {
   const { quizzes } = props;
-  const [error_logs, setErrorLogs] = useState([] as ErrorLog[]);
+  const [error_logs, setErrorLogs] = useState([] as PlayErrorLogState);
   useEffect(() => {
-    const error_promises: Promise<ErrorLog>[] = [];
+    const error_promises: Promise<PlayErrorLog>[] = [];
     quizzes.forEach(quiz => {
       quiz.questions.forEach((question, index) => {
         error_promises.push(new Promise((resolve,) => {
@@ -70,14 +60,14 @@ export default React.memo((props: ErrorLogProps) => {
       })
     });
     if (error_promises.length !== 0)
-      Promise.all(error_promises).then((errors: ErrorLog[]) => {
+      Promise.all(error_promises).then((errors: PlayErrorLog[]) => {
         setErrorLogs(errors.filter(error => error))
       })
   }, [quizzes]);
 
   return (
     <div className="PlayErrorLogs">
-      {error_logs.map((error_log, index) => <div key={error_log.message + index}>Error Found at {error_log.quiz}:{error_log.question_name}:{error_log.question_number} {error_log.message}</div>)}
+      {error_logs.map((error_log, index) => <div className="PlayErrorLogs-item" key={error_log.message + index}>Error Found at {error_log.quiz}:{error_log.question_name}:{error_log.question_number} {error_log.message}</div>)}
     </div>
   );
 }
