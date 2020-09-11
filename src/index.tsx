@@ -19,8 +19,14 @@ const Index = () => {
       <SnackbarProvider maxSnack={4}>
         <div className="App">
           <div className="Theme-icons" style={{ position: "absolute" }}>
-            <Icon style={{ display: theme === "light" ? "initial" : 'none', fill: "black", fontSize: '1.5em', padding: 2, cursor: 'pointer' }} popoverText={`Click to change theme to dark theme`} icon={BsSun} onClick={(e) => setTheme("dark")} />
-            <Icon style={{ display: theme === "dark" ? "initial" : 'none', fill: "white", fontSize: '1.5em', padding: 2, cursor: 'pointer' }} popoverText={`Click to change theme to light theme`} icon={BsMoon} onClick={(e) => setTheme("light")} />
+            <Icon style={{ display: theme === "light" ? "initial" : 'none', fill: "black", fontSize: '1.5em', padding: 2, cursor: 'pointer' }} popoverText={`Click to change theme to dark theme`} icon={BsSun} onClick={(e) => {
+              localStorage.setItem("THEME", "dark");
+              setTheme("dark")
+            }} />
+            <Icon style={{ display: theme === "dark" ? "initial" : 'none', fill: "white", fontSize: '1.5em', padding: 2, cursor: 'pointer' }} popoverText={`Click to change theme to light theme`} icon={BsMoon} onClick={(e) => {
+              localStorage.setItem("THEME", "light");
+              setTheme("light")
+            }} />
           </div>
           <Switch>
             <Route path="/" render={() => <Play />} />
