@@ -46,6 +46,34 @@ function Play() {
     });
 
     return play_options.flatten_mix ? shuffle(all_questions) : all_questions;
+    /* return [
+      {
+        "question": `
+        console.log
+        `,
+        "answers": [
+          "log",
+        ],
+        "time_allocated": 300,
+        "_id": "5ckxRbMeyb",
+        "format": "html",
+        "weight": 1,
+        "add_to_score": true,
+        "difficulty": "Beginner",
+        "correct_answer_message": "Congrats on the correct answer",
+        "incorrect_answer_message": "Try again",
+        "explanation": "No explanation available",
+        "hints": ["Hint 1", "Hint 2", "Hint 3"],
+        "type": "FIB",
+        "quiz": "Quiz 1",
+        "subject": "Dart",
+        "total": 1,
+        "index": 1,
+        "image": "",
+        changeCounter: () => { },
+        results: []
+      }
+    ] as QuestionInputFull[] */
   }
 
   return (

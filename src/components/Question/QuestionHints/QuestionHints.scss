@@ -1,13 +1,15 @@
 .QuestionHints {
+  display: flex;
+  flex-direction: column;
   &-list {
     border-radius: 5px;
-
     &-item {
       padding: 5px 50px;
       font-size: 1.25em;
       font-weight: bolder;
       color: #2196f3;
       margin: 5px;
+      border-radius: 5px;
     }
   }
 }

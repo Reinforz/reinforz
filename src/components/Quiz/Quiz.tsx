@@ -1,6 +1,7 @@
 import React, { useState, Fragment } from "react";
 import md5 from "md5";
 import shortid from "shortid";
+import { useTheme } from "@material-ui/styles";
 
 import Question from "../Question/Question";
 import Report from "../Report/Report";
@@ -9,7 +10,7 @@ import Stats from "../Basic/Stats";
 import decideVerdict from "../../utils/decideVerdict";
 import shuffle from "../../utils/arrayShuffler";
 
-import { Result, QuizProps, QuestionInputFull } from "../../types";
+import { Result, QuizProps, QuestionInputFull, ExtendedTheme } from "../../types";
 
 import "./Quiz.scss";
 
@@ -20,6 +21,7 @@ export default function Quiz(props: QuizProps) {
   const total_questions = all_questions.length;
   const all_questions_map: Record<string, QuestionInputFull> = {};
   all_questions.forEach(question => all_questions_map[question._id] = question);
+  const theme = useTheme() as ExtendedTheme;
 
   const generateContent = () => {
     if (current_question_index !== total_questions) {
@@ -64,7 +66,7 @@ export default function Quiz(props: QuizProps) {
     else return <Report results={results} all_questions_map={all_questions_map} />
   }
 
-  return <div className="Quiz-container">
+  return <div className="Quiz" style={{ backgroundColor: theme.color.base }}>
     {generateContent()}
   </div>
 }

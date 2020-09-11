@@ -2,7 +2,6 @@ import { createMuiTheme, lighten, darken } from '@material-ui/core/styles';
 import { grey } from '@material-ui/core/colors';
 import { ExtendedThemeOptions } from '../types';
 
-
 export default function (theme: "dark" | "light") {
   if (theme === "dark")
     return createMuiTheme({
@@ -12,6 +11,9 @@ export default function (theme: "dark" | "light") {
           primary: grey[100],
           secondary: grey[200]
         },
+        background: {
+          defaultt: darken(grey[800], .25),
+        }
       },
       typography: {
         "fontFamily": `"Fira Sans"`,
@@ -43,7 +45,8 @@ export default function (theme: "dark" | "light") {
         secondary: grey[800]
       },
       background: {
-        paper: lighten(grey[200], .50)
+        paper: lighten(grey[200], .50),
+        default: grey[200]
       },
     },
     color: {
@@ -58,15 +61,15 @@ export default function (theme: "dark" | "light") {
     overrides: {
       MuiCssBaseline: {
         '@global': {
-          "*::-webkit-scrollbar": {
-            width: '10px'
-          },
-          "&::-webkit-scrollbar-track": {
-            background: "#161616"
-          },
-          "&::-webkit-scrollbar-thumb": {
-            background: grey[400]
-          }
+          /*           "*::-webkit-scrollbar": {
+                      width: '10px'
+                    },
+                    "&::-webkit-scrollbar-track": {
+                      background: "#161616"
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                      background: grey[400]
+                    } */
         },
       },
       'MuiTableCell': {

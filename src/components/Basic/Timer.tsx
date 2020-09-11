@@ -1,10 +1,11 @@
 import React from "react";
+import { Theme, withTheme } from '@material-ui/core/styles';
 
-import { TimerProps, TimerState, TimerRProps } from "../../types";
+import { TimerProps, TimerState, TimerRProps, ExtendedTheme } from "../../types";
 
 import "./Timer.scss";
 
-export default class Timer extends React.Component<TimerProps, TimerState> {
+class Timer extends React.Component<TimerProps & { theme: Theme }, TimerState> {
   state = {
     timeout: this.props.timeout,
     timer: undefined
@@ -48,8 +49,9 @@ export default class Timer extends React.Component<TimerProps, TimerState> {
 
   render() {
     const { timeout } = this.state;
+    const { theme } = this.props;
     return this.props.children({
-      TimerComponent: <div className="Timer">{this.displayTime(timeout)}</div>,
+      TimerComponent: <div style={{ backgroundColor: (theme as ExtendedTheme).color.dark, color: theme.palette.text.primary }} className="Timer">{this.displayTime(timeout)}</div>,
       TimerState: this.state,
       TimerUtils: {
         clearInterval: this.clearInterval
@@ -57,3 +59,5 @@ export default class Timer extends React.Component<TimerProps, TimerState> {
     } as TimerRProps);
   }
 }
+
+export default withTheme(Timer)

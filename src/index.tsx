@@ -10,14 +10,17 @@ import Play from "./components/Play/Play"
 
 import generateTheme from "./utils/theme";
 
+import { ExtendedTheme } from './types';
 import './index.css';
+
 
 const Index = () => {
   const [theme, setTheme] = useState((localStorage.getItem('THEME') || 'dark') as ("dark" | "light"));
+  const generatedTheme = generateTheme(theme) as ExtendedTheme;
   return <Router>
-    <ThemeProvider theme={generateTheme(theme)}>
+    <ThemeProvider theme={generatedTheme}>
       <SnackbarProvider maxSnack={4}>
-        <div className="App">
+        <div className="App" style={{ backgroundColor: generatedTheme.color.dark }}>
           <div className="Theme-icons" style={{ position: "absolute" }}>
             <Icon style={{ display: theme === "light" ? "initial" : 'none', fill: "black", fontSize: '1.5em', padding: 2, cursor: 'pointer' }} popoverText={`Click to change theme to dark theme`} icon={BsSun} onClick={(e) => {
               localStorage.setItem("THEME", "dark");
