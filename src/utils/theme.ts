@@ -35,30 +35,38 @@ export default function (theme: "dark" | "light") {
         primary: grey[900],
         secondary: grey[800]
       },
+      background: {
+        paper: lighten(grey[200], .50)
+      },
     },
     typography: {
       "fontFamily": `"Fira Sans"`,
       "fontSize": 14,
     },
     overrides: {
+      MuiCssBaseline: {
+        '@global': {
+          "*::-webkit-scrollbar": {
+            width: '10px'
+          },
+          "&::-webkit-scrollbar-track": {
+            background: "#161616"
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: grey[400]
+          }
+        },
+      },
       'MuiTableCell': {
         stickyHeader: {
           backgroundColor: grey[300],
+        },
+      },
+      'MuiTableFooter': {
+        'root': {
+          backgroundColor: lighten(grey[200], .50)
         }
       }
     }
   });
 }
-
-/*
-        ,
-        '.MuiTableRow-footer': {
-          backgroundColor: ColorMap['D(d.0,25)']
-        },
-        '.MuiTableRow-head .MuiTableCell-stickyHeader': {
-          backgroundColor: ColorMap['D(d.0,25)']
-        },
-        '.MuiTableCell-body': {
-          backgroundColor: ColorMap['D(d.0,15)']
-        }
-*/

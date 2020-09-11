@@ -11,7 +11,6 @@ import Play from "./components/Play/Play"
 import generateTheme from "./utils/theme";
 
 import './index.css';
-import './App.css';
 
 const Index = () => {
   const [theme, setTheme] = useState((localStorage.getItem('THEME') || 'dark') as ("dark" | "light"));

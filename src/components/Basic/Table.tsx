@@ -78,8 +78,7 @@ export default function (props: TableProps<Record<string, any>>) {
   });
   return (
     <TableContainer component={Paper} className={`Table ${props.className || ''}`}>
-      <Table stickyHeader
-      >
+      <Table stickyHeader>
         <TableHead className="Table-header">
           <TableRow className={classes.tr}>
             {props.collapseContents && <TableCell className={classes.th}></TableCell>}

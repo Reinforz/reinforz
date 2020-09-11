@@ -4,7 +4,7 @@ import yaml from 'js-yaml';
 import shortid from "shortid"
 import { useDropzone, DropzoneState } from 'react-dropzone';
 import { useSnackbar, OptionsObject } from "notistack";
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme, lighten } from '@material-ui/core/styles';
 
 import { generateQuestionInputConfigs } from '../../../utils/generateConfigs';
 
@@ -83,7 +83,7 @@ export default function PlayUpload(props: PlayUploadProps) {
   const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({ onDrop, accept: [".yml", ".yaml", "application/json"] })
 
   return (
-    <Container style={{ backgroundColor: theme.palette.type === "dark" ? grey[800] : grey[200], color: theme.palette.text.secondary }} className="PlayUpload" {...getRootProps({ isDragActive, isDragAccept, isDragReject })}>
+    <Container style={{ backgroundColor: theme.palette.type === "dark" ? grey[800] : lighten(grey[200], .50), color: theme.palette.text.secondary }} className="PlayUpload" {...getRootProps({ isDragActive, isDragAccept, isDragReject })}>
       <input {...getInputProps()} />
       {
         isDragActive ?
