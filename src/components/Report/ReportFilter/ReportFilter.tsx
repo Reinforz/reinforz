@@ -26,7 +26,7 @@ export default function (props: { children: any }) {
         {["0", "1", "2", "any"].map((hints, index) => <FormControlLabel onClick={(e: any) => setReportFilterState({ ...report_filter_state, hints_used: e.target.value })} key={hints + index} value={hints} control={<Radio color="primary" />} label={hints} />)}
       </RadioGroup>
       <FormGroup>
-        <InputLabel>Exluded QuestionDifficulty</InputLabel>
+        <InputLabel>Exluded Difficulty</InputLabel>
         {['Beginner', 'Intermediate', 'Advanced'].map((difficulty, index) => <FormControlLabel key={difficulty + index} label={difficulty} control={<Checkbox checked={report_filter_state.excluded_difficulty.includes(difficulty as QuestionDifficulty)} name={difficulty} onChange={(e) => {
           if ((e.target as any).checked)
             setReportFilterState({ ...report_filter_state, excluded_difficulty: report_filter_state.excluded_difficulty.concat(difficulty as QuestionDifficulty) });

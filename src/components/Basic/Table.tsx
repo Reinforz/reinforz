@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -13,7 +13,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { TableFooter } from '@material-ui/core';
 
-import { TableRowsProps, TableProps } from "../../types"
+import { TableRowsProps, TableProps, ExtendedTheme } from "../../types"
 
 import "./Table.scss";
 
@@ -72,6 +72,8 @@ function TableRows(props: TableRowsProps) {
 export default function (props: TableProps<Record<string, any>>) {
   const classes = useStyles();
   const accumulator: Record<string, Array<any>> = {};
+  const theme = useTheme() as ExtendedTheme;
+
   props.headers.forEach(header => {
     accumulator[header] = [];
     props.contents.forEach(content => accumulator[header].push(content[header]))
@@ -79,17 +81,17 @@ export default function (props: TableProps<Record<string, any>>) {
   return (
     <TableContainer component={Paper} className={`Table ${props.className || ''}`}>
       <Table stickyHeader>
-        <TableHead className="Table-header">
+        <TableHead className="Table-header" style={{ backgroundColor: theme.color.dark }}>
           <TableRow className={classes.tr}>
             {props.collapseContents && <TableCell className={classes.th}></TableCell>}
             <TableCell className={classes.th}>No.</TableCell>
             {props.headers.map((header, index) => <TableCell className={classes.th} key={header + "header" + index} align="center">{header.split("_").map(c => c.charAt(0).toUpperCase() + c.substr(1)).join(" ")}</TableCell>)}
           </TableRow>
         </TableHead>
-        <TableBody>
+        <TableBody style={{ backgroundColor: theme.color.base }}>
           {props.contents.map((content, index) => <TableRows transformValue={props.transformValue} collapseContents={props.collapseContents} key={content._id} content={content} headers={props.headers} index={index} />)}
         </TableBody>
-        <TableFooter>
+        <TableFooter style={{ backgroundColor: theme.color.dark }}>
           <TableRow>
             {props.collapseContents && <TableCell className={classes.th}></TableCell>}
             <TableCell className={classes.th}>{props.contents.length}</TableCell>
