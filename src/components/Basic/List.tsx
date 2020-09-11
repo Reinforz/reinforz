@@ -1,23 +1,21 @@
 import React, { useState } from "react";
 import { Checkbox } from "@material-ui/core";
 import CancelIcon from '@material-ui/icons/Cancel';
-import { darken, useTheme } from '@material-ui/core/styles';
-import { grey } from '@material-ui/core/colors';
+import { useTheme } from '@material-ui/core/styles';
 
 import Icon from "../Basic/Icon"
 
-import { ListProps } from "../../types";
+import { ExtendedTheme, ListProps } from "../../types";
 
 import "./List.scss";
 
 export default function (props: ListProps<Record<string, any>>) {
   const { children, items, setItems, header, fields, icons } = props;
   const [selectedItems, setSelectedItems] = useState([] as any[]);
-  const theme = useTheme();
-  const isDark = theme.palette.type === "dark"
+  const theme = useTheme() as ExtendedTheme;
   return children({
-    ListComponent: <div className="List" style={{ backgroundColor: isDark ? darken(grey[800], .25) : grey[200] }}>
-      <div className="List-header" style={{ backgroundColor: isDark ? grey[900] : grey[300], color: theme.palette.text.primary }}>
+    ListComponent: <div className="List" style={{ backgroundColor: theme.color.base }}>
+      <div className="List-header" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>
         <Checkbox key={"checkbox"} onClick={(e) => {
           if ((e.target as any).checked) setSelectedItems(items.map(item => item._id));
           else setSelectedItems([])

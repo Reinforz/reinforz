@@ -1,5 +1,7 @@
 import { createMuiTheme, lighten, darken } from '@material-ui/core/styles';
 import { grey } from '@material-ui/core/colors';
+import { ExtendedThemeOptions } from '../types';
+
 
 export default function (theme: "dark" | "light") {
   if (theme === "dark")
@@ -15,6 +17,11 @@ export default function (theme: "dark" | "light") {
         "fontFamily": `"Fira Sans"`,
         "fontSize": 14,
       },
+      color: {
+        light: grey[800],
+        dark: grey[900],
+        base: darken(grey[800], .25),
+      },
       overrides: {
         'MuiFormControlLabel': {
           'label': {
@@ -27,7 +34,7 @@ export default function (theme: "dark" | "light") {
           }
         }
       }
-    });
+    } as ExtendedThemeOptions);
   else return createMuiTheme({
     palette: {
       type: "light",
@@ -38,6 +45,11 @@ export default function (theme: "dark" | "light") {
       background: {
         paper: lighten(grey[200], .50)
       },
+    },
+    color: {
+      light: lighten(grey[200], .50),
+      dark: grey[300],
+      base: grey[200],
     },
     typography: {
       "fontFamily": `"Fira Sans"`,
@@ -68,5 +80,5 @@ export default function (theme: "dark" | "light") {
         }
       }
     }
-  });
+  } as ExtendedThemeOptions);
 }

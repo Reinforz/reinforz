@@ -1,5 +1,5 @@
-import { TypeBackground } from "@material-ui/core/styles/createPalette";
 import { Language } from "prism-react-renderer";
+import { ThemeOptions, Theme } from '@material-ui/core/styles';
 
 // Basic Components
 export interface ListProps<T> {
@@ -251,4 +251,18 @@ export interface ReportFilterRProps {
 export interface ReportExportProps {
   filtered_results: Result[],
   all_questions_map: Record<string, QuestionInputFull>
+}
+
+type color = {
+  dark: string,
+  base: string,
+  light: string
+}
+
+export interface ExtendedThemeOptions extends ThemeOptions {
+  color: color
+}
+
+export interface ExtendedTheme extends Theme {
+  color: color
 }

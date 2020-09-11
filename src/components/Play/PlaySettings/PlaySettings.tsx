@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import { Button, FormControlLabel, Checkbox, FormGroup, TextField, InputLabel } from "@material-ui/core";
 import { useSnackbar } from "notistack";
-import { useTheme, darken } from '@material-ui/core/styles';
-import { grey } from '@material-ui/core/colors';
+import { useTheme } from '@material-ui/core/styles';
 
-import { PlaySettingsProps, QuestionDifficulty, QuestionType, IPlaySettingsOptionsState, IPlaySettingsFiltersState } from "../../../types";
+import { PlaySettingsProps, QuestionDifficulty, QuestionType, IPlaySettingsOptionsState, IPlaySettingsFiltersState, ExtendedTheme } from "../../../types";
 
 import "./PlaySettings.scss";
 
 function PlaySettings(props: PlaySettingsProps) {
   let PLAY_SETTINGS: any = localStorage.getItem('PLAY_SETTINGS');
   PLAY_SETTINGS = PLAY_SETTINGS ? JSON.parse(PLAY_SETTINGS) : undefined;
-  const theme = useTheme();
+  const theme = useTheme() as ExtendedTheme;
 
   const play_options_state = (PLAY_SETTINGS ? PLAY_SETTINGS.play_options : { shuffle_options: true, shuffle_quizzes: false, shuffle_questions: true, instant_feedback: true, flatten_mix: false }) as IPlaySettingsOptionsState;
   const play_filters_state = (PLAY_SETTINGS ? PLAY_SETTINGS.play_filters : { time_allocated: [15, 60], excluded_difficulty: [] as QuestionDifficulty[], excluded_types: [] as QuestionType[] }) as IPlaySettingsFiltersState;
@@ -26,8 +25,8 @@ function PlaySettings(props: PlaySettingsProps) {
         play_options,
         play_filters,
       },
-      PlaySettingsComponent: <div className="PlaySettings" style={{ backgroundColor: theme.palette.type === "dark" ? darken(grey[800], 0.25) : grey[200], color: theme.palette.text.primary }}>
-        <div className="PlaySettings-header PlaySettings-header--options" style={{ backgroundColor: theme.palette.type === "dark" ? grey[900] : grey[300], color: theme.palette.text.primary }}>Options</div>
+      PlaySettingsComponent: <div className="PlaySettings" style={{ backgroundColor: theme.color.base, color: theme.palette.text.primary }}>
+        <div className="PlaySettings-header PlaySettings-header--options" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>Options</div>
         <div className="PlaySettings-content PlaySettings-content--options">
           {Object.keys(play_options_state).map((key, index) => {
             let isDisabled = false;
@@ -50,7 +49,7 @@ function PlaySettings(props: PlaySettingsProps) {
             />
           })}
         </div>
-        <div className="PlaySettings-header PlaySettings-header--filters" style={{ backgroundColor: theme.palette.type === "dark" ? grey[900] : grey[300], color: theme.palette.text.primary }}>
+        <div className="PlaySettings-header PlaySettings-header--filters" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>
           Filters
         </div>
         <div className="PlaySettings-content PlaySettings-content--filters">

@@ -1,6 +1,5 @@
 import React, { useState, Fragment } from "react";
 import { useTheme } from '@material-ui/core/styles';
-import { grey } from '@material-ui/core/colors';
 
 import PlayUpload from "./PlayUpload/PlayUpload";
 import Quiz from "../Quiz/Quiz";
@@ -18,7 +17,7 @@ import {
   ListRProps,
   QuestionDifficulty,
   QuestionType,
-  IPlaySettingsState,
+  IPlaySettingsState, ExtendedTheme
 } from "../../types";
 
 import "./Play.scss";
@@ -27,7 +26,7 @@ import "./Play.scss";
 function Play() {
   const [playing, setPlaying] = useState(false);
   const [quizzes, setQuizzes] = useState([] as any[]);
-  const theme = useTheme();
+  const theme = useTheme() as ExtendedTheme;
 
   function renderQuiz(selectedQuizzes: string[], play_state: IPlaySettingsState) {
     const { play_options, play_filters } = play_state;
@@ -64,7 +63,7 @@ function Play() {
                   <PlayUpload selectedItems={ListState.selectedItems} setSelectedItems={ListUtils.setSelectedItems} setItems={setQuizzes} items={quizzes} />
                   {ListComponent}
                   {PlaySettingsComponent}
-                  <div className="Help" style={{ backgroundColor: theme.palette.type === "dark" ? grey[900] : grey[300], color: theme.palette.text.primary }}>Need help, <a style={{ color: theme.palette.text.secondary }} href="http://github.com/Devorein/reinforz" rel="noopener noreferrer" target="_blank">click here</a> to go to the doc</div>
+                  <div className="Help" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>Need help, <a style={{ color: theme.palette.text.secondary }} href="http://github.com/Devorein/reinforz" rel="noopener noreferrer" target="_blank">click here</a> to go to the doc</div>
                 </div>
                 : <Quiz play_options={PlaySettingsState.play_options} all_questions={renderQuiz(ListState.selectedItems, PlaySettingsState)} />}
             </Fragment>
