@@ -13,7 +13,6 @@ import generateTheme from "./utils/theme";
 import { ExtendedTheme } from './types';
 import './index.css';
 
-
 const Index = () => {
   const [theme, setTheme] = useState((localStorage.getItem('THEME') || 'dark') as ("dark" | "light"));
   const generatedTheme = generateTheme(theme) as ExtendedTheme;

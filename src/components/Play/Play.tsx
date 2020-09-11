@@ -49,11 +49,13 @@ function Play() {
     /* return [
       {
         "question": `
-        console.log
+        console.log %_% dasda sd asd das dasd %_% adsasdasd
         `,
         "answers": [
           "log",
+          "answer"
         ],
+        "options": ["options 1", "options 1", "options 1"],
         "time_allocated": 300,
         "_id": "5ckxRbMeyb",
         "format": "html",
