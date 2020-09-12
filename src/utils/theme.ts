@@ -23,6 +23,9 @@ export default function (theme: "dark" | "light") {
         light: grey[800],
         dark: grey[900],
         base: darken(grey[800], .25),
+        opposite_dark: grey[300],
+        opposite_base: grey[200],
+        opposite_light: lighten(grey[200], .50)
       },
     } as ExtendedThemeOptions);
   else return createMuiTheme({
@@ -41,6 +44,9 @@ export default function (theme: "dark" | "light") {
       light: lighten(grey[200], .50),
       dark: grey[300],
       base: grey[200],
+      opposite_dark: grey[900],
+      opposite_base: darken(grey[800], .25),
+      opposite_light: grey[800]
     },
     typography: {
       "fontFamily": `"Fira Sans"`,

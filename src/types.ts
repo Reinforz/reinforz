@@ -256,7 +256,10 @@ export interface ReportExportProps {
 type color = {
   dark: string,
   base: string,
-  light: string
+  light: string,
+  opposite_dark: string,
+  opposite_base: string,
+  opposite_light: string
 }
 
 export interface ExtendedThemeOptions extends ThemeOptions {

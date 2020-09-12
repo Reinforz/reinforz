@@ -1,7 +1,7 @@
 import React from 'react';
 import { BsMoon, BsSun } from 'react-icons/bs';
+import { FormControlLabel, FormGroup, InputLabel, Radio, RadioGroup, Switch } from '@material-ui/core';
 
-import Icon from "../Basic/Icon"
 import { SettingsProps } from '../../types';
 
 function Settings(props: SettingsProps) {
@@ -10,16 +10,34 @@ function Settings(props: SettingsProps) {
 
   return (
     <div className="Settings">
-      <div className="Theme-icons" style={{ position: "absolute" }}>
-        <Icon className="Settings-icon Settings-icon--theme" style={{ display: theme === "light" ? "initial" : 'none', fill: "black" }} popoverText={`Click to change theme to dark theme`} icon={BsSun} onClick={(e) => {
-          localStorage.setItem("THEME", "dark");
-          setSettings({ ...settings, theme: "dark" })
-        }} />
-        <Icon className="Settings-icon Settings-icon--theme" style={{ display: theme === "dark" ? "initial" : 'none', fill: "white" }} popoverText={`Click to change theme to light theme`} icon={BsMoon} onClick={(e) => {
-          localStorage.setItem("THEME", "light");
-          setSettings({ ...settings, theme: "light" })
-        }} />
-      </div>
+      <RadioGroup name="theme" value={theme} row>
+        <InputLabel>Theme</InputLabel>
+        {["dark", "light"].map((_theme, index) => <FormControlLabel onClick={(e: any) => {
+          const set_theme = theme === "dark" ? "light" : "dark";
+          localStorage.setItem("THEME", set_theme);
+          setSettings({ ...settings, theme: set_theme })
+        }} key={_theme.toString() + index} value={_theme} control={<Radio color="primary" />} label={_theme === "dark" ? <BsMoon className="Settings-icon Settings-icon--theme" /> : <BsSun className="Settings-icon Settings-icon--theme" />} />)}
+      </RadioGroup>
+      <FormGroup row>
+        <InputLabel>Animation</InputLabel>
+        <Switch
+          checked={settings.animation}
+          onChange={(e) => {
+            localStorage.setItem("animation", String(!animation));
+            setSettings({ ...settings, animation: !animation })
+          }}
+        />
+      </FormGroup>
+      <FormGroup row>
+        <InputLabel>Sound</InputLabel>
+        <Switch
+          checked={settings.sound}
+          onChange={(e) => {
+            localStorage.setItem("sound", String(!sound));
+            setSettings({ ...settings, sound: !sound })
+          }}
+        />
+      </FormGroup>
     </div>
   );
 }

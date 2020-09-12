@@ -1,5 +1,7 @@
 import React, { useState, Fragment } from "react";
 import { useTheme } from '@material-ui/core/styles';
+import { useHistory } from "react-router-dom";
+import { FcSettings } from "react-icons/fc";
 
 import PlayUpload from "./PlayUpload/PlayUpload";
 import Quiz from "../Quiz/Quiz";
@@ -7,6 +9,7 @@ import PlaySettings from "./PlaySettings/PlaySettings";
 import PlayTable from "./PlayTable/PlayTable";
 import List from "../Basic/List";
 import PlayErrorLogs from "./PlayErrorLogs/PlayErrorLogs";
+import Icon from '../Basic/Icon';
 
 import shuffle from "../../utils/arrayShuffler";
 
@@ -27,6 +30,7 @@ function Play() {
   const [playing, setPlaying] = useState(false);
   const [quizzes, setQuizzes] = useState([] as any[]);
   const theme = useTheme() as ExtendedTheme;
+  const history = useHistory();
 
   function renderQuiz(selectedQuizzes: string[], play_state: IPlaySettingsState) {
     const { play_options, play_filters } = play_state;
@@ -47,7 +51,6 @@ function Play() {
 
     return play_options.flatten_mix ? shuffle(all_questions) : all_questions;
   }
-
   return (
     <List header="Uploaded Quizzes" items={quizzes} setItems={setQuizzes} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]}>
       {({ ListComponent, ListState, ListUtils }: ListRProps) => {
@@ -58,6 +61,7 @@ function Play() {
             return <Fragment>
               {!playing ?
                 <div className="Play">
+                  <Icon onClick={() => { history.push("/settings") }} icon={FcSettings} popoverText="Click to go to settings page" className="App-icon App-icon--settings" />
                   <PlayTable quizzes={quizzes} />
                   <PlayErrorLogs quizzes={quizzes} />
                   <PlayUpload selectedItems={ListState.selectedItems} setSelectedItems={ListUtils.setSelectedItems} setItems={setQuizzes} items={quizzes} />

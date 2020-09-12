@@ -34,7 +34,9 @@ div#root {
       background: rgb(66, 66, 66);
     }
     .App-icon {
-      fill: rgb(224, 224, 224);
+      path {
+        fill: rgb(246, 246, 246);
+      }
       @extend %AppIcon;
     }
   }
@@ -50,7 +52,9 @@ div#root {
       background: rgb(246, 246, 246);
     }
     .App-icon {
-      fill: rgb(33, 33, 33);
+      path {
+        fill: rgb(66, 66, 66);
+      }
       @extend %AppIcon;
     }
   }
