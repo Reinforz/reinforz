@@ -85,7 +85,8 @@ export type PlayErrorLogState = PlayErrorLog[];
 export interface PlaySettingsProps {
   children: any,
   selectedQuizzes: string[],
-  setPlaying: (isPlaying: boolean) => any
+  setPlaying: (isPlaying: boolean) => any,
+  quizzes: QuizInputFull[]
 }
 
 export interface IPlaySettingsOptionsState {
@@ -110,6 +111,9 @@ export interface IPlaySettingsState {
 export interface IPlaySettingsRProps {
   PlaySettingsComponent: JSX.Element,
   PlaySettingsState: IPlaySettingsState,
+  PlaySettingsExtra: {
+    filtered_questions: QuestionInputFull[]
+  }
 }
 
 export interface PlayUploadProps {

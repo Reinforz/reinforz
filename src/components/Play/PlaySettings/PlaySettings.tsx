@@ -3,11 +3,35 @@ import { Button, FormControlLabel, Checkbox, FormGroup, TextField, InputLabel } 
 import { useSnackbar } from "notistack";
 import { useTheme } from '@material-ui/core/styles';
 
-import { PlaySettingsProps, QuestionDifficulty, QuestionType, IPlaySettingsOptionsState, IPlaySettingsFiltersState, ExtendedTheme } from "../../../types";
+import shuffle from "../../../utils/arrayShuffler";
+
+import { PlaySettingsProps, QuestionDifficulty, QuestionType, IPlaySettingsOptionsState, IPlaySettingsFiltersState, ExtendedTheme, IPlaySettingsState, QuizInputFull, QuestionInputFull, IPlaySettingsRProps } from "../../../types";
 
 import "./PlaySettings.scss";
 
+function renderQuiz(quizzes: QuizInputFull[], selectedQuizzes: string[], play_state: IPlaySettingsState) {
+  const { play_options, play_filters } = play_state;
+  let filtered_quizzes = quizzes.filter(quiz => selectedQuizzes.includes(quiz._id)) as QuizInputFull[];
+  const all_questions: QuestionInputFull[] = [];
+  if (play_options.shuffle_quizzes && !play_options.flatten_mix) filtered_quizzes = shuffle(filtered_quizzes);
+  if (play_options.shuffle_questions && !play_options.flatten_mix) filtered_quizzes.forEach(quiz => quiz.questions = shuffle(quiz.questions));
+  filtered_quizzes.forEach(quiz => {
+    quiz.questions = quiz.questions.filter(question => !play_filters.excluded_difficulty.includes(question.difficulty as QuestionDifficulty) && !play_filters.excluded_types.includes(question.type as QuestionType) && play_filters.time_allocated[0] <= question.time_allocated && play_filters.time_allocated[1] >= question.time_allocated).map((question) => {
+      return {
+        ...question,
+        quiz: quiz.title,
+        subject: quiz.subject
+      }
+    });
+    all_questions.push(...quiz.questions as QuestionInputFull[]);
+  });
+
+  return play_options.flatten_mix ? shuffle(all_questions) : all_questions;
+}
+
+
 function PlaySettings(props: PlaySettingsProps) {
+  const { quizzes, selectedQuizzes } = props;
   let PLAY_SETTINGS: any = localStorage.getItem('PLAY_SETTINGS');
   PLAY_SETTINGS = PLAY_SETTINGS ? JSON.parse(PLAY_SETTINGS) : undefined;
   const theme = useTheme() as ExtendedTheme;
@@ -18,68 +42,86 @@ function PlaySettings(props: PlaySettingsProps) {
   const [play_filters, setPlayFiltersOptions] = useState(play_filters_state);
   const { enqueueSnackbar } = useSnackbar();
   type play_options_keys = keyof IPlaySettingsOptionsState;
+  const PlaySettingsState = {
+    play_options,
+    play_filters,
+  }
+  const filtered_questions = renderQuiz(quizzes, selectedQuizzes, PlaySettingsState)
 
   return (
     props.children({
-      PlaySettingsState: {
-        play_options,
-        play_filters,
+      PlaySettingsExtra: {
+        filtered_questions
       },
+      PlaySettingsState,
       PlaySettingsComponent: <div className="PlaySettings" style={{ backgroundColor: theme.color.base, color: theme.palette.text.primary }}>
-        <div className="PlaySettings-header PlaySettings-header--options" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>Options</div>
-        <div className="PlaySettings-content PlaySettings-content--options">
-          {Object.keys(play_options_state).map((key, index) => {
-            let isDisabled = false;
-            if (Boolean(key.match(/(shuffle_questions|shuffle_quizzes)/) && play_options.flatten_mix)) isDisabled = true;
-            if (props.selectedQuizzes.length <= 1 && key === "shuffle_quizzes") isDisabled = true;
-            return <FormControlLabel key={key + index}
-              control={
-                <Checkbox
-                  disabled={isDisabled}
-                  checked={play_options[key as play_options_keys]}
-                  onChange={(event, checked) => {
-                    if (key === "flatten_mix") setPlaySettingsOptions({ ...play_options, [event.target.name]: checked, shuffle_questions: checked, shuffle_quizzes: checked })
-                    else setPlaySettingsOptions({ ...play_options, [event.target.name]: checked })
-                  }}
-                  name={key}
-                  color="primary"
-                />
-              }
-              label={key.split("_").map(k => k.charAt(0).toUpperCase() + k.substr(1)).join(" ")}
-            />
-          })}
+        <div className="PlaySettings-group PlaySettings-group--options">
+          <div className="PlaySettings-group-header PlaySettings-group-header--options" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>Options</div>
+          <div className="PlaySettings-group-content PlaySettings-group-content--options">
+            {Object.keys(play_options_state).map((key, index) => {
+              let isDisabled = false;
+              if (Boolean(key.match(/(shuffle_questions|shuffle_quizzes)/) && play_options.flatten_mix)) isDisabled = true;
+              if (props.selectedQuizzes.length <= 1 && key === "shuffle_quizzes") isDisabled = true;
+              return <FormControlLabel key={key + index}
+                control={
+                  <Checkbox
+                    disabled={isDisabled}
+                    checked={play_options[key as play_options_keys]}
+                    onChange={(event, checked) => {
+                      if (key === "flatten_mix") setPlaySettingsOptions({ ...play_options, [event.target.name]: checked, shuffle_questions: checked, shuffle_quizzes: checked })
+                      else setPlaySettingsOptions({ ...play_options, [event.target.name]: checked })
+                    }}
+                    name={key}
+                    color="primary"
+                  />
+                }
+                label={key.split("_").map(k => k.charAt(0).toUpperCase() + k.substr(1)).join(" ")}
+              />
+            })}
+          </div>
         </div>
-        <div className="PlaySettings-header PlaySettings-header--filters" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>
-          Filters
+        <div className="PlaySettings-group PlaySettings-group--filters">
+          <div className="PlaySettings-group-header PlaySettings-group-header--filters" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>
+            Filters
+          </div>
+          <div className="PlaySettings-group-content PlaySettings-group-content--filters">
+            <FormGroup>
+              <TextField type="number" inputProps={{ max: play_filters.time_allocated[1], step: 5, min: 0 }} value={play_filters.time_allocated[0]} onChange={(e) => setPlayFiltersOptions({ ...play_filters, time_allocated: [(e.target as any).value, play_filters.time_allocated[1]] })} label="Time Allocated min" />
+              <TextField type="number" inputProps={{ min: play_filters.time_allocated[0], step: 5, max: 60 }} value={play_filters.time_allocated[1]} onChange={(e) => setPlayFiltersOptions({ ...play_filters, time_allocated: [play_filters.time_allocated[0], (e.target as any).value,] })} label="Time Allocated max" />
+            </FormGroup>
+            <FormGroup>
+              <InputLabel>Exluded Difficulty</InputLabel>
+              {['Beginner', 'Intermediate', 'Advanced'].map((difficulty, index) => <FormControlLabel key={difficulty + index} label={difficulty} control={<Checkbox checked={play_filters.excluded_difficulty.includes(difficulty as QuestionDifficulty)} name={difficulty} onChange={(e) => {
+                if ((e.target as any).checked)
+                  setPlayFiltersOptions({ ...play_filters, excluded_difficulty: play_filters.excluded_difficulty.concat(difficulty as QuestionDifficulty) });
+                else setPlayFiltersOptions({ ...play_filters, excluded_difficulty: play_filters.excluded_difficulty.filter(excluded_difficulty => excluded_difficulty !== difficulty) })
+              }}
+                color="primary" />} />)}
+            </FormGroup>
+            <FormGroup>
+              <InputLabel>Exluded Type</InputLabel>
+              {['FIB', 'MS', 'MCQ', "Snippet"].map((type, index) => <FormControlLabel key={type + index} label={type} control={<Checkbox checked={play_filters.excluded_types.includes(type as QuestionType)} name={type} onChange={(e) => {
+                if ((e.target as any).checked)
+                  setPlayFiltersOptions({ ...play_filters, excluded_types: play_filters.excluded_types.concat(type as QuestionType) });
+                else setPlayFiltersOptions({ ...play_filters, excluded_types: play_filters.excluded_types.filter(excluded_type => excluded_type !== type) })
+              }}
+                color="primary" />} />)}
+            </FormGroup>
+          </div>
         </div>
-        <div className="PlaySettings-content PlaySettings-content--filters">
-          <FormGroup>
-            <TextField type="number" inputProps={{ max: play_filters.time_allocated[1], step: 5, min: 0 }} value={play_filters.time_allocated[0]} onChange={(e) => setPlayFiltersOptions({ ...play_filters, time_allocated: [(e.target as any).value, play_filters.time_allocated[1]] })} label="Time Allocated min" />
-            <TextField type="number" inputProps={{ min: play_filters.time_allocated[0], step: 5, max: 60 }} value={play_filters.time_allocated[1]} onChange={(e) => setPlayFiltersOptions({ ...play_filters, time_allocated: [play_filters.time_allocated[0], (e.target as any).value,] })} label="Time Allocated max" />
-          </FormGroup>
-          <FormGroup>
-            <InputLabel>Exluded Difficulty</InputLabel>
-            {['Beginner', 'Intermediate', 'Advanced'].map((difficulty, index) => <FormControlLabel key={difficulty + index} label={difficulty} control={<Checkbox checked={play_filters.excluded_difficulty.includes(difficulty as QuestionDifficulty)} name={difficulty} onChange={(e) => {
-              if ((e.target as any).checked)
-                setPlayFiltersOptions({ ...play_filters, excluded_difficulty: play_filters.excluded_difficulty.concat(difficulty as QuestionDifficulty) });
-              else setPlayFiltersOptions({ ...play_filters, excluded_difficulty: play_filters.excluded_difficulty.filter(excluded_difficulty => excluded_difficulty !== difficulty) })
-            }}
-              color="primary" />} />)}
-          </FormGroup>
-          <FormGroup>
-            <InputLabel>Exluded Type</InputLabel>
-            {['FIB', 'MS', 'MCQ', "Snippet"].map((type, index) => <FormControlLabel key={type + index} label={type} control={<Checkbox checked={play_filters.excluded_types.includes(type as QuestionType)} name={type} onChange={(e) => {
-              if ((e.target as any).checked)
-                setPlayFiltersOptions({ ...play_filters, excluded_types: play_filters.excluded_types.concat(type as QuestionType) });
-              else setPlayFiltersOptions({ ...play_filters, excluded_types: play_filters.excluded_types.filter(excluded_type => excluded_type !== type) })
-            }}
-              color="primary" />} />)}
-          </FormGroup>
-        </div>
+        <div className="PlaySettings-total" style={{ backgroundColor: theme.color.dark, color: filtered_questions.length === 0 ? theme.palette.error.main : theme.palette.success.main }}>{filtered_questions.length} Questions</div>
         <Button className="PlaySettings-button" color="primary" variant="contained" onClick={() => {
-          if (props.selectedQuizzes.length > 0)
+          if (props.selectedQuizzes.length > 0 && filtered_questions.length > 0)
             props.setPlaying(true)
-          else enqueueSnackbar('You must have atleast one quiz selected', {
+          else if (filtered_questions.length === 0 && selectedQuizzes.length !== 0)
+            enqueueSnackbar('You must have atleast one question to play', {
+              variant: 'error',
+              anchorOrigin: {
+                vertical: 'bottom',
+                horizontal: 'center',
+              },
+            })
+          else if (selectedQuizzes.length === 0) enqueueSnackbar('You must have atleast one quiz selected', {
             variant: 'error',
             anchorOrigin: {
               vertical: 'bottom',
@@ -88,8 +130,7 @@ function PlaySettings(props: PlaySettingsProps) {
           })
         }}>Start</Button>
       </div>
-    })
-
+    } as IPlaySettingsRProps)
   );
 }
 

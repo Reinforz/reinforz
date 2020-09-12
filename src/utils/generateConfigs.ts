@@ -24,11 +24,12 @@ export function generateQuestionInputConfigs(
   checkRequiredFields(res, ['question', 'answers']);
   let format = 'text', time_allocated = 15, language = undefined;
   const lines = res.question.split("\n");
-  if (lines.length > 1) format = 'code';
 
   language = lines[0].match(/\[(\w+)\]/);
-  if (language)
+  if (language) {
     res.question = lines.splice(1).join("\n")
+    format = 'code';
+  }
   else language = "javascript"
 
   setObjectValues(res, [
