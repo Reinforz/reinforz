@@ -58,6 +58,9 @@ div#root {
       @extend %AppIcon;
     }
   }
+  .MuiFormGroup-row {
+    align-items: center;
+  }
 }
 body {
   margin: 0;
