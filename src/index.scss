@@ -1,0 +1,71 @@
+div#root {
+  height: 100vh;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+%AppIcon {
+  position: absolute;
+  cursor: pointer;
+  font-size: 1.25rem;
+  animation-name: spin;
+  animation-duration: 5000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.App {
+  height: 100%;
+  &.dark {
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgb(33, 33, 33);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgb(66, 66, 66);
+    }
+    .App-icon {
+      fill: rgb(224, 224, 224);
+      @extend %AppIcon;
+    }
+  }
+
+  &.light {
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgb(224, 224, 224);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgb(246, 246, 246);
+    }
+    .App-icon {
+      fill: rgb(33, 33, 33);
+      @extend %AppIcon;
+    }
+  }
+}
+body {
+  margin: 0;
+  font-family: "Fira Sans";
+  height: 100vh;
+  overflow: hidden;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+html {
+  height: 100vh;
+}

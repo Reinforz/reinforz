@@ -266,3 +266,14 @@ export interface ExtendedThemeOptions extends ThemeOptions {
 export interface ExtendedTheme extends Theme {
   color: color
 }
+
+export type AllowedTheme = "dark" | "light"
+export interface ISettings {
+  theme: AllowedTheme,
+  animation: boolean,
+  sound: boolean,
+}
+export interface SettingsProps {
+  settings: ISettings,
+  setSettings: (settings: ISettings) => any
+}

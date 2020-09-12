@@ -1,37 +1,36 @@
 import React, { useState } from 'react';
-import { BsMoon, BsSun } from 'react-icons/bs';
 import ReactDOM from 'react-dom';
 import { ThemeProvider } from '@material-ui/styles';
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 import { SnackbarProvider } from "notistack";
+import { FcSettings } from "react-icons/fc";
 
-import Icon from './components/Basic/Icon';
 import Play from "./components/Play/Play"
 
 import generateTheme from "./utils/theme";
 
-import { ExtendedTheme } from './types';
-import './index.css';
+import { ExtendedTheme, ISettings, AllowedTheme } from './types';
+
+import './index.scss';
+import Settings from './components/Settings/Settings';
+import Icon from './components/Basic/Icon';
+
 
 const Index = () => {
-  const [theme, setTheme] = useState((localStorage.getItem('THEME') || 'dark') as ("dark" | "light"));
-  const generatedTheme = generateTheme(theme) as ExtendedTheme;
+  const [settings, setSettings] = useState({
+    theme: (localStorage.getItem('THEME') || 'dark') as AllowedTheme,
+    animation: true,
+    sound: true
+  } as ISettings);
+  const generatedTheme = generateTheme(settings.theme) as ExtendedTheme;
   return <Router>
     <ThemeProvider theme={generatedTheme}>
       <SnackbarProvider maxSnack={4}>
-        <div className="App" style={{ backgroundColor: generatedTheme.color.dark }}>
-          <div className="Theme-icons" style={{ position: "absolute" }}>
-            <Icon style={{ display: theme === "light" ? "initial" : 'none', fill: "black", fontSize: '1.5em', padding: 2, cursor: 'pointer' }} popoverText={`Click to change theme to dark theme`} icon={BsSun} onClick={(e) => {
-              localStorage.setItem("THEME", "dark");
-              setTheme("dark")
-            }} />
-            <Icon style={{ display: theme === "dark" ? "initial" : 'none', fill: "white", fontSize: '1.5em', padding: 2, cursor: 'pointer' }} popoverText={`Click to change theme to light theme`} icon={BsMoon} onClick={(e) => {
-              localStorage.setItem("THEME", "light");
-              setTheme("light")
-            }} />
-          </div>
+        <div className={`App ${generatedTheme.palette.type === "dark" ? "dark" : "light"}`} style={{ backgroundColor: generatedTheme.color.dark }}>
+          <Icon onClick={() => { }} icon={FcSettings} popoverText="Click to go to settings page" className="App-icon App-icon--settings" />
           <Switch>
-            <Route path="/" render={() => <Play />} />
+            <Route exact path="/" render={() => <Play />} />
+            <Route exact path="/settings" render={() => <Settings settings={settings} setSettings={setSettings} />} />
           </Switch>
         </div>
       </SnackbarProvider>
