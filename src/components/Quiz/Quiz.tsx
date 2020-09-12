@@ -49,7 +49,7 @@ export default function Quiz(props: QuizProps) {
             verdict,
             add_to_score,
             score: weight * (verdict ? 1 : 0),
-            question: format !== "html" ? question : "Code",
+            question: format !== "code" ? question : "<Code/>",
             type,
             time_allocated,
             time_taken,

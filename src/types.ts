@@ -141,7 +141,7 @@ export interface QuizInputFull extends Required<QuizInputPartial> {
 }
 
 export type QuestionType = 'MCQ' | 'MS' | 'FIB' | 'Snippet';
-export type QuestionFormat = 'text' | 'markdown' | 'html';
+export type QuestionFormat = 'text' | 'code';
 export type QuestionDifficulty = 'Beginner' | 'Intermediate' | 'Advanced';
 
 export interface QuestionInputCommon {
@@ -169,6 +169,7 @@ export interface QuestionInput {
   results: Result[],
   quiz: string,
   subject: string,
+  language?: Language
 }
 
 export interface QuestionInputPartial extends QuestionInputCommon, Partial<QuestionInput> { }

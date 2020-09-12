@@ -10,7 +10,7 @@ const common_schema = {
   question: yup.string().required(),
   type: yup.string().required().oneOf(["MS", "MCQ", "FIB", "Snippet"], "Unknown question type provided"),
   answers: yup.array().of(yup.string()).min(1),
-  format: yup.string().required().oneOf(["html", "markdown", "text"], "Unknown question format provided"),
+  format: yup.string().required().oneOf(["code", "text"], "Unknown question format provided"),
   image: yup.string().nullable(),
   weight: yup.number().required().min(0).max(1),
   add_to_score: yup.boolean().required(),

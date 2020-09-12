@@ -17,7 +17,7 @@ export default function Question(props: QuestionProps) {
   const fibRefs = useRef(Array(total_fibs).fill(0).map(() => createRef() as RefObject<HTMLInputElement>));
 
   const generateQuestion = () => {
-    if (format === "html") return <QuestionHighlighter format={format} fibRefs={fibRefs} type={type} language={"typescript"} code={question} />
+    if (format === "code") return <QuestionHighlighter format={format} fibRefs={fibRefs} type={type} language={"typescript"} code={question} />
     else {
       if (type !== "FIB") return <div className="Question-container-item Question-container-question">{question}</div>;
       else {

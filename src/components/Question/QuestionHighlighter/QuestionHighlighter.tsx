@@ -20,7 +20,7 @@ export default function QuestionHighlighter(props: QuestionHighlighterProps) {
           let line_contents = [];
           for (let i = 0; i < line.length; i++) {
             const token = line[i];
-            if (type === "FIB" && format === "html" && token.content === "%" && line[i + 1].content === "_" && line[i + 2].content === "%") {
+            if (type === "FIB" && format === "code" && token.content === "%" && line[i + 1].content === "_" && line[i + 2].content === "%") {
               current_fib_index++;
               line_contents.push(<input style={{ color: theme.palette.text.primary, backgroundColor: theme.color.dark }} key={i} spellCheck={false} className="Highlighter-FIB-Code" ref={fibRefs.current[current_fib_index]} />)
               i += 2;

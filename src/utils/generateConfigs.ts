@@ -22,11 +22,15 @@ export function generateQuestionInputConfigs(
 ) {
   const res = JSON.parse(JSON.stringify(question));
   checkRequiredFields(res, ['question', 'answers']);
-  let format = 'text', time_allocated = 15;
-  if (res.question.match(/<pre>/g)) {
-    res.question = res.question.replace(/<\/?pre>/g, '');
-    format = 'html';
-  }
+  let format = 'text', time_allocated = 15, language = undefined;
+  const lines = res.question.split("\n");
+  if (lines.length > 1) format = 'code';
+
+  language = lines[0].match(/\[(\w+)\]/);
+  if (language)
+    res.question = lines.splice(1).join("\n")
+  else language = "javascript"
+
   setObjectValues(res, [
     ['options', null],
     ['format', format],
@@ -38,6 +42,7 @@ export function generateQuestionInputConfigs(
     ['incorrect_answer_message', 'Try again'],
     ['explanation', 'No explanation available'],
     ['hints', []],
+    ['language', language]
   ]);
 
   if (res.answers.length === 1) res.type = res.options ? "MCQ" : "Snippet";
