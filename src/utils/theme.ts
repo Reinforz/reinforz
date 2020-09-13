@@ -12,7 +12,7 @@ export default function (theme: "dark" | "light") {
           secondary: grey[200]
         },
         background: {
-          defaultt: darken(grey[800], .25),
+          default: darken(grey[800], .25),
         }
       },
       typography: {
@@ -27,6 +27,28 @@ export default function (theme: "dark" | "light") {
         opposite_base: grey[200],
         opposite_light: lighten(grey[200], .50)
       },
+      overrides: {
+        MuiTypography: {
+          root: {
+            color: grey[100]
+          }
+        },
+        MuiInputLabel: {
+          root: {
+            fontWeight: "bolder",
+            fontSize: "1.25em",
+            backgroundColor: grey[900],
+            padding: 5
+          }
+        },
+        MuiFormGroup: {
+          root: {
+            backgroundColor: grey[800],
+            margin: 5,
+            padding: '0px 0px 0px 5px'
+          }
+        }
+      }
     } as ExtendedThemeOptions);
   else return createMuiTheme({
     palette: {
@@ -52,5 +74,27 @@ export default function (theme: "dark" | "light") {
       "fontFamily": `"Fira Sans"`,
       "fontSize": 14,
     },
+    overrides: {
+      MuiTypography: {
+        root: {
+          color: grey[900]
+        }
+      },
+      MuiInputLabel: {
+        root: {
+          fontWeight: "bolder",
+          fontSize: "1.25em",
+          backgroundColor: grey[300],
+          padding: 5
+        }
+      },
+      MuiFormGroup: {
+        root: {
+          backgroundColor: lighten(grey[200], .50),
+          margin: 5,
+          padding: '0px 0px 0px 5px'
+        }
+      }
+    }
   } as ExtendedThemeOptions);
 }

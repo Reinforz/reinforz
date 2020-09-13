@@ -86,8 +86,9 @@ function PlaySettings(props: PlaySettingsProps) {
           </div>
           <div className="PlaySettings-group-content PlaySettings-group-content--filters">
             <FormGroup>
-              <TextField type="number" inputProps={{ max: play_filters.time_allocated[1], step: 5, min: 0 }} value={play_filters.time_allocated[0]} onChange={(e) => setPlayFiltersOptions({ ...play_filters, time_allocated: [(e.target as any).value, play_filters.time_allocated[1]] })} label="Time Allocated min" />
-              <TextField type="number" inputProps={{ min: play_filters.time_allocated[0], step: 5, max: 60 }} value={play_filters.time_allocated[1]} onChange={(e) => setPlayFiltersOptions({ ...play_filters, time_allocated: [play_filters.time_allocated[0], (e.target as any).value,] })} label="Time Allocated max" />
+              <InputLabel>Time Allocated range</InputLabel>
+              <TextField type="number" inputProps={{ max: play_filters.time_allocated[1], step: 5, min: 0 }} value={play_filters.time_allocated[0]} onChange={(e) => setPlayFiltersOptions({ ...play_filters, time_allocated: [(e.target as any).value, play_filters.time_allocated[1]] })} />
+              <TextField type="number" inputProps={{ min: play_filters.time_allocated[0], step: 5, max: 60 }} value={play_filters.time_allocated[1]} onChange={(e) => setPlayFiltersOptions({ ...play_filters, time_allocated: [play_filters.time_allocated[0], (e.target as any).value,] })} />
             </FormGroup>
             <FormGroup>
               <InputLabel>Exluded Difficulty</InputLabel>
@@ -110,7 +111,7 @@ function PlaySettings(props: PlaySettingsProps) {
           </div>
         </div>
         <div className="PlaySettings-total" style={{ backgroundColor: theme.color.dark, color: filtered_questions.length === 0 ? theme.palette.error.main : theme.palette.success.main }}>{filtered_questions.length} Questions</div>
-        <Button className="PlaySettings-button" color="primary" variant="contained" onClick={() => {
+        <Button disabled={(filtered_questions.length === 0 && selectedQuizzes.length !== 0) || selectedQuizzes.length === 0} className="PlaySettings-button" color="primary" variant="contained" onClick={() => {
           if (props.selectedQuizzes.length > 0 && filtered_questions.length > 0)
             props.setPlaying(true)
           else if (filtered_questions.length === 0 && selectedQuizzes.length !== 0)

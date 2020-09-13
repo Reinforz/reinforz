@@ -17,13 +17,14 @@ import { TableRowsProps, TableProps, ExtendedTheme } from "../../types"
 
 import "./Table.scss";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: ExtendedTheme) => ({
   th: {
     fontWeight: 'bolder',
     fontSize: '1rem',
     userSelect: "none",
     borderBottom: 0,
-    textAlign: 'center'
+    textAlign: 'center',
+    backgroundColor: theme.color.dark
   },
   td: {
     fontWeight: 500,
@@ -34,7 +35,7 @@ const useStyles = makeStyles({
   tr: {
     borderBottom: 0
   }
-});
+}));
 
 function TableRows(props: TableRowsProps) {
   const [open, setOpen] = React.useState(false);

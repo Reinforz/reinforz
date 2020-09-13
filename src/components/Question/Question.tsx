@@ -1,12 +1,12 @@
 import React, { useState, Fragment, useRef, createRef, RefObject } from "react";
-import { Button, TextField } from "@material-ui/core";
+import { Button, TextField, useTheme } from "@material-ui/core";
 
 import Timer from "../Basic/Timer";
 import QuestionHighlighter from "./QuestionHighlighter/QuestionHighlighter";
 import QuestionOptions from "./QuestionOptions/QuestionOptions";
 import QuestionHints from "./QuestionHints/QuestionHints";
 
-import { TimerRProps, QuestionProps, QuestionHintsRProps } from "../../types";
+import { TimerRProps, QuestionProps, QuestionHintsRProps, ExtendedTheme } from "../../types";
 
 import "./Question.scss";
 
@@ -15,11 +15,12 @@ export default function Question(props: QuestionProps) {
   const total_fibs = question.match(/(%_%)/g)?.length;
   const [user_answers, changeUserAnswers] = useState(type === "FIB" ? Array(total_fibs ?? 1).fill('') as string[] : ['']);
   const fibRefs = useRef(Array(total_fibs).fill(0).map(() => createRef() as RefObject<HTMLInputElement>));
+  const theme = useTheme() as ExtendedTheme;
 
   const generateQuestion = () => {
     if (format === "code") return <QuestionHighlighter answers={answers} format={format} fibRefs={fibRefs} type={type} language={language} code={question} />
     else {
-      if (type !== "FIB") return <div className="Question-container-item Question-container-question">{question}</div>;
+      if (type !== "FIB") return <div className="Question-container-item Question-container-question" style={{ color: theme.palette.text.primary }}>{question}</div>;
       else {
         let message = question, last_index = 0, messages: string[] = [], total_fib = 0;
         while ((last_index = message.indexOf("%_%")) !== -1) {
