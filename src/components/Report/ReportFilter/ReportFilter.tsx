@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { InputLabel, FormGroup, TextField, RadioGroup, FormControlLabel, Radio, Checkbox, Button } from '@material-ui/core';
+import { InputLabel, FormGroup, TextField, RadioGroup, FormControlLabel, Radio, Checkbox, Button, Select, MenuItem } from '@material-ui/core';
 
-import { IReportFilterState, QuestionDifficulty, QuestionType } from "../../../types";
+import { IReportFilterState, QuestionDifficulty, QuestionType, QuizIdentifiers } from "../../../types";
 
 import "./ReportFilter.scss";
 
-const DEFAULT_REPORT_FILTER_STATE = { time_taken: [0, 60], verdict: 'mixed', hints_used: 'any', excluded_types: [], excluded_difficulty: [] } as IReportFilterState;
+const DEFAULT_REPORT_FILTER_STATE = { time_taken: [0, 60], verdict: 'mixed', hints_used: 'any', excluded_types: [], excluded_difficulty: [], excluded_quizzes: [] } as IReportFilterState;
 
-export default function (props: { children: any }) {
+export default function (props: { selected_quizzes: QuizIdentifiers[], children: any }) {
   let REPORT_FILTERS: any = localStorage.getItem('REPORT_FILTERS');
   REPORT_FILTERS = REPORT_FILTERS ? JSON.parse(REPORT_FILTERS) : undefined;
 
@@ -44,6 +44,16 @@ export default function (props: { children: any }) {
           else setReportFilterState({ ...report_filter_state, excluded_types: report_filter_state.excluded_types.filter(excluded_type => excluded_type !== type) })
         }}
           color="primary" />} />)}
+      </FormGroup>
+      <FormGroup>
+        <InputLabel>Exluded Quizzes</InputLabel>
+        <Select value={report_filter_state.excluded_quizzes}
+          multiple
+          onChange={(e) => setReportFilterState({ ...report_filter_state, excluded_quizzes: e.target.value as string[] })}>
+          {props.selected_quizzes.map(selected_quiz =>
+            <MenuItem value={selected_quiz._id}>{selected_quiz.subject + "-" + selected_quiz.title}</MenuItem>
+          )}
+        </Select>
       </FormGroup>
       <Button onClick={() => setReportFilterState(DEFAULT_REPORT_FILTER_STATE)} style={{ width: "100%" }}>Reset</Button>
     </div>,

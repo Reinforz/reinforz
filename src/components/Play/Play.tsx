@@ -36,7 +36,7 @@ function Play() {
               localStorage.setItem('PLAY_SETTINGS', JSON.stringify(PlaySettingsState))
             return <Fragment>
               {playing ?
-                <Quiz play_options={PlaySettingsState.play_options} all_questions={PlaySettingsExtra.filtered_questions} /> :
+                <Quiz selected_quizzes={PlaySettingsExtra.selected_quizzes} play_options={PlaySettingsState.play_options} all_questions={PlaySettingsExtra.filtered_questions} /> :
                 <div className="Play">
                   <Icon onClick={() => { history.push("/settings") }} icon={FcSettings} popoverText="Click to go to settings page" className="App-icon App-icon--settings" />
                   <PlayTable quizzes={quizzes} />

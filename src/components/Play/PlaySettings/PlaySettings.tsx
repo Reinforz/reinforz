@@ -47,7 +47,8 @@ function PlaySettings(props: PlaySettingsProps) {
   return (
     props.children({
       PlaySettingsExtra: {
-        filtered_questions
+        filtered_questions,
+        selected_quizzes: filtered_quizzes.map(filtered_quiz => ({ _id: filtered_quiz._id, title: filtered_quiz.title, subject: filtered_quiz.subject }))
       },
       PlaySettingsState,
       PlaySettingsComponent: <div className="PlaySettings" style={{ backgroundColor: theme.color.base, color: theme.palette.text.primary }}>

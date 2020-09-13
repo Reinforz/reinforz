@@ -113,7 +113,8 @@ export interface IPlaySettingsRProps {
   PlaySettingsComponent: JSX.Element,
   PlaySettingsState: IPlaySettingsState,
   PlaySettingsExtra: {
-    filtered_questions: QuestionInputFull[]
+    filtered_questions: QuestionInputFull[],
+    selected_quizzes: QuizIdentifiers[]
   }
 }
 
@@ -174,7 +175,8 @@ export interface QuestionInput {
   results: Result[],
   quiz: string,
   subject: string,
-  language?: Language
+  language?: Language,
+  quizId: string
 }
 
 export interface QuestionInputPartial extends QuestionInputCommon, Partial<QuestionInput> { }
@@ -215,9 +217,15 @@ export interface QuestionOptionsProps {
   question: QuestionInputFull,
 }
 
+export interface QuizIdentifiers {
+  title: string,
+  _id: string,
+  subject: string
+}
 export interface QuizProps {
   all_questions: QuestionInputFull[],
-  play_options: IPlaySettingsOptionsState
+  play_options: IPlaySettingsOptionsState,
+  selected_quizzes: QuizIdentifiers[]
 }
 
 export type AnswerModifier = "IS" | "IC"
@@ -249,11 +257,15 @@ export interface Result {
   difficulty: QuestionDifficulty,
   _id: string,
   question_id: string,
+  quiz: string,
+  subject: string,
+  quizId: string
 }
 
 export interface ReportProps {
   results: Result[],
-  all_questions_map: Record<string, QuestionInputFull>
+  all_questions_map: Record<string, QuestionInputFull>,
+  selected_quizzes: QuizIdentifiers[]
 }
 
 export interface IReportFilterState {
@@ -261,7 +273,8 @@ export interface IReportFilterState {
   verdict: boolean | 'mixed',
   hints_used: number | 'any',
   excluded_types: QuestionType[],
-  excluded_difficulty: QuestionDifficulty[]
+  excluded_difficulty: QuestionDifficulty[],
+  excluded_quizzes: string[]
 }
 
 export interface ReportFilterRProps {

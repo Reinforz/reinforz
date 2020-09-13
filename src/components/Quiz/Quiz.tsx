@@ -16,7 +16,7 @@ import "./Quiz.scss";
 export default function Quiz(props: QuizProps) {
   const [current_question_index, setCurrentQuestion] = useState(0);
   const [results, setResults] = useState([] as Result[]);
-  const { all_questions, play_options } = props;
+  const { all_questions, play_options, selected_quizzes } = props;
   const total_questions = all_questions.length;
   const all_questions_map: Record<string, QuestionInputFull> = {};
   all_questions.forEach(question => all_questions_map[question._id] = question);
@@ -39,7 +39,7 @@ export default function Quiz(props: QuizProps) {
       return <Fragment>
         <Stats item={stat_item} stats={["quiz", "subject", "index", "total", "type", "format", "weight", "add_to_score", "time_allocated", "difficulty"]} />
         <Question hasEnd={current_question_index >= total_questions - 1} key={current_question._id} question={current_question} changeCounter={(user_answers: string[], time_taken: number, hints_used: number) => {
-          const { difficulty, _id, weight, type, question, format, time_allocated, answers, add_to_score, explanation } = current_question;
+          const { quizId, quiz, subject, difficulty, _id, weight, type, question, format, time_allocated, answers, add_to_score, explanation } = current_question;
           user_answers = user_answers.filter(user_answer => user_answer !== "");
           let verdict = false;
           if (type.match(/(MCQ|MS)/) && current_question.options && user_answers.length !== 0)
@@ -75,13 +75,15 @@ export default function Quiz(props: QuizProps) {
             hints_used,
             difficulty,
             question_id: _id,
-            _id: shortid()
+            _id: shortid(),
+            quiz, subject,
+            quizId
           }])
           setCurrentQuestion(current_question_index + 1)
         }} />
       </Fragment>
     }
-    else return <Report results={results} all_questions_map={all_questions_map} />
+    else return <Report selected_quizzes={selected_quizzes} results={results} all_questions_map={all_questions_map} />
   }
 
   return <div className="Quiz" style={{ backgroundColor: theme.color.base }}>

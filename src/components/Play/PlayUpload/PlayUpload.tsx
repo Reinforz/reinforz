@@ -41,7 +41,7 @@ export default function PlayUpload(props: PlayUploadProps) {
   const { enqueueSnackbar } = useSnackbar();
   const prepareData = (QuizData: any) => {
     QuizData._id = shortid();
-    QuizData.questions = QuizData.questions.map((question: any) => ({ ...generateQuestionInputConfigs(question), _id: shortid(), subject: QuizData.subject, title: QuizData.title }))
+    QuizData.questions = QuizData.questions.map((question: any) => ({ ...generateQuestionInputConfigs(question), _id: shortid(), subject: QuizData.subject, title: QuizData.title, quizId: QuizData._id }))
   }
   const onDrop = useCallback(acceptedFiles => {
     let filePromises: Promise<any>[] = [];
