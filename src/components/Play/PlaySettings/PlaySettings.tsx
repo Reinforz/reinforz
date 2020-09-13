@@ -5,30 +5,9 @@ import { useTheme } from '@material-ui/core/styles';
 
 import shuffle from "../../../utils/arrayShuffler";
 
-import { PlaySettingsProps, QuestionDifficulty, QuestionType, IPlaySettingsOptionsState, IPlaySettingsFiltersState, ExtendedTheme, IPlaySettingsState, QuizInputFull, QuestionInputFull, IPlaySettingsRProps } from "../../../types";
+import { PlaySettingsProps, QuestionDifficulty, QuestionType, IPlaySettingsOptionsState, IPlaySettingsFiltersState, ExtendedTheme, QuizInputFull, QuestionInputFull, IPlaySettingsRProps } from "../../../types";
 
 import "./PlaySettings.scss";
-
-function renderQuiz(quizzes: QuizInputFull[], selectedQuizzes: string[], play_state: IPlaySettingsState) {
-  const { play_options, play_filters } = play_state;
-  let filtered_quizzes = quizzes.filter(quiz => selectedQuizzes.includes(quiz._id)) as QuizInputFull[];
-  const all_questions: QuestionInputFull[] = [];
-  if (play_options.shuffle_quizzes && !play_options.flatten_mix) filtered_quizzes = shuffle(filtered_quizzes);
-  if (play_options.shuffle_questions && !play_options.flatten_mix) filtered_quizzes.forEach(quiz => quiz.questions = shuffle(quiz.questions));
-  filtered_quizzes.forEach(quiz => {
-    quiz.questions = quiz.questions.filter(question => !play_filters.excluded_difficulty.includes(question.difficulty as QuestionDifficulty) && !play_filters.excluded_types.includes(question.type as QuestionType) && play_filters.time_allocated[0] <= question.time_allocated && play_filters.time_allocated[1] >= question.time_allocated).map((question) => {
-      return {
-        ...question,
-        quiz: quiz.title,
-        subject: quiz.subject
-      }
-    });
-    all_questions.push(...quiz.questions as QuestionInputFull[]);
-  });
-
-  return play_options.flatten_mix ? shuffle(all_questions) : all_questions;
-}
-
 
 function PlaySettings(props: PlaySettingsProps) {
   const { quizzes, selectedQuizzes } = props;
@@ -46,7 +25,20 @@ function PlaySettings(props: PlaySettingsProps) {
     play_options,
     play_filters,
   }
-  const filtered_questions = renderQuiz(quizzes, selectedQuizzes, PlaySettingsState)
+
+  let filtered_quizzes = quizzes.filter(quiz => selectedQuizzes.includes(quiz._id)) as QuizInputFull[];
+  const filtered_questions: QuestionInputFull[] = [];
+  if (play_options.shuffle_quizzes && !play_options.flatten_mix) filtered_quizzes = shuffle(filtered_quizzes);
+  if (play_options.shuffle_questions && !play_options.flatten_mix) filtered_quizzes.forEach(quiz => quiz.questions = shuffle(quiz.questions));
+  filtered_quizzes.forEach(quiz => {
+    filtered_questions.push(...quiz.questions.filter(question => !play_filters.excluded_difficulty.includes(question.difficulty as QuestionDifficulty) && !play_filters.excluded_types.includes(question.type as QuestionType) && play_filters.time_allocated[0] <= question.time_allocated && play_filters.time_allocated[1] >= question.time_allocated).map((question) => {
+      return {
+        ...question,
+        quiz: quiz.title,
+        subject: quiz.subject
+      }
+    }) as QuestionInputFull[]);
+  });
 
   return (
     props.children({
