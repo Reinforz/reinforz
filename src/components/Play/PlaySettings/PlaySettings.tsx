@@ -9,16 +9,20 @@ import { PlaySettingsProps, QuestionDifficulty, QuestionType, IPlaySettingsOptio
 
 import "./PlaySettings.scss";
 
+const DEFAULT_PLAY_OPTIONS_STATE = { shuffle_options: true, shuffle_quizzes: false, shuffle_questions: true, instant_feedback: true, flatten_mix: false, partial_score: true } as IPlaySettingsOptionsState;
+
+const DEFAULT_PLAY_FILTERS_STATE = { time_allocated: [15, 60], excluded_difficulty: [] as QuestionDifficulty[], excluded_types: [] as QuestionType[] } as IPlaySettingsFiltersState;
+
 function PlaySettings(props: PlaySettingsProps) {
   const { quizzes, selectedQuizzes } = props;
   let PLAY_SETTINGS: any = localStorage.getItem('PLAY_SETTINGS');
   PLAY_SETTINGS = PLAY_SETTINGS ? JSON.parse(PLAY_SETTINGS) : undefined;
   const theme = useTheme() as ExtendedTheme;
 
-  const play_options_state = (PLAY_SETTINGS ? PLAY_SETTINGS.play_options : { shuffle_options: true, shuffle_quizzes: false, shuffle_questions: true, instant_feedback: true, flatten_mix: false, partial_score: true }) as IPlaySettingsOptionsState;
-  const play_filters_state = (PLAY_SETTINGS ? PLAY_SETTINGS.play_filters : { time_allocated: [15, 60], excluded_difficulty: [] as QuestionDifficulty[], excluded_types: [] as QuestionType[] }) as IPlaySettingsFiltersState;
+  const play_options_state = (PLAY_SETTINGS ? PLAY_SETTINGS.play_options : DEFAULT_PLAY_OPTIONS_STATE) as IPlaySettingsOptionsState;
+  const play_filters_state = (PLAY_SETTINGS ? PLAY_SETTINGS.play_filters : DEFAULT_PLAY_FILTERS_STATE) as IPlaySettingsFiltersState;
   const [play_options, setPlaySettingsOptions] = useState(play_options_state);
-  const [play_filters, setPlayFiltersOptions] = useState(play_filters_state);
+  const [play_filters, setPlaySettingsFilters] = useState(play_filters_state);
   const { enqueueSnackbar } = useSnackbar();
   type play_options_keys = keyof IPlaySettingsOptionsState;
   const PlaySettingsState = {
@@ -71,6 +75,7 @@ function PlaySettings(props: PlaySettingsProps) {
               />
             })}
           </div>
+          <Button className="PlaySettings-group-button" variant="contained" color="primary" onClick={() => setPlaySettingsOptions(DEFAULT_PLAY_OPTIONS_STATE)}>Reset</Button>
         </div>
         <div className="PlaySettings-group PlaySettings-group--filters">
           <div className="PlaySettings-group-header PlaySettings-group-header--filters" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>
@@ -79,15 +84,15 @@ function PlaySettings(props: PlaySettingsProps) {
           <div className="PlaySettings-group-content PlaySettings-group-content--filters">
             <FormGroup>
               <InputLabel>Time Allocated range</InputLabel>
-              <TextField type="number" inputProps={{ max: play_filters.time_allocated[1], step: 5, min: 0 }} value={play_filters.time_allocated[0]} onChange={(e) => setPlayFiltersOptions({ ...play_filters, time_allocated: [(e.target as any).value, play_filters.time_allocated[1]] })} />
-              <TextField type="number" inputProps={{ min: play_filters.time_allocated[0], step: 5, max: 60 }} value={play_filters.time_allocated[1]} onChange={(e) => setPlayFiltersOptions({ ...play_filters, time_allocated: [play_filters.time_allocated[0], (e.target as any).value,] })} />
+              <TextField type="number" inputProps={{ max: play_filters.time_allocated[1], step: 5, min: 0 }} value={play_filters.time_allocated[0]} onChange={(e) => setPlaySettingsFilters({ ...play_filters, time_allocated: [(e.target as any).value, play_filters.time_allocated[1]] })} />
+              <TextField type="number" inputProps={{ min: play_filters.time_allocated[0], step: 5, max: 60 }} value={play_filters.time_allocated[1]} onChange={(e) => setPlaySettingsFilters({ ...play_filters, time_allocated: [play_filters.time_allocated[0], (e.target as any).value,] })} />
             </FormGroup>
             <FormGroup>
               <InputLabel>Exluded Difficulty</InputLabel>
               {['Beginner', 'Intermediate', 'Advanced'].map((difficulty, index) => <FormControlLabel key={difficulty + index} label={difficulty} control={<Checkbox checked={play_filters.excluded_difficulty.includes(difficulty as QuestionDifficulty)} name={difficulty} onChange={(e) => {
                 if ((e.target as any).checked)
-                  setPlayFiltersOptions({ ...play_filters, excluded_difficulty: play_filters.excluded_difficulty.concat(difficulty as QuestionDifficulty) });
-                else setPlayFiltersOptions({ ...play_filters, excluded_difficulty: play_filters.excluded_difficulty.filter(excluded_difficulty => excluded_difficulty !== difficulty) })
+                  setPlaySettingsFilters({ ...play_filters, excluded_difficulty: play_filters.excluded_difficulty.concat(difficulty as QuestionDifficulty) });
+                else setPlaySettingsFilters({ ...play_filters, excluded_difficulty: play_filters.excluded_difficulty.filter(excluded_difficulty => excluded_difficulty !== difficulty) })
               }}
                 color="primary" />} />)}
             </FormGroup>
@@ -95,12 +100,14 @@ function PlaySettings(props: PlaySettingsProps) {
               <InputLabel>Exluded Type</InputLabel>
               {['FIB', 'MS', 'MCQ', "Snippet"].map((type, index) => <FormControlLabel key={type + index} label={type} control={<Checkbox checked={play_filters.excluded_types.includes(type as QuestionType)} name={type} onChange={(e) => {
                 if ((e.target as any).checked)
-                  setPlayFiltersOptions({ ...play_filters, excluded_types: play_filters.excluded_types.concat(type as QuestionType) });
-                else setPlayFiltersOptions({ ...play_filters, excluded_types: play_filters.excluded_types.filter(excluded_type => excluded_type !== type) })
+                  setPlaySettingsFilters({ ...play_filters, excluded_types: play_filters.excluded_types.concat(type as QuestionType) });
+                else setPlaySettingsFilters({ ...play_filters, excluded_types: play_filters.excluded_types.filter(excluded_type => excluded_type !== type) })
               }}
                 color="primary" />} />)}
             </FormGroup>
           </div>
+          <Button className="PlaySettings-group-button" variant="contained" color="primary" onClick={() => setPlaySettingsFilters(DEFAULT_PLAY_FILTERS_STATE)}>Reset</Button>
+
         </div>
         <div className="PlaySettings-total" style={{ backgroundColor: theme.color.dark, color: filtered_questions.length === 0 ? theme.palette.error.main : theme.palette.success.main }}>{filtered_questions.length} Questions</div>
         <Button disabled={(filtered_questions.length === 0 && selectedQuizzes.length !== 0) || selectedQuizzes.length === 0} className="PlaySettings-button" color="primary" variant="contained" onClick={() => {

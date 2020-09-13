@@ -42,8 +42,8 @@ export default function (props: ReportProps) {
   return (
     <div className="Report">
       <ReportFilter>
-        {({ report_filter_state, ReportFilter }: ReportFilterRProps) => {
-          const { excluded_types, excluded_difficulty, verdict, hints_used, time_taken } = report_filter_state;
+        {({ ReportFilterState, ReportFilter }: ReportFilterRProps) => {
+          const { excluded_types, excluded_difficulty, verdict, hints_used, time_taken } = ReportFilterState;
           const filtered_results = props.results.filter(result => !excluded_types.includes(result.type) && !excluded_difficulty.includes(result.difficulty) && (verdict === "mixed" || verdict.toString() === result.verdict.toString()) && (hints_used === "any" || result.hints_used <= hints_used) && time_taken[0] <= result.time_taken && time_taken[1] >= result.time_taken)
           return <Fragment>
             {ReportFilter}

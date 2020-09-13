@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-import { InputLabel, FormGroup, TextField, RadioGroup, FormControlLabel, Radio, Checkbox } from '@material-ui/core';
+import { InputLabel, FormGroup, TextField, RadioGroup, FormControlLabel, Radio, Checkbox, Button } from '@material-ui/core';
 
-import { ReportFilterState, QuestionDifficulty, QuestionType } from "../../../types";
+import { IReportFilterState, QuestionDifficulty, QuestionType } from "../../../types";
 
 import "./ReportFilter.scss";
+
+const DEFAULT_REPORT_FILTER_STATE = { time_taken: [0, 60], verdict: 'mixed', hints_used: 'any', excluded_types: [], excluded_difficulty: [] } as IReportFilterState;
 
 export default function (props: { children: any }) {
   let REPORT_FILTERS: any = localStorage.getItem('REPORT_FILTERS');
   REPORT_FILTERS = REPORT_FILTERS ? JSON.parse(REPORT_FILTERS) : undefined;
 
-  const [report_filter_state, setReportFilterState] = useState((REPORT_FILTERS ? REPORT_FILTERS : { time_taken: [0, 60], verdict: 'mixed', hints_used: 'any', excluded_types: [], excluded_difficulty: [] }) as ReportFilterState);
+  const [report_filter_state, setReportFilterState] = useState((REPORT_FILTERS ? REPORT_FILTERS : DEFAULT_REPORT_FILTER_STATE) as IReportFilterState);
   return props.children({
     ReportFilter: <div className="ReportFilter">
       <FormGroup>
@@ -43,7 +45,8 @@ export default function (props: { children: any }) {
         }}
           color="primary" />} />)}
       </FormGroup>
+      <Button onClick={() => setReportFilterState(DEFAULT_REPORT_FILTER_STATE)} style={{ width: "100%" }}>Reset</Button>
     </div>,
-    report_filter_state
+    ReportFilterState: report_filter_state
   })
 }

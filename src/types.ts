@@ -256,7 +256,7 @@ export interface ReportProps {
   all_questions_map: Record<string, QuestionInputFull>
 }
 
-export interface ReportFilterState {
+export interface IReportFilterState {
   time_taken: [number, number],
   verdict: boolean | 'mixed',
   hints_used: number | 'any',
@@ -265,7 +265,7 @@ export interface ReportFilterState {
 }
 
 export interface ReportFilterRProps {
-  report_filter_state: ReportFilterState,
+  ReportFilterState: IReportFilterState,
   ReportFilter: JSX.Element
 }
 
