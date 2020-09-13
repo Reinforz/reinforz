@@ -13,6 +13,7 @@ export default function (props: ListProps<Record<string, any>>) {
   const { children, items, setItems, header, fields, icons } = props;
   const [selectedItems, setSelectedItems] = useState([] as any[]);
   const theme = useTheme() as ExtendedTheme;
+
   return children({
     ListComponent: <div className="List" style={{ backgroundColor: theme.color.base }}>
       <div className="List-header" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>

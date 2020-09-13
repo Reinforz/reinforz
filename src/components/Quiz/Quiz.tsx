@@ -23,7 +23,7 @@ export default function Quiz(props: QuizProps) {
   const theme = useTheme() as ExtendedTheme;
 
   const generateContent = () => {
-    if (current_question_index === total_questions) {
+    if (current_question_index !== total_questions) {
       const current_question = all_questions[current_question_index];
       current_question.total = total_questions;
       current_question.index = current_question_index + 1;

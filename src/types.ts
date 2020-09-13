@@ -296,6 +296,7 @@ export interface ISettings {
   theme: AllowedTheme,
   animation: boolean,
   sound: boolean,
+  hovertips: boolean
 }
 export interface SettingsProps {
   settings: ISettings,

@@ -27,7 +27,7 @@ const OnOffSwitch = withStyles({
 
 function Settings(props: SettingsProps) {
   const { settings, setSettings } = props;
-  const { theme, animation, sound } = settings;
+  const { theme, animation, sound, hovertips } = settings;
   const history = useHistory();
   const THEME = useTheme() as ExtendedTheme;
 
@@ -59,10 +59,20 @@ function Settings(props: SettingsProps) {
             }}
           />
         </FormGroup>
+        <FormGroup row className="Settings-content-group" style={{ backgroundColor: THEME.color.base }}>
+          <InputLabel className="Settings-content-group-label">Hovertips</InputLabel>
+          <OnOffSwitch
+            checked={settings.hovertips}
+            onChange={(e) => {
+              setSettings({ ...settings, hovertips: !hovertips })
+            }}
+          />
+        </FormGroup>
         <Button variant="contained" color="primary" className="Settings-content-button" onClick={() => {
           localStorage.setItem("sound", String(sound));
           localStorage.setItem("animation", String(animation));
           localStorage.setItem("THEME", theme);
+          localStorage.setItem("hovertips", String(hovertips));
           history.push("/")
         }}>Back to Home</Button>
 

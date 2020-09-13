@@ -1,7 +1,11 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useContext, useEffect } from 'react';
 import { Popover, SvgIconTypeMap, Typography } from '@material-ui/core';
 import { OverridableComponent } from '@material-ui/core/OverridableComponent';
 import { makeStyles } from '@material-ui/core/styles';
+
+import SettingsContext from '../SettingsContext';
+
+import { ISettings } from '../../types';
 
 const useStyles = makeStyles((theme) => ({
   popover: {
@@ -24,6 +28,7 @@ export interface IconProps {
 export default function (props: IconProps) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const settings = useContext(SettingsContext) as ISettings;
 
   const open = Boolean(anchorEl);
 
@@ -49,7 +54,7 @@ export default function (props: IconProps) {
     onMouseLeave: () => setAnchorEl(null)
   });
 
-  return <Fragment>
+  return settings.hovertips ? <Fragment>
     {Icon}
     <Popover className={classes.popover}
       classes={{
@@ -63,5 +68,5 @@ export default function (props: IconProps) {
         horizontal: 'center',
       }}
       onClose={() => setAnchorEl(null)} disableRestoreFocus ><Typography>{popoverText}</Typography></Popover>
-  </Fragment>
+  </Fragment> : Icon
 }
