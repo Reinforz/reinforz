@@ -1,4 +1,5 @@
 import { QuestionInputPartial, QuestionInputFull } from '../types';
+import convertToAnswerAST from './convertToAnswerAST';
 
 function setObjectValues(
   parent: any,
@@ -29,6 +30,7 @@ export function generateQuestionInputConfigs(
   if (language) {
     res.question = lines.splice(1).join("\n")
     format = 'code';
+    language = language[1]
   }
   else language = "javascript"
 
@@ -48,7 +50,8 @@ export function generateQuestionInputConfigs(
 
   if (res.answers.length === 1) res.type = res.options ? "MCQ" : "Snippet";
   else res.type = res.options ? "MS" : "FIB";
-  res.answers = res.answers.map((a: (string | number)) => a.toString());
+
+  res.answers = res.type.match(/(Snippet|FIB)/) ? convertToAnswerAST(res.answers) : res.answers.map((answer: string) => answer.toString());
 
   switch (res.type) {
     case "MCQ":

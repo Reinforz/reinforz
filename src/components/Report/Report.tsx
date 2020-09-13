@@ -19,7 +19,7 @@ export default function (props: ReportProps) {
       case "answers":
       case "user_answers":
         if (content.type.match(/(MS|FIB)/))
-          return value.map((value: any, index: number) => <div key={value + index}>{value.replace(/^_(\w{2}\s?)*_/g, '')}</div>);
+          return value.map((value: any, index: number) => <div key={value + index}>{value}</div>);
         else return value
       default:
         return value?.toString() ?? "N/A";

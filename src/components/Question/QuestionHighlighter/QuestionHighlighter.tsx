@@ -4,12 +4,12 @@ import DarkTheme from "prism-react-renderer/themes/vsDark";
 import LightTheme from "prism-react-renderer/themes/github";
 import { useTheme } from "@material-ui/core/styles";
 
-import { ExtendedTheme, QuestionHighlighterProps } from "../../../types";
+import { ExtendedTheme, QuestionAnswersNodes, QuestionHighlighterProps } from "../../../types";
 
 import "./QuestionHighlighter.scss";
 
 export default function QuestionHighlighter(props: QuestionHighlighterProps) {
-  const { code, language, format, type, fibRefs } = props;
+  const { code, language, format, type, fibRefs, answers } = props;
   const theme = useTheme() as ExtendedTheme;
 
   return <Highlight {...defaultProps} theme={theme.palette.type === "dark" ? DarkTheme : LightTheme} code={code.trim()} language={language}>
@@ -22,7 +22,7 @@ export default function QuestionHighlighter(props: QuestionHighlighterProps) {
             const token = line[i];
             if (type === "FIB" && format === "code" && token.content === "%" && line[i + 1].content === "_" && line[i + 2].content === "%") {
               current_fib_index++;
-              line_contents.push(<input style={{ color: theme.palette.text.primary, backgroundColor: theme.color.dark }} key={i} spellCheck={false} className="Highlighter-FIB-Code" ref={fibRefs.current[current_fib_index]} />)
+              line_contents.push(<input style={{ color: theme.palette.text.primary, backgroundColor: theme.color.dark, width: (answers as QuestionAnswersNodes)[current_fib_index].all_answers[0].length * 10 + 5 }} key={i} spellCheck={false} className="Highlighter-FIB-Code" ref={fibRefs.current[current_fib_index]} />)
               i += 2;
             }
             else line_contents.push(<span key={i} {...getTokenProps({ token, key: i })} />)

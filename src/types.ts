@@ -95,6 +95,7 @@ export interface IPlaySettingsOptionsState {
   shuffle_questions: boolean,
   instant_feedback: boolean,
   flatten_mix: boolean,
+  partial_score: boolean
 }
 
 export interface IPlaySettingsFiltersState {
@@ -151,7 +152,7 @@ export type QuestionDifficulty = 'Beginner' | 'Intermediate' | 'Advanced';
 export interface QuestionInputCommon {
   question: string,
   options?: string[],
-  answers: string[],
+  answers: QuestionAnswersType,
 }
 
 export interface QuestionInput {
@@ -190,7 +191,8 @@ export interface QuestionHighlighterProps {
   language: Language,
   type: QuestionType,
   format: QuestionFormat,
-  fibRefs: React.MutableRefObject<React.RefObject<HTMLInputElement>[]>
+  fibRefs: React.MutableRefObject<React.RefObject<HTMLInputElement>[]>,
+  answers: QuestionAnswersType
 }
 
 export interface QuestionHintsProps {
@@ -218,12 +220,26 @@ export interface QuizProps {
   play_options: IPlaySettingsOptionsState
 }
 
+export type AnswerModifier = "IS" | "IC"
+
+export type IQuestionAnswerModifiers = Array<Array<string> | null>
+export interface IQuestionAnswerNode {
+  modifiers: IQuestionAnswerModifiers,
+  answers: Record<string, string>,
+  original: string,
+  mods_stripped: string,
+  all_answers: string[]
+}
+
+export type QuestionAnswersNodes = Array<IQuestionAnswerNode>
+export type QuestionAnswersType = string[] | QuestionAnswersNodes;
+
 export interface Result {
   user_answers: string[],
   verdict: boolean,
   score: number,
   add_to_score: boolean,
-  answers: string[],
+  answers: QuestionAnswersType,
   question: string,
   type: QuestionType,
   time_allocated: number,

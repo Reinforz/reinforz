@@ -36,7 +36,7 @@ function PlaySettings(props: PlaySettingsProps) {
   PLAY_SETTINGS = PLAY_SETTINGS ? JSON.parse(PLAY_SETTINGS) : undefined;
   const theme = useTheme() as ExtendedTheme;
 
-  const play_options_state = (PLAY_SETTINGS ? PLAY_SETTINGS.play_options : { shuffle_options: true, shuffle_quizzes: false, shuffle_questions: true, instant_feedback: true, flatten_mix: false }) as IPlaySettingsOptionsState;
+  const play_options_state = (PLAY_SETTINGS ? PLAY_SETTINGS.play_options : { shuffle_options: true, shuffle_quizzes: false, shuffle_questions: true, instant_feedback: true, flatten_mix: false, partial_score: true }) as IPlaySettingsOptionsState;
   const play_filters_state = (PLAY_SETTINGS ? PLAY_SETTINGS.play_filters : { time_allocated: [15, 60], excluded_difficulty: [] as QuestionDifficulty[], excluded_types: [] as QuestionType[] }) as IPlaySettingsFiltersState;
   const [play_options, setPlaySettingsOptions] = useState(play_options_state);
   const [play_filters, setPlayFiltersOptions] = useState(play_filters_state);
