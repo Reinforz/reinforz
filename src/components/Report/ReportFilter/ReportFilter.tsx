@@ -55,7 +55,7 @@ export default function (props: { selected_quizzes: QuizIdentifiers[], children:
           )}
         </Select>
       </FormGroup>
-      <Button onClick={() => setReportFilterState(DEFAULT_REPORT_FILTER_STATE)} style={{ width: "100%" }}>Reset</Button>
+      <Button variant="contained" color="primary" onClick={() => setReportFilterState(DEFAULT_REPORT_FILTER_STATE)} style={{ width: "100%" }}>Reset</Button>
     </div>,
     ReportFilterState: report_filter_state
   })

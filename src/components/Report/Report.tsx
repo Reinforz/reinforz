@@ -1,4 +1,6 @@
 import React, { Fragment } from 'react';
+import { Button } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 
 import Table from "../Basic/Table";
 import ReportFilter from './ReportFilter/ReportFilter';
@@ -39,6 +41,8 @@ export default function (props: ReportProps) {
     }
   }
 
+  const history = useHistory();
+
   return (
     <div className="Report">
       <ReportFilter selected_quizzes={props.selected_quizzes}>
@@ -49,6 +53,10 @@ export default function (props: ReportProps) {
             {ReportFilter}
             <ReportExport filtered_results={filtered_results} all_questions_map={props.all_questions_map} />
             <Table accumulator={accumulator} transformValue={transformValue} contents={filtered_results} collapseContents={["explanation"]} headers={["quiz", "subject", "question", "type", "difficulty", "verdict", "score", "time_allocated", "time_taken", "answers", "user_answers", "hints_used"]} />
+            <div className="Report-buttons">
+              <Button className="Report-buttons-item" variant="contained" color="primary" onClick={() => history.push("/")}>Back to Home</Button>
+              <Button className="Report-buttons-item" variant="contained" color="primary" onClick={() => history.push("/settings")}>Go to Settings</Button>
+            </div>
           </Fragment>
         }}
       </ReportFilter>
