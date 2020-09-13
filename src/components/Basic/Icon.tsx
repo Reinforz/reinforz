@@ -56,7 +56,7 @@ export default function (props: IconProps) {
 
   return settings.hovertips ? <Fragment>
     {Icon}
-    <Popover className={classes.popover}
+    {Icon && style.display !== "none" && <Popover className={classes.popover}
       classes={{
         paper: classes.paper,
       }} open={open} anchorEl={anchorEl} anchorOrigin={{
@@ -67,6 +67,6 @@ export default function (props: IconProps) {
         vertical: 'bottom',
         horizontal: 'center',
       }}
-      onClose={() => setAnchorEl(null)} disableRestoreFocus ><Typography>{popoverText}</Typography></Popover>
+      onClose={() => setAnchorEl(null)} disableRestoreFocus ><Typography>{popoverText}</Typography></Popover>}
   </Fragment> : Icon
 }

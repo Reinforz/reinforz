@@ -8,10 +8,11 @@ import Collapse from '@material-ui/core/Collapse';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { TableFooter } from '@material-ui/core';
+
+import Icon from "./Icon";
 
 import { TableRowsProps, TableProps, ExtendedTheme } from "../../types"
 
@@ -41,13 +42,13 @@ function TableRows(props: TableRowsProps) {
   const [open, setOpen] = React.useState(false);
   const classes = useStyles();
   const { title, content, headers, index, collapseContents, transformValue } = props;
+  const theme = useTheme() as ExtendedTheme;
   return <Fragment>
     {title && <div className="Table-title">{title}</div>}
     <TableRow className={classes.tr} >
       {collapseContents && <TableCell className={classes.td}>
-        <IconButton aria-label="expand row" size="small" style={{ color: 'white' }} onClick={() => setOpen(!open)}>
-          {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-        </IconButton>
+        <Icon style={{ display: !open ? "initial" : "none", color: theme.color.opposite_dark }} icon={KeyboardArrowUpIcon} popoverText="Click to show explanation" onClick={() => setOpen(!open)} />
+        <Icon style={{ display: open ? "initial" : "none", color: theme.color.opposite_dark }} icon={KeyboardArrowDownIcon} popoverText="Click to hide explanation" onClick={() => setOpen(!open)} />
       </TableCell>}
       <TableCell className={classes.td}>{index + 1}</TableCell>
       {headers.map((header, index) => <TableCell className={classes.td} key={header + 'row' + index} align="center">{transformValue ? transformValue(header, content) : content[header]?.toString() ?? "N/A"}</TableCell>)}

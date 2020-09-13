@@ -51,7 +51,7 @@ export default function (props: { selected_quizzes: QuizIdentifiers[], children:
           multiple
           onChange={(e) => setReportFilterState({ ...report_filter_state, excluded_quizzes: e.target.value as string[] })}>
           {props.selected_quizzes.map(selected_quiz =>
-            <MenuItem value={selected_quiz._id}>{selected_quiz.subject + "-" + selected_quiz.title}</MenuItem>
+            <MenuItem key={selected_quiz._id} value={selected_quiz._id}>{selected_quiz.subject + "-" + selected_quiz.title}</MenuItem>
           )}
         </Select>
       </FormGroup>
