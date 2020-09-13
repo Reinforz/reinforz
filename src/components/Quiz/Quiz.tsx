@@ -37,9 +37,9 @@ export default function Quiz(props: QuizProps) {
       }
 
       return <Fragment>
-        <Stats item={stat_item} stats={["quiz", "subject", "index", "total", "type", "format", "weight", "add_to_score", "time_allocated", "difficulty"]} />
+        <Stats item={stat_item} stats={["quiz.title", "quiz.subject", "index", "total", "type", "format", "weight", "add_to_score", "time_allocated", "difficulty"]} />
         <Question hasEnd={current_question_index >= total_questions - 1} key={current_question._id} question={current_question} changeCounter={(user_answers: string[], time_taken: number, hints_used: number) => {
-          const { quizId, quiz, subject, difficulty, _id, weight, type, question, format, time_allocated, answers, add_to_score, explanation } = current_question;
+          const { quiz: { title, _id: quizId, subject }, difficulty, _id, weight, type, question, format, time_allocated, answers, add_to_score, explanation } = current_question;
           user_answers = user_answers.filter(user_answer => user_answer !== "");
           let verdict = false;
           if (type.match(/(MCQ|MS)/) && current_question.options && user_answers.length !== 0)
@@ -76,7 +76,7 @@ export default function Quiz(props: QuizProps) {
             difficulty,
             question_id: _id,
             _id: shortid(),
-            quiz, subject,
+            quiz: title, subject,
             quizId
           }])
           setCurrentQuestion(current_question_index + 1)

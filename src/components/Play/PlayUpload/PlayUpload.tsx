@@ -8,7 +8,7 @@ import { useTheme } from '@material-ui/core/styles';
 
 import { generateQuestionInputConfigs } from '../../../utils/generateConfigs';
 
-import { PlayUploadProps, ExtendedTheme } from '../../../types';
+import { PlayUploadProps, ExtendedTheme, QuestionInputFull } from '../../../types';
 
 import "./PlayUpload.scss";
 
@@ -35,14 +35,15 @@ const centerBottomErrorNotistack = {
   },
 } as OptionsObject;
 
+const prepareData = (QuizData: any) => {
+  QuizData._id = shortid();
+  QuizData.questions = QuizData.questions.map((question: any) => ({ ...generateQuestionInputConfigs(question), _id: shortid(), quiz: { subject: QuizData.subject, title: QuizData.title, _id: QuizData._id } }) as QuestionInputFull)
+}
+
 export default function PlayUpload(props: PlayUploadProps) {
   const theme = useTheme() as ExtendedTheme;
   const { items: quizzes, setItems: setQuizzes, setSelectedItems, selectedItems } = props;
   const { enqueueSnackbar } = useSnackbar();
-  const prepareData = (QuizData: any) => {
-    QuizData._id = shortid();
-    QuizData.questions = QuizData.questions.map((question: any) => ({ ...generateQuestionInputConfigs(question), _id: shortid(), subject: QuizData.subject, title: QuizData.title, quizId: QuizData._id }))
-  }
   const onDrop = useCallback(acceptedFiles => {
     let filePromises: Promise<any>[] = [];
 

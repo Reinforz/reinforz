@@ -173,17 +173,14 @@ export interface QuestionInput {
   hints?: string[],
   changeCounter: any,
   results: Result[],
-  quiz: string,
-  subject: string,
   language?: Language,
-  quizId: string
 }
 
 export interface QuestionInputPartial extends QuestionInputCommon, Partial<QuestionInput> { }
 
 export type QuestionInputKeys = Array<keyof QuestionInputPartial>;
 
-export interface QuestionInputFull extends Required<QuestionInput>, QuestionInputCommon { }
+export interface QuestionInputFull extends Required<QuestionInput & { quiz: QuizIdentifiers }>, QuestionInputCommon { }
 
 export type QuestionInputsPartial = QuestionInputPartial[];
 export type QuestionInputsFull = QuestionInputFull[];

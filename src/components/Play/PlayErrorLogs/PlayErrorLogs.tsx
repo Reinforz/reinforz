@@ -20,8 +20,10 @@ const common_schema = {
   incorrect_answer_message: yup.string(),
   explanation: yup.string(),
   hints: yup.array().of(yup.string()).min(0).max(3),
-  title: yup.string().required(),
-  subject: yup.string().required(),
+  quiz: yup.object({
+    title: yup.string().required(),
+    subject: yup.string().required(),
+  })
 }
 
 const OptionedQuestionSchema = yup.object({
@@ -45,7 +47,7 @@ export default React.memo((props: PlayErrorLogsProps) => {
         error_promises.push(new Promise((resolve,) => {
           if (question.type.match(/(MS|MCQ)/))
             OptionedQuestionSchema.validate(question).then(() => resolve(undefined)).catch(err => resolve({
-              quiz: question.quiz,
+              quiz: question.quiz.title,
               question_name: question.question,
               question_number: index,
               message: err.message
@@ -53,7 +55,7 @@ export default React.memo((props: PlayErrorLogsProps) => {
             )
           else OptionLessQuestionSchema.validate(question).then(() => resolve(undefined)).catch(err =>
             resolve({
-              quiz: question.quiz,
+              quiz: question.quiz.title,
               question_name: question.question,
               question_number: index,
               message: err.message
