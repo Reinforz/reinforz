@@ -86,7 +86,8 @@ function TableHeaders(props: TableHeaderProps) {
       }} className={classes.th} key={header + "header" + index} align="center">
         <div style={{
           display: "flex",
-          alignItems: "center"
+          alignItems: "center",
+          justifyContent: "center"
         }}>
           <MdPlayArrow style={{ transform: `rotateZ(${headers_sort_orders[index] === "ASC" ? 30 : -30}deg)` }} />
           {header.split("_").map(c => c.charAt(0).toUpperCase() + c.substr(1)).join(" ")}

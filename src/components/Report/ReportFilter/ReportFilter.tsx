@@ -5,8 +5,12 @@ import { IReportFilterState, QuestionDifficulty, QuestionType, QuizIdentifiers }
 
 import "./ReportFilter.scss";
 
-const DEFAULT_REPORT_FILTER_STATE = { time_taken: [0, 60], verdict: 'mixed', hints_used: 'any', excluded_types: [], excluded_difficulty: [], excluded_quizzes: [] } as IReportFilterState;
+const DEFAULT_REPORT_FILTER_STATE = { time_taken: [0, 60], verdict: 'mixed', hints_used: 'any', excluded_types: [], excluded_difficulty: [], excluded_quizzes: [], excluded_columns: [] } as IReportFilterState;
 
+const transformLabel = (stat: string) => {
+  let label = stat.replace(/(\.|_)/g, " ");
+  return label.split(" ").map(c => c.charAt(0).toUpperCase() + c.substr(1)).join(" ");
+}
 export default function (props: { selected_quizzes: QuizIdentifiers[], children: any }) {
   let REPORT_FILTERS: any = localStorage.getItem('REPORT_FILTERS');
   REPORT_FILTERS = REPORT_FILTERS ? JSON.parse(REPORT_FILTERS) : undefined;
@@ -52,6 +56,17 @@ export default function (props: { selected_quizzes: QuizIdentifiers[], children:
           onChange={(e) => setReportFilterState({ ...report_filter_state, excluded_quizzes: e.target.value as string[] })}>
           {props.selected_quizzes.map(selected_quiz =>
             <MenuItem key={selected_quiz._id} value={selected_quiz._id}>{selected_quiz.subject + "-" + selected_quiz.title}</MenuItem>
+          )}
+        </Select>
+      </FormGroup>
+      <FormGroup>
+        <InputLabel>Exluded Columns</InputLabel>
+        <Select value={report_filter_state.excluded_columns}
+          multiple
+          renderValue={(selected) => (selected as string[]).map((report_stat, index) => <div key={report_stat + "excluded_columns" + index}>{transformLabel(report_stat)}</div>)}
+          onChange={(e) => setReportFilterState({ ...report_filter_state, excluded_columns: e.target.value as string[] })}>
+          {["quiz", "subject", "question", "type", "difficulty", "verdict", "score", "time_allocated", "time_taken", "answers", "user_answers", "hints_used"].map(report_stat =>
+            <MenuItem key={report_stat} value={report_stat}>{transformLabel(report_stat)}</MenuItem>
           )}
         </Select>
       </FormGroup>

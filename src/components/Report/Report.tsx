@@ -90,7 +90,7 @@ export default function (props: ReportProps) {
           return <Fragment>
             {ReportFilter}
             <ReportExport filtered_results={filtered_results} filtered_quizzes={Object.values(filtered_quizzes)} />
-            <Table accumulator={accumulator} transformValue={transformValue} contents={filtered_results} collapseContents={["explanation"]} headers={["quiz", "subject", "question", "type", "difficulty", "verdict", "score", "time_allocated", "time_taken", "answers", "user_answers", "hints_used"]} onHeaderClick={(header, order) => {
+            <Table accumulator={accumulator} transformValue={transformValue} contents={filtered_results} collapseContents={["explanation"]} headers={["quiz", "subject", "question", "type", "difficulty", "verdict", "score", "time_allocated", "time_taken", "answers", "user_answers", "hints_used"].filter(report_stat => !ReportFilterState.excluded_columns.includes(report_stat))} onHeaderClick={(header, order) => {
               if (header.match(/(score|time|hints)/))
                 props.setResults(filtered_results.sort((a, b) => order === "DESC" ? (a as any)[header] - (b as any)[header] : (b as any)[header] - (a as any)[header]))
               else if (header === "verdict") props.setResults(filtered_results.sort((a, b) => order === "DESC" ? (a as any)[header] === false ? -1 : 1 : (a as any)[header] === true ? -1 : 1))
@@ -98,6 +98,7 @@ export default function (props: ReportProps) {
             }} />
             <div className="Report-buttons">
               <Button className="Report-buttons-item" variant="contained" color="primary" onClick={() => {
+                localStorage.setItem("REPORT_FILTERS", JSON.stringify(ReportFilterState))
                 PlayContextValue.setPlaying(false);
                 PlayContextValue.setQuizzes(Object.values(filtered_quizzes))
                 PlayContextValue.setSelected(Object.values(filtered_quizzes).map(quiz => quiz._id))

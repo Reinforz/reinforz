@@ -279,7 +279,8 @@ export interface IReportFilterState {
   hints_used: number | 'any',
   excluded_types: QuestionType[],
   excluded_difficulty: QuestionDifficulty[],
-  excluded_quizzes: string[]
+  excluded_quizzes: string[],
+  excluded_columns: string[]
 }
 
 export interface ReportFilterRProps {
