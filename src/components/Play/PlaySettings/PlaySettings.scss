@@ -1,12 +1,13 @@
 .PlaySettings {
   grid-area: 1/4/4/5;
   padding: 5px;
-  grid-template-rows: 1fr 1fr 25px 50px;
+  grid-template-rows: 1fr 1fr 30px 50px;
   display: grid;
   &-total {
     text-align: center;
     font-weight: bolder;
     font-size: 1rem;
+    margin-top: 10px;
   }
   &-group {
     &--options {
@@ -36,8 +37,9 @@
       width: 100%;
     }
   }
+
   &-button.MuiButton-containedPrimary {
-    margin-top: 20px;
+    margin-top: 10px;
     width: 100%;
   }
 }

@@ -17,7 +17,7 @@ export default function (props: ListProps<Record<string, any>>) {
   return children({
     ListComponent: <div className="List" style={{ backgroundColor: theme.color.base }}>
       <div className="List-header" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>
-        <Checkbox key={"checkbox"} onClick={(e) => {
+        <Checkbox color="primary" key={"checkbox"} onClick={(e) => {
           if ((e.target as any).checked) setSelectedItems(items.map(item => item._id));
           else setSelectedItems([])
         }} checked={items.length !== 0 && selectedItems.length === items.length} />
@@ -37,7 +37,7 @@ export default function (props: ListProps<Record<string, any>>) {
           return <div className="List-content-item" key={_id}>
             {icons?.map(icon => icon(index, _id))}
             <div className="List-content-item-icons">
-              <Checkbox className="List-content-item-icons--checkbox" key={_id + "checkbox" + index} onClick={(e) => {
+              <Checkbox color="primary" className="List-content-item-icons--checkbox" key={_id + "checkbox" + index} onClick={(e) => {
                 if ((e.target as any).checked) setSelectedItems([...selectedItems, _id])
                 else setSelectedItems(selectedItems.filter(item => item !== _id))
               }} checked={selectedItems.includes(_id)} value={_id} />

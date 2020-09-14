@@ -36,6 +36,7 @@ export default function Quiz(props: QuizProps) {
         current_question.options.forEach((option, index) => options_md5_map[md5(option.toString())] = index);
         current_question.options = play_options.shuffle_options ? shuffle(current_question.options) : current_question.options;
       }
+      let total_correct_answers = 0;
       return <Fragment>
         <Stats item={stat_item} stats={["quiz.title", "quiz.subject", "index", "total", "type", "format", "weight", "add_to_score", "time_allocated", "difficulty"]} />
         <Question hasEnd={current_question_index >= total_questions - 1} key={current_question._id} question={current_question} changeCounter={(user_answers: string[], time_taken: number, hints_used: number) => {
@@ -48,23 +49,35 @@ export default function Quiz(props: QuizProps) {
           switch (type) {
             case "MCQ":
               verdict = answers.length === user_answers.length && answers[0].toString() === user_answers[0].toString();
+              total_correct_answers = verdict ? 1 : 0
               break;
             case "MS":
-              verdict = user_answers.length === answers.length && user_answers.every((user_answer) => (answers as string[]).includes(user_answer));
+              verdict = user_answers.length === answers.length && user_answers.every((user_answer) => {
+                const isCorrect = (answers as string[]).includes(user_answer);
+                if (isCorrect) total_correct_answers++
+                return isCorrect
+              });
               break;
             case "Snippet":
             case "FIB":
-              verdict = user_answers.length === answers.length && user_answers.every((user_answer, i) => (answers as QuestionAnswersNodes)[i].answers[user_answer]);
+              verdict = user_answers.length === answers.length && user_answers.every((user_answer, i) => {
+                const isCorrect = (answers as QuestionAnswersNodes)[i].answers[user_answer];
+                if (isCorrect) total_correct_answers++
+                return isCorrect;
+              });
               (answers as QuestionAnswersNodes).forEach(answer => (modified_answers as string[]).push(answer.mods_stripped))
               break;
           }
 
+          const correct_answers_score = (0.5) * (total_correct_answers / (modified_answers.length === 0 ? answers : modified_answers).length)
+          const hints_score = (correct_answers_score / 0.5) * (0.2 - (hints_used * 0.067));
+          const time_taken_score = ((correct_answers_score / 0.5) * 0.3 * (1 / Math.ceil(time_taken / (time_allocated / 4))));
           setResults([...results, {
             user_answers,
             answers: modified_answers.length === 0 ? answers : modified_answers,
             verdict,
             add_to_score,
-            score: weight * (verdict ? 1 : 0),
+            score: weight * (play_options.partial_score ? Number((correct_answers_score + hints_score + time_taken_score).toFixed(2)) : (verdict ? 1 : 0)),
             question: format !== "code" ? question : "<Code/>",
             type,
             time_allocated,
