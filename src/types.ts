@@ -41,7 +41,7 @@ export interface TableProps<Values> extends Table_RowsCommonProps {
   contents: Values[],
   accumulator: (header: string, contents: Array<any>) => string | null | number,
   className?: string,
-  onHeaderClick?: (header: string, order: "ASC" | "DESC") => any,
+  onHeaderClick: (header: string, order: "ASC" | "DESC") => any,
 }
 
 export interface TableRowsProps extends Table_RowsCommonProps {
@@ -52,7 +52,7 @@ export interface TableRowsProps extends Table_RowsCommonProps {
 export interface TableHeaderProps {
   headers: string[],
   collapseContents?: string[]
-  onHeaderClick?: (header: string, order: "ASC" | "DESC") => any,
+  onHeaderClick: (header: string, order: "ASC" | "DESC") => any,
 }
 
 export interface TimerProps {
@@ -168,7 +168,6 @@ export interface QuestionInput {
   format?: QuestionFormat,
   image?: string,
   weight?: number,
-  add_to_score?: boolean,
   time_allocated?: number,
   difficulty?: QuestionDifficulty,
   correct_answer_message?: string,
@@ -250,7 +249,6 @@ export interface Result {
   user_answers: string[],
   verdict: boolean,
   score: number,
-  add_to_score: boolean,
   answers: QuestionAnswersType,
   question: string,
   type: QuestionType,

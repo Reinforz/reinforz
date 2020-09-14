@@ -13,7 +13,6 @@ const common_schema = {
   format: yup.string().required().oneOf(["code", "text"], "Unknown question format provided"),
   image: yup.string().nullable(),
   weight: yup.number().required().min(0).max(1),
-  add_to_score: yup.boolean().required(),
   time_allocated: yup.number().required().min(10).max(60),
   difficulty: yup.string().required().oneOf(["Beginner", "Intermediate", "Advanced"], "Unknown question difficulty provided"),
   correct_answer_message: yup.string(),

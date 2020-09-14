@@ -61,7 +61,6 @@ export default function (props: ReportProps) {
               "format",
               "image",
               "weight",
-              "add_to_score",
               "time_allocated",
               "difficulty",
               "correct_answer_message",
