@@ -69,10 +69,12 @@ function Settings(props: SettingsProps) {
           />
         </FormGroup>
         <Button variant="contained" color="primary" className="Settings-content-button" onClick={() => {
-          localStorage.setItem("sound", String(sound));
-          localStorage.setItem("animation", String(animation));
-          localStorage.setItem("THEME", theme);
-          localStorage.setItem("hovertips", String(hovertips));
+          localStorage.setItem("SETTINGS", JSON.stringify({
+            sound: String(sound),
+            animation: String(animation),
+            hovertips: String(hovertips),
+            theme
+          }))
           history.push("/")
         }}>Back to Home</Button>
 

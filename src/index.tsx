@@ -9,21 +9,20 @@ import SettingsContext from "./context/SettingsContext";
 
 import generateTheme from "./utils/theme";
 
-import { ExtendedTheme, ISettings, AllowedTheme } from './types';
+import { ExtendedTheme, ISettings } from './types';
 
 import './index.scss';
 import Settings from './components/Settings/Settings';
 
 const App = () => {
-  const animation = localStorage.getItem("animation");
-  const sound = localStorage.getItem("sound");
-  const hovertips = localStorage.getItem("hovertips");
-  const [settings, setSettings] = useState({
-    theme: (localStorage.getItem('THEME') || 'dark') as AllowedTheme,
-    animation: animation ? (animation === "true" ? true : false) : true,
-    sound: sound ? (sound === "true" ? true : false) : true,
-    hovertips: hovertips ? (hovertips === "true" ? true : false) : true
-  } as ISettings);
+  let local_settings: any = localStorage.getItem("SETTINGS");
+  local_settings = local_settings ? JSON.parse(local_settings) : {}
+  local_settings.animation = local_settings.animation ? (local_settings.animation === "true" ? true : false) : true;
+  local_settings.sound = local_settings.sound ? (local_settings.sound === "true" ? true : false) : true;
+  local_settings.hovertips = local_settings.hovertips ? (local_settings.hovertips === "true" ? true : false) : true;
+  local_settings.theme = local_settings.theme || "dark";
+
+  const [settings, setSettings] = useState(local_settings as ISettings);
   const generatedTheme = generateTheme(settings.theme) as ExtendedTheme;
 
   return <ThemeProvider theme={generatedTheme}>
