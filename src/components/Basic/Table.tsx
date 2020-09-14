@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -11,10 +11,11 @@ import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { TableFooter } from '@material-ui/core';
+import { MdPlayArrow } from "react-icons/md";
 
 import Icon from "./Icon";
 
-import { TableRowsProps, TableProps, ExtendedTheme } from "../../types"
+import { TableRowsProps, TableProps, ExtendedTheme, TableHeaderProps } from "../../types"
 
 import "./Table.scss";
 
@@ -25,7 +26,8 @@ const useStyles = makeStyles((theme: ExtendedTheme) => ({
     userSelect: "none",
     borderBottom: 0,
     textAlign: 'center',
-    backgroundColor: theme.color.dark
+    backgroundColor: theme.color.dark,
+
   },
   td: {
     fontWeight: 500,
@@ -70,25 +72,44 @@ function TableRows(props: TableRowsProps) {
   </Fragment>
 }
 
+function TableHeaders(props: TableHeaderProps) {
+  const [headers_sort_orders, setHeadersSortOrders] = useState(Array(props.headers.length).fill("").map(() => "ASC") as ("ASC" | "DESC")[])
+  const classes = useStyles();
+  return <TableRow className={classes.tr}>
+    {props.collapseContents && <TableCell style={{ cursor: "pointer" }} className={classes.th}></TableCell>}
+    <TableCell style={{ cursor: "pointer" }} className={classes.th}>No.</TableCell>
+    {props.headers.map((header, index) =>
+      <TableCell style={{ cursor: "pointer" }} onClick={() => {
+        headers_sort_orders[index] = headers_sort_orders[index] === "ASC" ? "DESC" : "ASC"
+        setHeadersSortOrders([...headers_sort_orders])
+        props.onHeaderClick && props.onHeaderClick(header, headers_sort_orders[index])
+      }} className={classes.th} key={header + "header" + index} align="center">
+        <div style={{
+          display: "flex",
+          alignItems: "center"
+        }}>
+          <MdPlayArrow style={{ transform: `rotateZ(${headers_sort_orders[index] === "ASC" ? 30 : -30}deg)` }} />
+          {header.split("_").map(c => c.charAt(0).toUpperCase() + c.substr(1)).join(" ")}
+        </div>
+      </TableCell>
+    )}
+  </TableRow>
+}
 
 export default function (props: TableProps<Record<string, any>>) {
   const classes = useStyles();
   const accumulator: Record<string, Array<any>> = {};
   const theme = useTheme() as ExtendedTheme;
-
   props.headers.forEach(header => {
     accumulator[header] = [];
     props.contents.forEach(content => accumulator[header].push(content[header]))
   });
+
   return (
     <TableContainer component={Paper} className={`Table ${props.className || ''}`}>
       <Table stickyHeader>
         <TableHead className="Table-header" style={{ backgroundColor: theme.color.dark }}>
-          <TableRow className={classes.tr}>
-            {props.collapseContents && <TableCell className={classes.th}></TableCell>}
-            <TableCell className={classes.th}>No.</TableCell>
-            {props.headers.map((header, index) => <TableCell className={classes.th} key={header + "header" + index} align="center">{header.split("_").map(c => c.charAt(0).toUpperCase() + c.substr(1)).join(" ")}</TableCell>)}
-          </TableRow>
+          <TableHeaders headers={props.headers} collapseContents={props.collapseContents} onHeaderClick={props.onHeaderClick} />
         </TableHead>
         <TableBody style={{ backgroundColor: theme.color.base }}>
           {props.contents.map((content, index) => <TableRows transformValue={props.transformValue} collapseContents={props.collapseContents} key={content._id} content={content} headers={props.headers} index={index} />)}
