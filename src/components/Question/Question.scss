@@ -1,27 +1,21 @@
 .Question {
-  &-container {
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  &-item {
+  }
+  &-question {
     user-select: none;
+    font-weight: bolder;
+    font-size: 1.5rem;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    margin-bottom: 20px;
-    &-item {
-    }
-    &-question {
-      user-select: none;
-      font-weight: bolder;
-      font-size: 1.5rem;
-      height: 150px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      &--FIB {
-      }
-    }
-    &-option {
-      &-FIB {
-      }
-    }
+    width: calc(100% - 20px);
+    height: 250px;
+    margin: 10px;
+    border-radius: 5px;
   }
 }

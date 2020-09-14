@@ -20,19 +20,18 @@ export default function Question(props: QuestionProps) {
   const generateQuestion = () => {
     if (format === "code") return <QuestionHighlighter answers={answers} format={format} fibRefs={fibRefs} type={type} language={language} code={question} />
     else {
-      if (type !== "FIB") return <div className="Question-container-item Question-container-question" style={{ color: theme.palette.text.primary, backgroundColor: theme.color.dark }}>{question}</div>;
+      if (type !== "FIB") return <div className="Question-question" style={{ color: theme.palette.text.primary, backgroundColor: theme.color.dark }}>{question}</div>;
       else {
-        let message = question, last_index = 0, messages: string[] = [], total_fib = 0;
+        let message = question, last_index = 0, messages: string[] = [];
         while ((last_index = message.indexOf("%_%")) !== -1) {
           messages.push(message.substr(0, last_index));
-          message = message.substr(last_index + 4);
-          total_fib++;
+          message = message.substr(last_index + 3);
         };
-        return <div className="QuestionOptions-container-item" style={{ color: theme.palette.text.primary, backgroundColor: theme.color.dark }}>
+        return <div className="Question-question" style={{ color: theme.palette.text.primary, backgroundColor: theme.color.dark }}>
           {messages.map((message, i) => {
             return <Fragment key={`${_id}option${index}${i}`}>
-              <div className="Question-container-question--FIB">{message}</div>
-              <div className="Question-container-option-FIB">
+              <div className="Question-question--FIB">{message}</div>
+              <div className="Question-option-FIB">
                 <TextField value={user_answers[i]} onChange={e => {
                   user_answers[i] = e.target.value;
                   changeUserAnswers([...user_answers])
@@ -40,14 +39,14 @@ export default function Question(props: QuestionProps) {
               </div>
             </Fragment>
           })}
-          {messages.length > total_fib ? messages[messages.length - 1] : null}
+          {message}
         </div>
       }
     }
   }
 
-  return <div className="Question-container">
-    {image && <div className="Question-container-item Question-container-image"><img src={image} alt="question" /></div>}
+  return <div className="Question">
+    {image && <div className="Question-image"><img src={image} alt="question" /></div>}
     {generateQuestion()}
     {type !== "FIB" && <QuestionOptions changeOption={changeUserAnswers} user_answers={user_answers} question={props.question} />}
     <QuestionHints hints={hints}>
@@ -59,7 +58,7 @@ export default function Question(props: QuestionProps) {
             {({ TimerComponent, TimerState }: TimerRProps) => {
               return <Fragment>
                 {TimerComponent}
-                <Button className="Quiz-container-button" variant="contained" color="primary" onClick={() => {
+                <Button className="Quiz-button" variant="contained" color="primary" onClick={() => {
                   props.changeCounter(type !== "FIB" ? user_answers.filter(user_answer => user_answer !== "") : fibRefs.current.map(fibRef => fibRef?.current?.value ?? ""), time_allocated - TimerState.timeout, QuestionHintsState.hints_used)
                 }}>{!hasEnd ? "Next" : "Report"}</Button>
               </Fragment>

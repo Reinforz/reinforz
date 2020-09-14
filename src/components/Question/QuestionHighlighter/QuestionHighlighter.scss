@@ -18,6 +18,8 @@
     overflow: auto;
     font-family: "Consolas";
     width: calc(100% - 50px);
+    height: 250px;
+    border-radius: 5px;
     &-line {
       display: table-row;
       &-num {
