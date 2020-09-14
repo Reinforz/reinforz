@@ -3,7 +3,7 @@ import { Popover, SvgIconTypeMap, Typography } from '@material-ui/core';
 import { OverridableComponent } from '@material-ui/core/OverridableComponent';
 import { makeStyles } from '@material-ui/core/styles';
 
-import SettingsContext from '../SettingsContext';
+import SettingsContext from '../../context/SettingsContext';
 
 import { ISettings } from '../../types';
 

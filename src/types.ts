@@ -8,7 +8,7 @@ export interface ListProps<T> {
   icons?: ((index: number, _id: string) => void)[],
   header: string,
   setItems: (data: T[]) => void,
-  children: any
+  children: any,
 }
 
 export interface ListState {
@@ -281,7 +281,7 @@ export interface ReportFilterRProps {
 
 export interface ReportExportProps {
   filtered_results: Result[],
-  all_questions_map: Record<string, QuestionInputFull>
+  filtered_quizzes: QuizInputFull[]
 }
 
 type color = {
@@ -311,4 +311,10 @@ export interface ISettings {
 export interface SettingsProps {
   settings: ISettings,
   setSettings: (settings: ISettings) => any
+}
+
+export interface IPlayContext {
+  setPlaying: (isPlaying: boolean) => void,
+  setQuizzes: (quizzes: QuizInputFull[]) => void,
+  setSelected: (selected: string[]) => void
 }

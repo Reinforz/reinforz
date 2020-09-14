@@ -5,7 +5,7 @@ import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 import { SnackbarProvider } from "notistack";
 
 import Play from "./components/Play/Play"
-import SettingsContext from "./components/SettingsContext";
+import SettingsContext from "./context/SettingsContext";
 
 import generateTheme from "./utils/theme";
 

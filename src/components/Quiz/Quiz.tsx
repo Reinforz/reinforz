@@ -12,6 +12,7 @@ import shuffle from "../../utils/arrayShuffler";
 import { Result, QuizProps, QuestionInputFull, ExtendedTheme, QuestionAnswersNodes } from "../../types";
 
 import "./Quiz.scss";
+import clone from "just-clone";
 
 export default function Quiz(props: QuizProps) {
   const [current_question_index, setCurrentQuestion] = useState(0);
@@ -24,7 +25,7 @@ export default function Quiz(props: QuizProps) {
 
   const generateContent = () => {
     if (current_question_index !== total_questions) {
-      const current_question = all_questions[current_question_index];
+      const current_question = clone(all_questions[current_question_index]);
       current_question.total = total_questions;
       current_question.index = current_question_index + 1;
       const stat_item: Record<string, any> = { ...current_question };
@@ -35,7 +36,6 @@ export default function Quiz(props: QuizProps) {
         current_question.options.forEach((option, index) => options_md5_map[md5(option.toString())] = index);
         current_question.options = play_options.shuffle_options ? shuffle(current_question.options) : current_question.options;
       }
-
       return <Fragment>
         <Stats item={stat_item} stats={["quiz.title", "quiz.subject", "index", "total", "type", "format", "weight", "add_to_score", "time_allocated", "difficulty"]} />
         <Question hasEnd={current_question_index >= total_questions - 1} key={current_question._id} question={current_question} changeCounter={(user_answers: string[], time_taken: number, hints_used: number) => {
@@ -44,9 +44,7 @@ export default function Quiz(props: QuizProps) {
           let verdict = false;
           if (type.match(/(MCQ|MS)/) && current_question.options && user_answers.length !== 0)
             user_answers = user_answers.map(user_answer => options_md5_map[md5((current_question.options as any)[parseInt(user_answer)])].toString());
-
           let modified_answers: string[] = [];
-
           switch (type) {
             case "MCQ":
               verdict = answers.length === user_answers.length && answers[0].toString() === user_answers[0].toString();

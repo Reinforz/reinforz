@@ -11,6 +11,7 @@ import List from "../Basic/List";
 import PlayErrorLogs from "./PlayErrorLogs/PlayErrorLogs";
 import Icon from '../Basic/Icon';
 
+import PlayContext from "../../context/PlayContext"
 
 import {
   IPlaySettingsRProps,
@@ -36,7 +37,9 @@ function Play() {
               localStorage.setItem('PLAY_SETTINGS', JSON.stringify(PlaySettingsState))
             return <Fragment>
               {playing ?
-                <Quiz selected_quizzes={PlaySettingsExtra.selected_quizzes} play_options={PlaySettingsState.play_options} all_questions={PlaySettingsExtra.filtered_questions} /> :
+                <PlayContext.Provider value={{ setQuizzes, setPlaying, setSelected: ListUtils.setSelectedItems }}>
+                  <Quiz selected_quizzes={PlaySettingsExtra.selected_quizzes} play_options={PlaySettingsState.play_options} all_questions={PlaySettingsExtra.filtered_questions} />
+                </PlayContext.Provider> :
                 <div className="Play">
                   <Icon onClick={() => { history.push("/settings") }} icon={FcSettings} popoverText="Click to go to settings page" className="App-icon App-icon--settings" />
                   <PlayTable quizzes={quizzes} />
