@@ -15,7 +15,7 @@ function Stats(props: StatsProps) {
   const convertKey = (key: string) => key.split(/(_|\.)/).map(c => c.charAt(0).toUpperCase() + c.substr(1)).join(" ")
   return (
     <div className="Stats" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>
-      {stats.map(stat => <div key={`${item._id}stats-${stat}`} className={`Stats-item Stats-item-${stat}`}><span>{convertKey(stat) + ": "}</span><span style={{ backgroundColor: theme.color.base }} className={"value"}>{flattened_item[stat].toString()}</span></div>)}
+      {stats.map(stat => stat && <div key={`${item._id}stats-${stat}`} className={`Stats-item Stats-item-${stat}`}><span>{convertKey(stat) + ": "}</span><span style={{ backgroundColor: theme.color.base }} className={"value"}>{flattened_item[stat].toString()}</span></div>)}
     </div>
   );
 }

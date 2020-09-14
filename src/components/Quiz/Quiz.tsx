@@ -28,7 +28,7 @@ export default function Quiz(props: QuizProps) {
       const current_question = clone(all_questions[current_question_index]);
       current_question.total = total_questions;
       current_question.index = current_question_index + 1;
-      const stat_item: Record<string, any> = { ...current_question };
+      const stat_item: Record<string, any> = clone(current_question);
       const total_correct = results.filter(result => result.verdict).length;
       if (play_options.instant_feedback) stat_item.total_correct = total_correct;
       const options_md5_map: Record<string, number> = {};
@@ -38,7 +38,7 @@ export default function Quiz(props: QuizProps) {
       }
       let total_correct_answers = 0;
       return <Fragment>
-        <Stats item={stat_item} stats={["quiz.title", "quiz.subject", "index", "total", "type", "format", "weight", "add_to_score", "time_allocated", "difficulty"]} />
+        <Stats item={stat_item} stats={["quiz.title", "quiz.subject", play_options.instant_feedback ? "total_correct" : undefined, "index", "total", "type", "format", "weight", "add_to_score", "time_allocated", "difficulty"]} />
         <Question hasEnd={current_question_index >= total_questions - 1} key={current_question._id} question={current_question} changeCounter={(user_answers: string[], time_taken: number, hints_used: number) => {
           const { quiz: { title, _id: quizId, subject }, difficulty, _id, weight, type, question, format, time_allocated, answers, add_to_score, explanation } = current_question;
           user_answers = user_answers.filter(user_answer => user_answer !== "");

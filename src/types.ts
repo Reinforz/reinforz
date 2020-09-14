@@ -27,7 +27,7 @@ export interface ListRProps {
 
 export interface StatsProps {
   item: any,
-  stats: string[],
+  stats: (string | undefined)[],
 };
 
 interface Table_RowsCommonProps {
