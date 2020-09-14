@@ -65,7 +65,7 @@ export default function (props: { selected_quizzes: QuizIdentifiers[], children:
           multiple
           renderValue={(selected) => (selected as string[]).map((report_stat, index) => <div key={report_stat + "excluded_columns" + index}>{transformLabel(report_stat)}</div>)}
           onChange={(e) => setReportFilterState({ ...report_filter_state, excluded_columns: e.target.value as string[] })}>
-          {["quiz", "subject", "question", "type", "difficulty", "verdict", "score", "time_allocated", "time_taken", "answers", "user_answers", "hints_used"].map(report_stat =>
+          {["quiz", "subject", "question", "type", "difficulty", "verdict", "score", "time_allocated", "time_taken", "answers", "weight", "user_answers", "hints_used"].map(report_stat =>
             <MenuItem key={report_stat} value={report_stat}>{transformLabel(report_stat)}</MenuItem>
           )}
         </Select>

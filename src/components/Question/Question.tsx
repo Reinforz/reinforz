@@ -18,7 +18,7 @@ export default function Question(props: QuestionProps) {
   const theme = useTheme() as ExtendedTheme;
 
   const generateQuestion = () => {
-    if (format === "code") return <QuestionHighlighter answers={answers} format={format} fibRefs={fibRefs} type={type} language={language} code={question} />
+    if (format === "code") return <QuestionHighlighter answers={answers} fibRefs={fibRefs} type={type} language={language} code={question} />
     else {
       if (type !== "FIB") return <div className="Question-question" style={{ color: theme.palette.text.primary, backgroundColor: theme.color.dark }}>{question}</div>;
       else {

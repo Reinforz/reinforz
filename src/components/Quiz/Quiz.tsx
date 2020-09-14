@@ -67,9 +67,9 @@ export default function Quiz(props: QuizProps) {
               break;
           }
 
-          const correct_answers_score = (0.5) * (total_correct_answers / answers.length)
+          const correct_answers_score = 0.5 * (total_correct_answers / answers.length)
           const hints_score = (correct_answers_score / 0.5) * (0.2 - (hints_used * 0.067));
-          const time_taken_score = ((correct_answers_score / 0.5) * 0.3 * (1 / Math.ceil(time_taken / (time_allocated / 4))));
+          const time_taken_score = (correct_answers_score / 0.5) * 0.3 * (1 / Math.ceil((time_taken + 1) / (time_allocated / 4)));
 
           setResults([...results, {
             user_answers,
@@ -86,7 +86,8 @@ export default function Quiz(props: QuizProps) {
             question_id: _id,
             _id: shortid(),
             quiz: title, subject,
-            quizId
+            quizId,
+            weight
           }])
           setCurrentQuestion(current_question_index + 1)
         }} />

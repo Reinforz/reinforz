@@ -9,7 +9,7 @@ import { ExtendedTheme, QuestionHighlighterProps } from "../../../types";
 import "./QuestionHighlighter.scss";
 
 export default function QuestionHighlighter(props: QuestionHighlighterProps) {
-  const { code, language, format, type, fibRefs, answers } = props;
+  const { code, language, type, fibRefs, answers } = props;
   const theme = useTheme() as ExtendedTheme;
 
   return <Highlight {...defaultProps} theme={theme.palette.type === "dark" ? DarkTheme : LightTheme} code={code.trim()} language={language}>

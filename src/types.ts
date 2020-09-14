@@ -195,7 +195,6 @@ export interface QuestionHighlighterProps {
   code: string,
   language: Language,
   type: QuestionType,
-  format: QuestionFormat,
   fibRefs: React.MutableRefObject<React.RefObject<HTMLInputElement>[]>,
   answers: QuestionAnswersType
 }
@@ -257,7 +256,8 @@ export interface Result {
   question_id: string,
   quiz: string,
   subject: string,
-  quizId: string
+  quizId: string,
+  weight: number
 }
 
 export interface ReportProps {

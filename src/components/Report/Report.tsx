@@ -30,12 +30,17 @@ export default function (props: ReportProps) {
     }
   }
 
+  const total_weights = props.results.reduce((acc, cur) => acc + cur.weight, 0);
+  console.log(total_weights);
+
   const accumulator = (header: string, contents: Array<any>) => {
     switch (header) {
       case "time_allocated":
-      case "score":
       case "time_taken":
+      case "weight":
         return Number((contents.reduce((acc, cur) => acc + parseInt(cur), 0) / contents.length).toFixed(2));
+      case "score":
+        return total_weights !== 0 ? Number((contents.reduce((acc, cur) => acc + parseFloat(cur), 0) / total_weights).toFixed(2)) : 0;
       case "verdict":
         return contents.filter(content => content).length;
       default:
@@ -89,7 +94,7 @@ export default function (props: ReportProps) {
           return <Fragment>
             {ReportFilter}
             <ReportExport filtered_results={filtered_results} filtered_quizzes={Object.values(filtered_quizzes)} />
-            <Table accumulator={accumulator} transformValue={transformValue} contents={filtered_results} collapseContents={["explanation"]} headers={["quiz", "subject", "question", "type", "difficulty", "verdict", "score", "time_allocated", "time_taken", "answers", "user_answers", "hints_used"].filter(report_stat => !ReportFilterState.excluded_columns.includes(report_stat))} onHeaderClick={(header, order) => {
+            <Table accumulator={accumulator} transformValue={transformValue} contents={filtered_results} collapseContents={["explanation"]} headers={["quiz", "subject", "question", "type", "difficulty", "verdict", "score", "time_allocated", "time_taken", "answers", "weight", "user_answers", "hints_used"].filter(report_stat => !ReportFilterState.excluded_columns.includes(report_stat))} onHeaderClick={(header, order) => {
               if (header.match(/(score|time|hints)/))
                 props.setResults(filtered_results.sort((a, b) => order === "DESC" ? (a as any)[header] - (b as any)[header] : (b as any)[header] - (a as any)[header]))
               else if (header === "verdict") props.setResults(filtered_results.sort((a, b) => order === "DESC" ? (a as any)[header] === false ? -1 : 1 : (a as any)[header] === true ? -1 : 1))
