@@ -235,15 +235,11 @@ export type AnswerModifier = "IS" | "IC"
 
 export type IQuestionAnswerModifiers = Array<Array<string> | null>
 export interface IQuestionAnswerNode {
-  modifiers: IQuestionAnswerModifiers,
   answers: Record<string, string>,
-  original: string,
-  mods_stripped: string,
-  all_answers: string[]
 }
 
 export type QuestionAnswersNodes = Array<IQuestionAnswerNode>
-export type QuestionAnswersType = string[] | QuestionAnswersNodes;
+export type QuestionAnswersType = string[];
 
 export interface Result {
   user_answers: string[],

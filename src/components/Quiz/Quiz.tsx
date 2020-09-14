@@ -9,7 +9,7 @@ import Stats from "../Basic/Stats";
 
 import shuffle from "../../utils/arrayShuffler";
 
-import { Result, QuizProps, QuestionInputFull, ExtendedTheme, QuestionAnswersNodes } from "../../types";
+import { Result, QuizProps, QuestionInputFull, ExtendedTheme } from "../../types";
 
 import "./Quiz.scss";
 import clone from "just-clone";
@@ -45,7 +45,6 @@ export default function Quiz(props: QuizProps) {
           let verdict = false;
           if (type.match(/(MCQ|MS)/) && current_question.options && user_answers.length !== 0)
             user_answers = user_answers.map(user_answer => options_md5_map[md5((current_question.options as any)[parseInt(user_answer)])].toString());
-          let modified_answers: string[] = [];
           switch (type) {
             case "MCQ":
               verdict = answers.length === user_answers.length && answers[0].toString() === user_answers[0].toString();
@@ -61,20 +60,20 @@ export default function Quiz(props: QuizProps) {
             case "Snippet":
             case "FIB":
               verdict = user_answers.length === answers.length && user_answers.every((user_answer, i) => {
-                const isCorrect = (answers as QuestionAnswersNodes)[i].answers[user_answer];
+                const isCorrect = answers[i].split(",").includes(user_answer);
                 if (isCorrect) total_correct_answers++
                 return isCorrect;
               });
-              (answers as QuestionAnswersNodes).forEach(answer => (modified_answers as string[]).push(answer.mods_stripped))
               break;
           }
 
-          const correct_answers_score = (0.5) * (total_correct_answers / (modified_answers.length === 0 ? answers : modified_answers).length)
+          const correct_answers_score = (0.5) * (total_correct_answers / answers.length)
           const hints_score = (correct_answers_score / 0.5) * (0.2 - (hints_used * 0.067));
           const time_taken_score = ((correct_answers_score / 0.5) * 0.3 * (1 / Math.ceil(time_taken / (time_allocated / 4))));
+
           setResults([...results, {
             user_answers,
-            answers: modified_answers.length === 0 ? answers : modified_answers,
+            answers,
             verdict,
             score: weight * (play_options.partial_score ? Number((correct_answers_score + hints_score + time_taken_score).toFixed(2)) : (verdict ? 1 : 0)),
             question: format !== "code" ? question : "<Code/>",

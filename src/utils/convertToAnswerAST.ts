@@ -1,4 +1,4 @@
-import { IQuestionAnswerModifiers, IQuestionAnswerNode } from "../types";
+import { IQuestionAnswerModifiers } from "../types";
 
 function expander(modifier: string, answers: Record<string, string>) {
   Object.keys(answers).forEach((answer) => {
@@ -29,12 +29,6 @@ export default function (answers: string[]) {
       all_answers[answer_without_modifier] = answer_without_modifier;
       if (modifiers) modifiers.forEach((modifier) => expander(modifier, all_answers));
     });
-    return {
-      modifiers: answer_modifiers,
-      original: answer,
-      answers: all_answers,
-      mods_stripped: mods_stripped.join(","),
-      all_answers: Object.keys(all_answers)
-    } as IQuestionAnswerNode;
+    return Object.keys(all_answers).join(",");
   });
 }
