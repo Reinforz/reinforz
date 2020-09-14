@@ -94,7 +94,7 @@ export default function Quiz(props: QuizProps) {
         }} />
       </Fragment>
     }
-    else return <Report selected_quizzes={selected_quizzes} results={results} all_questions_map={all_questions_map} />
+    else return <Report setResults={setResults} selected_quizzes={selected_quizzes} results={results} all_questions_map={all_questions_map} />
   }
 
   return <div className="Quiz" style={{ backgroundColor: theme.color.base }}>
