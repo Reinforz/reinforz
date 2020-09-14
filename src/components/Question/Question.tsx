@@ -20,7 +20,7 @@ export default function Question(props: QuestionProps) {
   const generateQuestion = () => {
     if (format === "code") return <QuestionHighlighter answers={answers} format={format} fibRefs={fibRefs} type={type} language={language} code={question} />
     else {
-      if (type !== "FIB") return <div className="Question-container-item Question-container-question" style={{ color: theme.palette.text.primary }}>{question}</div>;
+      if (type !== "FIB") return <div className="Question-container-item Question-container-question" style={{ color: theme.palette.text.primary, backgroundColor: theme.color.dark }}>{question}</div>;
       else {
         let message = question, last_index = 0, messages: string[] = [], total_fib = 0;
         while ((last_index = message.indexOf("%_%")) !== -1) {
@@ -28,7 +28,7 @@ export default function Question(props: QuestionProps) {
           message = message.substr(last_index + 4);
           total_fib++;
         };
-        return <div className="QuestionOptions-container-item">
+        return <div className="QuestionOptions-container-item" style={{ color: theme.palette.text.primary, backgroundColor: theme.color.dark }}>
           {messages.map((message, i) => {
             return <Fragment key={`${_id}option${index}${i}`}>
               <div className="Question-container-question--FIB">{message}</div>

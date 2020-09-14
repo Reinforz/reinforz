@@ -13,7 +13,7 @@ export default function (props: QuestionHintsProps) {
   return (
     children({
       QuestionHintsComponent: <div className="QuestionHints">
-        <Button color="primary" className="QuestionHints-button" onClick={() => hints_used < hints.length ? setHintsUsed(hints_used + 1) : void 0}>{hints.length > 0 ? `Show hint ${hints_used}/${hints.length}` : `No hints available`}</Button>
+        <Button color="primary" variant="contained" className="QuestionHints-button" onClick={() => hints_used < hints.length ? setHintsUsed(hints_used + 1) : void 0}>{hints.length > 0 ? `Show hint ${hints_used}/${hints.length}` : `No hints available`}</Button>
         <div className="QuestionHints-list" >
           {Array(hints_used).fill(0).map((_, i) => <div key={"hint" + i} style={{ backgroundColor: theme.color.dark }} className="QuestionHints-list-item">Hint {i + 1}: {hints[i]}</div>)}
         </div>

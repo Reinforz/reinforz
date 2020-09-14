@@ -59,11 +59,11 @@ function TableRows(props: TableRowsProps) {
       <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={headers.length} className={classes.td}>
         <Collapse in={open} timeout="auto" unmountOnExit>
           {collapseContents.map((collapseContent, collapseContentIndex) => <div key={index + "collapse" + collapseContent + collapseContentIndex}>
-            <div style={{ margin: 5, textTransform: "capitalize" }}>
+            <div className="Table-row-collapseheader">
               {collapseContent}
             </div>
-            <div>
-              {content.explanation}
+            <div className="Table-row-collapsecontent">
+              {content[collapseContent]}
             </div>
           </div>)}
         </Collapse>
