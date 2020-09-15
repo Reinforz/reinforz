@@ -2,6 +2,7 @@
   "name": "reinforz",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://devorein.github.io/reinforz",
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
@@ -13,6 +14,7 @@
     "@types/just-clone": "^3.1.0",
     "@types/react-icons": "^3.0.0",
     "formik": "^2.1.5",
+    "gh-pages": "^3.1.0",
     "js-yaml": "^3.14.0",
     "just-clone": "^3.1.0",
     "md5": "^2.3.0",
@@ -29,8 +31,7 @@
     "shortid": "^2.2.15",
     "styled-components": "^5.2.0",
     "typescript": "~3.7.2",
-    "uifx": "^2.0.7",
-    "yup": "^0.29.3"
+    "uifx": "^2.0.7"
   },
   "devDependencies": {
     "@types/jest": "^24.0.0",
@@ -50,7 +51,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
