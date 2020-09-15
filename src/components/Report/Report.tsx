@@ -68,8 +68,6 @@ export default function (props: ReportProps) {
               "weight",
               "time_allocated",
               "difficulty",
-              "correct_answer_message",
-              "incorrect_answer_message",
               "explanation",
               "hints",
               "language",

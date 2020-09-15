@@ -7,10 +7,9 @@
 
   .List {
     grid-area: 2/2/3/3;
-    width: 100%;
     overflow: auto;
     border-radius: 5px;
-    padding: 0px;
+    width: calc(100% - 10px);
   }
 
   .Help {

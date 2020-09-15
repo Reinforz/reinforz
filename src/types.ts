@@ -170,8 +170,6 @@ export interface QuestionInput {
   weight?: number,
   time_allocated?: number,
   difficulty?: QuestionDifficulty,
-  correct_answer_message?: string,
-  incorrect_answer_message?: string,
   explanation?: string,
   _id?: string,
   total?: number,

@@ -39,10 +39,7 @@ export function generateQuestionInputConfigs(
     ['format', format],
     ['image', null],
     ['weight', 1],
-    ['add_to_score', true],
     ['difficulty', 'Beginner'],
-    ['correct_answer_message', 'Congrats on the correct answer'],
-    ['incorrect_answer_message', 'Try again'],
     ['explanation', 'No explanation available'],
     ['hints', []],
     ['language', language]

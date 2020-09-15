@@ -15,18 +15,18 @@ const common_schema = {
   weight: yup.number().required().min(0).max(1),
   time_allocated: yup.number().required().min(10).max(60),
   difficulty: yup.string().required().oneOf(["Beginner", "Intermediate", "Advanced"], "Unknown question difficulty provided"),
-  correct_answer_message: yup.string(),
-  incorrect_answer_message: yup.string(),
   explanation: yup.string(),
   hints: yup.array().of(yup.string()).min(0).max(3),
+  _id: yup.string().required(),
   quiz: yup.object({
     title: yup.string().required(),
     subject: yup.string().required(),
+    _id: yup.string().required(),
   })
 }
 
 const OptionedQuestionSchema = yup.object({
-  options: yup.array().of(yup.string()).required().min(2),
+  options: yup.array().of(yup.string()).required().min(2).max(6),
   ...common_schema
 });
 
@@ -71,7 +71,10 @@ export default React.memo((props: PlayErrorLogsProps) => {
 
   return (
     <div className="PlayErrorLogs" style={{ backgroundColor: theme.color.base, color: theme.palette.text.secondary }}>
-      {error_logs.map((error_log, index) => <div className="PlayErrorLogs-item" key={error_log.message + index}>Error Found at {error_log.quiz}:{error_log.question_name}:{error_log.question_number} {error_log.message}</div>)}
+      <div className="PlayErrorLogs-header" style={{ backgroundColor: theme.color.dark }}>Errors {"&"} Warnings</div>
+      <div className="PlayErrorLogs-content" style={{ backgroundColor: theme.color.dark }}>
+        {error_logs.length !== 0 ? error_logs.map((error_log, index) => <div className="PlayErrorLogs-item" key={error_log.message + index}>Error Found at {error_log.quiz}:{error_log.question_name}:{error_log.question_number} {error_log.message}</div>) : <div style={{ fontSize: "1.25em", fontWeight: "bold", position: "absolute", transform: "translate(-50%,-50%)", top: "50%", left: "50%", textAlign: 'center' }}>No Errors or Warnings!</div>}
+      </div>
     </div>
   );
 }

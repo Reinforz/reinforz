@@ -31,7 +31,7 @@ export default function (props: ListProps<Record<string, any>>) {
           }} />
         </div>
       </div>
-      <div className="List-content" style={{ color: theme.palette.text.primary }}>
+      <div className="List-content" style={{ color: theme.palette.text.primary, backgroundColor: theme.color.dark }}>
         {items.length > 0 ? items.map((item, index) => {
           const { _id } = item;
           return <div className="List-content-item" key={_id} style={{ backgroundColor: theme.color.light }}>
