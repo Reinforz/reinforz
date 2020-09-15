@@ -77,14 +77,17 @@ export interface TimerRProps {
 }
 
 export interface PlayErrorLogsProps {
-  quizzes: QuizInputFull[]
+  quizzes: QuizInputFull[],
+  setQuizzes: (quizzes: any[]) => void,
+  setSelectedItems: (items: string[]) => void,
+  selectedItems: string[],
 }
 
 export interface PlayErrorLog {
   quiz: string,
-  question_name: string,
   question_number: number,
-  message: string
+  message: string,
+  level: "ERROR" | "WARN"
 }
 
 export type PlayErrorLogState = PlayErrorLog[];

@@ -8,7 +8,6 @@ import Quiz from "../Quiz/Quiz";
 import PlaySettings from "./PlaySettings/PlaySettings";
 import PlayTable from "./PlayTable/PlayTable";
 import List from "../Basic/List";
-import PlayErrorLogs from "./PlayErrorLogs/PlayErrorLogs";
 import Icon from '../Basic/Icon';
 
 import PlayContext from "../../context/PlayContext"
@@ -43,7 +42,6 @@ function Play() {
                 <div className="Play">
                   <Icon onClick={() => { history.push("/settings") }} icon={FcSettings} popoverText="Click to go to settings page" className="App-icon App-icon--settings" />
                   <PlayTable quizzes={quizzes} />
-                  <PlayErrorLogs quizzes={quizzes} />
                   <PlayUpload selectedItems={ListState.selectedItems} setSelectedItems={ListUtils.setSelectedItems} setItems={setQuizzes} items={quizzes} />
                   {ListComponent}
                   {PlaySettingsComponent}

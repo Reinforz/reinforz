@@ -1,14 +1,14 @@
-import React, { useCallback } from 'react';
+import React, { useState, useCallback, Fragment, useEffect } from 'react';
 import styled from 'styled-components';
 import yaml from 'js-yaml';
-import shortid from "shortid"
 import { useDropzone, DropzoneState } from 'react-dropzone';
 import { useSnackbar, OptionsObject } from "notistack";
 import { useTheme } from '@material-ui/core/styles';
 
-import { generateQuestionInputConfigs } from '../../../utils/generateConfigs';
+import PlayErrorLogs from "../PlayErrorLogs/PlayErrorLogs";
 
-import { PlayUploadProps, ExtendedTheme, QuestionInputFull } from '../../../types';
+
+import { PlayUploadProps, ExtendedTheme } from '../../../types';
 
 import "./PlayUpload.scss";
 
@@ -35,20 +35,25 @@ const centerBottomErrorNotistack = {
   },
 } as OptionsObject;
 
-const prepareData = (QuizData: any) => {
-  QuizData._id = shortid();
-  QuizData.questions = QuizData.questions.map((question: any) => ({ ...generateQuestionInputConfigs(question), _id: shortid(), quiz: { subject: QuizData.subject, title: QuizData.title, _id: QuizData._id } }) as QuestionInputFull)
-}
+
 
 export default function PlayUpload(props: PlayUploadProps) {
   const theme = useTheme() as ExtendedTheme;
   const { items: quizzes, setItems: setQuizzes, setSelectedItems, selectedItems } = props;
   const { enqueueSnackbar } = useSnackbar();
+  const [items, setItems] = useState(props.items);
+
+  useEffect(() => {
+    setItems(props.items)
+  }, [props.items]);
+
+
+
   const onDrop = useCallback(acceptedFiles => {
     let filePromises: Promise<any>[] = [];
 
     acceptedFiles.forEach((file: File) => {
-      let filePromise = new Promise((resolve, reject) => {
+      const filePromise = new Promise((resolve, reject) => {
         const reader = new FileReader()
         reader.onabort = () => reject('file reading was aborted');
         reader.onerror = () => reject('file reading has failed');
@@ -56,15 +61,15 @@ export default function PlayUpload(props: PlayUploadProps) {
           const ext = file.name.split(".")[1];
           const { result } = reader;
           if (result) {
-            const QuizData = ext.match(/(yaml|yml)/) ? yaml.safeLoad(result as string) as any : JSON.parse(result.toString());
-            const isAdded = quizzes.find((currentQuiz: any) => trimLower(currentQuiz.title) === trimLower(QuizData.title) && trimLower(currentQuiz.subject) === trimLower(QuizData.subject));
-            if ((QuizData?.questions ?? []).length === 0)
-              enqueueSnackbar(`${file.name} is has no questions`, centerBottomErrorNotistack);
-            else if (isAdded)
-              enqueueSnackbar(`${file.name} has already been added`, centerBottomErrorNotistack);
-            else {
-              prepareData(QuizData);
-              resolve(QuizData);
+            try {
+              const QuizData = ext.match(/(yaml|yml)/) ? yaml.safeLoad(result as string) as any : JSON.parse(result.toString());
+              const isAdded = quizzes.find((currentQuiz: any) => trimLower(currentQuiz.title) === trimLower(QuizData.title) && trimLower(currentQuiz.subject) === trimLower(QuizData.subject));
+              if (isAdded)
+                enqueueSnackbar(`${file.name} has already been added`, centerBottomErrorNotistack);
+              else
+                resolve(QuizData);
+            } catch (err) {
+              enqueueSnackbar(`${file.name} Error: ${err.message}`, centerBottomErrorNotistack)
             }
           } else
             enqueueSnackbar(`${file.name} is empty`, centerBottomErrorNotistack);
@@ -75,22 +80,25 @@ export default function PlayUpload(props: PlayUploadProps) {
     });
 
     Promise.all(filePromises).then(data => {
-      setQuizzes([...quizzes, ...data]);
-      setSelectedItems([...selectedItems, ...data.map(data => data._id)])
+      setItems([...quizzes, ...data]);
+      // setSelectedItems([...selectedItems, ...data.map(data => data._id)])
     });
-  }, [quizzes, setQuizzes, setSelectedItems, enqueueSnackbar, selectedItems]);
+  }, [quizzes, enqueueSnackbar]);
 
   const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({ onDrop, accept: [".yml", ".yaml", "application/json"] })
 
   return (
-    <Container style={{ backgroundColor: theme.color.light, color: theme.palette.text.secondary }} className="PlayUpload" {...getRootProps({ isDragActive, isDragAccept, isDragReject })}>
-      <input {...getInputProps()} />
-      {
-        isDragActive ?
-          <p>Drop the files here ...</p> :
-          <p>Drag 'n' drop some files here, or click to select files (.json or .yaml files)</p>
-      }
-    </Container>
+    <Fragment>
+      <Container style={{ backgroundColor: theme.color.light, color: theme.palette.text.secondary }} className="PlayUpload" {...getRootProps({ isDragActive, isDragAccept, isDragReject })}>
+        <input {...getInputProps()} />
+        {
+          isDragActive ?
+            <p>Drop the files here ...</p> :
+            <p>Drag 'n' drop some files here, or click to select files (.json or .yaml files)</p>
+        }
+      </Container>
+      <PlayErrorLogs quizzes={items} setQuizzes={setQuizzes} setSelectedItems={setSelectedItems} selectedItems={selectedItems} />
+    </Fragment>
   )
 }
 

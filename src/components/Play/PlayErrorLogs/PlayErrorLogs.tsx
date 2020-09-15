@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import * as yup from "yup";
 import { useTheme } from '@material-ui/core/styles';
+import shortid from "shortid"
 
-import { PlayErrorLogsProps, PlayErrorLog, PlayErrorLogState, ExtendedTheme } from '../../../types';
+import { PlayErrorLogsProps, PlayErrorLog, PlayErrorLogState, ExtendedTheme, QuestionInputFull } from '../../../types';
 
 import "./PlayErrorLogs.scss";
+import { generateQuestionInputConfigs } from '../../../utils/generateConfigs';
 
 const common_schema = {
   question: yup.string().required(),
@@ -30,50 +32,51 @@ const OptionedQuestionSchema = yup.object({
   ...common_schema
 });
 
-const OptionLessQuestionSchema = yup.object({
-  ...common_schema
-})
+const OptionLessQuestionSchema = yup.object(common_schema)
 
 export default React.memo((props: PlayErrorLogsProps) => {
   const theme = useTheme() as ExtendedTheme;
 
-  const { quizzes } = props;
+  const { quizzes, setQuizzes, setSelectedItems } = props;
+
   const [error_logs, setErrorLogs] = useState([] as PlayErrorLogState);
   useEffect(() => {
     const error_promises: Promise<PlayErrorLog>[] = [];
     quizzes.forEach(quiz => {
-      quiz.questions.forEach((question, index) => {
-        error_promises.push(new Promise((resolve,) => {
-          if (question.type.match(/(MS|MCQ)/))
-            OptionedQuestionSchema.validate(question).then(() => resolve(undefined)).catch(err => resolve({
-              quiz: question.quiz.title,
-              question_name: question.question,
-              question_number: index,
-              message: err.message
-            })
-            )
-          else OptionLessQuestionSchema.validate(question).then(() => resolve(undefined)).catch(err =>
-            resolve({
-              quiz: question.quiz.title,
-              question_name: question.question,
-              question_number: index,
-              message: err.message
-            })
-          )
-        }))
+      quiz._id = shortid();
+      quiz.questions = quiz.questions.filter((question, index) => {
+        console.log(question)
+        try {
+          const generatedquestion = { ...generateQuestionInputConfigs(question), _id: shortid(), quiz: { subject: quiz.subject, title: quiz.title, _id: quiz._id } } as QuestionInputFull;
+          if (generatedquestion.type.match(/(MS|MCQ)/)) OptionedQuestionSchema.validateSync(generatedquestion);
+          else OptionLessQuestionSchema.validateSync(generatedquestion);
+          quiz.questions[index] = generatedquestion
+          return true;
+        }
+        catch (err) {
+          error_promises.push(new Promise((resolve) => resolve({
+            level: "ERROR",
+            quiz: `${quiz.subject} - ${quiz.title}`,
+            question_number: index + 1,
+            message: err.message
+          })))
+          return false;
+        }
       })
     });
-    if (error_promises.length !== 0)
-      Promise.all(error_promises).then((errors: PlayErrorLog[]) => {
-        setErrorLogs(errors.filter(error => error))
-      })
-  }, [quizzes]);
+    Promise.all(error_promises).then((errors: PlayErrorLog[]) => {
+      setErrorLogs(errors.filter(error => error))
+      setQuizzes(quizzes);
+      setSelectedItems(quizzes.map(quiz => quiz._id))
+    })
+
+  }, [quizzes, setQuizzes, setSelectedItems]);
 
   return (
     <div className="PlayErrorLogs" style={{ backgroundColor: theme.color.base, color: theme.palette.text.secondary }}>
       <div className="PlayErrorLogs-header" style={{ backgroundColor: theme.color.dark }}>Errors {"&"} Warnings</div>
       <div className="PlayErrorLogs-content" style={{ backgroundColor: theme.color.dark }}>
-        {error_logs.length !== 0 ? error_logs.map((error_log, index) => <div className="PlayErrorLogs-item" key={error_log.message + index}>Error Found at {error_log.quiz}:{error_log.question_name}:{error_log.question_number} {error_log.message}</div>) : <div style={{ fontSize: "1.25em", fontWeight: "bold", position: "absolute", transform: "translate(-50%,-50%)", top: "50%", left: "50%", textAlign: 'center' }}>No Errors or Warnings!</div>}
+        {error_logs.length !== 0 ? error_logs.map((error_log, index) => <div style={{ backgroundColor: error_log.level === "ERROR" ? theme.palette.error.main : theme.palette.warning.main, color: theme.palette.text.primary }} className="PlayErrorLogs-content-item" key={error_log.message + index}>{error_log.quiz}: Question {error_log.question_number} {error_log.message}</div>) : <div style={{ fontSize: "1.25em", fontWeight: "bold", position: "absolute", transform: "translate(-50%,-50%)", top: "50%", left: "50%", textAlign: 'center' }}>No Errors or Warnings!</div>}
       </div>
     </div>
   );
