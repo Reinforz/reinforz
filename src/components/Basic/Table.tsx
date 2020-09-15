@@ -112,10 +112,10 @@ export default function (props: TableProps<Record<string, any>>) {
         <TableHead className="Table-header" style={{ backgroundColor: theme.color.dark }}>
           <TableHeaders headers={props.headers} collapseContents={props.collapseContents} onHeaderClick={props.onHeaderClick} />
         </TableHead>
-        <TableBody style={{ backgroundColor: theme.color.base }}>
+        <TableBody className="Table-body" style={{ backgroundColor: theme.color.base }}>
           {props.contents.map((content, index) => <TableRows transformValue={props.transformValue} collapseContents={props.collapseContents} key={content._id} content={content} headers={props.headers} index={index} />)}
         </TableBody>
-        <TableFooter style={{ backgroundColor: theme.color.dark }}>
+        <TableFooter className="Table-footer" style={{ backgroundColor: theme.color.dark }}>
           <TableRow>
             {props.collapseContents && <TableCell className={classes.th}></TableCell>}
             <TableCell className={classes.th}>{props.contents.length}</TableCell>

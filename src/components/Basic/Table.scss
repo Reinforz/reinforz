@@ -1,16 +1,16 @@
-.Table{
-  &-row{
-    &-collapseheader{
+.Table {
+  &-row {
+    &-collapseheader {
       font-weight: bolder;
       text-transform: capitalize;
       font-size: 1.25em;
-      display:flex;
+      display: flex;
       justify-content: flex-start;
       margin: 10px 0px;
     }
-    &-collapsecontent{
+    &-collapsecontent {
       font-size: 1rem;
-      display:flex;
+      display: flex;
       justify-content: flex-start;
       margin: 10px 0px;
     }

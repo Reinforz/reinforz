@@ -34,7 +34,7 @@ export default function (props: ListProps<Record<string, any>>) {
       <div className="List-content" style={{ color: theme.palette.text.primary }}>
         {items.length > 0 ? items.map((item, index) => {
           const { _id } = item;
-          return <div className="List-content-item" key={_id}>
+          return <div className="List-content-item" key={_id} style={{ backgroundColor: theme.color.light }}>
             {icons?.map(icon => icon(index, _id))}
             <div className="List-content-item-icons">
               <Checkbox color="primary" className="List-content-item-icons--checkbox" key={_id + "checkbox" + index} onClick={(e) => {
