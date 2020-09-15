@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import * as yup from "yup";
 import { useTheme } from '@material-ui/core/styles';
 import shortid from "shortid"
 
@@ -8,32 +7,6 @@ import { PlayErrorLogsProps, PlayErrorLog, PlayErrorLogState, ExtendedTheme, Que
 import "./PlayErrorLogs.scss";
 import { generateQuestionInputConfigs } from '../../../utils/generateConfigs';
 
-const common_schema = {
-  question: yup.string().required(),
-  type: yup.string().required().oneOf(["MS", "MCQ", "FIB", "Snippet"], "Unknown question type provided"),
-  answers: yup.array().of(yup.string()).min(1),
-  format: yup.string().required().oneOf(["code", "text"], "Unknown question format provided"),
-  image: yup.string().nullable(),
-  weight: yup.number().required().min(0).max(1),
-  time_allocated: yup.number().required().min(10).max(60),
-  difficulty: yup.string().required().oneOf(["Beginner", "Intermediate", "Advanced"], "Unknown question difficulty provided"),
-  explanation: yup.string(),
-  hints: yup.array().of(yup.string()).min(0).max(3),
-  _id: yup.string().required(),
-  quiz: yup.object({
-    title: yup.string().required(),
-    subject: yup.string().required(),
-    _id: yup.string().required(),
-  })
-}
-
-const OptionedQuestionSchema = yup.object({
-  options: yup.array().of(yup.string()).required().min(2).max(6),
-  ...common_schema
-});
-
-const OptionLessQuestionSchema = yup.object(common_schema)
-
 export default React.memo((props: PlayErrorLogsProps) => {
   const theme = useTheme() as ExtendedTheme;
 
@@ -41,33 +14,28 @@ export default React.memo((props: PlayErrorLogsProps) => {
 
   const [error_logs, setErrorLogs] = useState([] as PlayErrorLogState);
   useEffect(() => {
-    const error_promises: Promise<PlayErrorLog>[] = [];
+    const log_messages: PlayErrorLog[] = [];
     quizzes.forEach(quiz => {
       quiz._id = shortid();
       const generated_questions: QuestionInputFull[] = [];
       quiz.questions.forEach((question, index) => {
-        try {
-          const generatedquestion = { ...generateQuestionInputConfigs(question), _id: shortid(), quiz: { subject: quiz.subject, title: quiz.title, _id: quiz._id } } as QuestionInputFull;
-          if (generatedquestion.type.match(/(MS|MCQ)/)) OptionedQuestionSchema.validateSync(generatedquestion);
-          else OptionLessQuestionSchema.validateSync(generatedquestion);
+        const [generatedquestion, logs] = generateQuestionInputConfigs(question);
+        if (logs.errors.length === 0) {
+          generatedquestion.quiz = { subject: quiz.subject, title: quiz.title, _id: quiz._id };
           generated_questions.push(generatedquestion);
         }
-        catch (err) {
-          error_promises.push(new Promise((resolve) => resolve({
-            level: "ERROR",
-            quiz: `${quiz.subject} - ${quiz.title}`,
-            question_number: index + 1,
-            message: err.message
-          })))
-        }
+        logs.warns.forEach(warn => {
+          log_messages.push({ level: "WARN", quiz: `${quiz.subject} - ${quiz.title}`, question_number: index + 1, message: warn })
+        })
+        logs.errors.forEach(error => {
+          log_messages.push({ level: "ERROR", quiz: `${quiz.subject} - ${quiz.title}`, question_number: index + 1, message: error })
+        })
       });
       quiz.questions = generated_questions;
     });
-    Promise.all(error_promises).then((errors: PlayErrorLog[]) => {
-      setErrorLogs(errors.filter(error => error))
-      setQuizzes(quizzes);
-      setSelectedItems(quizzes.map(quiz => quiz._id))
-    })
+    setErrorLogs(log_messages)
+    setQuizzes(quizzes);
+    setSelectedItems(quizzes.map(quiz => quiz._id))
 
   }, [quizzes, setQuizzes, setSelectedItems]);
 
