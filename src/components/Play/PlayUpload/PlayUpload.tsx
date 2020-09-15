@@ -47,8 +47,6 @@ export default function PlayUpload(props: PlayUploadProps) {
     setItems(props.items)
   }, [props.items]);
 
-
-
   const onDrop = useCallback(acceptedFiles => {
     let filePromises: Promise<any>[] = [];
 
@@ -81,7 +79,6 @@ export default function PlayUpload(props: PlayUploadProps) {
 
     Promise.all(filePromises).then(data => {
       setItems([...quizzes, ...data]);
-      // setSelectedItems([...selectedItems, ...data.map(data => data._id)])
     });
   }, [quizzes, enqueueSnackbar]);
 

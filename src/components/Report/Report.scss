@@ -20,7 +20,7 @@
   }
   .Table {
     grid-area: 2/2/4/3;
-    width: 100%;
+    width: calc(100% - 5px);
     position: relative;
     height: 100%;
     tr {
@@ -32,7 +32,7 @@
     tbody {
       overflow: scroll;
       height: calc(100vh - 200px);
-      width: 50%;
+      width: 100%;
       position: absolute;
     }
 

@@ -44,14 +44,13 @@ export default React.memo((props: PlayErrorLogsProps) => {
     const error_promises: Promise<PlayErrorLog>[] = [];
     quizzes.forEach(quiz => {
       quiz._id = shortid();
-      quiz.questions = quiz.questions.filter((question, index) => {
-        console.log(question)
+      const generated_questions: QuestionInputFull[] = [];
+      quiz.questions.forEach((question, index) => {
         try {
           const generatedquestion = { ...generateQuestionInputConfigs(question), _id: shortid(), quiz: { subject: quiz.subject, title: quiz.title, _id: quiz._id } } as QuestionInputFull;
           if (generatedquestion.type.match(/(MS|MCQ)/)) OptionedQuestionSchema.validateSync(generatedquestion);
           else OptionLessQuestionSchema.validateSync(generatedquestion);
-          quiz.questions[index] = generatedquestion
-          return true;
+          generated_questions.push(generatedquestion);
         }
         catch (err) {
           error_promises.push(new Promise((resolve) => resolve({
@@ -60,9 +59,9 @@ export default React.memo((props: PlayErrorLogsProps) => {
             question_number: index + 1,
             message: err.message
           })))
-          return false;
         }
-      })
+      });
+      quiz.questions = generated_questions;
     });
     Promise.all(error_promises).then((errors: PlayErrorLog[]) => {
       setErrorLogs(errors.filter(error => error))

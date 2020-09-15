@@ -11,7 +11,7 @@ import { TimerRProps, QuestionProps, QuestionHintsRProps, ExtendedTheme } from "
 import "./Question.scss";
 
 export default function Question(props: QuestionProps) {
-  const { hasEnd, question: { question, index, _id, type, image, format, time_allocated, hints, answers, language } } = props;
+  const { hasEnd, index, question: { question, _id, type, image, format, time_allocated, hints, answers, language } } = props;
   const total_fibs = question.match(/(%_%)/g)?.length;
   const [user_answers, changeUserAnswers] = useState(type === "FIB" ? Array(total_fibs ?? 1).fill('') as string[] : ['']);
   const fibRefs = useRef(Array(total_fibs).fill(0).map(() => createRef() as RefObject<HTMLInputElement>));

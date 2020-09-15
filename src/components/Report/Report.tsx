@@ -1,6 +1,7 @@
 import React, { Fragment, useContext } from 'react';
 import { Button } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
+import clone from 'just-clone';
 
 import Table from "../Basic/Table";
 import ReportFilter from './ReportFilter/ReportFilter';
@@ -8,7 +9,7 @@ import ReportExport from './ReportExport/ReportExport';
 
 import PlayContext from '../../context/PlayContext';
 
-import { IPlayContext, QuestionInput, QuestionInputFull, ReportFilterRProps, ReportProps, } from "../../types";
+import { IPlayContext, QuestionInputFull, QuizInputFull, ReportFilterRProps, ReportProps, } from "../../types";
 
 import "./Report.scss";
 
@@ -56,26 +57,10 @@ export default function (props: ReportProps) {
         {({ ReportFilterState, ReportFilter }: ReportFilterRProps) => {
           const { excluded_types, excluded_quizzes, excluded_difficulty, verdict, hints_used, time_taken } = ReportFilterState;
           const filtered_results = props.results.filter(result => !excluded_types.includes(result.type) && !excluded_difficulty.includes(result.difficulty) && (verdict === "mixed" || verdict.toString() === result.verdict?.toString()) && (hints_used === "any" || result.hints_used <= hints_used) && time_taken[0] <= result.time_taken && time_taken[1] >= result.time_taken && !excluded_quizzes.includes(result.quizId))
-          type question_keys = keyof QuestionInputFull;
-          const filtered_quizzes: Record<string, any> = {};
+          const filtered_quizzes: Record<string, QuizInputFull> = {};
           filtered_results.forEach(filtered_result => {
             const target_question = props.all_questions_map[filtered_result.question_id]
-            const obj: Record<string, QuestionInput> = {};
-            ([
-              "type",
-              "format",
-              "image",
-              "weight",
-              "time_allocated",
-              "difficulty",
-              "explanation",
-              "hints",
-              "language",
-              "options",
-              "question",
-              "answers",
-              "quiz"
-            ]).forEach(key => obj[key as question_keys] = target_question[key as question_keys]);
+            const obj = clone(target_question) as QuestionInputFull;
 
             if (!filtered_quizzes[target_question.quiz._id]) filtered_quizzes[target_question.quiz._id] = {
               title: target_question.quiz.title,
@@ -84,7 +69,7 @@ export default function (props: ReportProps) {
               questions: [
                 obj
               ]
-            }
+            } as QuizInputFull;
             else filtered_quizzes[target_question.quiz._id].questions.push(obj)
             return obj;
           });

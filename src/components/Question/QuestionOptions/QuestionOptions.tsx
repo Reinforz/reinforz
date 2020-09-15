@@ -8,12 +8,12 @@ import "./QuestionOptions.scss";
 export default function (props: QuestionOptionsProps) {
   const theme = useTheme() as ExtendedTheme;
 
-  const { changeOption, user_answers, question: { index, _id, type, options } } = props;
+  const { changeOption, user_answers, question: { _id, type, options } } = props;
   const generateOptions = () => {
     if (type === "MCQ" && options)
       return <RadioGroup className="QuestionOptions-container QuestionOptions-container--MCQ" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }} defaultValue={undefined} value={user_answers[0] === '' ? [''] : user_answers[0]} onChange={e => changeOption([e.target.value])}>
         {options.map((option, i) => (
-          <div className="QuestionOptions-container-item" style={{ backgroundColor: theme.color.base }} key={`${_id}option${index}${i}`}>
+          <div className="QuestionOptions-container-item" style={{ backgroundColor: theme.color.base }} key={`${_id}option${i}`}>
             <FormControlLabel
               control={<Radio color="primary" />}
               value={`${i}`}
@@ -34,7 +34,7 @@ export default function (props: QuestionOptionsProps) {
           changeOption(temp_user_answers.filter(temp_user_answer => temp_user_answer !== e.target.value));
       }}>
         {options.map((option, i) => (
-          <div className={`QuestionOptions-container-item`} style={{ backgroundColor: theme.color.base }} key={`${_id}option${index}${i}`}>
+          <div className={`QuestionOptions-container-item`} style={{ backgroundColor: theme.color.base }} key={`${_id}option${i}`}>
             <FormControlLabel
               control={<Checkbox checked={temp_user_answers.includes(`${i}`)} value={`${i}`} color="primary" />}
               label={option.toString()}

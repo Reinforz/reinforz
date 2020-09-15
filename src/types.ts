@@ -139,6 +139,8 @@ export interface QuestionProps {
   question: QuestionInputFull,
   changeCounter: (user_answers: string[], time_taken: number, hints_used: number) => void,
   hasEnd: boolean,
+  index: number,
+  total: number
 };
 
 export interface QuizInputPartial {
@@ -175,10 +177,7 @@ export interface QuestionInput {
   difficulty?: QuestionDifficulty,
   explanation?: string,
   _id?: string,
-  total?: number,
-  index?: number
   hints?: string[],
-  changeCounter: any,
   results: Result[],
   language?: Language,
 }
