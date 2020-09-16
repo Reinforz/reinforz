@@ -41,7 +41,7 @@ const App = () => {
 
 
 const Index = () => {
-  return <Router>
+  return <Router basename={process.env.PUBLIC_URL}>
     <App />
   </Router >
 };

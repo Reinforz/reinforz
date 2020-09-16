@@ -32,7 +32,6 @@ export default function (props: ReportProps) {
   }
 
   const total_weights = props.results.reduce((acc, cur) => acc + cur.weight, 0);
-  console.log(total_weights);
 
   const accumulator = (header: string, contents: Array<any>) => {
     switch (header) {

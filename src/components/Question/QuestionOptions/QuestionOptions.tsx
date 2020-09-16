@@ -1,27 +1,35 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { RadioGroup, FormControlLabel, Radio, FormGroup, Checkbox, TextField, useTheme } from "@material-ui/core";
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
-import { ExtendedTheme, QuestionOptionsProps } from '../../../types';
+import { ExtendedTheme, ISettings, QuestionOptionsProps } from '../../../types';
+
+import SettingsContext from '../../../context/SettingsContext';
 
 import "./QuestionOptions.scss";
 
 export default function (props: QuestionOptionsProps) {
   const theme = useTheme() as ExtendedTheme;
+  const settings = useContext(SettingsContext) as ISettings;
 
   const { changeOption, user_answers, question: { _id, type, options } } = props;
   const generateOptions = () => {
     if (type === "MCQ" && options)
       return <RadioGroup className="QuestionOptions-container QuestionOptions-container--MCQ" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }} defaultValue={undefined} value={user_answers[0] === '' ? [''] : user_answers[0]} onChange={e => changeOption([e.target.value])}>
-        {options.map((option, i) => (
-          <div className="QuestionOptions-container-item" style={{ backgroundColor: theme.color.base }} key={`${_id}option${i}`}>
-            <FormControlLabel
-              control={<Radio color="primary" />}
-              value={`${i}`}
-              label={option.toString()}
-              labelPlacement="end"
-            />
-          </div>
-        ))}
+        <TransitionGroup component={null}>
+          {options.map((option, i) => (
+            <CSSTransition key={`${_id}option${i}`} classNames={settings.animation ? "fade" : undefined} timeout={{ enter: i * 250 }} appear>
+              <div className="QuestionOptions-container-item" style={{ backgroundColor: theme.color.base }}>
+                <FormControlLabel
+                  control={<Radio color="primary" />}
+                  value={`${i}`}
+                  label={option.toString()}
+                  labelPlacement="end"
+                />
+              </div>
+            </CSSTransition>
+          ))}
+        </TransitionGroup>
       </RadioGroup>
     else if (type === "MS" && options) {
       const temp_user_answers = [...(user_answers as string[])];
@@ -33,12 +41,15 @@ export default function (props: QuestionOptionsProps) {
         else
           changeOption(temp_user_answers.filter(temp_user_answer => temp_user_answer !== e.target.value));
       }}>
-        {options.map((option, i) => (
-          <div className={`QuestionOptions-container-item`} style={{ backgroundColor: theme.color.base }} key={`${_id}option${i}`}>
-            <FormControlLabel
-              control={<Checkbox checked={temp_user_answers.includes(`${i}`)} value={`${i}`} color="primary" />}
-              label={option.toString()}
-            /></div>))}
+        <TransitionGroup component={null}>
+          {options.map((option, i) => (
+            <CSSTransition key={`${_id}option${i}`} classNames={settings.animation ? "fade" : undefined} timeout={{ enter: i * 250 }} appear>
+              <div className={`QuestionOptions-container-item`} style={{ backgroundColor: theme.color.base }} key={`${_id}option${i}`}>
+                <FormControlLabel
+                  control={<Checkbox checked={temp_user_answers.includes(`${i}`)} value={`${i}`} color="primary" />}
+                  label={option.toString()}
+                /></div></CSSTransition>))}
+        </TransitionGroup>
       </FormGroup>
     }
 

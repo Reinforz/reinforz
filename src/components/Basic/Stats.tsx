@@ -12,7 +12,6 @@ function Stats(props: StatsProps) {
 
   const { stats, item } = props;
   const flattened_item = flattenObj(item);
-  console.log(flattened_item);
   const convertKey = (key: string) => key.replace(/(_|\.)/g, " ").split(" ").map(c => c.charAt(0).toUpperCase() + c.substr(1)).join(" ")
   return (
     <div className="Stats" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>

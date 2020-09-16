@@ -87,7 +87,8 @@ export interface PlayErrorLog {
   quiz: string,
   question_number: number,
   message: string,
-  level: "ERROR" | "WARN"
+  level: "ERROR" | "WARN",
+  _id: string
 }
 
 export type PlayErrorLogState = PlayErrorLog[];
