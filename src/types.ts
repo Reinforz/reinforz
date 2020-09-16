@@ -165,22 +165,32 @@ export type QuestionDifficulty = 'Beginner' | 'Intermediate' | 'Advanced';
 
 export interface QuestionInputCommon {
   question: string,
+  // Options for the answers, only required for MCQ and MS types
   options?: string[],
   answers: QuestionAnswersType,
 }
 
 export interface QuestionInput {
+  // Question Type, inferred from answers and options
   type?: QuestionType,
+  // Question Format, inferred from the question itself
   format?: QuestionFormat,
+  // Image to use alongside the questions
   image?: string,
+  // Weight of the question range 0 - 1, 0 to indicate it wont effect score 
   weight?: number,
+  // Time allocated for the qustion, range 10 - 60
   time_allocated?: number,
+  // Difficulty of the question, out of range gets converted to Beginner
   difficulty?: QuestionDifficulty,
+  // Explanation of the answer
   explanation?: string,
-  _id?: string,
+  // Hints provided for the question, max 3
   hints?: string[],
-  results: Result[],
+  // Question language, only applicable for code format, inferred from question 
   language?: Language,
+  // Unique Id of the question, created if not provided
+  _id?: string,
 }
 
 export interface QuestionInputPartial extends QuestionInputCommon, Partial<QuestionInput> { }
