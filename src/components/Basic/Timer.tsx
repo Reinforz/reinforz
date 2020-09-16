@@ -5,6 +5,9 @@ import { TimerProps, TimerState, TimerRProps, ExtendedTheme } from "../../types"
 
 import "./Timer.scss";
 
+const tic = new Audio(process.env.PUBLIC_URL + "/sounds/tic.mp3");
+tic.volume = 0.5;
+
 class Timer extends React.Component<TimerProps & { theme: Theme }, TimerState> {
   state = {
     timeout: this.props.timeout,
@@ -27,6 +30,7 @@ class Timer extends React.Component<TimerProps & { theme: Theme }, TimerState> {
     clearInterval(this.state.timer);
     const timer = setInterval(() => {
       if (this.state.timeout !== 0) {
+        tic.play();
         this.setState({
           timeout: this.state.timeout - 1
         });

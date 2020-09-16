@@ -1,7 +1,8 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useContext } from "react";
 import { useTheme } from '@material-ui/core/styles';
 import { useHistory } from "react-router-dom";
 import { FcSettings } from "react-icons/fc";
+import useSound from "use-sound";
 
 import PlayUpload from "./PlayUpload/PlayUpload";
 import Quiz from "../Quiz/Quiz";
@@ -12,10 +13,13 @@ import Icon from '../Basic/Icon';
 
 import PlayContext from "../../context/PlayContext"
 
+import SettingsContext from "../../context/SettingsContext";
+
 import {
   IPlaySettingsRProps,
   ListRProps,
-  ExtendedTheme
+  ExtendedTheme,
+  ISettings
 } from "../../types";
 
 import "./Play.scss";
@@ -26,6 +30,8 @@ function Play() {
   const [quizzes, setQuizzes] = useState([] as any[]);
   const theme = useTheme() as ExtendedTheme;
   const history = useHistory();
+  const settings = useContext(SettingsContext) as ISettings;
+  const [swoosh] = useSound(process.env.PUBLIC_URL + "/sounds/swoosh.mp3", { volume: 0.25 });
 
   return (
     <List header="Uploaded Quizzes" items={quizzes} setItems={setQuizzes} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]}>
@@ -40,7 +46,10 @@ function Play() {
                   <Quiz selected_quizzes={PlaySettingsExtra.selected_quizzes} play_options={PlaySettingsState.play_options} all_questions={PlaySettingsExtra.filtered_questions} />
                 </PlayContext.Provider> :
                 <div className="Play">
-                  <Icon onClick={() => { history.push("/settings") }} icon={FcSettings} popoverText="Click to go to settings page" className="App-icon App-icon--settings" />
+                  <Icon onClick={() => {
+                    if (settings.sound) swoosh()
+                    history.push("/settings")
+                  }} icon={FcSettings} popoverText="Click to go to settings page" className="App-icon App-icon--settings" />
                   <PlayTable quizzes={quizzes} />
                   <PlayUpload selectedItems={ListState.selectedItems} setSelectedItems={ListUtils.setSelectedItems} setItems={setQuizzes} items={quizzes} />
                   {ListComponent}

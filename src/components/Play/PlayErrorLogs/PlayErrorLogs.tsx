@@ -37,10 +37,10 @@ export default React.memo((props: PlayErrorLogsProps) => {
       });
       quiz.questions = generated_questions;
     });
+
     setErrorLogs(log_messages)
     setQuizzes(quizzes);
-    setSelectedItems(quizzes.map(quiz => quiz._id))
-
+    setSelectedItems(quizzes.map(quiz => quiz._id));
   }, [quizzes, setQuizzes, setSelectedItems]);
 
   return (

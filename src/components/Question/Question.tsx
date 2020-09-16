@@ -1,12 +1,15 @@
-import React, { useState, Fragment, useRef, createRef, RefObject } from "react";
+import React, { useState, Fragment, useRef, createRef, RefObject, useContext } from "react";
 import { Button, TextField, useTheme } from "@material-ui/core";
+import useSound from "use-sound";
 
 import Timer from "../Basic/Timer";
 import QuestionHighlighter from "./QuestionHighlighter/QuestionHighlighter";
 import QuestionOptions from "./QuestionOptions/QuestionOptions";
 import QuestionHints from "./QuestionHints/QuestionHints";
 
-import { TimerRProps, QuestionProps, QuestionHintsRProps, ExtendedTheme } from "../../types";
+import SettingsContext from "../../context/SettingsContext";
+
+import { TimerRProps, QuestionProps, QuestionHintsRProps, ExtendedTheme, ISettings } from "../../types";
 
 import "./Question.scss";
 
@@ -16,6 +19,9 @@ export default function Question(props: QuestionProps) {
   const [user_answers, changeUserAnswers] = useState(type === "FIB" ? Array(total_fibs ?? 1).fill('') as string[] : ['']);
   const fibRefs = useRef(Array(total_fibs).fill(0).map(() => createRef() as RefObject<HTMLInputElement>));
   const theme = useTheme() as ExtendedTheme;
+  const settings = useContext(SettingsContext) as ISettings;
+
+  const [click] = useSound(process.env.PUBLIC_URL + "/sounds/click.mp3", { volume: 0.15 });
 
   const generateQuestion = () => {
     if (format === "code") return <QuestionHighlighter answers={answers} fibRefs={fibRefs} type={type} language={language} code={question} />
@@ -59,6 +65,7 @@ export default function Question(props: QuestionProps) {
               return <Fragment>
                 {TimerComponent}
                 <Button className="Quiz-button" variant="contained" color="primary" onClick={() => {
+                  if (settings.sound) click();
                   props.changeCounter(type !== "FIB" ? user_answers.filter(user_answer => user_answer !== "") : fibRefs.current.map(fibRef => fibRef?.current?.value ?? ""), time_allocated - TimerState.timeout, QuestionHintsState.hints_used)
                 }}>{!hasEnd ? "Next" : "Report"}</Button>
               </Fragment>

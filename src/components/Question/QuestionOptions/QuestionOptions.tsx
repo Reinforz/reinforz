@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { RadioGroup, FormControlLabel, Radio, FormGroup, Checkbox, TextField, useTheme } from "@material-ui/core";
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import useSound from 'use-sound';
 
 import { ExtendedTheme, ISettings, QuestionOptionsProps } from '../../../types';
 
@@ -12,6 +13,8 @@ export default function (props: QuestionOptionsProps) {
   const theme = useTheme() as ExtendedTheme;
   const settings = useContext(SettingsContext) as ISettings;
 
+  const [optionClick] = useSound(process.env.PUBLIC_URL + "/sounds/option-click.mp3", { volume: 0.15 });
+
   const { changeOption, user_answers, question: { _id, type, options } } = props;
   const generateOptions = () => {
     if (type === "MCQ" && options)
@@ -21,7 +24,9 @@ export default function (props: QuestionOptionsProps) {
             <CSSTransition key={`${_id}option${i}`} classNames={settings.animation ? "fade" : undefined} timeout={{ enter: i * 250 }} appear>
               <div className="QuestionOptions-container-item" style={{ backgroundColor: theme.color.base }}>
                 <FormControlLabel
-                  control={<Radio color="primary" />}
+                  control={<Radio onClick={() => {
+                    if (settings.sound) optionClick();
+                  }} color="primary" />}
                   value={`${i}`}
                   label={option.toString()}
                   labelPlacement="end"
@@ -46,7 +51,9 @@ export default function (props: QuestionOptionsProps) {
             <CSSTransition key={`${_id}option${i}`} classNames={settings.animation ? "fade" : undefined} timeout={{ enter: i * 250 }} appear>
               <div className={`QuestionOptions-container-item`} style={{ backgroundColor: theme.color.base }} key={`${_id}option${i}`}>
                 <FormControlLabel
-                  control={<Checkbox checked={temp_user_answers.includes(`${i}`)} value={`${i}`} color="primary" />}
+                  control={<Checkbox onClick={(e) => {
+                    if (settings.sound) optionClick();
+                  }} checked={temp_user_answers.includes(`${i}`)} value={`${i}`} color="primary" />}
                   label={option.toString()}
                 /></div></CSSTransition>))}
         </TransitionGroup>
