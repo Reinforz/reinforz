@@ -169,7 +169,6 @@ export interface QuestionInputCommon {
   options?: string[],
   answers: QuestionAnswersType,
 }
-
 export interface QuestionInput {
   // Question Type, inferred from answers and options
   type?: QuestionType,

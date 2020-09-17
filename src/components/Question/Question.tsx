@@ -52,8 +52,10 @@ export default function Question(props: QuestionProps) {
   }
 
   return <div className="Question">
-    {image && <div className="Question-image"><img src={image} alt="question" /></div>}
-    {generateQuestion()}
+    <div className="Question-container" style={{display: image ? "flex" : "block"}}>
+      {image && <div className="Question-image"><img src={image} alt="question" /></div>}
+      {generateQuestion()}
+    </div>
     {type !== "FIB" && <QuestionOptions changeOption={changeUserAnswers} user_answers={user_answers} question={props.question} />}
     <QuestionHints hints={hints}>
       {({ QuestionHintsComponent, QuestionHintsState }: QuestionHintsRProps) => {

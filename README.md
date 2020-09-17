@@ -1,3 +1,24 @@
+[Reinforz](#reinforz)
+
+  + [Featurs](#featurs)
+  + [Pages](#pages)
+    - [Home](#home)
+      - [Upload](#upload)
+      - [ErrorLogs](#errorlogs)
+      - [Uploaded List](#uploaded-list)
+      - [PlayTables](#playtables)
+    - [PlaySettings](#playsettings)
+    - [Game](#game)
+    - [Stats](#stats)
+      - [Question](#question)
+      - [Answers/Options](#answersoptions)
+    - [Report](#report)
+      - [ReportFilter](#reportfilter)
+      - [ReportTable](#reporttable)
+      - [ReportExport](#reportexport)
+    - [Settings](#settings)
+  + [Conventions](#conventions)
+
 # Reinforz
 
 Force yourself to master a topic through continuous feedback
@@ -139,3 +160,10 @@ The report and actual questions can be exported as YAML or JSON files
 ### Settings
 
 Animation, Sounds, Hovertips and Theme can be changed on settings page
+
+Feel free to create a new PR for any new features, or raise an issue for fixing any bug or for a new featue suggestion
+
+### Conventions
+
+01. A single file can contain only one quiz
+02. Please try to name the file as Quiz_Subject - Quiz_Title, so that it becomes easier to maintain
