@@ -35,7 +35,7 @@ function Play() {
   return (
     <PlayUpload>
       {({ PlayUploadState, PlayUploadComponents, PlayUploadUtils }: PlayUploadRProps) => {
-        return <List selected={PlayUploadUtils.new_quizzes} header="Uploaded Quizzes" items={PlayUploadState.items} setItems={PlayUploadUtils.setItems} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]} onDelete={PlayUploadUtils.removeErrorLogs}>
+        return <List header="Uploaded Quizzes" items={PlayUploadState.items} setItems={PlayUploadUtils.setItems} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]} onDelete={PlayUploadUtils.removeErrorLogs}>
           {({ ListComponent, ListState, ListUtils }: ListRProps) => {
             return <PlaySettings quizzes={PlayUploadState.items} setPlaying={setPlaying} selectedQuizzes={ListState.selectedItems}>
               {({ PlaySettingsComponent, PlaySettingsState, PlaySettingsExtra }: IPlaySettingsRProps) => {

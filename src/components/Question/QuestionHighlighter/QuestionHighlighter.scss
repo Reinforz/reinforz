@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400&display=swap");
+
 .Highlighter-FIB-Code {
   display: inline-block;
   width: 50px;
@@ -6,20 +8,23 @@
   height: 25px;
   outline: none;
   border: none;
-  font-family: "Consolas";
+  font-family: "Roboto Mono", monospace;
   font-size: 1.15em;
 }
 
 .QuestionHighlighter {
+  position: relative;
   &-pre {
+    position: relative;
     text-align: left;
     margin: 1em 0;
     padding: 0.5em;
     overflow: auto;
-    font-family: "Consolas";
+    font-family: "Roboto Mono", monospace;
     width: calc(100% - 50px);
     height: 250px;
     border-radius: 5px;
+    padding-left: 35px;
     &-line {
       display: table-row;
       &-num {
@@ -28,6 +33,12 @@
         padding-right: 1em;
         user-select: none;
         opacity: 0.5;
+        margin-right: 10px;
+        display: inline-block;
+        padding: 5px;
+        font-weight: bolder;
+        position: absolute;
+        left: 5px;
       }
       &-content {
         display: table-cell;

@@ -16,7 +16,6 @@ export interface ListProps<T> extends ListPropsCommon<T> {
   header: string,
   children: any,
   setItems: (data: T[]) => void,
-  selected: string[]
 }
 
 export interface ListItemProps<T> extends ListPropsCommon<T> {
@@ -159,7 +158,6 @@ export interface PlayUploadRProps {
   PlayUploadUtils: {
     setItems: (items: any[]) => any,
     removeErrorLogs: (items: any[]) => any,
-    new_quizzes: string[]
   }
 }
 

@@ -113,7 +113,7 @@ export default function PlayUpload(props: { children: any }) {
         {
           isDragActive ?
             <p>Drop the files here ...</p> :
-            <p>Drag 'n' drop some files here, or click to select files (.json or .yaml files)</p>
+            <p>Drag 'n' drop some files here, or click to upload files (.json or .yaml files)</p>
         }
       </Container>,
       PlayErrorLogs: <div className="PlayErrorLogs" style={{ backgroundColor: theme.color.base, color: theme.palette.text.secondary }}>
@@ -140,16 +140,12 @@ export default function PlayUpload(props: { children: any }) {
     PlayUploadUtils: {
       setItems,
       removeErrorLogs: (items: any) => {
-        const remaining_error_logs: PlayErrorLog[] = [];
-        items.forEach((item: any) => {
-          remaining_error_logs.push(...error_logs.filter(error_log => {
-            const [subject, title] = error_log.quiz.split(" - ");
-            return subject !== item.subject && title !== item.title
-          }))
-        });
-        setErrorLogs(remaining_error_logs)
+        const target_quizzes: any = {};
+        items.forEach((item: any) => { target_quizzes[`${item.subject} - ${item.title}`] = false });
+        setErrorLogs(error_logs.filter(error_log => {
+          return target_quizzes[error_log.quiz] === undefined
+        }))
       },
-      new_quizzes
     }
   })
 }
