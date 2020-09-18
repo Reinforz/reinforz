@@ -2,13 +2,29 @@ import { Language } from "prism-react-renderer";
 import { ThemeOptions, Theme } from '@material-ui/core/styles';
 
 // Basic Components
-export interface ListProps<T> {
-  items: T[],
+
+export type ListAction = "add" | "remove";
+
+interface ListPropsCommon<T> {
   fields: (string | ((data: T) => string))[],
   icons?: ((index: number, _id: string) => void)[],
+  onDelete?: (items: T[]) => void
+}
+
+export interface ListProps<T> extends ListPropsCommon<T> {
+  items: T[],
   header: string,
-  setItems: (data: T[]) => void,
   children: any,
+  setItems: (data: T[]) => void,
+  selected: string[]
+}
+
+export interface ListItemProps<T> extends ListPropsCommon<T> {
+  item: T,
+  index: number,
+  isChecked: boolean,
+  setItems: (_id: string) => any,
+  setSelectedItems: (action: ListAction, _id: string) => any,
 }
 
 export interface ListState {
@@ -79,8 +95,11 @@ export interface TimerRProps {
 export interface PlayErrorLogsProps {
   quizzes: QuizInputFull[],
   setQuizzes: (quizzes: any[]) => void,
-  setSelectedItems: (items: string[]) => void,
-  selectedItems: string[],
+  children: any
+}
+
+export interface PlayErrorLogsRProps {
+  PlayErrorLogsComponent: JSX.Element
 }
 
 export interface PlayErrorLog {
@@ -129,12 +148,19 @@ export interface IPlaySettingsRProps {
   }
 }
 
-export interface PlayUploadProps {
-  setItems: (items: any[]) => any,
-  items: any[],
-  setSelectedItems: (items: any[]) => void,
-  selectedItems: string[],
-  ListComponent: JSX.Element
+export interface PlayUploadRProps {
+  PlayUploadComponents: {
+    PlayUpload: JSX.Element,
+    PlayErrorLogs: JSX.Element
+  },
+  PlayUploadState: {
+    items: any[],
+  },
+  PlayUploadUtils: {
+    setItems: (items: any[]) => any,
+    removeErrorLogs: (items: any[]) => any,
+    new_quizzes: string[]
+  }
 }
 
 export interface QuestionProps {
@@ -336,3 +362,4 @@ export interface IPlayContext {
 export interface ViewProps {
   children: any,
 }
+
