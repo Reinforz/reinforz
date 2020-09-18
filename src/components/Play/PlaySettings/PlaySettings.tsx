@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { Button, FormControlLabel, Checkbox, FormGroup, TextField, InputLabel } from "@material-ui/core";
 import { useSnackbar } from "notistack";
 import { useTheme } from '@material-ui/core/styles';
-import useSound from "use-sound";
 
 import shuffle from "../../../utils/arrayShuffler";
 
@@ -16,6 +15,19 @@ const DEFAULT_PLAY_OPTIONS_STATE = { shuffle_options: true, shuffle_quizzes: fal
 
 const DEFAULT_PLAY_FILTERS_STATE = { time_allocated: [15, 60], excluded_difficulty: [] as QuestionDifficulty[], excluded_types: [] as QuestionType[] } as IPlaySettingsFiltersState;
 
+const playOn = new Audio(process.env.PUBLIC_URL + "/sounds/pop-on.mp3");
+playOn.volume = 0.25;
+const playOff = new Audio(process.env.PUBLIC_URL + "/sounds/pop-off.mp3");
+playOff.volume = 0.25;
+const resetSettings = new Audio(process.env.PUBLIC_URL + "/sounds/reset.mp3");
+resetSettings.volume = 0.25;
+const horn = new Audio(process.env.PUBLIC_URL + "/sounds/horn.mp3");
+horn.volume = 0.25;
+const click = new Audio(process.env.PUBLIC_URL + "/sounds/click.mp3");
+click.volume = 0.25;
+const swoosh = new Audio(process.env.PUBLIC_URL + "/sounds/swoosh.mp3");
+swoosh.volume = 0.25;
+
 export default function (props: PlaySettingsProps) {
   const { quizzes, selectedQuizzes } = props;
   let PLAY_SETTINGS: any = localStorage.getItem('PLAY_SETTINGS');
@@ -23,12 +35,7 @@ export default function (props: PlaySettingsProps) {
   const theme = useTheme() as ExtendedTheme;
   const settings = useContext(SettingsContext) as ISettings;
 
-  const [playOn] = useSound(process.env.PUBLIC_URL + "/sounds/pop-on.mp3", { volume: 0.25 });
-  const [playOff] = useSound(process.env.PUBLIC_URL + "/sounds/pop-off.mp3", { volume: 0.25 });
-  const [resetSettings] = useSound(process.env.PUBLIC_URL + "/sounds/reset.mp3", { volume: 0.25 });
-  const [horn] = useSound(process.env.PUBLIC_URL + "/sounds/horn.mp3", { volume: 0.25 });
-  const [click] = useSound(process.env.PUBLIC_URL + "/sounds/click.mp3", { volume: 0.25 });
-  const [swoosh] = useSound(process.env.PUBLIC_URL + "/sounds/swoosh.mp3", { volume: 0.25 });
+
 
   const play_options_state = (PLAY_SETTINGS ? PLAY_SETTINGS.play_options : DEFAULT_PLAY_OPTIONS_STATE) as IPlaySettingsOptionsState;
   const play_filters_state = (PLAY_SETTINGS ? PLAY_SETTINGS.play_filters : DEFAULT_PLAY_FILTERS_STATE) as IPlaySettingsFiltersState;
@@ -77,8 +84,8 @@ export default function (props: PlaySettingsProps) {
                     color="primary"
                     onClick={(e) => {
                       if ((e.target as any).checked && settings.sound)
-                        playOn();
-                      else if (settings.sound) playOff()
+                        playOn.play();
+                      else if (settings.sound) playOff.play()
                     }}
                   />
                 }
@@ -87,7 +94,7 @@ export default function (props: PlaySettingsProps) {
             })}
           </div>
           <Button className="PlaySettings-group-button" variant="contained" color="primary" onClick={() => {
-            if (settings.sound) resetSettings()
+            if (settings.sound) resetSettings.play()
             setPlaySettingsOptions(DEFAULT_PLAY_OPTIONS_STATE)
           }}>Reset</Button>
         </div>
@@ -99,11 +106,11 @@ export default function (props: PlaySettingsProps) {
             <FormGroup>
               <InputLabel>Time Allocated range</InputLabel>
               <TextField type="number" inputProps={{ max: play_filters.time_allocated[1], step: 5, min: 0 }} value={play_filters.time_allocated[0]} onChange={(e) => {
-                if (settings.sound) click()
+                if (settings.sound) click.play()
                 setPlaySettingsFilters({ ...play_filters, time_allocated: [(e.target as any).value, play_filters.time_allocated[1]] })
               }} />
               <TextField type="number" inputProps={{ min: play_filters.time_allocated[0], step: 5, max: 60 }} value={play_filters.time_allocated[1]} onChange={(e) => {
-                if (settings.sound) click()
+                if (settings.sound) click.play()
                 setPlaySettingsFilters({ ...play_filters, time_allocated: [play_filters.time_allocated[0], (e.target as any).value] })
               }} />
             </FormGroup>
@@ -111,11 +118,11 @@ export default function (props: PlaySettingsProps) {
               <InputLabel>Exluded Difficulty</InputLabel>
               {['Beginner', 'Intermediate', 'Advanced'].map((difficulty, index) => <FormControlLabel key={difficulty + index} label={difficulty} control={<Checkbox checked={play_filters.excluded_difficulty.includes(difficulty as QuestionDifficulty)} name={difficulty} onChange={(e) => {
                 if ((e.target as any).checked) {
-                  if (settings.sound) playOn()
+                  if (settings.sound) playOn.play()
                   setPlaySettingsFilters({ ...play_filters, excluded_difficulty: play_filters.excluded_difficulty.concat(difficulty as QuestionDifficulty) });
                 }
                 else {
-                  if (settings.sound) playOff()
+                  if (settings.sound) playOff.play()
                   setPlaySettingsFilters({ ...play_filters, excluded_difficulty: play_filters.excluded_difficulty.filter(excluded_difficulty => excluded_difficulty !== difficulty) })
                 }
               }}
@@ -125,11 +132,11 @@ export default function (props: PlaySettingsProps) {
               <InputLabel>Exluded Type</InputLabel>
               {['FIB', 'MS', 'MCQ', "Snippet"].map((type, index) => <FormControlLabel key={type + index} label={type} control={<Checkbox checked={play_filters.excluded_types.includes(type as QuestionType)} name={type} onChange={(e) => {
                 if ((e.target as any).checked) {
-                  if (settings.sound) playOn()
+                  if (settings.sound) playOn.play()
                   setPlaySettingsFilters({ ...play_filters, excluded_types: play_filters.excluded_types.concat(type as QuestionType) });
                 }
                 else {
-                  if (settings.sound) playOff()
+                  if (settings.sound) playOff.play()
                   setPlaySettingsFilters({ ...play_filters, excluded_types: play_filters.excluded_types.filter(excluded_type => excluded_type !== type) })
                 }
               }}
@@ -137,7 +144,7 @@ export default function (props: PlaySettingsProps) {
             </FormGroup>
           </div>
           <Button className="PlaySettings-group-button" variant="contained" color="primary" onClick={() => {
-            if (settings.sound) resetSettings()
+            if (settings.sound) resetSettings.play()
             setPlaySettingsFilters(DEFAULT_PLAY_FILTERS_STATE)
           }}>Reset</Button>
 
@@ -145,11 +152,11 @@ export default function (props: PlaySettingsProps) {
         <div className="PlaySettings-total" style={{ backgroundColor: theme.color.dark, color: filtered_questions.length === 0 ? theme.palette.error.main : theme.palette.success.main }}>{filtered_questions.length} Questions</div>
         <Button disabled={(filtered_questions.length === 0 && selectedQuizzes.length !== 0) || selectedQuizzes.length === 0} className="PlaySettings-button" color="primary" variant="contained" onClick={() => {
           if (props.selectedQuizzes.length > 0 && filtered_questions.length > 0) {
-            if (settings.sound) swoosh();
+            if (settings.sound) swoosh.play();
             props.setPlaying(true)
           }
           else if (filtered_questions.length === 0 && selectedQuizzes.length !== 0) {
-            if (settings.sound) horn()
+            if (settings.sound) horn.play()
             enqueueSnackbar('You must have atleast one question to play', {
               variant: 'error',
               anchorOrigin: {
@@ -159,7 +166,7 @@ export default function (props: PlaySettingsProps) {
             })
           }
           else if (selectedQuizzes.length === 0) {
-            if (settings.sound) horn()
+            if (settings.sound) horn.play()
             enqueueSnackbar('You must have atleast one quiz selected', {
               variant: 'error',
               anchorOrigin: {

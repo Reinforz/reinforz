@@ -1,6 +1,5 @@
 import React, { useState, Fragment, useRef, createRef, RefObject, useContext } from "react";
 import { Button, TextField, useTheme } from "@material-ui/core";
-import useSound from "use-sound";
 
 import Timer from "../Basic/Timer";
 import QuestionHighlighter from "./QuestionHighlighter/QuestionHighlighter";
@@ -13,6 +12,9 @@ import { TimerRProps, QuestionProps, QuestionHintsRProps, ExtendedTheme, ISettin
 
 import "./Question.scss";
 
+const click = new Audio(process.env.PUBLIC_URL + "/sounds/click.mp3");
+click.volume = 0.15;
+
 export default function Question(props: QuestionProps) {
   const { hasEnd, index, question: { question, _id, type, image, format, time_allocated, hints, answers, language } } = props;
   const total_fibs = question.match(/(%_%)/g)?.length;
@@ -20,8 +22,6 @@ export default function Question(props: QuestionProps) {
   const fibRefs = useRef(Array(total_fibs).fill(0).map(() => createRef() as RefObject<HTMLInputElement>));
   const theme = useTheme() as ExtendedTheme;
   const settings = useContext(SettingsContext) as ISettings;
-
-  const [click] = useSound(process.env.PUBLIC_URL + "/sounds/click.mp3", { volume: 0.15 });
 
   const generateQuestion = () => {
     if (format === "code") return <QuestionHighlighter image={image} answers={answers} fibRefs={fibRefs} type={type} language={language} code={question} />
@@ -67,7 +67,7 @@ export default function Question(props: QuestionProps) {
               return <Fragment>
                 {TimerComponent}
                 <Button className="Quiz-button" variant="contained" color="primary" onClick={() => {
-                  if (settings.sound) click();
+                  if (settings.sound) click.play();
                   props.changeCounter(type !== "FIB" ? user_answers.filter(user_answer => user_answer !== "") : fibRefs.current.map(fibRef => fibRef?.current?.value ?? ""), time_allocated - TimerState.timeout, QuestionHintsState.hints_used)
                 }}>{!hasEnd ? "Next" : "Report"}</Button>
               </Fragment>

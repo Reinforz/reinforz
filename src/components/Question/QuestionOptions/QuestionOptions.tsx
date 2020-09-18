@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { RadioGroup, FormControlLabel, Radio, FormGroup, Checkbox, TextField, useTheme } from "@material-ui/core";
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import useSound from 'use-sound';
 
 import { ExtendedTheme, ISettings, QuestionOptionsProps } from '../../../types';
 
@@ -9,11 +8,13 @@ import SettingsContext from '../../../context/SettingsContext';
 
 import "./QuestionOptions.scss";
 
+const optionClick = new Audio(process.env.PUBLIC_URL + "/sounds/option-click.mp3");
+
+optionClick.volume = 0.15;
+
 export default function (props: QuestionOptionsProps) {
   const theme = useTheme() as ExtendedTheme;
   const settings = useContext(SettingsContext) as ISettings;
-
-  const [optionClick] = useSound(process.env.PUBLIC_URL + "/sounds/option-click.mp3", { volume: 0.15 });
 
   const { changeOption, user_answers, question: { _id, type, options } } = props;
   const generateOptions = () => {
@@ -25,7 +26,7 @@ export default function (props: QuestionOptionsProps) {
               <div className="QuestionOptions-container-item" style={{ backgroundColor: theme.color.base }}>
                 <FormControlLabel
                   control={<Radio onClick={() => {
-                    if (settings.sound) optionClick();
+                    if (settings.sound) optionClick.play();
                   }} color="primary" />}
                   value={`${i}`}
                   label={option.toString()}
@@ -52,7 +53,7 @@ export default function (props: QuestionOptionsProps) {
               <div className={`QuestionOptions-container-item`} style={{ backgroundColor: theme.color.base }} key={`${_id}option${i}`}>
                 <FormControlLabel
                   control={<Checkbox onClick={(e) => {
-                    if (settings.sound) optionClick();
+                    if (settings.sound) optionClick.play();
                   }} checked={temp_user_answers.includes(`${i}`)} value={`${i}`} color="primary" />}
                   label={option.toString()}
                 /></div></CSSTransition>))}

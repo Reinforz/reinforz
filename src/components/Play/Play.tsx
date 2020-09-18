@@ -2,7 +2,6 @@ import React, { useState, Fragment, useContext } from "react";
 import { useTheme } from '@material-ui/core/styles';
 import { useHistory } from "react-router-dom";
 import { FcSettings } from "react-icons/fc";
-import useSound from "use-sound";
 
 import PlayUpload from "./PlayUpload/PlayUpload";
 import Quiz from "../Quiz/Quiz";
@@ -26,12 +25,14 @@ import {
 
 import "./Play.scss";
 
+const swoosh = new Audio(process.env.PUBLIC_URL + "/sounds/swoosh.mp3");
+swoosh.volume = 0.25;
+
 function Play() {
   const [playing, setPlaying] = useState(false);
   const theme = useTheme() as ExtendedTheme;
   const history = useHistory();
   const settings = useContext(SettingsContext) as ISettings;
-  const [swoosh] = useSound(process.env.PUBLIC_URL + "/sounds/swoosh.mp3", { volume: 0.25 });
   return (
     <PlayUpload>
       {({ PlayUploadState, PlayUploadComponents, PlayUploadUtils }: PlayUploadRProps) => {
@@ -48,7 +49,7 @@ function Play() {
                     </PlayContext.Provider> :
                     <div className="Play">
                       <Icon onClick={() => {
-                        if (settings.sound) swoosh()
+                        if (settings.sound) swoosh.play()
                         history.push("/settings")
                       }} icon={FcSettings} popoverText="Click to go to settings page" className="App-icon App-icon--settings" />
                       <PlayTable quizzes={PlayUploadState.items} />

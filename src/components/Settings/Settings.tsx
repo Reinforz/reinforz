@@ -8,8 +8,6 @@ import { ExtendedTheme, SettingsProps } from '../../types';
 
 import "./Settings.scss";
 
-import useSound from 'use-sound';
-
 const OnOffSwitch = withStyles({
   switchBase: {
     color: red[500],
@@ -27,15 +25,18 @@ const OnOffSwitch = withStyles({
   checked: {},
 })(Switch);
 
+const switchOn = new Audio(process.env.PUBLIC_URL + "/sounds/switch-on.mp3",);
+switchOn.volume = 0.25
+const switchOff = new Audio(process.env.PUBLIC_URL + "/sounds/switch-off.mp3",);
+switchOff.volume = 0.25
+const swoosh = new Audio(process.env.PUBLIC_URL + "/sounds/swoosh.mp3",);
+swoosh.volume = 0.25
+
 function Settings(props: SettingsProps) {
   const { settings, setSettings } = props;
   const { theme, animation, sound, hovertips } = settings;
   const history = useHistory();
   const THEME = useTheme() as ExtendedTheme;
-
-  const [switchOn] = useSound(process.env.PUBLIC_URL + "/sounds/switch-on.mp3", { volume: 0.25 });
-  const [switchOff] = useSound(process.env.PUBLIC_URL + "/sounds/switch-off.mp3", { volume: 0.25 });
-  const [swoosh] = useSound(process.env.PUBLIC_URL + "/sounds/swoosh.mp3", { volume: 0.25 });
 
   return (
     <div className="Settings" style={{ backgroundColor: THEME.color.light }}>
@@ -44,7 +45,7 @@ function Settings(props: SettingsProps) {
         <RadioGroup name="theme" value={theme} row className="Settings-content-group" style={{ backgroundColor: THEME.color.base }}>
           <InputLabel className="Settings-content-group-label">Theme</InputLabel>
           {["dark", "light"].map((_theme, index) => <FormControlLabel onClick={(e: any) => {
-            if (settings.sound) switchOn();
+            if (settings.sound) switchOn.play();
             setSettings({ ...settings, theme: theme === "dark" ? "light" : "dark" })
           }} key={_theme.toString() + index} value={_theme} control={<Radio color="primary" />} label={_theme === "dark" ? <BsMoon className="Settings-icon Settings-icon--theme" style={{ fill: THEME.color.opposite_dark }} /> : <BsSun className="Settings-icon Settings-icon--theme" style={{ fill: THEME.color.opposite_dark }} />} />)}
         </RadioGroup>
@@ -53,8 +54,8 @@ function Settings(props: SettingsProps) {
           <OnOffSwitch
             checked={settings.animation}
             onChange={(e) => {
-              if (!animation && settings.sound) switchOn();
-              else if (animation && settings.sound) switchOff();
+              if (!animation && settings.sound) switchOn.play();
+              else if (animation && settings.sound) switchOff.play();
               setSettings({ ...settings, animation: !animation })
             }}
           />
@@ -64,8 +65,8 @@ function Settings(props: SettingsProps) {
           <OnOffSwitch
             checked={settings.sound}
             onChange={(e) => {
-              if (!sound && settings.sound) switchOn();
-              else if (sound && settings.sound) switchOff();
+              if (!sound && settings.sound) switchOn.play();
+              else if (sound && settings.sound) switchOff.play();
               setSettings({ ...settings, sound: !sound })
             }}
           />
@@ -75,8 +76,8 @@ function Settings(props: SettingsProps) {
           <OnOffSwitch
             checked={settings.hovertips}
             onChange={(e) => {
-              if (!hovertips && settings.sound) switchOn();
-              else if (hovertips && settings.sound) switchOff();
+              if (!hovertips && settings.sound) switchOn.play();
+              else if (hovertips && settings.sound) switchOff.play();
               setSettings({ ...settings, hovertips: !hovertips })
             }}
           />
@@ -88,7 +89,7 @@ function Settings(props: SettingsProps) {
             hovertips: String(hovertips),
             theme
           }))
-          if (settings.sound) swoosh();
+          if (settings.sound) swoosh.play();
           history.push("/")
         }}>Back to Home</Button>
 

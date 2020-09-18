@@ -3,7 +3,6 @@ import { Checkbox } from "@material-ui/core";
 import CancelIcon from '@material-ui/icons/Cancel';
 import { useTheme } from '@material-ui/core/styles';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import useSound from 'use-sound';
 import usePrevious from "react-use/lib/usePrevious";
 
 import Icon from "../Basic/Icon"
@@ -14,14 +13,19 @@ import SettingsContext from "../../context/SettingsContext";
 
 import "./List.scss";
 
+const playOn = new Audio(process.env.PUBLIC_URL + "/sounds/pop-on.mp3");
+const playOff = new Audio(process.env.PUBLIC_URL + "/sounds/pop-off.mp3");
+const deleteItem = new Audio(process.env.PUBLIC_URL + "/sounds/delete.mp3");
+
+playOn.volume = 0.5;
+playOff.volume = 0.5;
+deleteItem.volume = 0.5;
+
 export default React.memo((props: ListProps<Record<string, any>>) => {
   const { children, items, setItems, header, fields, icons } = props;
   const [selectedItems, setSelectedItems] = useState([] as any[]);
   const theme = useTheme() as ExtendedTheme;
   const settings = useContext(SettingsContext) as ISettings;
-  const [playOn] = useSound(process.env.PUBLIC_URL + "/sounds/pop-on.mp3", { volume: 0.25 });
-  const [playOff] = useSound(process.env.PUBLIC_URL + "/sounds/pop-off.mp3", { volume: 0.25 });
-  const [deleteItem] = useSound(process.env.PUBLIC_URL + "/sounds/delete.mp3", { volume: 0.25 });
   const prevItems = usePrevious(items);
   const prev_items_ids = prevItems?.map(prevItem => prevItem._id) ?? []
   const new_items = items.filter(item => !prev_items_ids.includes(item._id)).map(item => item._id)
@@ -36,11 +40,11 @@ export default React.memo((props: ListProps<Record<string, any>>) => {
       <div className="List-header" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>
         <Checkbox color="primary" key={"checkbox"} onClick={(e) => {
           if ((e.target as any).checked) {
-            if (settings.sound) playOn();
+            if (settings.sound) playOn.play();
             setSelectedItems(items.map(item => item._id));
           }
           else {
-            if (settings.sound) playOff();
+            if (settings.sound) playOff.play();
             setSelectedItems([])
           }
         }} checked={items.length !== 0 && selectedItems.length === items.length} />
@@ -48,7 +52,7 @@ export default React.memo((props: ListProps<Record<string, any>>) => {
         <div className="List-header-title">{header}</div>
         <div className="List-header-icons">
           <Icon icon={CancelIcon} popoverText={`Remove ${selectedItems.length} selected items`} className={"List-header-icons--cancel"} key={"deleteicon"} onClick={() => {
-            if (settings.sound) deleteItem();
+            if (settings.sound) deleteItem.play();
             props.onDelete && props.onDelete(items.filter(item => selectedItems.includes(item._id)))
             setItems(items.filter(item => !selectedItems.includes(item._id)));
             setSelectedItems([])
@@ -73,16 +77,16 @@ export default React.memo((props: ListProps<Record<string, any>>) => {
                 <div className="List-content-item-icons">
                   <Checkbox color="primary" className="List-content-item-icons--checkbox" key={_id + "checkbox" + index} onClick={(e) => {
                     if ((e.target as any).checked) {
-                      if (settings.sound) playOn();
+                      if (settings.sound) playOn.play();
                       setSelectedItems([...selectedItems, _id])
                     }
                     else {
-                      if (settings.sound) playOff();
+                      if (settings.sound) playOff.play();
                       setSelectedItems(selectedItems.filter(item => item !== _id))
                     }
                   }} checked={selectedItems.includes(_id)} value={_id} />
                   <Icon icon={CancelIcon} className="List-content-item-icons--cancel" key={_id + "icon" + index} onClick={() => {
-                    if (settings.sound) deleteItem();
+                    if (settings.sound) deleteItem.play();
                     props.onDelete && props.onDelete([item])
                     setSelectedItems(selectedItems.filter(item => item !== _id))
                     setItems(items.filter(item => item._id !== _id));

@@ -3,7 +3,6 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import { InputLabel, FormControl, Select, MenuItem, useTheme } from '@material-ui/core';
 import { safeDump } from 'js-yaml';
 import clone from 'just-clone';
-import useSound from 'use-sound';
 
 import Icon from '../../Basic/Icon';
 
@@ -15,13 +14,15 @@ import { ExtendedTheme, ReportExportProps, ISettings } from "../../../types";
 
 import "./ReportExport.scss"
 
+const click = new Audio(process.env.PUBLIC_URL + "/sounds/click.mp3");
+click.volume = 0.15
+
 export default function (props: ReportExportProps) {
   const { filtered_results, filtered_quizzes } = props;
   let REPORT_EXPORT: any = localStorage.getItem('REPORT_EXPORT');
   REPORT_EXPORT = REPORT_EXPORT ? JSON.parse(REPORT_EXPORT) : undefined;
   const theme = useTheme() as ExtendedTheme;
   const settings = useContext(SettingsContext) as ISettings;
-  const [click] = useSound(process.env.PUBLIC_URL + "/sounds/click.mp3", { volume: 0.15 });
 
   const [export_type, setExportType] = useState((REPORT_EXPORT ? REPORT_EXPORT.export_type : 'Original') as string);
   const [export_as, setExportAs] = useState((REPORT_EXPORT ? REPORT_EXPORT.export_as : 'YAML') as string);
@@ -36,7 +37,6 @@ export default function (props: ReportExportProps) {
       type === "yaml" ? download(`${quiz.subject} - ${quiz.title}.yaml`, safeDump(quiz)) : download(`${quiz.subject} - ${quiz.title}.json`, JSON.stringify(quiz, undefined, 2))
     })
   }, [filtered_quizzes])
-  console.log(filtered_results)
   const downloadfiles = () => {
     if (export_as === "JSON") {
       if (export_type === "Report") download(`Report${Date.now()}.json`, JSON.stringify(filtered_results, undefined, 2));
@@ -56,7 +56,7 @@ export default function (props: ReportExportProps) {
         <Select
           value={export_type}
           onChange={(e) => {
-            if (settings.sound) click()
+            if (settings.sound) click.play()
             setExportType((e.target as any).value)
           }}
         >
@@ -69,7 +69,7 @@ export default function (props: ReportExportProps) {
         <Select
           value={export_as}
           onChange={(e) => {
-            if (settings.sound) click()
+            if (settings.sound) click.play()
             setExportAs((e.target as any).value)
           }}
         >
@@ -77,7 +77,7 @@ export default function (props: ReportExportProps) {
         </Select>
       </FormControl>
       <Icon style={{ fill: theme.color.opposite_dark }} popoverText={`Export ${export_type} as ${export_as}`} icon={GetAppIcon} onClick={() => {
-        if (settings.sound) click()
+        if (settings.sound) click.play()
         downloadfiles()
       }} />
     </div>

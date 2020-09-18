@@ -2,7 +2,6 @@ import React, { Fragment, useContext } from 'react';
 import { Button } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import clone from 'just-clone';
-import useSound from 'use-sound';
 
 import Table from "../Basic/Table";
 import ReportFilter from './ReportFilter/ReportFilter';
@@ -15,6 +14,9 @@ import { IPlayContext, ISettings, QuestionInputFull, QuizInputFull, ReportFilter
 import "./Report.scss";
 
 import SettingsContext from '../../context/SettingsContext';
+
+const swoosh = new Audio(process.env.PUBLIC_URL + "/sounds/swoosh.mp3");
+swoosh.volume = 0.15
 
 export default function (props: ReportProps) {
   const transformValue = (header: string, content: any) => {
@@ -52,7 +54,6 @@ export default function (props: ReportProps) {
   }
 
   const settings = useContext(SettingsContext) as ISettings;
-  const [swoosh] = useSound(process.env.PUBLIC_URL + "/sounds/swoosh.mp3", { volume: 0.15 });
 
   const history = useHistory();
   const PlayContextValue = useContext(PlayContext) as IPlayContext;
@@ -90,14 +91,14 @@ export default function (props: ReportProps) {
             }} />
             <div className="Report-buttons">
               <Button className="Report-buttons-item" variant="contained" color="primary" onClick={() => {
-                if (settings.sound) swoosh()
+                if (settings.sound) swoosh.play()
                 localStorage.setItem("REPORT_FILTERS", JSON.stringify(ReportFilterState))
                 PlayContextValue.setPlaying(false);
                 PlayContextValue.setQuizzes(Object.values(filtered_quizzes))
                 PlayContextValue.setSelected(Object.values(filtered_quizzes).map(quiz => quiz._id))
               }}>Back to Home</Button>
               <Button className="Report-buttons-item" variant="contained" color="primary" onClick={() => {
-                if (settings.sound) swoosh()
+                if (settings.sound) swoosh.play()
                 history.push("/settings")
               }}>Go to Settings</Button>
             </div>
