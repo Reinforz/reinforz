@@ -103,7 +103,7 @@ export interface PlayErrorLogsRProps {
 
 export interface PlayErrorLog {
   quiz: string,
-  question_number: number,
+  target: string,
   message: string,
   level: "ERROR" | "WARN",
   _id: string

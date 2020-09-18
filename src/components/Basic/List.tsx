@@ -14,7 +14,7 @@ import SettingsContext from "../../context/SettingsContext";
 
 import "./List.scss";
 
-export default function (props: ListProps<Record<string, any>>) {
+export default React.memo((props: ListProps<Record<string, any>>) => {
   const { children, items, setItems, header, fields, icons } = props;
   const [selectedItems, setSelectedItems] = useState([] as any[]);
   const theme = useTheme() as ExtendedTheme;
@@ -102,7 +102,7 @@ export default function (props: ListProps<Record<string, any>>) {
       setSelectedItems
     }
   })
-}
+})
 
 // import React, { useContext, useState, useEffect } from "react";
 // import { Checkbox } from "@material-ui/core";
