@@ -36,14 +36,14 @@ export default function (props: ReportExportProps) {
       type === "yaml" ? download(`${quiz.subject} - ${quiz.title}.yaml`, safeDump(quiz)) : download(`${quiz.subject} - ${quiz.title}.json`, JSON.stringify(quiz, undefined, 2))
     })
   }, [filtered_quizzes])
-
+  console.log(filtered_results)
   const downloadfiles = () => {
     if (export_as === "JSON") {
-      if (export_type === "report") download(`Report${Date.now()}.json`, JSON.stringify(filtered_results, undefined, 2));
+      if (export_type === "Report") download(`Report${Date.now()}.json`, JSON.stringify(filtered_results, undefined, 2));
       else
         cloned_download("json")
     } else {
-      if (export_type === "report") download(`Report${Date.now()}.yaml`, safeDump(filtered_results));
+      if (export_type === "Report") download(`Report${Date.now()}.yaml`, safeDump(filtered_results));
       else
         cloned_download("yaml")
     }

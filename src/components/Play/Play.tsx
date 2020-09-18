@@ -53,10 +53,7 @@ function Play() {
                       }} icon={FcSettings} popoverText="Click to go to settings page" className="App-icon App-icon--settings" />
                       <PlayTable quizzes={PlayUploadState.items} />
                       {PlayUploadComponents.PlayUpload}
-                      <View>
-                        {PlayUploadComponents.PlayErrorLogs}
-                        {ListComponent}
-                      </View>
+                      <View items={[PlayUploadComponents.PlayErrorLogs, ListComponent]} />
                       {PlaySettingsComponent}
                       <div className="Help" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>Need help, <a style={{ color: theme.palette.text.secondary }} href="http://github.com/Devorein/reinforz" rel="noopener noreferrer" target="_blank">click here</a> to go to the doc</div>
                     </div>

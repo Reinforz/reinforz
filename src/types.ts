@@ -357,8 +357,3 @@ export interface IPlayContext {
   setQuizzes: (quizzes: QuizInputFull[]) => void,
   setSelected: (selected: string[]) => void
 }
-
-export interface ViewProps {
-  children: any,
-}
-
