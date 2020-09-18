@@ -13,11 +13,20 @@ export default function (props: QuestionHintsProps) {
   const { hints, children } = props;
   const theme = useTheme() as ExtendedTheme;
   const settings = useContext(SettingsContext) as ISettings;
+  const [is_disabled, setIsDisabled] = useState(false)
 
   return (
     children({
       QuestionHintsComponent: <div className="QuestionHints">
-        <Button color="primary" variant="contained" className="QuestionHints-button" onClick={() => hints_used < hints.length ? setHintsUsed(hints_used + 1) : void 0}>{hints.length > 0 ? `Show hint ${hints_used}/${hints.length}` : `No hints available`}</Button>
+        <Button disabled={is_disabled || hints.length === hints_used} color="primary" variant="contained" className="QuestionHints-button" onClick={() => {
+          if (hints_used < hints.length) {
+            setHintsUsed(hints_used + 1)
+            setIsDisabled(true);
+            setTimeout(() => {
+              setIsDisabled(false);
+            }, 2500)
+          }
+        }}>{hints.length > 0 ? `Show hint ${hints_used}/${hints.length}` : `No hints available`}</Button>
         <div className="QuestionHints-list" >
           <TransitionGroup component={null}>
             {Array(hints_used).fill(0).map((_, i) =>

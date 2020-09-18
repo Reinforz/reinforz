@@ -24,9 +24,9 @@ export default function Question(props: QuestionProps) {
   const [click] = useSound(process.env.PUBLIC_URL + "/sounds/click.mp3", { volume: 0.15 });
 
   const generateQuestion = () => {
-    if (format === "code") return <QuestionHighlighter answers={answers} fibRefs={fibRefs} type={type} language={language} code={question} />
+    if (format === "code") return <QuestionHighlighter image={image} answers={answers} fibRefs={fibRefs} type={type} language={language} code={question} />
     else {
-      if (type !== "FIB") return <div className="Question-question" style={{ color: theme.palette.text.primary, backgroundColor: theme.color.dark }}>{question}</div>;
+      if (type !== "FIB") return <div className="Question-question" style={{ color: theme.palette.text.primary, backgroundColor: theme.color.dark, width: image ? "50%" : "100%" }}>{question}</div>;
       else {
         let message = question, last_index = 0, messages: string[] = [];
         while ((last_index = message.indexOf("%_%")) !== -1) {
@@ -52,8 +52,8 @@ export default function Question(props: QuestionProps) {
   }
 
   return <div className="Question">
-    <div className="Question-container" style={{display: image ? "flex" : "block"}}>
-      {image && <div className="Question-image"><img src={image} alt="question" /></div>}
+    <div className="Question-container" style={{ display: image ? "flex" : "block" }}>
+      {image && <div className="Question-image" style={{ width: "50%" }}><img src={image} alt="question" /></div>}
       {generateQuestion()}
     </div>
     {type !== "FIB" && <QuestionOptions changeOption={changeUserAnswers} user_answers={user_answers} question={props.question} />}

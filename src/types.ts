@@ -231,7 +231,8 @@ export interface QuestionHighlighterProps {
   language: Language,
   type: QuestionType,
   fibRefs: React.MutableRefObject<React.RefObject<HTMLInputElement>[]>,
-  answers: QuestionAnswersType
+  answers: QuestionAnswersType,
+  image?: string
 }
 
 export interface QuestionHintsProps {

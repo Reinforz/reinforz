@@ -14,12 +14,12 @@ import { ExtendedTheme, QuestionHighlighterProps } from "../../../types";
 import "./QuestionHighlighter.scss";
 
 export default function QuestionHighlighter(props: QuestionHighlighterProps) {
-  const { code, language, type, fibRefs, answers } = props;
+  const { code, language, type, fibRefs, answers, image } = props;
   const theme = useTheme() as ExtendedTheme;
   return <Highlight {...defaultProps} theme={theme.palette.type === "dark" ? DarkTheme : LightTheme} code={code.trim()} language={language.trim() as Language} Prism={Prism as any}>
     {({ className, style, tokens, getLineProps, getTokenProps }) => {
       let current_fib_index = -1;
-      return <pre className={className + " QuestionHighlighter-pre"} style={{ ...style, backgroundColor: theme.color.dark }}>
+      return <pre className={className + " QuestionHighlighter-pre"} style={{ ...style, backgroundColor: theme.color.dark, width: image ? "50%" : "100%" }}>
         {tokens.map((line, i) => {
           let line_contents = [];
           for (let i = 0; i < line.length; i++) {
