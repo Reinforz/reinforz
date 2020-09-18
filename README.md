@@ -18,6 +18,7 @@
       - [ReportExport](#reportexport)
     - [Settings](#settings)
   + [Conventions](#conventions)
+  + [Answers](#answers)
 
 # Reinforz
 
@@ -167,3 +168,16 @@ Feel free to create a new PR for any new features, or raise an issue for fixing 
 
 01. A single file can contain only one quiz
 02. Please try to name the file as Quiz_Subject - Quiz_Title, so that it becomes easier to maintain
+
+### Answers
+
+For questions of type Snippet and FIB, you can provide multiple alternates for the same blank, by using, separated items ie ans1, ans2
+
+Each answer and its alternates can have certain modifiers which can expand the answer without you having to write every single one of them
+
+Current two modifiers are supported:
+
+1. IC: Ignore Case: Ignore the case of the answer (all caps, all lowers, first caps and rest lower)
+02. IS: Ignore Space: Ignore the spaces of the answer
+
+Example: _IC_ans1, _IS_ans2
