@@ -27,6 +27,14 @@ export function generateQuestionInputConfigs(
     if ((res as any)[field] === undefined) logs.errors.push(`Question ${field} is required`);
   })
 
+  if (res.options) {
+    res.options = res.options.map(option => {
+      if (option === "T") return "True";
+      else if (option === "F") return "False";
+      else return option;
+    })
+  }
+
   let format = 'text', time_allocated = 15, language = undefined;
 
   const lines = res.question.split("\n");

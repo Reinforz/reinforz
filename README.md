@@ -171,6 +171,8 @@ Feel free to create a new PR for any new features, or raise an issue for fixing 
 
 ### Answers
 
+You can use T/F acronyme to expand to True and False to create a True/False options, make sure its either T or F
+
 For questions of type Snippet and FIB, you can provide multiple alternates for the same blank, by using, separated items ie ans1, ans2
 
 Each answer and its alternates can have certain modifiers which can expand the answer without you having to write every single one of them
