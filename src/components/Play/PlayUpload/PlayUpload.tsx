@@ -7,6 +7,7 @@ import { useTheme } from '@material-ui/core/styles';
 
 import PlayErrorLogs from "../PlayErrorLogs/PlayErrorLogs";
 
+import View from '../../Basic/View';
 
 import { PlayUploadProps, ExtendedTheme } from '../../../types';
 
@@ -39,7 +40,7 @@ const centerBottomErrorNotistack = {
 
 export default function PlayUpload(props: PlayUploadProps) {
   const theme = useTheme() as ExtendedTheme;
-  const { items: quizzes, setItems: setQuizzes, setSelectedItems, selectedItems } = props;
+  const { items: quizzes, setItems: setQuizzes, setSelectedItems, selectedItems, ListComponent } = props;
   const { enqueueSnackbar } = useSnackbar();
   const [items, setItems] = useState(props.items);
 
@@ -94,7 +95,10 @@ export default function PlayUpload(props: PlayUploadProps) {
             <p>Drag 'n' drop some files here, or click to select files (.json or .yaml files)</p>
         }
       </Container>
-      <PlayErrorLogs quizzes={items} setQuizzes={setQuizzes} setSelectedItems={setSelectedItems} selectedItems={selectedItems} />
+      <View>
+        {ListComponent}
+        <PlayErrorLogs quizzes={items} setQuizzes={setQuizzes} setSelectedItems={setSelectedItems} selectedItems={selectedItems} />
+      </View>
     </Fragment>
   )
 }

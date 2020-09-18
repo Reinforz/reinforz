@@ -5,11 +5,14 @@
   grid-template-rows: 100px 1fr 30px;
   grid-gap: 5px;
 
-  .List {
-    grid-area: 2/2/3/3;
-    overflow: auto;
-    border-radius: 5px;
-    width: calc(100% - 10px);
+  .View{
+    grid-area: 2/1/3/3;
+    .List {
+      overflow: auto;
+      border-radius: 5px;
+      width: calc(100% - 10px);
+      // width: 50%;
+    }
   }
 
   .Help {

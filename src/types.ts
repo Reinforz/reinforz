@@ -133,7 +133,8 @@ export interface PlayUploadProps {
   setItems: (items: any[]) => any,
   items: any[],
   setSelectedItems: (items: any[]) => void,
-  selectedItems: string[]
+  selectedItems: string[],
+  ListComponent: JSX.Element
 }
 
 export interface QuestionProps {
@@ -330,4 +331,8 @@ export interface IPlayContext {
   setPlaying: (isPlaying: boolean) => void,
   setQuizzes: (quizzes: QuizInputFull[]) => void,
   setSelected: (selected: string[]) => void
+}
+
+export interface ViewProps {
+  children: any,
 }
