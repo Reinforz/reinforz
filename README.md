@@ -19,6 +19,7 @@
     - [Settings](#settings)
   + [Conventions](#conventions)
   + [Answers](#answers)
+  + [TODO](#todo)
 
 # Reinforz
 
@@ -183,5 +184,11 @@ Current two modifiers are supported:
 02. IS: Ignore Space: Ignore the spaces of the answer
 
 Example: _IC_ans1, _IS_ans2
+
+### TODO:
+
+1. Add test for all react components (never done any sort of testing with react, its gonna be fun)
+02. Better component state utilization
+03. More performant React, by utilizing the appropriate hooks
 
 **Feel free to create a new PR for any new features, or raise an issue for fixing any bug or for a new feature suggestion**
