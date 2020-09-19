@@ -81,14 +81,9 @@ export interface TimerState {
   timer: undefined | number
 }
 
-export interface TimerUtils {
-  clearInterval: (shouldClearInterval: boolean) => void
-}
-
 export interface TimerRProps {
   TimerComponent: JSX.Element,
   TimerState: TimerState,
-  TimerUtils: TimerUtils
 }
 
 export interface PlayErrorLogsProps {

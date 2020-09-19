@@ -1,67 +1,44 @@
-import React from "react";
-import { Theme, withTheme } from '@material-ui/core/styles';
+import { useTheme } from "@material-ui/styles";
+import React, { useContext, useEffect, useState } from "react";
 
-import { TimerProps, TimerState, TimerRProps, ExtendedTheme } from "../../types";
+import SettingsContext from "../../context/SettingsContext";
+
+import { TimerProps, TimerRProps, ExtendedTheme, ISettings } from "../../types";
 
 import "./Timer.scss";
 
 const tic = new Audio(process.env.PUBLIC_URL + "/sounds/tic.mp3");
 tic.volume = 0.5;
 
-class Timer extends React.Component<TimerProps & { theme: Theme }, TimerState> {
-  state = {
-    timeout: this.props.timeout,
-    timer: undefined
-  };
+export default function (props: TimerProps) {
+  const settings = useContext(SettingsContext) as ISettings;
 
-  componentWillUnmount = () => {
-    this.clearInterval(true);
-  };
+  const [timeout, setTimeout] = useState(props.timeout);
 
-  clearInterval = (shouldClearInterval = false) => {
-    if (shouldClearInterval) clearInterval(this.state.timer);
-    this.setState({
-      timer: undefined,
-      timeout: 0
-    });
-  };
+  const theme = useTheme() as ExtendedTheme
 
-  componentDidMount() {
-    clearInterval(this.state.timer);
+  useEffect(() => {
     const timer = setInterval(() => {
-      if (this.state.timeout !== 0) {
-        tic.play();
-        this.setState({
-          timeout: this.state.timeout - 1
-        });
-      } else {
-        this.props.onTimerEnd();
-        clearInterval(timer);
-      }
+      if (timeout !== 0)
+        setTimeout((seconds) => {
+          if (settings.sound) tic.play();
+          return seconds - 1
+        })
     }, 1000);
-    this.setState({
-      timeout: this.props.timeout,
-      timer
-    });
-  }
+    return () => {
+      if (timeout === 0) props.onTimerEnd()
+      clearInterval(timer);
+    }
+  })
 
-  displayTime = (time: number) => {
-    const min = Math.floor(time / 60);
-    const sec = time % 60;
+  const displayTime = () => {
+    const min = Math.floor(timeout / 60);
+    const sec = timeout % 60;
     return `0${min}:${sec < 10 ? '0' + sec : sec}`;
   };
 
-  render() {
-    const { timeout } = this.state;
-    const { theme } = this.props;
-    return this.props.children({
-      TimerComponent: <div style={{ backgroundColor: (theme as ExtendedTheme).color.dark, color: theme.palette.text.primary }} className="Timer">{this.displayTime(timeout)}</div>,
-      TimerState: this.state,
-      TimerUtils: {
-        clearInterval: this.clearInterval
-      }
-    } as TimerRProps);
-  }
+  return props.children({
+    TimerComponent: <div style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }} className="Timer">{displayTime()}</div>,
+    TimerState: { timeout },
+  } as TimerRProps);
 }
-
-export default withTheme(Timer)
