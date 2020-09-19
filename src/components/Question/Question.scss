@@ -1,11 +1,14 @@
 .Question {
   user-select: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
+  display: grid;
+  grid-template-rows: 290px 1fr 50px;
+  grid-template-columns: 1fr 350px;
+  margin: 5px;
+  height: calc(100vh - 50px);
+
   &-container {
-    width: calc(100% - 20px);
+    width: 100%;
+    grid-area: 1/1/2/3;
   }
   &-image {
     position: relative;
@@ -25,9 +28,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: calc(100% - 20px);
-    height: 150px;
-    margin: 10px;
+    height: 100%;
     border-radius: 5px;
+  }
+
+  &-hints_options-container{
+    width: 100%;
+    display: flex;
+
   }
 }

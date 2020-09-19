@@ -51,29 +51,32 @@ export default function Question(props: QuestionProps) {
     }
   }
 
+  const QuestionOption = type !== "FIB" && <QuestionOptions changeOption={changeUserAnswers} user_answers={user_answers} question={props.question} />;
+
   return <div className="Question">
     <div className="Question-container" style={{ display: image ? "flex" : "block" }}>
       {image && <div className="Question-image" style={{ width: "50%" }}><img src={image} alt="question" /></div>}
       {generateQuestion()}
     </div>
-    {type !== "FIB" && <QuestionOptions changeOption={changeUserAnswers} user_answers={user_answers} question={props.question} />}
+
     <QuestionHints hints={hints}>
       {({ QuestionHintsComponent, QuestionHintsState }: QuestionHintsRProps) => {
         return <Fragment>
+          {QuestionOption}
+          {QuestionHintsComponent}
           <Timer timeout={time_allocated} onTimerEnd={() => {
             props.changeCounter(type !== "FIB" ? user_answers.filter(user_answer => user_answer !== "") : fibRefs.current.map(fibRef => fibRef?.current?.value ?? ""), time_allocated, QuestionHintsState.hints_used)
           }}>
             {({ TimerComponent, TimerState }: TimerRProps) => {
-              return <Fragment>
+              return <div style={{ display: "flex", gridArea: "3/2/4/3", justifyContent: "center" }}>
                 {TimerComponent}
                 <Button className="Quiz-button" variant="contained" color="primary" onClick={() => {
                   if (settings.sound) click.play();
                   props.changeCounter(type !== "FIB" ? user_answers.filter(user_answer => user_answer !== "") : fibRefs.current.map(fibRef => fibRef?.current?.value ?? ""), time_allocated - TimerState.timeout, QuestionHintsState.hints_used)
                 }}>{!hasEnd ? "Next" : "Report"}</Button>
-              </Fragment>
+              </div>
             }}
           </Timer>
-          {QuestionHintsComponent}
         </Fragment>
       }}
     </QuestionHints>

@@ -23,7 +23,7 @@
 
 # Reinforz
 
-<img src="https://github.com/Devorein/reinforz/blob/master/public/512.png">
+<img src="https://github.com/Devorein/reinforz/blob/master/public/196.png">
 
 Force yourself to master a topic through continuous feedback
 

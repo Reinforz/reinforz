@@ -1,3 +1,6 @@
 .Quiz {
   height: 100vh;
+  &-button.MuiButton-containedPrimary{
+    margin: 0px 5px 5px 0px;
+  }
 }

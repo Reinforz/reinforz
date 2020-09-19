@@ -1,18 +1,24 @@
 .QuestionOptions {
-  width: calc(100% - 20px);
+  grid-area: 2/1/4/2;
+
   .MuiFormGroup-root{
-    padding: 0px 10px;
-    width: calc(100% - 20px);
+    padding: 0px 7.5px;
+    width: calc(100% - 15px);
+    margin: 5px 0px 0px 0px;
   }
+
   &-container {
-    display: flex;
     width: 100%;
     padding: 10px;
-    flex-direction: column;
+    height: calc(100% - 10px);
+    overflow: auto;
+
     &--Snippet{
       width: 50%;
-      margin: 0 auto;
+      margin: 10px auto;
+      height: fit-content;
     }
+    
     &-item {
       padding: 10px;
       font-size: 1.5rem;
