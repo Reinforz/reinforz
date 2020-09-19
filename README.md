@@ -1,6 +1,6 @@
 [Reinforz](#reinforz)
 
-  + [Featurs](#featurs)
+  + [Features](#featurs)
   + [Pages](#pages)
     - [Home](#home)
       - [Upload](#upload)
@@ -21,6 +21,8 @@
   + [Answers](#answers)
 
 # Reinforz
+
+<img src="https://github.com/Devorein/reinforz/blob/master/public/512.png">
 
 Force yourself to master a topic through continuous feedback
 
@@ -162,8 +164,6 @@ The report and actual questions can be exported as YAML or JSON files
 
 Animation, Sounds, Hovertips and Theme can be changed on settings page
 
-Feel free to create a new PR for any new features, or raise an issue for fixing any bug or for a new featue suggestion
-
 ### Conventions
 
 01. A single file can contain only one quiz
@@ -183,3 +183,5 @@ Current two modifiers are supported:
 02. IS: Ignore Space: Ignore the spaces of the answer
 
 Example: _IC_ans1, _IS_ans2
+
+**Feel free to create a new PR for any new features, or raise an issue for fixing any bug or for a new feature suggestion**
