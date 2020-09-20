@@ -24,9 +24,10 @@ export default function (props: TimerProps) {
           if (settings.sound) tic.play();
           return seconds - 1
         })
+      else
+        props.onTimerEnd()
     }, 1000);
     return () => {
-      if (timeout === 0) props.onTimerEnd()
       clearInterval(timer);
     }
   })
