@@ -2,7 +2,6 @@ import clone from "just-clone";
 import shortid from "shortid"
 
 import { QuestionInputPartial, QuestionInputFull } from '../types';
-import convertToAnswerAST from './convertToAnswerAST';
 
 function setObjectValues(
   parent: any,
@@ -65,7 +64,7 @@ export function generateQuestionInputConfigs(
     if (res.answers.length === 1) res.type = res.options ? "MCQ" : "Snippet";
     else res.type = res.options ? "MS" : "FIB";
 
-    res.answers = res.type.match(/(Snippet|FIB)/) ? convertToAnswerAST(res.answers) : res.answers.map((answer: string) => answer.toString());
+    res.answers = res.answers.map((answer: string) => answer.toString());
 
     switch (res.type) {
       case "MCQ":

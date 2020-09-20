@@ -1,5 +1,5 @@
 import React, { useState, Fragment, useRef, createRef, RefObject, useContext } from "react";
-import { Button, TextField, useTheme } from "@material-ui/core";
+import { Button, useTheme } from "@material-ui/core";
 
 import Timer from "../Basic/Timer";
 import QuestionHighlighter from "./QuestionHighlighter/QuestionHighlighter";
@@ -28,31 +28,20 @@ export default function Question(props: QuestionProps) {
     else {
       if (type !== "FIB") return <div className="Question-question" style={{ color: theme.palette.text.primary, backgroundColor: theme.color.dark, width: image ? "50%" : "100%" }}>{question}</div>;
       else {
-        let message = question, last_index = 0, messages: string[] = [];
-        while ((last_index = message.indexOf("%_%")) !== -1) {
-          messages.push(message.substr(0, last_index));
-          message = message.substr(last_index + 3);
-        };
+        const messages: string[] = question.split("%_%");
         return <div className="Question-question" style={{ color: theme.palette.text.primary, backgroundColor: theme.color.dark }}>
           {messages.map((message, i) => {
             return <Fragment key={`${_id}option${index}${i}`}>
               <div className="Question-question--FIB">{message}</div>
-              <div className="Question-option-FIB">
-                <TextField value={user_answers[i]} onChange={e => {
-                  user_answers[i] = e.target.value;
-                  changeUserAnswers([...user_answers])
-                }} />
-              </div>
+              {i !== messages.length - 1 && <input style={{ color: theme.palette.text.primary, backgroundColor: theme.color.light }} spellCheck={false} className="Highlighter-FIB-Code" ref={fibRefs.current[i]} />}
             </Fragment>
           })}
-          {message}
         </div>
       }
     }
   }
 
   const QuestionOption = type !== "FIB" && <QuestionOptions changeOption={changeUserAnswers} user_answers={user_answers} question={props.question} />;
-
   return <div className="Question">
     <div className="Question-container" style={{ display: image ? "flex" : "block" }}>
       {image && <div className="Question-image" style={{ width: "50%" }}><img src={image} alt="question" /></div>}

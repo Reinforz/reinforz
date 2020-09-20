@@ -60,8 +60,28 @@ export default function Quiz(props: QuizProps) {
             case "Snippet":
             case "FIB":
               verdict = user_answers.length === answers.length && user_answers.every((user_answer, i) => {
-                const isCorrect = answers[i].split(",").includes(user_answer);
-                if (isCorrect) total_correct_answers++
+                let isCorrect = false;
+                const correct_answers = answers[i].split(",");
+                for (let i = 0; i < correct_answers.length; i++) {
+                  let mod_user_answer = user_answer;
+                  let correct_answer = correct_answers[i];
+                  let modifiers = correct_answer.match(/_(.*?)_(.+)/);
+                  if (modifiers) {
+                    correct_answer = modifiers[2];
+                    modifiers = modifiers[1].split(" ");
+                    if (modifiers.includes("IC")) {
+                      correct_answer = correct_answer.toLowerCase();
+                      mod_user_answer = mod_user_answer.toLowerCase();
+                    }
+                    if (modifiers.includes("IS")) {
+                      correct_answer = correct_answer.replace(/\s/g, '');
+                      mod_user_answer = mod_user_answer.replace(/\s/g, '');
+                    }
+                  }
+                  isCorrect = correct_answer === mod_user_answer;
+                  if (isCorrect) break;
+                }
+                if (isCorrect) total_correct_answers++;
                 return isCorrect;
               });
               break;
