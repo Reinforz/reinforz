@@ -63,7 +63,7 @@ export default function (props: PlaySettingsProps) {
         selected_quizzes: filtered_quizzes.map(filtered_quiz => ({ _id: filtered_quiz._id, title: filtered_quiz.title, subject: filtered_quiz.subject }))
       },
       PlaySettingsState,
-      PlaySettingsComponent: <Menu content_id="Play-content" lskey="Play">
+      PlaySettingsComponent: <Menu content_id="Play-content" lskey="Play_menu">
         <div className="PlaySettings" style={{ backgroundColor: theme.color.base, color: theme.palette.text.primary }}>
           <div className="PlaySettings-group PlaySettings-group--options">
             <div className="PlaySettings-group-header PlaySettings-group-header--options" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>Options</div>

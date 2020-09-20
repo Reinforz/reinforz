@@ -11,16 +11,14 @@ import "./Menu.scss";
 
 export default function (props: MenuProps) {
   const { width = 300, initial_position, lskey, content_id, initial_open, children } = props;
-  let menu_ls_state = null;
+  let menu_ls_state = {
+    position: initial_position || "left",
+    is_open: initial_open || false
+  };
   if (lskey) {
     const ls_value = localStorage.getItem(lskey);
     if (ls_value)
       menu_ls_state = JSON.parse(ls_value)
-  } else {
-    menu_ls_state = {
-      initial_position: initial_position || "left",
-      initial_open: initial_open || false
-    };
   }
   const [is_open, setIsOpen] = useState(menu_ls_state.is_open);
   const [position, setPosition] = useState(menu_ls_state.position);
@@ -28,8 +26,10 @@ export default function (props: MenuProps) {
 
   const content_elem = document.getElementById(content_id);
 
-  if (content_elem)
+  if (content_elem) {
     content_elem.style.position = `absolute`;
+    content_elem.style.transition = `width 250ms ease-in-out, left 250ms ease-in-out`;
+  }
 
   let left = null, icons_style = {
     backgroundColor: theme.color.dark

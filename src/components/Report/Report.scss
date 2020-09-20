@@ -1,17 +1,22 @@
 .Report {
-  display: grid;
-  grid-template-columns: 1fr 3fr;
-  grid-template-rows: 50px 1fr 50px;
   height: 100vh;
+  &-content{
+    display: grid;
+    grid-template-rows: 50px 1fr 50px;
+    height: 100%;
+    padding: 5px;
+  }
+
   &Filter {
     padding: 10px;
     overflow: auto;
     height: calc(100vh - 30px);
     margin-right: 10px;
-    grid-area: 1/1/2/2;
+    
   }
+  
   &Export {
-    grid-area: 1/2/2/3;
+    grid-area: 1/1/2/2;
     display: flex;
     align-items: center;
     .MuiFormControl-root {
@@ -19,7 +24,7 @@
     }
   }
   .Table {
-    grid-area: 2/2/4/3;
+    grid-area: 2/1/4/2;
     width: calc(100% - 5px);
     position: relative;
     height: 100%;
@@ -49,7 +54,7 @@
     padding: 5px;
     align-items: center;
     justify-content: center;
-    grid-area: 3/2/4/3;
+    grid-area: 3/1/4/2;
     &-item.MuiButton-containedPrimary {
       margin: 0px 5px;
     }
