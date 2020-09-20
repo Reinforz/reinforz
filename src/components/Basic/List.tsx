@@ -27,7 +27,8 @@ export default React.memo((props: ListProps<Record<string, any>>) => {
   const theme = useTheme() as ExtendedTheme;
   const settings = useContext(SettingsContext) as ISettings;
 
-  const { selectedItems, setSelectedItems, resetSelectedItems, setAllSelected, addSelectedItems, removeSelectedItem, removeAndDeleteSelectedItem, total_selected, deleteSelectedItems } = useList(items, setItems)
+  const { selectedItems, selectEndFromClickWithCurrent,
+    selectUptoClickedWithCurrent, selectEndFromClick, selectUptoClicked, setSelectedItems, resetSelectedItems, setAllSelected, addSelectedItems, removeSelectedItem, removeAndDeleteSelectedItem, total_selected, deleteSelectedItems, selectOnlyClicked } = useList(items, setItems)
 
   return children({
     ListComponent: <div className="List" style={{ backgroundColor: theme.color.base }}>
@@ -69,13 +70,28 @@ export default React.memo((props: ListProps<Record<string, any>>) => {
                 {icons?.map(icon => icon(index, _id))}
                 <div className="List-content-item-icons">
                   <Checkbox color="primary" className="List-content-item-icons--checkbox" key={_id + "checkbox" + index} onClick={(e) => {
-                    if ((e.target as any).checked) {
-                      if (settings.sound) playOn.play();
-                      addSelectedItems(_id)
-                    }
-                    else {
-                      if (settings.sound) playOff.play();
-                      removeSelectedItem(_id)
+                    if (e.ctrlKey) {
+                      if (e.altKey && e.shiftKey)
+                        selectEndFromClickWithCurrent(index)
+                      else if (!e.altKey && e.shiftKey)
+                        selectUptoClickedWithCurrent(index)
+                    } else {
+                      if (e.altKey && e.shiftKey)
+                        selectEndFromClick(index)
+                      else if (e.altKey && !e.shiftKey)
+                        selectOnlyClicked(_id)
+                      else if (!e.altKey && e.shiftKey)
+                        selectUptoClicked(index)
+                      else {
+                        if ((e.target as any).checked) {
+                          if (settings.sound) playOn.play();
+                          addSelectedItems(_id)
+                        }
+                        else {
+                          if (settings.sound) playOff.play();
+                          removeSelectedItem(_id)
+                        }
+                      }
                     }
                   }} checked={selectedItems.includes(_id)} value={_id} />
                   <Icon icon={CancelIcon} className="List-content-item-icons--cancel" key={_id + "icon" + index} onClick={() => {

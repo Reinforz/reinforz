@@ -29,6 +29,23 @@ export default function (items: any[], setItems: any) {
   }
   const addSelectedItems = (_id: string) => setSelectedItems([...selectedItems, _id]);
 
+  const selectOnlyClicked = (_id: string) => setSelectedItems([_id]);
+  const selectUptoClicked = (index: number) => {
+    setSelectedItems(items.filter((item, i) => i <= index).map(item => item._id));
+  }
+
+  const selectEndFromClick = (index: number) => {
+    setSelectedItems(items.filter((item, i) => i >= index).map(item => item._id));
+  }
+
+  const selectUptoClickedWithCurrent = (index: number) => {
+    setSelectedItems(Array.from(new Set(selectedItems.concat(items.filter((item, i) => i <= index).map(item => item._id)))));
+  }
+
+  const selectEndFromClickWithCurrent = (index: number) => {
+    setSelectedItems(selectedItems.concat(items.filter((item, i) => i >= index).map(item => item._id)));
+  }
+
   const total_selected = selectedItems.length;
 
   return {
@@ -41,6 +58,11 @@ export default function (items: any[], setItems: any) {
     addSelectedItems,
     total_selected,
     selectedItems,
-    setSelectedItems
+    setSelectedItems,
+    selectOnlyClicked,
+    selectUptoClicked,
+    selectEndFromClick,
+    selectEndFromClickWithCurrent,
+    selectUptoClickedWithCurrent
   }
 }
