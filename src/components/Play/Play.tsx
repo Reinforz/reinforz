@@ -47,16 +47,18 @@ function Play() {
                     <PlayContext.Provider value={{ setQuizzes: PlayUploadUtils.setItems, setPlaying, setSelected: ListUtils.setSelectedItems }}>
                       <Quiz selected_quizzes={PlaySettingsExtra.selected_quizzes} play_options={PlaySettingsState.play_options} all_questions={PlaySettingsExtra.filtered_questions} />
                     </PlayContext.Provider> :
-                    <div className="Play">
+                    <div className="Play" id="Play">
                       <Icon onClick={() => {
                         if (settings.sound) swoosh.play()
                         history.push("/settings")
                       }} icon={FcSettings} popoverText="Click to go to settings page" className="App-icon App-icon--settings" />
-                      <PlayTable quizzes={PlayUploadState.items} />
-                      {PlayUploadComponents.PlayUpload}
-                      <View items={[PlayUploadComponents.PlayErrorLogs, ListComponent]} />
+                      <div className="Play-content" id="Play-content">
+                        <PlayTable quizzes={PlayUploadState.items} />
+                        {PlayUploadComponents.PlayUpload}
+                        <View items={[PlayUploadComponents.PlayErrorLogs, ListComponent]} />
+                        <div className="Help" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>Need help, <a style={{ color: theme.palette.text.secondary }} href="http://github.com/Devorein/reinforz" rel="noopener noreferrer" target="_blank">click here</a> to go to the doc</div>
+                      </div>
                       {PlaySettingsComponent}
-                      <div className="Help" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>Need help, <a style={{ color: theme.palette.text.secondary }} href="http://github.com/Devorein/reinforz" rel="noopener noreferrer" target="_blank">click here</a> to go to the doc</div>
                     </div>
                   }
                 </Fragment>

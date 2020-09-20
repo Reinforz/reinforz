@@ -95,7 +95,6 @@ export interface PlayErrorLogsProps {
 export interface PlayErrorLogsRProps {
   PlayErrorLogsComponent: JSX.Element
 }
-
 export interface PlayErrorLog {
   quiz: string,
   target: string,
@@ -351,4 +350,13 @@ export interface IPlayContext {
   setPlaying: (isPlaying: boolean) => void,
   setQuizzes: (quizzes: QuizInputFull[]) => void,
   setSelected: (selected: string[]) => void
+}
+
+export interface MenuProps {
+  initial_position?: "left" | "right",
+  initial_open?: boolean,
+  content_id: string,
+  children: JSX.Element,
+  width?: number,
+  lskey: string
 }

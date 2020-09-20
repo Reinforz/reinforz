@@ -15,7 +15,6 @@ function setObjectValues(
   });
 }
 
-
 export function generateQuestionInputConfigs(
   question: QuestionInputPartial,
 ) {
@@ -34,6 +33,9 @@ export function generateQuestionInputConfigs(
       else return option;
     })
   }
+
+  if (!Array.isArray(res.answers)) res.answers = [res.answers]
+  res.answers = res.answers.map(answer => answer.toString())
 
   let format = 'text', time_allocated = 15, language = undefined;
 
