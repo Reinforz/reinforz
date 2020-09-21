@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme: ExtendedTheme) => ({
     borderBottom: 0,
     textAlign: 'center',
     backgroundColor: theme.color.dark,
-
+    padding: "15px 0px"
   },
   td: {
     fontWeight: 500,
@@ -87,7 +87,8 @@ function TableHeaders(props: TableHeaderProps) {
         <div style={{
           display: "flex",
           alignItems: "center",
-          justifyContent: "center"
+          justifyContent: "center",
+          width: "fit-content"
         }}>
           <MdPlayArrow style={{ transform: `rotateZ(${headers_sort_orders[index] === "ASC" ? 30 : -30}deg)` }} />
           {header.split("_").map(c => c.charAt(0).toUpperCase() + c.substr(1)).join(" ")}

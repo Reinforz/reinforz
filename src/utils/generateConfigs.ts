@@ -61,8 +61,8 @@ export function generateQuestionInputConfigs(
 
   // Auto generation of Question Configs
   if (logs.errors.length === 0) {
-    if (res.answers.length === 1) res.type = res.options ? "MCQ" : "Snippet";
-    else res.type = res.options ? "MS" : "FIB";
+    if (res.answers.length === 1) res.type = res.type || res.options ? "MCQ" : "Snippet";
+    else res.type = res.type || res.options ? "MS" : "FIB";
 
     res.answers = res.answers.map((answer: string) => answer.toString());
 
@@ -93,7 +93,6 @@ export function generateQuestionInputConfigs(
       res.time_allocated = time_allocated;
     res._id = shortid();
 
-    if (res.type !== question.type && question.type !== undefined) logs.warns.push(`Question is of type ${res.type} but given ${question.type}`);
     if (res.format !== question.format && question.format !== undefined) logs.warns.push(`Question is of format ${res.format} but given ${question.format}`);
     if (res.time_allocated < 10) {
       logs.warns.push(`Question time allocated must be >=10 but given ${res.time_allocated}, changing to 10`);
