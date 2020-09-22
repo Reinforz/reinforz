@@ -11,25 +11,26 @@ import Stats from "../Basic/Stats";
 import shuffle from "../../utils/arrayShuffler";
 import checkTextAnswer from "../../utils/checkTextAnswer";
 
-import { Result, QuizProps, QuestionInputFull, ExtendedTheme } from "../../types";
+import { Result, QuizProps, ExtendedTheme, QuestionInputFull } from "../../types";
+
+import useCycle from "../../hooks/useCycle";
 
 import "./Quiz.scss";
 
 export default function Quiz(props: QuizProps) {
-  const [current_question_index, setCurrentQuestion] = useState(0);
   const [results, setResults] = useState([] as Result[]);
   const { all_questions, play_options, selected_quizzes } = props;
   const total_questions = all_questions.length;
-  const all_questions_map: Record<string, QuestionInputFull> = {};
-  all_questions.forEach(question => all_questions_map[question._id] = question);
   const theme = useTheme() as ExtendedTheme;
 
+  const { is_last_item, current_item, getNextIndex, hasEnded, current_index } = useCycle(all_questions);
+
   const generateContent = () => {
-    if (current_question_index !== total_questions) {
-      const current_question = clone(all_questions[current_question_index]);
+    if (!hasEnded) {
+      const current_question = clone(current_item) as QuestionInputFull;
       const stat_item: Record<string, any> = clone(current_question);
       stat_item.total = total_questions;
-      stat_item.current = current_question_index + 1;
+      stat_item.current = current_index + 1;
       const total_correct = results.filter(result => result.verdict).length;
       if (play_options.instant_feedback) stat_item.total_correct = total_correct;
       const options_md5_map: Record<string, number> = {};
@@ -40,7 +41,7 @@ export default function Quiz(props: QuizProps) {
       let total_correct_answers = 0;
       return <Fragment>
         <Stats item={stat_item} stats={["quiz.title", "quiz.subject", play_options.instant_feedback ? "total_correct" : undefined, "current", "total", "type", "format", "weight", "time_allocated", "difficulty"]} />
-        <Question total={total_questions} index={current_question_index + 1} hasEnd={current_question_index >= total_questions - 1} key={current_question._id} question={current_question} changeCounter={(user_answers: string[], time_taken: number, hints_used: number) => {
+        <Question total={total_questions} index={current_index + 1} hasEnd={is_last_item} key={current_question._id} question={current_question} changeCounter={(user_answers: string[], time_taken: number, hints_used: number) => {
           const { quiz: { title, _id: quizId, subject }, difficulty, _id, weight, type, question, format, time_allocated, answers, explanation } = current_question;
           user_answers = user_answers.filter(user_answer => user_answer !== "");
           let verdict = false;
@@ -90,11 +91,14 @@ export default function Quiz(props: QuizProps) {
             quizId,
             weight
           }])
-          setCurrentQuestion(current_question_index + 1)
+          getNextIndex();
         }} />
       </Fragment>
     }
-    else return <Report setResults={setResults} selected_quizzes={selected_quizzes} results={results} all_questions_map={all_questions_map} />
+    else return <Report setResults={setResults} selected_quizzes={selected_quizzes} results={results} all_questions_map={all_questions.reduce((acc, cur) => {
+      acc[cur._id] = cur;
+      return acc;
+    }, {} as any)} />
   }
 
   return <div className="Quiz" style={{ backgroundColor: theme.color.base }}>

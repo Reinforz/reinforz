@@ -51,7 +51,8 @@ export function generateQuestionInputConfigs(
   }
 
   if (!Array.isArray(res.answers)) res.answers = [res.answers]
-  res.answers = res.answers.map(answer => answer.toString())
+  res.answers = res.answers.map(answer => answer.toString());
+  if (res.options) res.options = res.options.map(option => option.toString())
 
   let format = 'text', time_allocated = 15, language = undefined;
 
