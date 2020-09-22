@@ -1,6 +1,10 @@
 .QuestionOptions {
   grid-area: 2/1/4/2;
-
+  
+  p{
+    margin: 0px;
+  }
+  
   .MuiFormGroup-root {
     padding: 0px 7.5px;
     width: calc(100% - 15px);
