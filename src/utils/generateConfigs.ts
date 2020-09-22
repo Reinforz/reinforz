@@ -27,9 +27,26 @@ export function generateQuestionInputConfigs(
 
   if (res.options) {
     res.options = res.options.map(option => {
-      if (option === "T") return "True";
-      else if (option === "F") return "False";
-      else return option;
+      switch(option){
+        case "T":
+          return "True";
+        case "t":
+          return "true";
+        case "F":
+          return "False";
+        case "f":
+          return "false";
+        case "Y":
+          return "Yes";
+        case "y":
+          return "yes";
+        case "N":
+          return "No";
+        case "n":
+          return "no";
+        default:
+          return option;
+      }
     })
   }
 
