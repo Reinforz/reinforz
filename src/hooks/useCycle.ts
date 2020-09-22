@@ -3,7 +3,6 @@ import { useState } from "react";
 export default function (items: any[]) {
   const [current_index, setCurrentIndex] = useState(0);
 
-
   return {
     current_item: items[current_index],
     getNextIndex: () => {

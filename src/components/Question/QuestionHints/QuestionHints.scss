@@ -2,20 +2,23 @@
   display: flex;
   flex-direction: column;
   grid-area: 2/2/3/3; 
-  &-list {
-    border-radius: 5px;
-    &-item {
-      font-size: 1.25em;
-      font-weight: bolder;
-      color: #2196f3;
-      margin: 5px 0px 5px 5px;
+
+  .ToggleItems{
+    &-list {
       border-radius: 5px;
-      display: flex;
-      justify-content: center;
-      padding: 5px;
+      &-item {
+        font-size: 1.25em;
+        font-weight: bolder;
+        color: #2196f3;
+        margin: 5px 0px 5px 5px;
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        padding: 5px;
+      }
     }
-  }
-  &-button.MuiButton-containedPrimary{
-    margin: 10px 0px 5px 5px;
+    &-button.MuiButton-containedPrimary{
+      margin: 10px 0px 5px 5px;
+    }
   }
 }

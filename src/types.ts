@@ -363,3 +363,12 @@ export interface MenuProps {
   width?: number,
   lskey: string
 }
+
+export interface ToggleItemsRProps {
+  ToggleButton: JSX.Element,
+  ToggleItems: JSX.Element,
+  ToggleItemsState: {
+    current_index: number,
+    is_disabled: boolean
+  }
+}

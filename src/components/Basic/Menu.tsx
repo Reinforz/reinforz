@@ -75,6 +75,8 @@ export default function (props: MenuProps) {
     }
   }
 
+  console.log(content_elem);
+
   return <div className="Menu" style={{ left }}>
     <div className="Menu-icons" style={icons_style}>
       <Icon popoverText={`${is_open ? "Close" : "Open"} Menu`} icon={FaArrowAltCircleRight} className="Menu-icons-icon Menu-icons-icon--toggle" onClick={() => {
