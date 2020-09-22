@@ -2,6 +2,8 @@ import React, { useContext } from 'react';
 import { RadioGroup, FormControlLabel, Radio, FormGroup, Checkbox, TextField, useTheme } from "@material-ui/core";
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { Language } from 'prism-react-renderer';
+import marked from "marked";
+import createDOMPurify from 'dompurify';
 
 import { ExtendedTheme, ISettings, QuestionOptionsProps } from '../../../types';
 
@@ -11,9 +13,23 @@ import SettingsContext from '../../../context/SettingsContext';
 
 import "./QuestionOptions.scss";
 
+const DOMPurify = createDOMPurify(window);
+
 const optionClick = new Audio(process.env.PUBLIC_URL + "/sounds/option-click.mp3");
 
 optionClick.volume = 0.15;
+
+const optionLabelFormat = (option: string) => {
+  const matches = option.match(/_(.*?)_(.+)/);
+  let format = "text";
+  if (matches) {
+    option = matches[2];
+    format = matches[1];
+  }
+  if (format.startsWith("code")) return <Highlighter code={option.toString()} language={(format.split("=")[1] || "javascript") as Language} />;
+  else if (format === "md") return <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked(option.toString())) }}></span>
+  else return option.toString()
+}
 
 export default function (props: QuestionOptionsProps) {
   const theme = useTheme() as ExtendedTheme;
@@ -58,19 +74,13 @@ export default function (props: QuestionOptionsProps) {
       }}>
         <TransitionGroup component={null}>
           {options.map((option, i) => {
-            const matches = option.match(/_(.*?)_(.+)/);
-            let format = "text";
-            if (matches) {
-              option = matches[2];
-              format = matches[1];
-            }
             return <CSSTransition key={`${_id}option${i}`} classNames={settings.animation ? "fade" : undefined} timeout={{ enter: i * 250 }} appear>
               <div className={`QuestionOptions-container-item`} style={{ backgroundColor: theme.color.base }} key={`${_id}option${i}`}>
                 <FormControlLabel
                   control={<Checkbox onClick={(e) => {
                     if (settings.sound) optionClick.play();
                   }} checked={temp_user_answers.includes(`${i}`)} value={`${i}`} color="primary" />}
-                  label={format.startsWith("code") ? <Highlighter code={option.toString()} language={(format.split("=")[1] || "javascript") as Language} /> : option.toString()}
+                  label={optionLabelFormat(option)}
                 /></div></CSSTransition>
           })}
         </TransitionGroup>
