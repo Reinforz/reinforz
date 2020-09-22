@@ -220,9 +220,12 @@ export interface QuestionInputFull extends Required<QuestionInput & { quiz: Quiz
 export type QuestionInputsPartial = QuestionInputPartial[];
 export type QuestionInputsFull = QuestionInputFull[];
 
-export interface QuestionHighlighterProps {
+export interface HighlighterProps {
   code: string,
   language: Language,
+}
+
+export interface QuestionHighlighterProps extends HighlighterProps {
   type: QuestionType,
   fibRefs: React.MutableRefObject<React.RefObject<HTMLInputElement>[]>,
   answers: QuestionAnswersType,

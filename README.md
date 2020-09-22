@@ -138,6 +138,7 @@ Question is created based on the following rules:
 
 01. For MS and MCQ types all the options are displayed
 02. For Snippet type a textfield is shown to type the answer
+3.  You can specify the format of the option using the same syntax as the modifiers, eg _FORMAT_, formats can be md(markdown), code(prism syntax highlighted) and default text, eg _md_Option1,_code=dart_void func({named: "param1"})
 
 ### Report 
 
@@ -177,12 +178,12 @@ For questions of type Snippet and FIB, you can provide multiple alternates for t
 
 Each answer and its alternates can have certain modifiers which can expand the answer without you having to write every single one of them
 
-Current two modifiers are supported:
+Currently four modifiers are supported:
 
-1. IC: Ignore Case: Ignore the case of the answer (all caps, all lowers, first caps and rest lower)
-02. IS: Ignore Space: Ignore the spaces of the answer
-
-Example: _IC_ans1, _IS_ans2
+1. IC: Ignore Case: Ignore the case of the answer (all caps, all lowers, first caps and rest lower). eg _IC_ans1
+02. IS: Ignore Space: Ignore the spaces of the answer. eg: _IS_ans2
+03.  REGEX: Test the answer using a regex
+04.  FLAGS: Attach flags to the regex using this modifier eg FLAGS="gi"
 
 ### Shortcuts
 
@@ -192,7 +193,9 @@ Example: _IC_ans1, _IS_ans2
 ### TODO:
 
 1. Add test for all react components (never done any sort of testing with react, its gonna be fun)
-02. Better component state utilization
+02. Better component state utilization using hooks
 03. More performant React, by utilizing the appropriate hooks
+04.  More layout customization and themes
+5.   Attach to a backend (huge maybe)
 
 **Feel free to create a new PR for any new features, or raise an issue for fixing any bug or for a new feature suggestion**

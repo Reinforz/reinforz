@@ -27,7 +27,7 @@ export function generateQuestionInputConfigs(
 
   if (res.options) {
     res.options = res.options.map(option => {
-      switch(option){
+      switch (option) {
         case "T":
           return "True";
         case "t":
@@ -78,11 +78,10 @@ export function generateQuestionInputConfigs(
 
   // Auto generation of Question Configs
   if (logs.errors.length === 0) {
-    if (res.answers.length === 1) res.type = res.type || res.options ? "MCQ" : "Snippet";
-    else res.type = res.type || res.options ? "MS" : "FIB";
+    if (res.answers.length === 1) res.type = res.type || (res.options ? "MCQ" : "Snippet");
+    else res.type = res.type || (res.options ? "MS" : "FIB");
 
     res.answers = res.answers.map((answer: string) => answer.toString());
-
     switch (res.type) {
       case "MCQ":
         time_allocated = 15;
@@ -142,6 +141,5 @@ export function generateQuestionInputConfigs(
       (res as any).difficulty = "Beginner";
     }
   }
-
   return [res as QuestionInputFull, logs] as [QuestionInputFull, { warns: string[], errors: string[] }];
 }
