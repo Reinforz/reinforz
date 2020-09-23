@@ -358,10 +358,17 @@ export interface IPlayContext {
 export interface MenuProps {
   initial_position?: "left" | "right",
   initial_open?: boolean,
-  content_id: string,
-  children: JSX.Element,
+  children: any,
   width?: number,
-  lskey: string
+  lskey: string,
+  content: JSX.Element
+}
+
+export interface MenuRProps {
+  MenuComponent: JSX.Element,
+  MenuExtra: {
+    content_elem_style: any
+  }
 }
 
 export interface ToggleItemsRProps {

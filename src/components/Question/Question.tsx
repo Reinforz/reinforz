@@ -55,7 +55,7 @@ export default function Question(props: QuestionProps) {
         return <Fragment>
           {QuestionOption}
           {QuestionHintsComponent}
-          <Timer timeout={300000} onTimerEnd={() => {
+          <Timer timeout={time_allocated} onTimerEnd={() => {
             props.changeCounter(type !== "FIB" ? user_answers.filter(user_answer => user_answer !== "") : fibRefs.current.map(fibRef => fibRef?.current?.value ?? ""), time_allocated, QuestionHintsState.hints_used)
           }}>
             {({ TimerComponent, TimerState }: TimerRProps) => {
