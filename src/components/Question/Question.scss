@@ -25,16 +25,45 @@
     user-select: none;
     font-weight: bolder;
     font-size: 1.5rem;
+    height: 100%;
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
-    border-radius: 5px;
+
+    p {
+      margin: 0px;
+      font-weight: initial;
+      strong {
+        margin: 5px;
+      }
+      code {
+        font-family: "Roboto Mono", monospace;
+        background-color: #111;
+        padding: 3px 10px 5px 10px;
+        border-radius: 5px;
+        margin: 5px;
+        font-size: 1.25rem;
+      }
+    }
   }
 
-  &-hints_options-container{
+  &-hints_options-container {
     width: 100%;
     display: flex;
+  }
+}
 
+.dark {
+  .Question-question p code {
+    background: rgb(19, 19, 19);
+  }
+}
+
+.light {
+  .Question-question p code {
+    background: rgb(224, 224, 224);
   }
 }

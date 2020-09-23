@@ -1,5 +1,7 @@
 import React, { useState, Fragment, useRef, createRef, RefObject } from "react";
 import { Button, } from "@material-ui/core";
+import marked from "marked";
+import createDOMPurify from 'dompurify';
 
 import Timer from "../Basic/Timer";
 import QuestionHighlighter from "./QuestionHighlighter/QuestionHighlighter";
@@ -12,6 +14,7 @@ import { TimerRProps, QuestionProps, QuestionHintsRProps } from "../../types";
 
 import "./Question.scss";
 
+const DOMPurify = createDOMPurify(window);
 const click = new Audio(process.env.PUBLIC_URL + "/sounds/click.mp3");
 click.volume = 0.15;
 
@@ -25,13 +28,13 @@ export default function Question(props: QuestionProps) {
   const generateQuestion = () => {
     if (format === "code") return <QuestionHighlighter image={image} answers={answers} fibRefs={fibRefs} type={type} language={language} code={question} />
     else {
-      if (type !== "FIB") return <div className="Question-question" style={{ color: theme.palette.text.primary, backgroundColor: theme.color.dark, width: image ? "50%" : "100%" }}>{question}</div>;
+      if (type !== "FIB") return <div className="Question-question" style={{ color: theme.palette.text.primary, backgroundColor: theme.color.dark, width: image ? "50%" : "100%" }} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked(question.toString())) }} />;
       else {
         const messages: string[] = question.split("%_%");
         return <div className="Question-question" style={{ color: theme.palette.text.primary, backgroundColor: theme.color.dark }}>
           {messages.map((message, i) => {
             return <Fragment key={`${_id}option${index}${i}`}>
-              <div className="Question-question--FIB">{message}</div>
+              <span className="Question-question--FIB" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked(message.toString())) }} />
               {i !== messages.length - 1 && <input style={{ color: theme.palette.text.primary, backgroundColor: theme.color.light }} spellCheck={false} className="Highlighter-FIB-Code" ref={fibRefs.current[i]} />}
             </Fragment>
           })}
@@ -52,7 +55,7 @@ export default function Question(props: QuestionProps) {
         return <Fragment>
           {QuestionOption}
           {QuestionHintsComponent}
-          <Timer timeout={time_allocated} onTimerEnd={() => {
+          <Timer timeout={300000} onTimerEnd={() => {
             props.changeCounter(type !== "FIB" ? user_answers.filter(user_answer => user_answer !== "") : fibRefs.current.map(fibRef => fibRef?.current?.value ?? ""), time_allocated, QuestionHintsState.hints_used)
           }}>
             {({ TimerComponent, TimerState }: TimerRProps) => {
