@@ -1,15 +1,15 @@
-import React, { useContext } from 'react';
-import { RadioGroup, FormControlLabel, Radio, FormGroup, Checkbox, TextField, useTheme } from "@material-ui/core";
+import React from 'react';
+import { RadioGroup, FormControlLabel, Radio, FormGroup, Checkbox, TextField } from "@material-ui/core";
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { Language } from 'prism-react-renderer';
 import marked from "marked";
 import createDOMPurify from 'dompurify';
 
-import { ExtendedTheme, ISettings, QuestionOptionsProps } from '../../../types';
-
 import Highlighter from "../../Basic/Highlighter";
 
-import SettingsContext from '../../../context/SettingsContext';
+import { QuestionOptionsProps } from '../../../types';
+
+import useThemeSettings from '../../../hooks/useThemeSettings';
 
 import "./QuestionOptions.scss";
 
@@ -32,8 +32,7 @@ const optionLabelFormat = (option: string) => {
 }
 
 export default function (props: QuestionOptionsProps) {
-  const theme = useTheme() as ExtendedTheme;
-  const settings = useContext(SettingsContext) as ISettings;
+  const { theme, settings } = useThemeSettings();
 
   const { changeOption, user_answers, question: { _id, type, options } } = props;
   const generateOptions = () => {

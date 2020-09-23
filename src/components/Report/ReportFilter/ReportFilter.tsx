@@ -1,13 +1,13 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { InputLabel, FormGroup, TextField, RadioGroup, FormControlLabel, Radio, Checkbox, Button, Select, MenuItem } from '@material-ui/core';
 
-import { IReportFilterState, ISettings, QuestionDifficulty, QuestionType, QuizIdentifiers } from "../../../types";
+import Menu from "../../Basic/Menu";
+
+import useThemeSettings from "../../../hooks/useThemeSettings";
+
+import { IReportFilterState, QuestionDifficulty, QuestionType, QuizIdentifiers } from "../../../types";
 
 import "./ReportFilter.scss";
-
-import SettingsContext from "../../../context/SettingsContext";
-
-import Menu from "../../Basic/Menu";
 
 const DEFAULT_REPORT_FILTER_STATE = { time_taken: [0, 60], verdict: 'mixed', hints_used: 'any', excluded_types: [], excluded_difficulty: [], excluded_quizzes: [], excluded_columns: [] } as IReportFilterState;
 
@@ -30,7 +30,7 @@ export default function (props: { selected_quizzes: QuizIdentifiers[], children:
   let REPORT_FILTERS: any = localStorage.getItem('REPORT_FILTERS');
   REPORT_FILTERS = REPORT_FILTERS ? JSON.parse(REPORT_FILTERS) : undefined;
 
-  const settings = useContext(SettingsContext) as ISettings;
+  const { settings } = useThemeSettings();
 
   const [report_filter_state, setReportFilterState] = useState((REPORT_FILTERS ? REPORT_FILTERS : DEFAULT_REPORT_FILTER_STATE) as IReportFilterState);
   return props.children({

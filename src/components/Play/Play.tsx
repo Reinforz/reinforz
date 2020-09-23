@@ -1,5 +1,4 @@
-import React, { useState, Fragment, useContext } from "react";
-import { useTheme } from '@material-ui/core/styles';
+import React, { useState, Fragment } from "react";
 import { useHistory } from "react-router-dom";
 import { FcSettings } from "react-icons/fc";
 import SplitPane from 'react-split-pane';
@@ -18,13 +17,11 @@ import View from '../Basic/View';
 
 import PlayContext from "../../context/PlayContext"
 
-import SettingsContext from "../../context/SettingsContext";
+import useThemeSettings from "../../hooks/useThemeSettings";
 
 import {
   IPlaySettingsRProps,
   ListRProps,
-  ExtendedTheme,
-  ISettings,
   PlayUploadRProps,
 } from "../../types";
 
@@ -39,12 +36,11 @@ const setToLs = debounced((size: string) => {
   localStorage.setItem("Play_pane_size", size || "50%")
 }, 2500)
 
-
 function Play() {
   const [playing, setPlaying] = useState(false);
-  const theme = useTheme() as ExtendedTheme;
   const history = useHistory();
-  const settings = useContext(SettingsContext) as ISettings;
+  const { theme, settings } = useThemeSettings();
+
   return (
     <PlayUpload>
       {({ PlayUploadState, PlayUploadComponents, PlayUploadUtils }: PlayUploadRProps) => {

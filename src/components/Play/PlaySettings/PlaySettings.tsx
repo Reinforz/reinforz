@@ -1,17 +1,16 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Button, FormControlLabel, Checkbox, FormGroup, TextField, InputLabel } from "@material-ui/core";
 import { useSnackbar } from "notistack";
-import { useTheme } from '@material-ui/core/styles';
+
+import Menu from "../../Basic/Menu";
+
+import useThemeSettings from "../../../hooks/useThemeSettings";
 
 import shuffle from "../../../utils/arrayShuffler";
 
-import SettingsContext from "../../../context/SettingsContext";
-
-import { PlaySettingsProps, QuestionDifficulty, QuestionType, IPlaySettingsOptionsState, IPlaySettingsFiltersState, ExtendedTheme, QuizInputFull, QuestionInputFull, IPlaySettingsRProps, ISettings } from "../../../types";
+import { PlaySettingsProps, QuestionDifficulty, QuestionType, IPlaySettingsOptionsState, IPlaySettingsFiltersState, QuizInputFull, QuestionInputFull, IPlaySettingsRProps } from "../../../types";
 
 import "./PlaySettings.scss";
-
-import Menu from "../../Basic/Menu";
 
 const DEFAULT_PLAY_OPTIONS_STATE = { shuffle_options: true, shuffle_quizzes: false, shuffle_questions: true, instant_feedback: true, flatten_mix: false, partial_score: true } as IPlaySettingsOptionsState;
 
@@ -34,8 +33,7 @@ export default function (props: PlaySettingsProps) {
   const { quizzes, selectedQuizzes } = props;
   let PLAY_SETTINGS: any = localStorage.getItem('PLAY_SETTINGS');
   PLAY_SETTINGS = PLAY_SETTINGS ? JSON.parse(PLAY_SETTINGS) : undefined;
-  const theme = useTheme() as ExtendedTheme;
-  const settings = useContext(SettingsContext) as ISettings;
+  const { theme, settings } = useThemeSettings();
 
   const play_options_state = (PLAY_SETTINGS ? PLAY_SETTINGS.play_options : DEFAULT_PLAY_OPTIONS_STATE) as IPlaySettingsOptionsState;
   const play_filters_state = (PLAY_SETTINGS ? PLAY_SETTINGS.play_filters : DEFAULT_PLAY_FILTERS_STATE) as IPlaySettingsFiltersState;

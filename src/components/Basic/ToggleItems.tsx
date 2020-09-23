@@ -1,22 +1,17 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Button } from "@material-ui/core";
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import { useTheme } from '@material-ui/core';
 
 import useCycle from "../../hooks/useCycle";
 import useDisabled from "../../hooks/useDisabled";
-
-import SettingsContext from "../../context/SettingsContext";
-
-import { ExtendedTheme, ISettings } from "../../types";
+import useThemeSettings from "../../hooks/useThemeSettings";
 
 export default function (props: { items: string[], name: string, children: any }) {
   const { items, name, children } = props;
   const { hasEnded, getNextIndex, current_index } = useCycle(items);
   const { is_disabled, disable } = useDisabled(2500);
 
-  const theme = useTheme() as ExtendedTheme;
-  const settings = useContext(SettingsContext) as ISettings;
+  const { theme, settings } = useThemeSettings();
 
   return children({
     ToggleButton: <Button disabled={is_disabled || hasEnded} color="primary" variant="contained" className="ToggleItems-button" onClick={() => {

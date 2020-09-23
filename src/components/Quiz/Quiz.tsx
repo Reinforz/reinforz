@@ -1,7 +1,6 @@
 import React, { useState, Fragment } from "react";
 import md5 from "md5";
 import shortid from "shortid";
-import { useTheme } from "@material-ui/styles";
 import clone from "just-clone";
 
 import Question from "../Question/Question";
@@ -11,8 +10,9 @@ import Stats from "../Basic/Stats";
 import shuffle from "../../utils/arrayShuffler";
 import checkTextAnswer from "../../utils/checkTextAnswer";
 
-import { Result, QuizProps, ExtendedTheme, QuestionInputFull } from "../../types";
+import { Result, QuizProps, QuestionInputFull } from "../../types";
 
+import useThemeSettings from "../../hooks/useThemeSettings";
 import useCycle from "../../hooks/useCycle";
 
 import "./Quiz.scss";
@@ -21,7 +21,7 @@ export default function Quiz(props: QuizProps) {
   const [results, setResults] = useState([] as Result[]);
   const { all_questions, play_options, selected_quizzes } = props;
   const total_questions = all_questions.length;
-  const theme = useTheme() as ExtendedTheme;
+  const { theme } = useThemeSettings();
 
   const { is_last_item, current_item, getNextIndex, hasEnded, current_index } = useCycle(all_questions);
 

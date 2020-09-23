@@ -1,15 +1,12 @@
-import { useTheme } from '@material-ui/styles';
-import React, { useState, useContext, Fragment } from 'react';
+import React, { useState, Fragment } from 'react';
 import { BiGridHorizontal, BiGridVertical } from "react-icons/bi";
 import { HiSwitchVertical, HiSwitchHorizontal } from "react-icons/hi";
 
 import Icon from './Icon';
 
-import { ExtendedTheme, ISettings } from '../../types';
+import useThemeSettings from '../../hooks/useThemeSettings';
 
 import "./View.scss";
-
-import SettingsContext from '../../context/SettingsContext';
 
 const switch_off = new Audio(process.env.PUBLIC_URL + "/sounds/switch-off.mp3");
 const switch_on = new Audio(process.env.PUBLIC_URL + "/sounds/switch-on.mp3");
@@ -19,8 +16,7 @@ switch_on.volume = 0.25;
 export default function (props: { items: JSX.Element[] }) {
   const [layout, setLayout] = useState(localStorage.getItem("layout") || "row" as ("row" | "column"));
   const [order, setOrder] = useState(localStorage.getItem("order") || "0");
-  const theme = useTheme() as ExtendedTheme;
-  const settings = useContext(SettingsContext) as ISettings;
+  const { theme, settings } = useThemeSettings();
 
   return <div className="View" style={{ gridTemplateColumns: layout === "column" ? "1fr 1fr" : "1fr", gridTemplateRows: layout === "row" ? "1fr 1fr" : "1fr" }}>
     <div className="View-icons">

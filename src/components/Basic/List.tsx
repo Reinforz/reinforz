@@ -1,16 +1,14 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Checkbox } from "@material-ui/core";
 import CancelIcon from '@material-ui/icons/Cancel';
-import { useTheme } from '@material-ui/core/styles';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import Icon from "../Basic/Icon"
 
-import { ExtendedTheme, ListProps, ISettings } from "../../types";
-
 import useList from "../../hooks/useList";
+import useThemeSettings from "../../hooks/useThemeSettings";
 
-import SettingsContext from "../../context/SettingsContext";
+import { ListProps } from "../../types";
 
 import "./List.scss";
 
@@ -24,8 +22,7 @@ deleteItem.volume = 0.5;
 
 export default React.memo((props: ListProps<Record<string, any>>) => {
   const { children, items, setItems, header, fields, icons } = props;
-  const theme = useTheme() as ExtendedTheme;
-  const settings = useContext(SettingsContext) as ISettings;
+  const { theme, settings } = useThemeSettings();
 
   const { selectedItems, selectEndFromClickWithCurrent,
     selectUptoClickedWithCurrent, selectEndFromClick, selectUptoClicked, setSelectedItems, resetSelectedItems, setAllSelected, addSelectedItems, removeSelectedItem, removeAndDeleteSelectedItem, total_selected, deleteSelectedItems, selectOnlyClicked } = useList(items, setItems)

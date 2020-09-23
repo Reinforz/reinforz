@@ -2,20 +2,21 @@ import React from "react";
 import Highlight, { defaultProps, Language } from "prism-react-renderer";
 import DarkTheme from "prism-react-renderer/themes/vsDark";
 import LightTheme from "prism-react-renderer/themes/github";
-import { useTheme } from "@material-ui/core/styles";
 import Prism from "prismjs";
 import "prismjs/components/prism-dart";
 import "prismjs/components/prism-csharp";
 import "prismjs/components/prism-java";
 import "prismjs/components/prism-git";
 
-import { ExtendedTheme, QuestionHighlighterProps } from "../../../types";
+import useThemeSettings from "../../../hooks/useThemeSettings";
+
+import { QuestionHighlighterProps } from "../../../types";
 
 import "./QuestionHighlighter.scss";
 
 export default function QuestionHighlighter(props: QuestionHighlighterProps) {
   const { code, language, type, fibRefs, answers, image } = props;
-  const theme = useTheme() as ExtendedTheme;
+  const { theme } = useThemeSettings();
   return <Highlight {...defaultProps} theme={theme.palette.type === "dark" ? DarkTheme : LightTheme} code={code.trim()} language={language.trim() as Language} Prism={Prism as any}>
     {({ className, style, tokens, getLineProps, getTokenProps }) => {
       let current_fib_index = -1;

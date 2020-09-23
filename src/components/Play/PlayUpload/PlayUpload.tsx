@@ -1,15 +1,14 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import yaml from 'js-yaml';
 import { useDropzone, DropzoneState } from 'react-dropzone';
 import { useSnackbar, OptionsObject } from "notistack";
-import { useTheme } from '@material-ui/core/styles';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import shortid from "shortid"
 
-import { ExtendedTheme, PlayErrorLog, PlayErrorLogState, QuestionInputFull, ISettings, QuizInputPartial } from '../../../types';
+import useThemeSettings from '../../../hooks/useThemeSettings';
 
-import SettingsContext from "../../../context/SettingsContext"
+import { PlayErrorLog, PlayErrorLogState, QuestionInputFull, QuizInputPartial } from '../../../types';
 
 import { generateQuestionInputConfigs } from '../../../utils/generateConfigs';
 
@@ -39,11 +38,10 @@ const centerBottomErrorNotistack = {
 } as OptionsObject;
 
 export default function PlayUpload(props: { children: any }) {
-  const theme = useTheme() as ExtendedTheme;
   const [items, setItems] = useState([] as any[]);
   const { enqueueSnackbar } = useSnackbar();
   const [error_logs, setErrorLogs] = useState([] as PlayErrorLogState);
-  const settings = useContext(SettingsContext) as ISettings;
+  const { theme, settings } = useThemeSettings();
 
   const onDrop = (acceptedFiles: any) => {
     let filePromises: Promise<QuizInputPartial>[] = [];

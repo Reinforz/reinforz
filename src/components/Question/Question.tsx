@@ -1,14 +1,14 @@
-import React, { useState, Fragment, useRef, createRef, RefObject, useContext } from "react";
-import { Button, useTheme } from "@material-ui/core";
+import React, { useState, Fragment, useRef, createRef, RefObject } from "react";
+import { Button, } from "@material-ui/core";
 
 import Timer from "../Basic/Timer";
 import QuestionHighlighter from "./QuestionHighlighter/QuestionHighlighter";
 import QuestionOptions from "./QuestionOptions/QuestionOptions";
 import QuestionHints from "./QuestionHints/QuestionHints";
 
-import SettingsContext from "../../context/SettingsContext";
+import useThemeSettings from "../../hooks/useThemeSettings";
 
-import { TimerRProps, QuestionProps, QuestionHintsRProps, ExtendedTheme, ISettings } from "../../types";
+import { TimerRProps, QuestionProps, QuestionHintsRProps } from "../../types";
 
 import "./Question.scss";
 
@@ -20,8 +20,7 @@ export default function Question(props: QuestionProps) {
   const total_fibs = question.match(/(%_%)/g)?.length;
   const [user_answers, changeUserAnswers] = useState(type === "FIB" ? Array(total_fibs ?? 1).fill('') as string[] : ['']);
   const fibRefs = useRef(Array(total_fibs).fill(0).map(() => createRef() as RefObject<HTMLInputElement>));
-  const theme = useTheme() as ExtendedTheme;
-  const settings = useContext(SettingsContext) as ISettings;
+  const { theme, settings } = useThemeSettings();
 
   const generateQuestion = () => {
     if (format === "code") return <QuestionHighlighter image={image} answers={answers} fibRefs={fibRefs} type={type} language={language} code={question} />

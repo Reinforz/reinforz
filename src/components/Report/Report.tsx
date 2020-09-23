@@ -9,14 +9,14 @@ import ReportExport from './ReportExport/ReportExport';
 
 import PlayContext from '../../context/PlayContext';
 
-import { IPlayContext, ISettings, QuestionInputFull, QuizInputFull, ReportFilterRProps, ReportProps, } from "../../types";
+import useThemeSettings from '../../hooks/useThemeSettings';
+
+import { IPlayContext, QuestionInputFull, QuizInputFull, ReportFilterRProps, ReportProps, } from "../../types";
 
 import "./Report.scss";
 
-import SettingsContext from '../../context/SettingsContext';
-
 const swoosh = new Audio(process.env.PUBLIC_URL + "/sounds/swoosh.mp3");
-swoosh.volume = 0.15
+swoosh.volume = 0.15;
 
 export default function (props: ReportProps) {
   const transformValue = (header: string, content: any) => {
@@ -53,7 +53,7 @@ export default function (props: ReportProps) {
     }
   }
 
-  const settings = useContext(SettingsContext) as ISettings;
+  const { settings } = useThemeSettings();
 
   const history = useHistory();
   const PlayContextValue = useContext(PlayContext) as IPlayContext;

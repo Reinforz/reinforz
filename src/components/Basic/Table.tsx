@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -14,6 +14,8 @@ import { TableFooter } from '@material-ui/core';
 import { MdPlayArrow } from "react-icons/md";
 
 import Icon from "./Icon";
+
+import useThemeSettings from '../../hooks/useThemeSettings';
 
 import { TableRowsProps, TableProps, ExtendedTheme, TableHeaderProps } from "../../types"
 
@@ -44,7 +46,8 @@ function TableRows(props: TableRowsProps) {
   const [open, setOpen] = React.useState(false);
   const classes = useStyles();
   const { title, content, headers, index, collapseContents, transformValue } = props;
-  const theme = useTheme() as ExtendedTheme;
+  const { theme } = useThemeSettings();
+
   return <Fragment>
     {title && <div className="Table-title">{title}</div>}
     <TableRow className={classes.tr} >
@@ -101,7 +104,7 @@ function TableHeaders(props: TableHeaderProps) {
 export default function (props: TableProps<Record<string, any>>) {
   const classes = useStyles();
   const accumulator: Record<string, Array<any>> = {};
-  const theme = useTheme() as ExtendedTheme;
+  const { theme } = useThemeSettings();
   props.headers.forEach(header => {
     accumulator[header] = [];
     props.contents.forEach(content => accumulator[header].push(content[header]))
