@@ -9,10 +9,10 @@ interface ListPropsCommon<T> {
   fields: (string | ((data: T) => string))[],
   icons?: ((index: number, _id: string) => void)[],
   onDelete?: (items: T[]) => void
+  items: T[],
 }
 
 export interface ListProps<T> extends ListPropsCommon<T> {
-  items: T[],
   header: string,
   children: any,
   setItems: (data: T[]) => void,
@@ -21,9 +21,9 @@ export interface ListProps<T> extends ListPropsCommon<T> {
 export interface ListItemProps<T> extends ListPropsCommon<T> {
   item: T,
   index: number,
-  isChecked: boolean,
-  setItems: (_id: string) => any,
-  setSelectedItems: (action: ListAction, _id: string) => any,
+  setItems: any,
+  setSelectedItems: any,
+  selectedItems: string[]
 }
 
 export interface ListState {

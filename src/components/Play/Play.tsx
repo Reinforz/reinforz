@@ -11,7 +11,7 @@ import PlayUpload from "./PlayUpload/PlayUpload";
 import Quiz from "../Quiz/Quiz";
 import PlaySettings from "./PlaySettings/PlaySettings";
 import PlayTable from "./PlayTable/PlayTable";
-import List from "../Basic/List";
+import List from "../Basic/List/List";
 import Icon from '../Basic/Icon';
 import View from '../Basic/View';
 import Menu from "../Basic/Menu";
@@ -58,25 +58,28 @@ function Play() {
                       <Quiz selected_quizzes={PlaySettingsExtra.selected_quizzes} play_options={PlaySettingsState.play_options} all_questions={PlaySettingsExtra.filtered_questions} />
                     </PlayContext.Provider> :
                     <div className="Play" id="Play">
-                      <Icon onClick={() => {
-                        if (settings.sound) swoosh.play()
-                        history.push("/settings")
-                      }} icon={FcSettings} popoverText="Click to go to settings page" className="App-icon App-icon--settings" />
                       <Menu content={PlaySettingsComponent} lskey="Play_menu">
                         {({ MenuComponent, MenuExtra }: MenuRProps) => {
                           return <Fragment>
                             {MenuComponent}
                             <div className="Play-content" id="Play-content" style={{ ...MenuExtra.content_elem_style }}>
-                              <SplitPane split="vertical" onChange={(size: any) => {
-                                setToLs(size[0])
-                              }}>
-                                <Pane initialSize={prev_pane_size || "50%"} minSize="30%" maxSize="70%" className="Play-pane">
-                                  {PlayUploadComponents.PlayUpload}
-                                  <View items={[PlayUploadComponents.PlayErrorLogs, ListComponent]} />
-                                  <div className="Help" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>Need help, <a style={{ color: theme.palette.text.secondary }} href="http://github.com/Devorein/reinforz" rel="noopener noreferrer" target="_blank">click here</a> to go to the doc</div>
-                                </Pane>
-                                <PlayTable quizzes={PlayUploadState.items} />
-                              </SplitPane>
+                              <Fragment>
+                                <Icon onClick={() => {
+                                  if (settings.sound) swoosh.play()
+                                  history.push("/settings")
+                                }} icon={FcSettings} popoverText="Click to go to settings page" className="App-icon App-icon--settings" />
+                                <SplitPane split="vertical" onChange={(size: any) => {
+                                  setToLs(size[0])
+                                }}>
+
+                                  <Pane initialSize={prev_pane_size || "50%"} minSize="30%" maxSize="70%" className="Play-pane">
+                                    {PlayUploadComponents.PlayUpload}
+                                    <View items={[PlayUploadComponents.PlayErrorLogs, ListComponent]} />
+                                    <div className="Help" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>Need help, <a style={{ color: theme.palette.text.secondary }} href="http://github.com/Devorein/reinforz" rel="noopener noreferrer" target="_blank">click here</a> to go to the doc</div>
+                                  </Pane>
+                                  <PlayTable quizzes={PlayUploadState.items} />
+                                </SplitPane>
+                              </Fragment>
                             </div>
                           </Fragment>
                         }}

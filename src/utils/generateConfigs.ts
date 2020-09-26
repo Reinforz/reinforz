@@ -50,9 +50,16 @@ export function generateQuestionInputConfigs(
     })
   }
 
-  if (!Array.isArray(res.answers)) res.answers = [res.answers]
+  if (!Array.isArray(res.answers)) {
+    res.answers = (res.answers as any).toString().split(" ");
+    question.answers = (question.answers as any).toString().split(" ");
+  }
   res.answers = res.answers.map(answer => answer.toString());
-  if (res.options) res.options = res.options.map(option => option.toString())
+  question.answers = question.answers.map(answer => answer.toString());
+  if (res.options && question.options) {
+    res.options = res.options.map(option => option.toString())
+    question.options = question.options.map(option => option.toString())
+  }
 
   let format = 'text', time_allocated = 15, language = undefined;
 
