@@ -46,6 +46,6 @@ export default function (props: { items: JSX.Element[] }) {
         }} icon={HiSwitchHorizontal} style={{ display: layout === "row" ? "initial" : "none" }} popoverText="Click to switch to alternate order" />
       </div>
     </div>
-    {props.items.map((item, index) => <div style={{ order: index === 0 ? parseInt(order) : "initial" }} key={index}>{item}</div>)}
+    {props.items.map((item, index) => <div style={{ order: index === 0 ? parseInt(order) : "initial", height: layout === "column" ? "50%" : "100%" }} key={index}>{item}</div>)}
   </div>
 }

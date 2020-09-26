@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Checkbox } from "@material-ui/core";
 import CancelIcon from '@material-ui/icons/Cancel';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import update from 'immutability-helper'
 
 import Icon from "../../Basic/Icon"
 import ListItem from "./ListItem";
@@ -26,6 +27,22 @@ export default React.memo((props: ListProps<Record<string, any>>) => {
   const { theme, settings } = useThemeSettings();
 
   const { selectedItems, setSelectedItems, resetSelectedItems, setAllSelected, total_selected, deleteSelectedItems } = useList(items, setItems)
+
+  const moveItem = useCallback(
+    (dragIndex: number, hoverIndex: number) => {
+      const item = items[dragIndex];
+      setItems(
+        update(items, {
+          $splice: [
+            [dragIndex, 1],
+            [hoverIndex, 0, item],
+          ],
+        }),
+      )
+    },
+    // eslint-disable-next-line
+    [items],
+  )
 
   return children({
     ListComponent: <div className="List" style={{ backgroundColor: theme.color.base }}>
@@ -62,7 +79,7 @@ export default React.memo((props: ListProps<Record<string, any>>) => {
               key={item._id}
               classNames={settings.animation ? "fade" : undefined}
             >
-              <ListItem key={item._id} items={items} selectedItems={selectedItems} setSelectedItems={setSelectedItems} setItems={setItems} item={item} fields={fields} index={index} /></CSSTransition>)}
+              <ListItem onDrag={moveItem} key={item._id} items={items} selectedItems={selectedItems} setSelectedItems={setSelectedItems} setItems={setItems} item={item} fields={fields} index={index} /></CSSTransition>)}
         </TransitionGroup> : <div style={{ fontSize: "1.25em", fontWeight: "bold", position: "absolute", transform: "translate(-50%,-50%)", top: "50%", left: "50%", textAlign: 'center' }}>No items uploaded</div>}
       </div>
     </div>,

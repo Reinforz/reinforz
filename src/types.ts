@@ -23,7 +23,8 @@ export interface ListItemProps<T> extends ListPropsCommon<T> {
   index: number,
   setItems: any,
   setSelectedItems: any,
-  selectedItems: string[]
+  selectedItems: string[],
+  onDrag: (dragIndex: number, hoverIndex: number) => void
 }
 
 export interface ListState {
@@ -38,6 +39,12 @@ export interface ListRProps {
   ListComponent: JSX.Element,
   ListState: ListState,
   ListUtils: ListUtils
+}
+
+export interface DragItem {
+  index: number
+  id: string
+  type: string
 }
 
 export interface StatsProps {

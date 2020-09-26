@@ -101,7 +101,7 @@ function TableHeaders(props: TableHeaderProps) {
   </TableRow>
 }
 
-export default function (props: TableProps<Record<string, any>>) {
+export default React.memo((props: TableProps<Record<string, any>>) => {
   const classes = useStyles();
   const accumulator: Record<string, Array<any>> = {};
   const { theme } = useThemeSettings();
@@ -129,4 +129,4 @@ export default function (props: TableProps<Record<string, any>>) {
       </Table>
     </TableContainer>
   );
-}
+}, ((prevProp, currentProp) => prevProp.contents.length === currentProp.contents.length))
