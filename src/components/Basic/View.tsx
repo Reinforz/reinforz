@@ -1,6 +1,7 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState } from 'react';
 import { BiGridHorizontal, BiGridVertical } from "react-icons/bi";
 import { HiSwitchVertical, HiSwitchHorizontal } from "react-icons/hi";
+import * as CSS from 'csstype';
 
 import Icon from './Icon';
 
@@ -14,11 +15,11 @@ switch_off.volume = 0.25;
 switch_on.volume = 0.25;
 
 export default function (props: { items: JSX.Element[] }) {
-  const [layout, setLayout] = useState(localStorage.getItem("layout") || "row" as ("row" | "column"));
+  const [layout, setLayout] = useState((localStorage.getItem("layout") || "row") as CSS.FlexDirectionProperty);
   const [order, setOrder] = useState(localStorage.getItem("order") || "0");
   const { theme, settings } = useThemeSettings();
 
-  return <div className="View" style={{ gridTemplateColumns: layout === "column" ? "1fr 1fr" : "1fr", gridTemplateRows: layout === "row" ? "1fr 1fr" : "1fr" }}>
+  return <div className="View" style={{ flexDirection: layout }}>
     <div className="View-icons">
       <div className="View-icons-layout" style={{ color: theme.palette.text.primary, backgroundColor: theme.color.light }}>
         <Icon onClick={() => {
@@ -37,16 +38,14 @@ export default function (props: { items: JSX.Element[] }) {
           if (settings.sound) switch_off.play();
           localStorage.setItem("order", order === "0" ? "1" : "0");
           setOrder(order === "0" ? "1" : "0")
-        }} icon={HiSwitchVertical} style={{ display: layout === "row" ? "initial" : "none" }} popoverText="Click to switch to alternate order" />
+        }} icon={HiSwitchVertical} style={{ display: layout === "column" ? "initial" : "none" }} popoverText="Click to switch to alternate order" />
         <Icon onClick={() => {
           if (settings.sound) switch_on.play();
           localStorage.setItem("order", order === "0" ? "1" : "0");
           setOrder(order === "1" ? "0" : "1")
-        }} icon={HiSwitchHorizontal} style={{ display: layout === "column" ? "initial" : "none" }} popoverText="Click to switch to alternate order" />
+        }} icon={HiSwitchHorizontal} style={{ display: layout === "row" ? "initial" : "none" }} popoverText="Click to switch to alternate order" />
       </div>
-
     </div>
-    {(order === "0" && <Fragment>{props.items[0]}{props.items[1]}</Fragment>)}
-    {(order === "1" && <Fragment>{props.items[1]}{props.items[0]}</Fragment>)}
+    {props.items.map((item, index) => <div style={{ order: index === 0 ? parseInt(order) : "initial" }} key={index}>{item}</div>)}
   </div>
 }

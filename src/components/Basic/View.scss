@@ -1,7 +1,11 @@
 .View {
-  display: grid;
   position: relative;
   cursor: pointer;
+  display: flex;
+  & > div{
+    flex-basis: 0;
+    flex-grow: 1;
+  }
   &-icons {
     position: absolute;
     font-size: 20px;
