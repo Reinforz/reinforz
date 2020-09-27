@@ -13,13 +13,14 @@ import useThemeSettings from "../../hooks/useThemeSettings";
 import { TimerRProps, QuestionProps, QuestionHintsRProps } from "../../types";
 
 import "./Question.scss";
+import { HotKeys } from "react-hotkeys";
 
 const DOMPurify = createDOMPurify(window);
 const click = new Audio(process.env.PUBLIC_URL + "/sounds/click.mp3");
 click.volume = 0.15;
 
 export default function Question(props: QuestionProps) {
-  const { hasEnd, index, question: { question, _id, type, image, format, time_allocated, hints, answers, language } } = props;
+  const { hasEnd, index, question: { question, options, _id, type, image, format, time_allocated, hints, answers, language } } = props;
   const total_fibs = question.match(/(%_%)/g)?.length;
   const [user_answers, changeUserAnswers] = useState(type === "FIB" ? Array(total_fibs ?? 1).fill('') as string[] : ['']);
   const fibRefs = useRef(Array(total_fibs).fill(0).map(() => createRef() as RefObject<HTMLInputElement>));
@@ -42,9 +43,48 @@ export default function Question(props: QuestionProps) {
       }
     }
   }
+  let timer_state: any = {}, question_hints_state: any = {};
+
+  const onButtonClick = () => {
+    if (settings.sound) click.play();
+    props.changeCounter(type !== "FIB" ? user_answers.filter(user_answer => user_answer !== "") : fibRefs.current.map(fibRef => fibRef?.current?.value ?? ""), time_allocated - timer_state.timeout, question_hints_state.hints_used)
+  }
+
+  const keyMap: any = {
+    next_question: "enter"
+  };
+
+  const handlers: any = {
+    next_question: onButtonClick
+  };
+  if (type === "MCQ") {
+    options && options.forEach((_, i) => {
+      keyMap[i + 1] = `${i + 1}`;
+      handlers[i + 1] = (e: any) => {
+        e.persist();
+        const pressed_option = e.keyCode - 49;
+        const isChecked = user_answers.includes(pressed_option.toString());
+        if (!isChecked)
+          changeUserAnswers([pressed_option.toString()])
+      }
+    });
+  } else if (type === "MS") {
+    options && options.forEach((_, i) => {
+      keyMap[i + 1] = `${i + 1}`;
+      handlers[i + 1] = (e: any) => {
+        e.persist();
+        const pressed_option = e.keyCode - 49;
+        const isChecked = user_answers.includes(pressed_option.toString());
+        if (!isChecked)
+          changeUserAnswers([...user_answers, pressed_option.toString()])
+        else
+          changeUserAnswers(user_answers.filter(user_answer => user_answer !== pressed_option.toString()));
+      }
+    });
+  }
 
   const QuestionOption = type !== "FIB" && <QuestionOptions changeOption={changeUserAnswers} user_answers={user_answers} question={props.question} />;
-  return <div className="Question">
+  return <HotKeys className="Question" keyMap={keyMap} handlers={handlers} allowChanges={true} style={{ outline: "none" }} >
     <div className="Question-container" style={{ display: image ? "flex" : "block" }}>
       {image && <div className="Question-image" style={{ width: "50%" }}><img src={image} alt="question" /></div>}
       {generateQuestion()}
@@ -52,6 +92,7 @@ export default function Question(props: QuestionProps) {
 
     <QuestionHints hints={hints}>
       {({ QuestionHintsComponent, QuestionHintsState }: QuestionHintsRProps) => {
+        question_hints_state = QuestionHintsState;
         return <Fragment>
           {QuestionOption}
           {QuestionHintsComponent}
@@ -59,17 +100,15 @@ export default function Question(props: QuestionProps) {
             props.changeCounter(type !== "FIB" ? user_answers.filter(user_answer => user_answer !== "") : fibRefs.current.map(fibRef => fibRef?.current?.value ?? ""), time_allocated, QuestionHintsState.hints_used)
           }}>
             {({ TimerComponent, TimerState }: TimerRProps) => {
+              timer_state = TimerState;
               return <div style={{ display: "flex", gridArea: "3/2/4/3", justifyContent: "center" }}>
                 {TimerComponent}
-                <Button className="Quiz-button" variant="contained" color="primary" onClick={() => {
-                  if (settings.sound) click.play();
-                  props.changeCounter(type !== "FIB" ? user_answers.filter(user_answer => user_answer !== "") : fibRefs.current.map(fibRef => fibRef?.current?.value ?? ""), time_allocated - TimerState.timeout, QuestionHintsState.hints_used)
-                }}>{!hasEnd ? "Next" : "Report"}</Button>
+                <Button className="Quiz-button" variant="contained" color="primary" onClick={onButtonClick}>{!hasEnd ? "Next" : "Report"}</Button>
               </div>
             }}
           </Timer>
         </Fragment>
       }}
     </QuestionHints>
-  </div>
+  </HotKeys>
 }
