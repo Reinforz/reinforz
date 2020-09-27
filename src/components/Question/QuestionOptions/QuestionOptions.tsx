@@ -4,6 +4,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { Language } from 'prism-react-renderer';
 import marked from "marked";
 import createDOMPurify from 'dompurify';
+import { HotKeys } from "react-hotkeys";
 
 import Highlighter from "../../Basic/Highlighter";
 
@@ -36,53 +37,82 @@ export default function (props: QuestionOptionsProps) {
 
   const { changeOption, user_answers, question: { _id, type, options } } = props;
   const generateOptions = () => {
-    if (type === "MCQ" && options)
-      return <RadioGroup className="QuestionOptions-container QuestionOptions-container--MCQ" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }} defaultValue={undefined} value={user_answers[0] === '' ? [''] : user_answers[0]} onChange={e => changeOption([e.target.value])}>
-        <TransitionGroup component={null}>
-          {options.map((option, i) => {
-            const matches = option.match(/_(.*?)_(.+)/);
-            let format = "text";
-            if (matches) {
-              option = matches[2];
-              format = matches[1];
-            }
-            return <CSSTransition key={`${_id}option${i}`} classNames={settings.animation ? "fade" : undefined} timeout={{ enter: i * 250 }} appear>
-              <div className="QuestionOptions-container-item" style={{ backgroundColor: theme.color.base }}>
-                <FormControlLabel
-                  control={<Radio onClick={() => {
-                    if (settings.sound) optionClick.play();
-                  }} color="primary" />}
-                  value={`${i}`}
-                  label={format.startsWith("code") ? <Highlighter code={option.toString()} language={(format.split("=")[1] || "javascript") as Language} /> : option.toString()}
-                  labelPlacement="end"
-                />
-              </div>
-            </CSSTransition>
-          })}
-        </TransitionGroup>
-      </RadioGroup>
-    else if (type === "MS" && options) {
-      const temp_user_answers = [...(user_answers as string[])];
-      return <FormGroup className="QuestionOptions-container QuestionOptions-container--MS" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }} onChange={(e: any) => {
-        if (e.target.checked) {
-          temp_user_answers.push(e.target.value);
-          changeOption([...temp_user_answers])
+    if (type === "MCQ" && options) {
+      const keyMap: any = {};
+      const handlers: any = {};
+      options.forEach((_, i) => {
+        keyMap[i + 1] = `${i + 1}`;
+        handlers[i + 1] = (e: any) => {
+          e.persist();
+          const pressed_option = e.keyCode - 49;
+          const isChecked = user_answers.includes(pressed_option.toString());
+          if (!isChecked)
+            changeOption([pressed_option.toString()])
         }
+      });
+
+      return <HotKeys keyMap={keyMap} style={{ height: "100%", outline: "none" }} handlers={handlers} allowChanges={true}>
+        <RadioGroup className="QuestionOptions-container QuestionOptions-container--MCQ" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }} defaultValue={undefined} value={user_answers[0] === '' ? [''] : user_answers[0]} onChange={e => changeOption([e.target.value])}>
+          <TransitionGroup component={null}>
+            {options.map((option, i) => {
+              const matches = option.match(/_(.*?)_(.+)/);
+              let format = "text";
+              if (matches) {
+                option = matches[2];
+                format = matches[1];
+              }
+              return <CSSTransition key={`${_id}option${i}`} classNames={settings.animation ? "fade" : undefined} timeout={{ enter: i * 250 }} appear>
+                <div className="QuestionOptions-container-item" style={{ backgroundColor: theme.color.base }}>
+                  <FormControlLabel
+                    control={<Radio onClick={() => {
+                      if (settings.sound) optionClick.play();
+                    }} color="primary" />}
+                    value={`${i}`}
+                    label={format.startsWith("code") ? <Highlighter code={option.toString()} language={(format.split("=")[1] || "javascript") as Language} /> : option.toString()}
+                    labelPlacement="end"
+                  />
+                </div>
+              </CSSTransition>
+            })}
+          </TransitionGroup>
+        </RadioGroup>
+      </HotKeys>
+    }
+    else if (type === "MS" && options) {
+      const keyMap: any = {};
+      const handlers: any = {};
+      options.forEach((_, i) => {
+        keyMap[i + 1] = `${i + 1}`;
+        handlers[i + 1] = (e: any) => {
+          e.persist();
+          const pressed_option = e.keyCode - 49;
+          const isChecked = user_answers.includes(pressed_option.toString());
+          if (!isChecked)
+            changeOption([...user_answers, pressed_option.toString()])
+          else
+            changeOption(user_answers.filter(user_answer => user_answer !== pressed_option.toString()));
+        }
+      });
+      return <FormGroup className="QuestionOptions-container QuestionOptions-container--MS" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }} onChange={(e: any) => {
+        if (e.target.checked)
+          changeOption(user_answers.concat(e.target.value))
         else
-          changeOption(temp_user_answers.filter(temp_user_answer => temp_user_answer !== e.target.value));
+          changeOption(user_answers.filter(user_answer => user_answer !== e.target.value));
       }}>
-        <TransitionGroup component={null}>
-          {options.map((option, i) => {
-            return <CSSTransition key={`${_id}option${i}`} classNames={settings.animation ? "fade" : undefined} timeout={{ enter: i * 250 }} appear>
-              <div className={`QuestionOptions-container-item`} style={{ backgroundColor: theme.color.base }} key={`${_id}option${i}`}>
-                <FormControlLabel
-                  control={<Checkbox onClick={(e) => {
-                    if (settings.sound) optionClick.play();
-                  }} checked={temp_user_answers.includes(`${i}`)} value={`${i}`} color="primary" />}
-                  label={optionLabelFormat(option)}
-                /></div></CSSTransition>
-          })}
-        </TransitionGroup>
+        <HotKeys keyMap={keyMap} style={{ height: "100%", outline: "none" }} handlers={handlers} allowChanges={true}>
+          <TransitionGroup component={null}>
+            {options.map((option, i) => {
+              return <CSSTransition key={`${_id}option${i}`} classNames={settings.animation ? "fade" : undefined} timeout={{ enter: i * 250 }} appear>
+                <div className={`QuestionOptions-container-item`} style={{ backgroundColor: theme.color.base }} key={`${_id}option${i}`}>
+                  <FormControlLabel
+                    control={<Checkbox onClick={(e) => {
+                      if (settings.sound) optionClick.play();
+                    }} checked={user_answers.includes(`${i}`)} value={`${i}`} color="primary" />}
+                    label={optionLabelFormat(option)}
+                  /></div></CSSTransition>
+            })}
+          </TransitionGroup>
+        </HotKeys>
       </FormGroup>
     }
 
