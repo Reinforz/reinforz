@@ -8,7 +8,6 @@ import ToggleItems from '../../Basic/ToggleItems';
 
 export default function (props: QuestionHintsProps) {
   const { hints, children } = props;
-
   return <ToggleItems items={hints} name={"hints"}>
     {({ ToggleButton, ToggleItems, ToggleItemsState }: ToggleItemsRProps) => {
       return children({
@@ -22,5 +21,4 @@ export default function (props: QuestionHintsProps) {
       }) as QuestionHintsRProps
     }}
   </ToggleItems>
-
 }

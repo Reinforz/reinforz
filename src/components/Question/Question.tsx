@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useRef, createRef, RefObject } from "react";
+import React, { useState, Fragment, useRef, createRef, RefObject, useEffect } from "react";
 import { Button, } from "@material-ui/core";
 import marked from "marked";
 import createDOMPurify from 'dompurify';
@@ -25,6 +25,11 @@ export default function Question(props: QuestionProps) {
   const [user_answers, changeUserAnswers] = useState(type === "FIB" ? Array(total_fibs ?? 1).fill('') as string[] : ['']);
   const fibRefs = useRef(Array(total_fibs).fill(0).map(() => createRef() as RefObject<HTMLInputElement>));
   const { theme, settings } = useThemeSettings();
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (ref.current) (ref.current as any).focus();
+  }, [])
 
   const generateQuestion = () => {
     if (format === "code") return <QuestionHighlighter image={image} answers={answers} fibRefs={fibRefs} type={type} language={language} code={question} />
@@ -43,72 +48,64 @@ export default function Question(props: QuestionProps) {
       }
     }
   }
-  let timer_state: any = {}, question_hints_state: any = {};
-
-  const onButtonClick = () => {
-    if (settings.sound) click.play();
-    props.changeCounter(type !== "FIB" ? user_answers.filter(user_answer => user_answer !== "") : fibRefs.current.map(fibRef => fibRef?.current?.value ?? ""), time_allocated - timer_state.timeout, question_hints_state.hints_used)
-  }
-
-  const keyMap: any = {
-    next_question: "enter"
-  };
-
-  const handlers: any = {
-    next_question: onButtonClick
-  };
-  if (type === "MCQ") {
-    options && options.forEach((_, i) => {
-      keyMap[i + 1] = `${i + 1}`;
-      handlers[i + 1] = (e: any) => {
-        e.persist();
-        const pressed_option = e.keyCode - 49;
-        const isChecked = user_answers.includes(pressed_option.toString());
-        if (!isChecked)
-          changeUserAnswers([pressed_option.toString()])
-      }
-    });
-  } else if (type === "MS") {
-    options && options.forEach((_, i) => {
-      keyMap[i + 1] = `${i + 1}`;
-      handlers[i + 1] = (e: any) => {
-        e.persist();
-        const pressed_option = e.keyCode - 49;
-        const isChecked = user_answers.includes(pressed_option.toString());
-        if (!isChecked)
-          changeUserAnswers([...user_answers, pressed_option.toString()])
-        else
-          changeUserAnswers(user_answers.filter(user_answer => user_answer !== pressed_option.toString()));
-      }
-    });
-  }
 
   const QuestionOption = type !== "FIB" && <QuestionOptions changeOption={changeUserAnswers} user_answers={user_answers} question={props.question} />;
-  return <HotKeys className="Question" keyMap={keyMap} handlers={handlers} allowChanges={true} style={{ outline: "none" }} >
-    <div className="Question-container" style={{ display: image ? "flex" : "block" }}>
-      {image && <div className="Question-image" style={{ width: "50%" }}><img src={image} alt="question" /></div>}
-      {generateQuestion()}
-    </div>
+  const GeneratedQuestion = generateQuestion();
 
-    <QuestionHints hints={hints}>
-      {({ QuestionHintsComponent, QuestionHintsState }: QuestionHintsRProps) => {
-        question_hints_state = QuestionHintsState;
-        return <Fragment>
-          {QuestionOption}
-          {QuestionHintsComponent}
-          <Timer timeout={time_allocated} onTimerEnd={() => {
-            props.changeCounter(type !== "FIB" ? user_answers.filter(user_answer => user_answer !== "") : fibRefs.current.map(fibRef => fibRef?.current?.value ?? ""), time_allocated, QuestionHintsState.hints_used)
-          }}>
-            {({ TimerComponent, TimerState }: TimerRProps) => {
-              timer_state = TimerState;
-              return <div style={{ display: "flex", gridArea: "3/2/4/3", justifyContent: "center" }}>
-                {TimerComponent}
-                <Button className="Quiz-button" variant="contained" color="primary" onClick={onButtonClick}>{!hasEnd ? "Next" : "Report"}</Button>
-              </div>
-            }}
-          </Timer>
-        </Fragment>
-      }}
-    </QuestionHints>
-  </HotKeys>
+  return <QuestionHints hints={hints}>
+    {({ QuestionHintsComponent, QuestionHintsState }: QuestionHintsRProps) => {
+      const onButtonClick = (time_taken: number) => {
+        if (settings.sound) click.play();
+        props.changeCounter(type !== "FIB" ? user_answers.filter(user_answer => user_answer !== "") : fibRefs.current.map(fibRef => fibRef?.current?.value ?? ""), time_allocated - time_taken, QuestionHintsState.hints_used)
+      }
+      return <Timer timeout={time_allocated} onTimerEnd={() => {
+        onButtonClick(time_allocated)
+      }}>
+        {({ TimerComponent, TimerState }: TimerRProps) => {
+          const keyMap: any = {
+            next_question: "right"
+          };
+
+          const handlers: any = {
+            next_question: () => {
+              onButtonClick(TimerState.timeout)
+            }
+          };
+
+          if (type.match(/(MCQ|MS)/)) {
+            options && options.forEach((_, i) => {
+              keyMap[i + 1] = `${i + 1}`;
+              handlers[i + 1] = (e: any) => {
+                e.persist();
+                const pressed_option = e.keyCode - 49;
+                const isChecked = user_answers.includes(pressed_option.toString());
+                if (type === "MS") {
+                  if (!isChecked)
+                    changeUserAnswers([...user_answers, pressed_option.toString()])
+                  else
+                    changeUserAnswers(user_answers.filter(user_answer => user_answer !== pressed_option.toString()));
+                } else if (type === "MCQ") {
+                  if (!isChecked)
+                    changeUserAnswers([pressed_option.toString()])
+                }
+              }
+            })
+          }
+
+          return <HotKeys innerRef={ref} className="Question" keyMap={keyMap} handlers={handlers} allowChanges={true} style={{ outline: "none" }} >
+            <div className="Question-container" style={{ display: image ? "flex" : "block" }}>
+              {image && <div className="Question-image" style={{ width: "50%" }}><img src={image} alt="question" /></div>}
+              {GeneratedQuestion}
+            </div>
+            {QuestionOption}
+            {QuestionHintsComponent}
+            <div style={{ display: "flex", gridArea: "3/2/4/3", justifyContent: "center" }}>
+              {TimerComponent}
+              <Button className="Quiz-button" variant="contained" color="primary" onClick={() => { onButtonClick(TimerState.timeout) }}>{!hasEnd ? "Next" : "Report"}</Button>
+            </div>
+          </HotKeys>
+        }}
+      </Timer>
+    }}
+  </QuestionHints>
 }

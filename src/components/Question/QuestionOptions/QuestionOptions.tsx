@@ -33,7 +33,6 @@ const optionLabelFormat = (option: string) => {
 
 export default function (props: QuestionOptionsProps) {
   const { theme, settings } = useThemeSettings();
-
   const { changeOption, user_answers, question: { _id, type, options } } = props;
   const generateOptions = () => {
     if (type === "MCQ" && options) {
