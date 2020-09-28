@@ -251,6 +251,9 @@ export interface IQuestionHintsState {
 export interface QuestionHintsRProps {
   QuestionHintsComponent: JSX.Element,
   QuestionHintsState: IQuestionHintsState
+  QuestionHintsUtils: {
+    getNextIndex: () => void
+  }
 }
 
 export interface QuestionOptionsProps {
@@ -381,6 +384,9 @@ export interface MenuRProps {
 export interface ToggleItemsRProps {
   ToggleButton: JSX.Element,
   ToggleItems: JSX.Element,
+  ToggleItemsUtils: {
+    getNextIndex: () => void
+  },
   ToggleItemsState: {
     current_index: number,
     is_disabled: boolean

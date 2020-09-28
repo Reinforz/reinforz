@@ -13,12 +13,16 @@ export default function (props: { items: string[], name: string, children: any }
 
   const { theme, settings } = useThemeSettings();
 
+  const onButtonClick = () => {
+    if (!hasEnded && !is_disabled) {
+      getNextIndex()
+      disable()
+    }
+  }
+
   return children({
     ToggleButton: <Button disabled={is_disabled || hasEnded} color="primary" variant="contained" className="ToggleItems-button" onClick={() => {
-      if (!hasEnded) {
-        getNextIndex()
-        disable()
-      }
+      onButtonClick()
     }}>{items.length > 0 ? `Show ${name || "item"} ${current_index}/${items.length}` : `No ${name || "items"} available`}</Button>,
     ToggleItems: <div className="ToggleItems-items" >
       <TransitionGroup component={null}>
@@ -30,6 +34,9 @@ export default function (props: { items: string[], name: string, children: any }
     ToggleItemsState: {
       current_index,
       is_disabled
+    },
+    ToggleItemsUtils: {
+      getNextIndex: onButtonClick
     }
   })
 }

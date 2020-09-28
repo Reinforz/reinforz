@@ -53,7 +53,7 @@ export default function Question(props: QuestionProps) {
   const GeneratedQuestion = generateQuestion();
 
   return <QuestionHints hints={hints}>
-    {({ QuestionHintsComponent, QuestionHintsState }: QuestionHintsRProps) => {
+    {({ QuestionHintsComponent, QuestionHintsState, QuestionHintsUtils }: QuestionHintsRProps) => {
       const onButtonClick = (time_taken: number) => {
         if (settings.sound) click.play();
         props.changeCounter(type !== "FIB" ? user_answers.filter(user_answer => user_answer !== "") : fibRefs.current.map(fibRef => fibRef?.current?.value ?? ""), time_allocated - time_taken, QuestionHintsState.hints_used)
@@ -63,12 +63,16 @@ export default function Question(props: QuestionProps) {
       }}>
         {({ TimerComponent, TimerState }: TimerRProps) => {
           const keyMap: any = {
-            next_question: "right"
+            next_question: "right",
+            next_hint: "down"
           };
 
           const handlers: any = {
             next_question: () => {
               onButtonClick(TimerState.timeout)
+            },
+            next_hint: () => {
+              QuestionHintsUtils.getNextIndex()
             }
           };
 
