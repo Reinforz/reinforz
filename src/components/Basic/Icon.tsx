@@ -41,7 +41,7 @@ export default function (props: IconProps) {
   }, [])
 
   return settings.hovertips ? <Fragment>
-    <span className={`${className ? className + ' ' : ''}icon`} onMouseEnter={(e: any) => setAnchorEl(e.currentTarget)} onMouseLeave={() => setAnchorEl(null)}>{children}</span>
+    <span className={`${className ? className + ' ' : ''}icon`} style={{ display: "flex" }} onMouseEnter={(e: any) => setAnchorEl(e.currentTarget)} onMouseLeave={() => setAnchorEl(null)}>{children}</span>
     {<Popover className={classes.popover}
       classes={{
         paper: classes.paper,
