@@ -52,8 +52,12 @@ function TableRows(props: TableRowsProps) {
     {title && <div className="Table-title">{title}</div>}
     <TableRow className={classes.tr} >
       {collapseContents && <TableCell className={classes.td}>
-        <Icon style={{ display: !open ? "initial" : "none", color: theme.color.opposite_dark }} icon={KeyboardArrowUpIcon} popoverText="Click to show explanation" onClick={() => setOpen(!open)} />
-        <Icon style={{ display: open ? "initial" : "none", color: theme.color.opposite_dark }} icon={KeyboardArrowDownIcon} popoverText="Click to hide explanation" onClick={() => setOpen(!open)} />
+        <Icon popoverText="Click to show explanation" >
+          <KeyboardArrowUpIcon onClick={() => setOpen(!open)} style={{ display: !open ? "initial" : "none", color: theme.color.opposite_dark }} />
+        </Icon>
+        <Icon popoverText="Click to hide explanation" >
+          <KeyboardArrowDownIcon onClick={() => setOpen(!open)} style={{ display: open ? "initial" : "none", color: theme.color.opposite_dark }} />
+        </Icon>
       </TableCell>}
       <TableCell className={classes.td}>{index + 1}</TableCell>
       {headers.map((header, index) => <TableCell className={classes.td} key={header + 'row' + index} align="center">{transformValue ? transformValue(header, content) : content[header]?.toString() ?? "N/A"}</TableCell>)}

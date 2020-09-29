@@ -60,11 +60,13 @@ export default React.memo((props: ListProps<Record<string, any>>) => {
         {total_selected}/{items.length}
         <div className="List-header-title">{header}</div>
         <div className="List-header-icons">
-          <Icon icon={CancelIcon} popoverText={`Remove ${total_selected} selected items`} className={"List-header-icons--cancel"} key={"deleteicon"} onClick={() => {
-            if (settings.sound) deleteItem.play();
-            const new_items = deleteSelectedItems()
-            props.onDelete && props.onDelete(new_items)
-          }} />
+          <Icon popoverText={`Remove ${total_selected} selected items`} key={"deleteicon"} >
+            <CancelIcon className={"List-header-icons--cancel"} onClick={() => {
+              if (settings.sound) deleteItem.play();
+              const new_items = deleteSelectedItems()
+              props.onDelete && props.onDelete(new_items)
+            }} />
+          </Icon>
         </div>
       </div>
       <div className="List-content" style={{ color: theme.palette.text.primary, backgroundColor: theme.color.dark }}>

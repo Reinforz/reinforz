@@ -22,28 +22,36 @@ export default function (props: { items: JSX.Element[] }) {
   return <div className="View" style={{ flexDirection: layout }}>
     <div className="View-icons">
       <div className="View-icons-layout" style={{ color: theme.palette.text.primary, backgroundColor: theme.color.light }}>
-        <Icon onClick={() => {
-          if (settings.sound) switch_off.play();
-          localStorage.setItem("layout", "column");
-          setLayout("column")
-        }} icon={BiGridHorizontal} style={{ display: layout === "row" ? "initial" : "none" }} popoverText="Click to switch to column layout" />
-        <Icon onClick={() => {
-          if (settings.sound) switch_on.play();
-          localStorage.setItem("layout", "row");
-          setLayout("row")
-        }} icon={BiGridVertical} style={{ display: layout === "column" ? "initial" : "none" }} popoverText="Click to switch to row layout" />
+        <Icon popoverText="Click to switch to column layout">
+          <BiGridHorizontal style={{ display: layout === "row" ? "initial" : "none" }} onClick={() => {
+            if (settings.sound) switch_off.play();
+            localStorage.setItem("layout", "column");
+            setLayout("column")
+          }} />
+        </Icon>
+        <Icon popoverText="Click to switch to row layout">
+          <BiGridVertical onClick={() => {
+            if (settings.sound) switch_on.play();
+            localStorage.setItem("layout", "row");
+            setLayout("row")
+          }} style={{ display: layout === "column" ? "initial" : "none" }} />
+        </Icon>
       </div>
       <div className="View-icons-order" style={{ color: theme.palette.text.primary, backgroundColor: theme.color.light }}>
-        <Icon onClick={() => {
-          if (settings.sound) switch_off.play();
-          localStorage.setItem("order", order === "0" ? "1" : "0");
-          setOrder(order === "0" ? "1" : "0")
-        }} icon={HiSwitchVertical} style={{ display: layout === "column" ? "initial" : "none" }} popoverText="Click to switch to alternate order" />
-        <Icon onClick={() => {
-          if (settings.sound) switch_on.play();
-          localStorage.setItem("order", order === "0" ? "1" : "0");
-          setOrder(order === "1" ? "0" : "1")
-        }} icon={HiSwitchHorizontal} style={{ display: layout === "row" ? "initial" : "none" }} popoverText="Click to switch to alternate order" />
+        <Icon popoverText="Click to switch to alternate order" >
+          <HiSwitchVertical onClick={() => {
+            if (settings.sound) switch_off.play();
+            localStorage.setItem("order", order === "0" ? "1" : "0");
+            setOrder(order === "0" ? "1" : "0")
+          }} style={{ display: layout === "column" ? "initial" : "none" }} />
+        </Icon>
+        <Icon popoverText="Click to switch to alternate order" >
+          <HiSwitchHorizontal onClick={() => {
+            if (settings.sound) switch_on.play();
+            localStorage.setItem("order", order === "0" ? "1" : "0");
+            setOrder(order === "1" ? "0" : "1")
+          }} style={{ display: layout === "row" ? "initial" : "none" }} />
+        </Icon>
       </div>
     </div>
     {props.items.map((item, index) => <div style={{ order: index === 0 ? parseInt(order) : "initial", height: layout === "column" ? "50%" : "100%" }} key={index}>{item}</div>)}

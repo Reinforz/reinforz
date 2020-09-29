@@ -68,22 +68,26 @@ export default function (props: MenuProps) {
   return children({
     MenuComponent: <div className="Menu" style={{ left }}>
       <div className="Menu-icons" style={icons_style}>
-        <Icon popoverText={`${is_open ? "Close" : "Open"} Menu`} icon={FaArrowAltCircleRight} className="Menu-icons-icon Menu-icons-icon--toggle" onClick={() => {
-          const new_value = !is_open
-          setIsOpen(new_value)
-          lskey && localStorage.setItem(lskey, JSON.stringify({
-            is_open: new_value,
-            position
-          }))
-        }} style={{ fill: theme.color.opposite_dark, ...icon_style }} />
-        <Icon popoverText={`Switch to ${position === "left" ? "right" : "left"}`} icon={RiArrowLeftRightLine} className="Menu-icons-icon Menu-icons-icon--position" onClick={() => {
-          const new_value = position === "left" ? "right" : "left"
-          setPosition(new_value)
-          lskey && localStorage.setItem(lskey, JSON.stringify({
-            is_open,
-            position: new_value
-          }))
-        }} style={{ fill: theme.color.opposite_dark }} />
+        <Icon popoverText={`${is_open ? "Close" : "Open"} Menu`}>
+          <FaArrowAltCircleRight className="Menu-icons-icon Menu-icons-icon--toggle" onClick={() => {
+            const new_value = !is_open
+            setIsOpen(new_value)
+            lskey && localStorage.setItem(lskey, JSON.stringify({
+              is_open: new_value,
+              position
+            }))
+          }} style={{ fill: theme.color.opposite_dark, ...icon_style }} />
+        </Icon>
+        <Icon popoverText={`Switch to ${position === "left" ? "right" : "left"}`} >
+          <RiArrowLeftRightLine className="Menu-icons-icon Menu-icons-icon--position" onClick={() => {
+            const new_value = position === "left" ? "right" : "left"
+            setPosition(new_value)
+            lskey && localStorage.setItem(lskey, JSON.stringify({
+              is_open,
+              position: new_value
+            }))
+          }} style={{ fill: theme.color.opposite_dark }} />
+        </Icon>
       </div>
       {content}
     </div>,

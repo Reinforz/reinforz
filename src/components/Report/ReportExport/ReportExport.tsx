@@ -75,10 +75,12 @@ export default function (props: ReportExportProps) {
           {['YAML', 'JSON'].map(((type, index) => <MenuItem value={type} key={type + index}>{type}</MenuItem>))}
         </Select>
       </FormControl>
-      <Icon style={{ fill: theme.color.opposite_dark }} popoverText={`Export ${export_type} as ${export_as}`} icon={GetAppIcon} onClick={() => {
-        if (settings.sound) click.play()
-        downloadfiles()
-      }} />
+      <Icon popoverText={`Export ${export_type} as ${export_as}`} >
+        <GetAppIcon style={{ fill: theme.color.opposite_dark }} onClick={() => {
+          if (settings.sound) click.play()
+          downloadfiles()
+        }} />
+      </Icon>
     </div>
   );
 }

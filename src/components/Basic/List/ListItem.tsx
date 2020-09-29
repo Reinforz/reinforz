@@ -91,11 +91,13 @@ export default function ListItem(props: ListItemProps<Record<string, any>>) {
             }
           }
         }} checked={selectedItems.includes(_id)} value={_id} />
-        <Icon icon={CancelIcon} className="List-content-item-icons--cancel" key={_id + "icon" + index} onClick={() => {
-          if (settings.sound) deleteItem.play();
-          props.onDelete && props.onDelete([item])
-          removeAndDeleteSelectedItem(_id)
-        }} popoverText="Delete this item" />
+        <Icon key={_id + "icon" + index} popoverText="Delete this item">
+          <CancelIcon className="List-content-item-icons--cancel" onClick={() => {
+            if (settings.sound) deleteItem.play();
+            props.onDelete && props.onDelete([item])
+            removeAndDeleteSelectedItem(_id)
+          }} style={{ fill: theme.palette.error.dark }} />
+        </Icon>
       </div>
       {fields.map((field, index) => <div className="List-content-item-field" key={_id + field + index}>{typeof field === "string" ? item[field] : field(item)}</div>)}
     </div>

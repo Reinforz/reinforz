@@ -1,6 +1,5 @@
 import React, { Fragment, useContext, useEffect } from 'react';
-import { Popover, SvgIconTypeMap, Typography } from '@material-ui/core';
-import { OverridableComponent } from '@material-ui/core/OverridableComponent';
+import { Popover, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import SettingsContext from '../../context/SettingsContext';
@@ -18,11 +17,8 @@ const useStyles = makeStyles((theme) => ({
 
 export interface IconProps {
   className?: string,
-  onClick: (e: any) => any,
-  style?: any,
   popoverText: string,
-  icon: OverridableComponent<SvgIconTypeMap<{}, "svg">>,
-  key?: string
+  children: JSX.Element
 }
 
 export default function (props: IconProps) {
@@ -34,10 +30,8 @@ export default function (props: IconProps) {
 
   const {
     className,
-    onClick,
-    style = {},
     popoverText,
-    icon,
+    children
   } = props;
 
   useEffect(() => {
@@ -46,17 +40,9 @@ export default function (props: IconProps) {
     }
   }, [])
 
-  const Icon = React.createElement(icon, {
-    className: `${className ? className + ' ' : ''}icon`,
-    onClick: (e: any) => onClick && onClick(e),
-    style,
-    onMouseEnter: (e: any) => setAnchorEl(e.currentTarget),
-    onMouseLeave: () => setAnchorEl(null)
-  });
-
   return settings.hovertips ? <Fragment>
-    {Icon}
-    {Icon && style.display !== "none" && <Popover className={classes.popover}
+    <span className={`${className ? className + ' ' : ''}icon`} onMouseEnter={(e: any) => setAnchorEl(e.currentTarget)} onMouseLeave={() => setAnchorEl(null)}>{children}</span>
+    {<Popover className={classes.popover}
       classes={{
         paper: classes.paper,
       }} open={open} anchorEl={anchorEl} anchorOrigin={{
@@ -68,5 +54,5 @@ export default function (props: IconProps) {
         horizontal: 'center',
       }}
       onClose={() => setAnchorEl(null)} disableRestoreFocus ><Typography>{popoverText}</Typography></Popover>}
-  </Fragment> : Icon
+  </Fragment> : children
 }

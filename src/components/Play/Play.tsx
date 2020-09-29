@@ -109,10 +109,12 @@ const PlayContent = (props: { renderprops: { ListRenderProps: ListRProps, PlayUp
 
   return <div className="Play-content" id="Play-content" style={{ ...MenuExtra.content_elem_style }}>
     <Fragment>
-      <Icon onClick={() => {
-        if (settings.sound) swoosh.play()
-        history.push("/settings")
-      }} icon={FcSettings} popoverText="Click to go to settings page" className="App-icon App-icon--settings" />
+      <Icon popoverText="Click to go to settings page">
+        <FcSettings className="App-icon App-icon--settings" onClick={() => {
+          if (settings.sound) swoosh.play()
+          history.push("/settings")
+        }} />
+      </Icon>
       <SplitPane split="vertical" onChange={(size: any) => {
         setToLs(size[0])
       }}>
