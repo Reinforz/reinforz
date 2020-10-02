@@ -16,9 +16,6 @@ import { IPlayContext, QuestionInputFull, QuizInputFull, ReportFilterRProps, Rep
 
 import "./Report.scss";
 
-const swoosh = new Audio(process.env.PUBLIC_URL + "/sounds/swoosh.mp3");
-swoosh.volume = 0.15;
-
 export default function (props: ReportProps) {
   const transformValue = (header: string, content: any) => {
     const value = content[header];
@@ -54,7 +51,7 @@ export default function (props: ReportProps) {
     }
   }
 
-  const { settings } = useThemeSettings();
+  const { settings, sounds } = useThemeSettings();
   const history = useHistory();
   const PlayContextValue = useContext(PlayContext) as IPlayContext;
   return (
@@ -94,14 +91,14 @@ export default function (props: ReportProps) {
                   }} />
                   <div className="Report-buttons">
                     <Button className="Report-buttons-item" variant="contained" color="primary" onClick={() => {
-                      if (settings.sound) swoosh.play()
+                      if (settings.sound) sounds.swoosh.play()
                       localStorage.setItem("REPORT_FILTERS", JSON.stringify(ReportFilterState))
                       PlayContextValue.setPlaying(false);
                       PlayContextValue.setQuizzes(Object.values(filtered_quizzes))
                       PlayContextValue.setSelected(Object.values(filtered_quizzes).map(quiz => quiz._id))
                     }}>Back to Home</Button>
                     <Button className="Report-buttons-item" variant="contained" color="primary" onClick={() => {
-                      if (settings.sound) swoosh.play()
+                      if (settings.sound) sounds.swoosh.play()
                       history.push("/settings")
                     }}>Go to Settings</Button>
                   </div>

@@ -14,17 +14,10 @@ import { ListProps } from "../../../types";
 
 import "./List.scss";
 
-const playOn = new Audio(process.env.PUBLIC_URL + "/sounds/pop-on.mp3");
-const playOff = new Audio(process.env.PUBLIC_URL + "/sounds/pop-off.mp3");
-const deleteItem = new Audio(process.env.PUBLIC_URL + "/sounds/delete.mp3");
-
-playOn.volume = 0.5;
-playOff.volume = 0.5;
-deleteItem.volume = 0.5;
-
 export default React.memo((props: ListProps<Record<string, any>>) => {
   const { children, items, setItems, header, fields } = props;
-  const { theme, settings } = useThemeSettings();
+  const { theme, settings, sounds } = useThemeSettings();
+  const { pop_on, pop_off, remove } = sounds;
 
   const { selectedItems, setSelectedItems, resetSelectedItems, setAllSelected, total_selected, deleteSelectedItems } = useList(items, setItems)
 
@@ -49,11 +42,11 @@ export default React.memo((props: ListProps<Record<string, any>>) => {
       <div className="List-header" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>
         <Checkbox color="primary" key={"checkbox"} onClick={(e) => {
           if ((e.target as any).checked) {
-            if (settings.sound) playOn.play();
+            if (settings.sound) pop_on.play();
             setAllSelected()
           }
           else {
-            if (settings.sound) playOff.play();
+            if (settings.sound) pop_off.play();
             resetSelectedItems()
           }
         }} checked={items.length !== 0 && total_selected === items.length} />
@@ -62,7 +55,7 @@ export default React.memo((props: ListProps<Record<string, any>>) => {
         <div className="List-header-icons">
           <Icon popoverText={`Remove ${total_selected} selected items`} key={"deleteicon"} >
             <CancelIcon className={"List-header-icons--cancel"} onClick={() => {
-              if (settings.sound) deleteItem.play();
+              if (settings.sound) remove.play();
               const new_items = deleteSelectedItems()
               props.onDelete && props.onDelete(new_items)
             }} />

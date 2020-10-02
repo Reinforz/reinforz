@@ -10,14 +10,8 @@ import useToggle from '../../hooks/useToggle';
 
 import "./View.scss";
 
-const switch_off = new Audio(process.env.PUBLIC_URL + "/sounds/switch-off.mp3");
-const switch_on = new Audio(process.env.PUBLIC_URL + "/sounds/switch-on.mp3");
-switch_off.volume = 0.25;
-switch_on.volume = 0.25;
-
 export default function (props: { items: JSX.Element[] }) {
   const { theme } = useThemeSettings();
-
   const { toggle: toggleOrder, current_toggle: order } = useToggle<number>(0, [0, 1], "order");
   const { toggle: toggleLayout, current_toggle: layout } = useToggle<CSS.FlexDirectionProperty>("row", ["row", "column"], "layout");
 

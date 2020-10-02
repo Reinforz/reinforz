@@ -11,18 +11,11 @@ import useListItems from '../../../hooks/useListItems';
 
 import { ListItemProps, DragItem } from '../../../types';
 
-const playOn = new Audio(process.env.PUBLIC_URL + "/sounds/pop-on.mp3");
-const playOff = new Audio(process.env.PUBLIC_URL + "/sounds/pop-off.mp3");
-const deleteItem = new Audio(process.env.PUBLIC_URL + "/sounds/delete.mp3");
-
-playOn.volume = 0.5;
-playOff.volume = 0.5;
-deleteItem.volume = 0.5;
-
 export default function ListItem(props: ListItemProps<Record<string, any>>) {
   const { items, item, fields, index, setSelectedItems, setItems, selectedItems } = props;
   const { _id } = item;
-  const { theme, settings } = useThemeSettings();
+  const { theme, settings, sounds } = useThemeSettings();
+  const { pop_on, pop_off, remove } = sounds;
   const { selectEndFromClickWithCurrent, selectUptoClickedWithCurrent, selectEndFromClick, selectOnlyClicked, selectUptoClicked, addSelectedItems, removeSelectedItem, removeAndDeleteSelectedItem } = useListItems(items, selectedItems, setItems, setSelectedItems);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -81,11 +74,11 @@ export default function ListItem(props: ListItemProps<Record<string, any>>) {
               selectUptoClicked(index)
             else {
               if ((e.target as any).checked) {
-                if (settings.sound) playOn.play();
+                if (settings.sound) pop_on.play();
                 addSelectedItems(_id)
               }
               else {
-                if (settings.sound) playOff.play();
+                if (settings.sound) pop_off.play();
                 removeSelectedItem(_id)
               }
             }
@@ -93,7 +86,7 @@ export default function ListItem(props: ListItemProps<Record<string, any>>) {
         }} checked={selectedItems.includes(_id)} value={_id} />
         <Icon key={_id + "icon" + index} popoverText="Delete this item">
           <CancelIcon className="List-content-item-icons--cancel" onClick={() => {
-            if (settings.sound) deleteItem.play();
+            if (settings.sound) remove.play();
             props.onDelete && props.onDelete([item])
             removeAndDeleteSelectedItem(_id)
           }} style={{ fill: theme.palette.error.dark }} />

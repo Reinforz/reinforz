@@ -9,17 +9,6 @@ import "./ReportFilter.scss";
 
 const DEFAULT_REPORT_FILTER_STATE = { time_taken: [0, 60], verdict: 'mixed', hints_used: 'any', excluded_types: [], excluded_difficulty: [], excluded_quizzes: [], excluded_columns: [] } as IReportFilterState;
 
-const click = new Audio(process.env.PUBLIC_URL + "/sounds/click.mp3",);
-click.volume = 0.15;
-const switchOn = new Audio(process.env.PUBLIC_URL + "/sounds/switch-on.mp3",);
-switchOn.volume = 0.25;
-const playOn = new Audio(process.env.PUBLIC_URL + "/sounds/pop-on.mp3",);
-playOn.volume = 0.25;
-const playOff = new Audio(process.env.PUBLIC_URL + "/sounds/pop-off.mp3",);
-playOff.volume = 0.25;
-const resetSettings = new Audio(process.env.PUBLIC_URL + "/sounds/reset.mp3",);
-resetSettings.volume = 0.25;
-
 const transformLabel = (stat: string) => {
   let label = stat.replace(/(\.|_)/g, " ");
   return label.split(" ").map(c => c.charAt(0).toUpperCase() + c.substr(1)).join(" ");
@@ -28,7 +17,7 @@ export default function (props: { selected_quizzes: QuizIdentifiers[], children:
   let REPORT_FILTERS: any = localStorage.getItem('REPORT_FILTERS');
   REPORT_FILTERS = REPORT_FILTERS ? JSON.parse(REPORT_FILTERS) : undefined;
 
-  const { settings } = useThemeSettings();
+  const { settings, sounds: { click, reset, switch_on, pop_off, pop_on } } = useThemeSettings();
 
   const [report_filter_state, setReportFilterState] = useState((REPORT_FILTERS ? REPORT_FILTERS : DEFAULT_REPORT_FILTER_STATE) as IReportFilterState);
   return props.children({
@@ -48,14 +37,14 @@ export default function (props: { selected_quizzes: QuizIdentifiers[], children:
         <RadioGroup name="verdict" value={report_filter_state.verdict} >
           <InputLabel>Verdict</InputLabel>
           {[true, false, "mixed"].map((verdict, index) => <FormControlLabel onClick={(e: any) => {
-            if (settings.sound) switchOn.play();
+            if (settings.sound) switch_on.play();
             setReportFilterState({ ...report_filter_state, verdict: e.target.value })
           }} key={verdict.toString() + index} value={verdict.toString()} control={<Radio color="primary" />} label={verdict.toString()} />)}
         </RadioGroup>
         <RadioGroup name="hints_used" value={report_filter_state.hints_used} >
           <InputLabel>Hints Used</InputLabel>
           {["0", "1", "2", "any"].map((hints, index) => <FormControlLabel onClick={(e: any) => {
-            if (settings.sound) switchOn.play();
+            if (settings.sound) switch_on.play();
             setReportFilterState({ ...report_filter_state, hints_used: e.target.value })
           }} key={hints + index} value={hints} control={<Radio color="primary" />} label={hints} />)}
         </RadioGroup>
@@ -63,11 +52,11 @@ export default function (props: { selected_quizzes: QuizIdentifiers[], children:
           <InputLabel>Exluded Difficulty</InputLabel>
           {['Beginner', 'Intermediate', 'Advanced'].map((difficulty, index) => <FormControlLabel key={difficulty + index} label={difficulty} control={<Checkbox checked={report_filter_state.excluded_difficulty.includes(difficulty as QuestionDifficulty)} name={difficulty} onChange={(e) => {
             if ((e.target as any).checked) {
-              if (settings.sound) playOn.play()
+              if (settings.sound) pop_on.play()
               setReportFilterState({ ...report_filter_state, excluded_difficulty: report_filter_state.excluded_difficulty.concat(difficulty as QuestionDifficulty) });
             }
             else {
-              if (settings.sound) playOff.play()
+              if (settings.sound) pop_off.play()
               setReportFilterState({ ...report_filter_state, excluded_difficulty: report_filter_state.excluded_difficulty.filter(excluded_difficulty => excluded_difficulty !== difficulty) })
             }
           }}
@@ -77,11 +66,11 @@ export default function (props: { selected_quizzes: QuizIdentifiers[], children:
           <InputLabel>Exluded Type</InputLabel>
           {['FIB', 'MS', 'MCQ', "Snippet"].map((type, index) => <FormControlLabel key={type + index} label={type} control={<Checkbox checked={report_filter_state.excluded_types.includes(type as QuestionType)} name={type} onChange={(e) => {
             if ((e.target as any).checked) {
-              if (settings.sound) playOn.play()
+              if (settings.sound) pop_on.play()
               setReportFilterState({ ...report_filter_state, excluded_types: report_filter_state.excluded_types.concat(type as QuestionType) });
             }
             else {
-              if (settings.sound) playOff.play()
+              if (settings.sound) pop_off.play()
               setReportFilterState({ ...report_filter_state, excluded_types: report_filter_state.excluded_types.filter(excluded_type => excluded_type !== type) })
             }
           }}
@@ -115,7 +104,7 @@ export default function (props: { selected_quizzes: QuizIdentifiers[], children:
           </Select>
         </FormGroup>
         <Button variant="contained" color="primary" onClick={() => {
-          if (settings.sound) resetSettings.play()
+          if (settings.sound) reset.play()
           setReportFilterState(DEFAULT_REPORT_FILTER_STATE)
         }
         } style={{ width: "100%" }}>Reset</Button>

@@ -16,15 +16,13 @@ import "./Question.scss";
 import { HotKeys } from "react-hotkeys";
 
 const DOMPurify = createDOMPurify(window);
-const click = new Audio(process.env.PUBLIC_URL + "/sounds/click.mp3");
-click.volume = 0.15;
 
 export default function Question(props: QuestionProps) {
   const { hasEnd, index, question: { question, options, _id, type, image, format, time_allocated, hints, answers, language } } = props;
   const total_fibs = question.match(/(%_%)/g)?.length;
   const [user_answers, changeUserAnswers] = useState(type === "FIB" ? Array(total_fibs ?? 1).fill('') as string[] : ['']);
   const fibRefs = useRef(Array(total_fibs).fill(0).map(() => createRef() as RefObject<HTMLInputElement>));
-  const { theme, settings } = useThemeSettings();
+  const { theme, settings, sounds } = useThemeSettings();
   const ref = useRef(null);
 
   useEffect(() => {
@@ -55,7 +53,7 @@ export default function Question(props: QuestionProps) {
   return <QuestionHints hints={hints}>
     {({ QuestionHintsComponent, QuestionHintsState, QuestionHintsUtils }: QuestionHintsRProps) => {
       const onButtonClick = (time_taken: number) => {
-        if (settings.sound) click.play();
+        if (settings.sound) sounds.click.play();
         props.changeCounter(type !== "FIB" ? user_answers.filter(user_answer => user_answer !== "") : fibRefs.current.map(fibRef => fibRef?.current?.value ?? ""), time_allocated - time_taken, QuestionHintsState.hints_used)
       }
       return <Timer timeout={time_allocated} onTimerEnd={() => {

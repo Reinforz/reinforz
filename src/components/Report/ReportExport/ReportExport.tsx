@@ -14,14 +14,11 @@ import { ReportExportProps } from "../../../types";
 
 import "./ReportExport.scss"
 
-const click = new Audio(process.env.PUBLIC_URL + "/sounds/click.mp3");
-click.volume = 0.15
-
 export default function (props: ReportExportProps) {
   const { filtered_results, filtered_quizzes } = props;
   let REPORT_EXPORT: any = localStorage.getItem('REPORT_EXPORT');
   REPORT_EXPORT = REPORT_EXPORT ? JSON.parse(REPORT_EXPORT) : undefined;
-  const { theme, settings } = useThemeSettings();
+  const { theme, settings, sounds: { click } } = useThemeSettings();
 
   const [export_type, setExportType] = useState((REPORT_EXPORT ? REPORT_EXPORT.export_type : 'Original') as string);
   const [export_as, setExportAs] = useState((REPORT_EXPORT ? REPORT_EXPORT.export_as : 'YAML') as string);

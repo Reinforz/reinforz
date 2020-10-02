@@ -15,10 +15,6 @@ import "./QuestionOptions.scss";
 
 const DOMPurify = createDOMPurify(window);
 
-const optionClick = new Audio(process.env.PUBLIC_URL + "/sounds/option-click.mp3");
-
-optionClick.volume = 0.15;
-
 const optionLabelFormat = (option: string) => {
   const matches = option.match(/_(.*?)_(.+)/);
   let format = "text";
@@ -32,7 +28,7 @@ const optionLabelFormat = (option: string) => {
 }
 
 export default function (props: QuestionOptionsProps) {
-  const { theme, settings } = useThemeSettings();
+  const { theme, settings, sounds: { option_click } } = useThemeSettings();
   const { changeOption, user_answers, question: { _id, type, options } } = props;
   const generateOptions = () => {
     if (type === "MCQ" && options) {
@@ -49,7 +45,7 @@ export default function (props: QuestionOptionsProps) {
               <div className="QuestionOptions-container-item" style={{ backgroundColor: theme.color.base }}>
                 <FormControlLabel
                   control={<Radio onClick={() => {
-                    if (settings.sound) optionClick.play();
+                    if (settings.sound) option_click.play();
                   }} color="primary" />}
                   value={`${i}`}
                   label={format.startsWith("code") ? <Highlighter code={option.toString()} language={(format.split("=")[1] || "javascript") as Language} /> : option.toString()}
@@ -74,7 +70,7 @@ export default function (props: QuestionOptionsProps) {
               <div className={`QuestionOptions-container-item`} style={{ backgroundColor: theme.color.base }} key={`${_id}option${i}`}>
                 <FormControlLabel
                   control={<Checkbox onClick={(e) => {
-                    if (settings.sound) optionClick.play();
+                    if (settings.sound) option_click.play();
                   }} checked={user_answers.includes(`${i}`)} value={`${i}`} color="primary" />}
                   label={optionLabelFormat(option)}
                 /></div></CSSTransition>

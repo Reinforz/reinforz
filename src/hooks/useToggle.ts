@@ -2,11 +2,6 @@ import { useState } from "react";
 
 import useThemeSettings from "./useThemeSettings";
 
-const switch_off = new Audio(process.env.PUBLIC_URL + "/sounds/switch-off.mp3");
-const switch_on = new Audio(process.env.PUBLIC_URL + "/sounds/switch-on.mp3");
-switch_off.volume = 0.25;
-switch_on.volume = 0.25;
-
 export default function <T>(initial: T | (() => T), toggles: [T, T], key?: string) {
   const [toggle, setToggle] = useState(() => {
     let value = initial;
@@ -17,7 +12,7 @@ export default function <T>(initial: T | (() => T), toggles: [T, T], key?: strin
     }
     return value as T
   });
-  const { settings } = useThemeSettings();
+  const { settings, sounds: { switch_off, switch_on } } = useThemeSettings();
   return {
     current_toggle: toggle,
     setToggle,

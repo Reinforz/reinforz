@@ -14,24 +14,13 @@ const DEFAULT_PLAY_OPTIONS_STATE = { shuffle_options: true, shuffle_quizzes: fal
 
 const DEFAULT_PLAY_FILTERS_STATE = { time_allocated: [15, 60], excluded_difficulty: [] as QuestionDifficulty[], excluded_types: [] as QuestionType[] } as IPlaySettingsFiltersState;
 
-const playOn = new Audio(process.env.PUBLIC_URL + "/sounds/pop-on.mp3");
-playOn.volume = 0.25;
-const playOff = new Audio(process.env.PUBLIC_URL + "/sounds/pop-off.mp3");
-playOff.volume = 0.25;
-const resetSettings = new Audio(process.env.PUBLIC_URL + "/sounds/reset.mp3");
-resetSettings.volume = 0.25;
-const horn = new Audio(process.env.PUBLIC_URL + "/sounds/horn.mp3");
-horn.volume = 0.25;
-const click = new Audio(process.env.PUBLIC_URL + "/sounds/click.mp3");
-click.volume = 0.25;
-const swoosh = new Audio(process.env.PUBLIC_URL + "/sounds/swoosh.mp3");
-swoosh.volume = 0.25;
-
 export default function (props: PlaySettingsProps) {
   const { quizzes, selectedQuizzes } = props;
   let PLAY_SETTINGS: any = localStorage.getItem('PLAY_SETTINGS');
   PLAY_SETTINGS = PLAY_SETTINGS ? JSON.parse(PLAY_SETTINGS) : undefined;
-  const { theme, settings } = useThemeSettings();
+  const { theme, settings, sounds } = useThemeSettings();
+
+  const { pop_off, pop_on, swoosh, reset, horn, click } = sounds;
 
   const play_options_state = (PLAY_SETTINGS ? PLAY_SETTINGS.play_options : DEFAULT_PLAY_OPTIONS_STATE) as IPlaySettingsOptionsState;
   const play_filters_state = (PLAY_SETTINGS ? PLAY_SETTINGS.play_filters : DEFAULT_PLAY_FILTERS_STATE) as IPlaySettingsFiltersState;
@@ -80,8 +69,8 @@ export default function (props: PlaySettingsProps) {
                     color="primary"
                     onClick={(e) => {
                       if ((e.target as any).checked && settings.sound)
-                        playOn.play();
-                      else if (settings.sound) playOff.play()
+                        pop_on.play();
+                      else if (settings.sound) pop_off.play()
                     }}
                   />
                 }
@@ -90,7 +79,7 @@ export default function (props: PlaySettingsProps) {
             })}
           </div>
           <Button className="PlaySettings-group-button" variant="contained" color="primary" onClick={() => {
-            if (settings.sound) resetSettings.play()
+            if (settings.sound) reset.play()
             setPlaySettingsOptions(DEFAULT_PLAY_OPTIONS_STATE)
           }}>Reset</Button>
         </div>
@@ -114,11 +103,11 @@ export default function (props: PlaySettingsProps) {
               <InputLabel>Exluded Difficulty</InputLabel>
               {['Beginner', 'Intermediate', 'Advanced'].map((difficulty, index) => <FormControlLabel key={difficulty + index} label={difficulty} control={<Checkbox checked={play_filters.excluded_difficulty.includes(difficulty as QuestionDifficulty)} name={difficulty} onChange={(e) => {
                 if ((e.target as any).checked) {
-                  if (settings.sound) playOn.play()
+                  if (settings.sound) pop_on.play()
                   setPlaySettingsFilters({ ...play_filters, excluded_difficulty: play_filters.excluded_difficulty.concat(difficulty as QuestionDifficulty) });
                 }
                 else {
-                  if (settings.sound) playOff.play()
+                  if (settings.sound) pop_off.play()
                   setPlaySettingsFilters({ ...play_filters, excluded_difficulty: play_filters.excluded_difficulty.filter(excluded_difficulty => excluded_difficulty !== difficulty) })
                 }
               }}
@@ -128,11 +117,11 @@ export default function (props: PlaySettingsProps) {
               <InputLabel>Exluded Type</InputLabel>
               {['FIB', 'MS', 'MCQ', "Snippet"].map((type, index) => <FormControlLabel key={type + index} label={type} control={<Checkbox checked={play_filters.excluded_types.includes(type as QuestionType)} name={type} onChange={(e) => {
                 if ((e.target as any).checked) {
-                  if (settings.sound) playOn.play()
+                  if (settings.sound) pop_on.play()
                   setPlaySettingsFilters({ ...play_filters, excluded_types: play_filters.excluded_types.concat(type as QuestionType) });
                 }
                 else {
-                  if (settings.sound) playOff.play()
+                  if (settings.sound) pop_off.play()
                   setPlaySettingsFilters({ ...play_filters, excluded_types: play_filters.excluded_types.filter(excluded_type => excluded_type !== type) })
                 }
               }}
@@ -140,7 +129,7 @@ export default function (props: PlaySettingsProps) {
             </FormGroup>
           </div>
           <Button className="PlaySettings-group-button" variant="contained" color="primary" onClick={() => {
-            if (settings.sound) resetSettings.play()
+            if (settings.sound) reset.play()
             setPlaySettingsFilters(DEFAULT_PLAY_FILTERS_STATE)
           }}>Reset</Button>
 

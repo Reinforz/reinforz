@@ -29,9 +29,6 @@ import {
 
 import "./Play.scss";
 
-const swoosh = new Audio(process.env.PUBLIC_URL + "/sounds/swoosh.mp3");
-swoosh.volume = 0.25;
-
 let prev_pane_size = localStorage.getItem("Play_pane_size");
 
 const setToLs = debounced((size: string) => {
@@ -101,8 +98,7 @@ const renderPlayMenu = ({ ListRenderProps, PlayUploadRenderProps, IPlaySettingsR
 const PlayContent = (props: { renderprops: { ListRenderProps: ListRProps, PlayUploadRenderProps: PlayUploadRProps, MenuRenderProps: MenuRProps } }) => {
   const { ListRenderProps, PlayUploadRenderProps, MenuRenderProps } = props.renderprops;
   const history = useHistory();
-  const { theme, settings } = useThemeSettings();
-
+  const { theme, settings, sounds } = useThemeSettings();
   const { ListComponent } = ListRenderProps;
   const { PlayUploadComponents, PlayUploadState } = PlayUploadRenderProps;
   const { MenuExtra } = MenuRenderProps;
@@ -111,7 +107,7 @@ const PlayContent = (props: { renderprops: { ListRenderProps: ListRProps, PlayUp
     <Fragment>
       <Icon popoverText="Click to go to settings page">
         <FcSettings className="App-icon App-icon--settings" onClick={() => {
-          if (settings.sound) swoosh.play()
+          if (settings.sound) sounds.swoosh.play()
           history.push("/settings")
         }} />
       </Icon>
