@@ -8,11 +8,16 @@ switch_off.volume = 0.25;
 switch_on.volume = 0.25;
 
 export default function <T>(initial: T | (() => T), toggles: [T, T], key?: string) {
-  const [toggle, setToggle] = useState(() =>
-    (key ? localStorage.getItem(key) : initial) as T
-  );
+  const [toggle, setToggle] = useState(() => {
+    let value = initial;
+    if (key) {
+      let temp = localStorage.getItem(key);
+      if (temp)
+        value = temp as any;
+    }
+    return value as T
+  });
   const { settings } = useThemeSettings();
-
   return {
     current_toggle: toggle,
     setToggle,
