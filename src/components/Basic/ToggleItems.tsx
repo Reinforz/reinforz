@@ -1,10 +1,14 @@
 import React from "react";
 import { Button } from "@material-ui/core";
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import marked from "marked";
+import createDOMPurify from 'dompurify';
 
 import useCycle from "../../hooks/useCycle";
 import useDisabled from "../../hooks/useDisabled";
 import useThemeSettings from "../../hooks/useThemeSettings";
+
+const DOMPurify = createDOMPurify(window);
 
 export default function (props: { items: string[], name: string, children: any }) {
   const { items, name, children } = props;
@@ -28,7 +32,7 @@ export default function (props: { items: string[], name: string, children: any }
       <TransitionGroup component={null}>
         {Array(current_index).fill(0).map((_, i) =>
           <CSSTransition key={`hint${i}`} classNames={settings.animation ? "fade" : undefined} timeout={{ enter: i * 250 }} appear>
-            <div key={"hint" + i} style={{ backgroundColor: theme.color.dark }} className="ToggleItems-list-item">{(name || "item").charAt(0).toUpperCase() + (name || "item").substr(1)} {i + 1}: {items[i]}</div></CSSTransition>)}
+            <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked(`${i + 1}: ${items[i]}`.toString())) }} key={"hint" + i} style={{ backgroundColor: theme.color.dark }} className="ToggleItems-list-item" /></CSSTransition>)}
       </TransitionGroup>
     </div>,
     ToggleItemsState: {

@@ -49,7 +49,6 @@ export default function Question(props: QuestionProps) {
 
   const QuestionOption = type !== "FIB" && <QuestionOptions changeOption={changeUserAnswers} user_answers={user_answers} question={props.question} />;
   const GeneratedQuestion = generateQuestion();
-
   return <QuestionHints hints={hints}>
     {({ QuestionHintsComponent, QuestionHintsState, QuestionHintsUtils }: QuestionHintsRProps) => {
       const onButtonClick = (time_taken: number) => {

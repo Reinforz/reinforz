@@ -12,6 +12,8 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { TableFooter } from '@material-ui/core';
 import { MdPlayArrow } from "react-icons/md";
+import marked from "marked";
+import createDOMPurify from 'dompurify';
 
 import Icon from "./Icon";
 
@@ -20,6 +22,8 @@ import useThemeSettings from '../../hooks/useThemeSettings';
 import { TableRowsProps, TableProps, ExtendedTheme, TableHeaderProps } from "../../types"
 
 import "./Table.scss";
+
+const DOMPurify = createDOMPurify(window);
 
 const useStyles = makeStyles((theme: ExtendedTheme) => ({
   th: {
@@ -69,9 +73,7 @@ function TableRows(props: TableRowsProps) {
             <div className="Table-row-collapseheader">
               {collapseContent}
             </div>
-            <div className="Table-row-collapsecontent">
-              {content[collapseContent]}
-            </div>
+            <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked(content[collapseContent].toString())) }} className="Table-row-collapsecontent" />
           </div>)}
         </Collapse>
       </TableCell>
