@@ -61,11 +61,9 @@ export default function Quiz(props: QuizProps) {
               break;
             case "Snippet":
             case "FIB":
-              verdict = user_answers.length === answers.length && user_answers.every((user_answer, i) => {
-                const isCorrect = checkTextAnswer(user_answer, answers[i]);
-                if (isCorrect) total_correct_answers += 1;
-                return isCorrect;
-              });
+              verdict = user_answers.length === answers.length;
+              total_correct_answers = checkTextAnswer(user_answers, answers);
+              verdict = total_correct_answers === answers.length;
               break;
           }
 
