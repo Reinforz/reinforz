@@ -116,7 +116,14 @@ const PlayContent = (props: { renderprops: { ListRenderProps: ListRProps, PlayUp
       }}>
         <Pane initialSize={prev_pane_size || "50%"} minSize="30%" maxSize="70%" className="Play-pane">
           {PlayUploadComponents.PlayUpload}
-          <View items={[PlayUploadComponents.PlayErrorLogs, ListComponent]} />
+          <View lskey="PlayLists">
+            {({ ViewComponent, ViewExtra }: any) =>
+              <div {...ViewExtra.ViewContainerProps}>
+                {[PlayUploadComponents.PlayErrorLogs, ListComponent].map((comp, index) => <div key={index} style={ViewExtra.ViewComponentsStyle[index]}>{comp}</div>)}
+                {ViewComponent}
+              </div>
+            }
+          </View>
           <div className="Help" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>Need help, <a style={{ color: theme.palette.text.secondary }} href="http://github.com/Devorein/reinforz" rel="noopener noreferrer" target="_blank">click here</a> to go to the doc</div>
         </Pane>
         <PlayTable quizzes={PlayUploadState.items} />

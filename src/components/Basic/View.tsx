@@ -10,13 +10,13 @@ import useToggle from '../../hooks/useToggle';
 
 import "./View.scss";
 
-export default function (props: { items: JSX.Element[] }) {
+export default function View(props: { children: any, lskey: string }) {
   const { theme } = useThemeSettings();
-  const { toggle: toggleOrder, current_toggle: order } = useToggle<number>(0, [0, 1], "order");
-  const { toggle: toggleLayout, current_toggle: layout } = useToggle<CSS.FlexDirectionProperty>("row", ["row", "column"], "layout");
 
-  return <div className="View" style={{ flexDirection: layout }}>
-    <div className="View-icons">
+  const { toggle: toggleOrder, current_toggle: order } = useToggle<number>(0, [0, 1], props.lskey + "order");
+  const { toggle: toggleLayout, current_toggle: layout } = useToggle<CSS.FlexDirectionProperty>("column", ["row", "column"], props.lskey + "layout");
+  return props.children({
+    ViewComponent: <div className="View-icons">
       <div className="View-icons-layout" style={{ color: theme.palette.text.primary, backgroundColor: theme.color.light }}>
         <Icon popoverText="Click to switch to column layout">
           <BiGridHorizontal style={{ display: layout === "row" ? "initial" : "none" }} onClick={() => {
@@ -41,7 +41,13 @@ export default function (props: { items: JSX.Element[] }) {
           }} style={{ display: layout === "row" ? "initial" : "none" }} />
         </Icon>
       </div>
-    </div>
-    {props.items.map((item, index) => <div style={{ order: index === 0 ? order : "initial", height: layout === "column" ? "50%" : "100%" }} key={index}>{item}</div>)}
-  </div>
+    </div>,
+    ViewExtra: {
+      ViewContainerProps: {
+        style: { flexDirection: layout },
+        className: "View"
+      },
+      ViewComponentsStyle: [{ order, height: layout === "column" ? "50%" : "100%" }, { order: "initial", height: layout === "column" ? "50%" : "100%" }]
+    }
+  })
 }
