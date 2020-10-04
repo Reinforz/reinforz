@@ -128,7 +128,6 @@ const PlayContent = (props: { renderprops: { ListRenderProps: ListRProps, PlayUp
         </Pane>
         <PlayTable quizzes={PlayUploadState.items} />
       </SplitPane>
-
     </Fragment>
   </div>
 }
