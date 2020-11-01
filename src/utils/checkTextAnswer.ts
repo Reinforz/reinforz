@@ -55,7 +55,7 @@ export default function (user_answer: string[], answers: string[]) {
     let isCorrect = false;
     const res = matchAnswer(answers[i], user_answer);
     const alts = res[1];
-    if (!checked_answers.includes(i)) {
+    if (!checked_answers.includes(i) || alts.length === 0) {
       isCorrect = res[0];
       if (isCorrect) checked_answers.push(i);
     }
