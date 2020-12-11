@@ -193,8 +193,8 @@ export interface QuestionInputCommon {
   question: string,
   // Options for the answers, only required for MCQ and MS types
   options?: string[],
-  answers: QuestionAnswersType,
 }
+
 export interface QuestionInput {
   // Question Type, inferred from answers and options
   type?: QuestionType,
@@ -218,11 +218,15 @@ export interface QuestionInput {
   _id?: string,
 }
 
-export interface QuestionInputPartial extends QuestionInputCommon, Partial<QuestionInput> { }
+export interface QuestionInputPartial extends QuestionInputCommon, Partial<QuestionInput> {
+  answers: string | string[]
+}
 
 export type QuestionInputKeys = Array<keyof QuestionInputPartial>;
 
-export interface QuestionInputFull extends Required<QuestionInput & { quiz: QuizIdentifiers }>, QuestionInputCommon { }
+export interface QuestionInputFull extends Required<QuestionInput & { quiz: QuizIdentifiers }>, QuestionInputCommon {
+  answers: string[]
+}
 
 export type QuestionInputsPartial = QuestionInputPartial[];
 export type QuestionInputsFull = QuestionInputFull[];
@@ -235,7 +239,7 @@ export interface HighlighterProps {
 export interface QuestionHighlighterProps extends HighlighterProps {
   type: QuestionType,
   fibRefs: React.MutableRefObject<React.RefObject<HTMLInputElement>[]>,
-  answers: QuestionAnswersType,
+  answers: string[],
   image?: string
 }
 
@@ -281,13 +285,13 @@ export interface IQuestionAnswerNode {
 }
 
 export type QuestionAnswersNodes = Array<IQuestionAnswerNode>
-export type QuestionAnswersType = string[];
+export type QuestionAnswersType = string | string[];
 
 export interface Result {
   user_answers: string[],
   verdict: boolean,
   score: number,
-  answers: QuestionAnswersType,
+  answers: string[],
   question: string,
   type: QuestionType,
   time_allocated: number,

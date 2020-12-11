@@ -52,7 +52,8 @@ export default function PlayUpload(props: { children: any }) {
         reader.onabort = () => reject('file reading was aborted');
         reader.onerror = () => reject('file reading has failed');
         reader.onload = () => {
-          const ext = file.name.split(".")[1];
+          let dot_splitted = file.name.split(".");
+          const ext = dot_splitted[dot_splitted.length - 1];
           const { result } = reader;
           if (result) {
             try {

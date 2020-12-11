@@ -51,11 +51,12 @@ export function generateQuestionInputConfigs(
   }
 
   if (!Array.isArray(res.answers)) {
-    res.answers = (res.answers as any).toString().split(" ");
-    question.answers = (question.answers as any).toString().split(" ");
+    res.answers = [res.answers.toString()] as string[];
+    question.answers = [(question.answers).toString()];
   }
+
   res.answers = res.answers.map(answer => answer.toString());
-  question.answers = question.answers.map(answer => answer.toString());
+  question.answers = (question.answers as string[]).map(answer => answer.toString());
   if (res.options && question.options) {
     res.options = res.options.map(option => option.toString())
     question.options = question.options.map(option => option.toString())
