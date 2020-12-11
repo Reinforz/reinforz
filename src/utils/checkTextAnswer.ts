@@ -1,7 +1,7 @@
 function extractGlobalMods(answer: string) {
   const matches = answer.match(/\((.*?)\)(.+)/);
-  const global_modifiers = matches ? matches[1].split(" ") : [""];
-  const correct_answers = matches ? (matches[2].split(",")) : "";
+  const global_modifiers = matches?.[1].split(" ") ?? [];
+  const correct_answers = matches?.[2].split(",") ?? [answer];
   let alts: number[] = [];
   global_modifiers.forEach((global_mod => {
     const match = global_mod.match(/ALT=(\d)/);

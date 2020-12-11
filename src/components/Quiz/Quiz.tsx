@@ -18,12 +18,12 @@ import useCycle from "../../hooks/useCycle";
 import "./Quiz.scss";
 
 export default function Quiz(props: QuizProps) {
-  const [results, setResults] = useState([] as Result[]);
+  const [results, setResults] = useState([] as Result[]),
+    { theme } = useThemeSettings(),
+    { is_last_item, current_item, getNextIndex, hasEnded, current_index } = useCycle(props.all_questions);
+
   const { all_questions, play_options, selected_quizzes } = props;
   const total_questions = all_questions.length;
-  const { theme } = useThemeSettings();
-
-  const { is_last_item, current_item, getNextIndex, hasEnded, current_index } = useCycle(all_questions);
 
   const generateContent = () => {
     if (!hasEnded) {
@@ -63,7 +63,7 @@ export default function Quiz(props: QuizProps) {
             case "FIB":
               verdict = user_answers.length === answers.length;
               total_correct_answers = checkTextAnswer(user_answers, answers);
-              verdict = total_correct_answers === answers.length;
+              verdict = verdict && total_correct_answers === answers.length;
               break;
           }
 

@@ -150,5 +150,6 @@ export function generateQuestionInputConfigs(
       (res as any).difficulty = "Beginner";
     }
   }
-  return [res as QuestionInputFull, logs] as [QuestionInputFull, { warns: string[], errors: string[] }];
+
+  return [res, logs] as [QuestionInputFull, { warns: string[], errors: string[] }];
 }
