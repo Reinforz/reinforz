@@ -1,0 +1,47 @@
+import { Button } from "@material-ui/core";
+import React from "react";
+
+import Checkbox from "../../../Basic/Checkbox";
+
+import { IPlaySettingsOptionsState, PlaySettingsOptionsProps } from "./types";
+
+import useThemeSettings from "../../../../hooks/useThemeSettings";
+
+const DEFAULT_PLAY_OPTIONS_STATE = { shuffle_options: true, shuffle_quizzes: false, shuffle_questions: true, instant_feedback: true, flatten_mix: false, partial_score: true } as IPlaySettingsOptionsState;
+
+export default function ({ play_settings_options, setPlaySettingsOptions }: PlaySettingsOptionsProps) {
+  const { theme, settings, sounds: { reset } } = useThemeSettings();
+
+  return <div className="PlaySettings-group PlaySettings-group--options">
+    <div className="PlaySettings-group-header PlaySettings-group-header--options" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>Options</div>
+    <div className="PlaySettings-group-content PlaySettings-group-content--options">
+      <Checkbox name={"shuffle_options"} checked={play_settings_options.shuffle_options} onChange={(event, checked) => (setPlaySettingsOptions({
+        ...play_settings_options,
+        [event.target.name]: checked
+      }))} />
+
+      {/* {Object.keys(play_settings_options).map((key, index) => {
+        let isDisabled = false;
+        if (Boolean(key.match(/(shuffle_questions|shuffle_quizzes)/) && play_options.flatten_mix)) isDisabled = true;
+        return <FormControlLabel key={key + index}
+          control={
+            <Checkbox
+              disabled={isDisabled}
+              checked={play_options[key as play_options_keys]}
+              onChange={(event, checked) => {
+                if (key === "flatten_mix") setPlaySettingsOptions({ ...play_options, [event.target.name]: checked, shuffle_questions: checked, shuffle_quizzes: checked })
+                else setPlaySettingsOptions({ ...play_options, [event.target.name]: checked })
+              }}
+            />
+          }
+        />
+      })} */}
+    </div>
+
+    <Button className="PlaySettings-group-button" variant="contained" color="primary" onClick={() => {
+      if (settings.sound) reset.play()
+      setPlaySettingsOptions(DEFAULT_PLAY_OPTIONS_STATE)
+    }}>Reset</Button>
+
+  </div>
+}

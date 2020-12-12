@@ -6,9 +6,11 @@ import useThemeSettings from "../../../hooks/useThemeSettings";
 
 import shuffle from "../../../utils/arrayShuffler";
 
-import { PlaySettingsProps, QuestionDifficulty, QuestionType, IPlaySettingsOptionsState, IPlaySettingsFiltersState, QuizInputFull, QuestionInputFull, IPlaySettingsRProps } from "../../../types";
+import { PlaySettingsProps, QuestionDifficulty, QuestionType, IPlaySettingsFiltersState, QuizInputFull, QuestionInputFull, IPlaySettingsRProps } from "../../../types";
 
 import "./PlaySettings.scss";
+import PlaySettingsOptions from "./PlaySettingsOptions";
+import { IPlaySettingsOptionsState } from "./PlaySettingsOptions/types";
 
 const DEFAULT_PLAY_OPTIONS_STATE = { shuffle_options: true, shuffle_quizzes: false, shuffle_questions: true, instant_feedback: true, flatten_mix: false, partial_score: true } as IPlaySettingsOptionsState;
 
@@ -22,12 +24,11 @@ export default function (props: PlaySettingsProps) {
 
   const { pop_off, pop_on, swoosh, reset, horn, click } = sounds;
 
-  const play_options_state = (PLAY_SETTINGS ? PLAY_SETTINGS.play_options : DEFAULT_PLAY_OPTIONS_STATE) as IPlaySettingsOptionsState;
-  const play_filters_state = (PLAY_SETTINGS ? PLAY_SETTINGS.play_filters : DEFAULT_PLAY_FILTERS_STATE) as IPlaySettingsFiltersState;
+  const play_options_state = (PLAY_SETTINGS?.play_options ?? DEFAULT_PLAY_OPTIONS_STATE) as IPlaySettingsOptionsState;
+  const play_filters_state = (PLAY_SETTINGS?.play_filters ?? DEFAULT_PLAY_FILTERS_STATE) as IPlaySettingsFiltersState;
   const [play_options, setPlaySettingsOptions] = useState(play_options_state);
   const [play_filters, setPlaySettingsFilters] = useState(play_filters_state);
   const { enqueueSnackbar } = useSnackbar();
-  type play_options_keys = keyof IPlaySettingsOptionsState;
   const PlaySettingsState = {
     play_options,
     play_filters,
@@ -49,40 +50,7 @@ export default function (props: PlaySettingsProps) {
       },
       PlaySettingsState,
       PlaySettingsComponent: <div className="PlaySettings" style={{ backgroundColor: theme.color.base, color: theme.palette.text.primary }}>
-        <div className="PlaySettings-group PlaySettings-group--options">
-          <div className="PlaySettings-group-header PlaySettings-group-header--options" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>Options</div>
-          <div className="PlaySettings-group-content PlaySettings-group-content--options">
-            {Object.keys(play_options_state).map((key, index) => {
-              let isDisabled = false;
-              if (Boolean(key.match(/(shuffle_questions|shuffle_quizzes)/) && play_options.flatten_mix)) isDisabled = true;
-              if (props.selectedQuizzes.length <= 1 && key === "shuffle_quizzes") isDisabled = true;
-              return <FormControlLabel key={key + index}
-                control={
-                  <Checkbox
-                    disabled={isDisabled}
-                    checked={play_options[key as play_options_keys]}
-                    onChange={(event, checked) => {
-                      if (key === "flatten_mix") setPlaySettingsOptions({ ...play_options, [event.target.name]: checked, shuffle_questions: checked, shuffle_quizzes: checked })
-                      else setPlaySettingsOptions({ ...play_options, [event.target.name]: checked })
-                    }}
-                    name={key}
-                    color="primary"
-                    onClick={(e) => {
-                      if ((e.target as any).checked && settings.sound)
-                        pop_on.play();
-                      else if (settings.sound) pop_off.play()
-                    }}
-                  />
-                }
-                label={key.split("_").map(k => k.charAt(0).toUpperCase() + k.substr(1)).join(" ")}
-              />
-            })}
-          </div>
-          <Button className="PlaySettings-group-button" variant="contained" color="primary" onClick={() => {
-            if (settings.sound) reset.play()
-            setPlaySettingsOptions(DEFAULT_PLAY_OPTIONS_STATE)
-          }}>Reset</Button>
-        </div>
+        <PlaySettingsOptions play_settings_options={play_options} setPlaySettingsOptions={setPlaySettingsOptions} />
         <div className="PlaySettings-group PlaySettings-group--filters">
           <div className="PlaySettings-group-header PlaySettings-group-header--filters" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>
             Filters
