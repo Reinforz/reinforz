@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { Button } from "@material-ui/core";
-import { useSnackbar } from "notistack";
 
 import useThemeSettings from "../../../hooks/useThemeSettings";
 
@@ -9,26 +7,20 @@ import shuffle from "../../../utils/arrayShuffler";
 import { PlaySettingsProps, QuestionDifficulty, QuestionType, QuizInputFull, QuestionInputFull, IPlaySettingsRProps } from "../../../types";
 
 import "./PlaySettings.scss";
-import PlaySettingsOptions, { IPlaySettingsOptionsState } from "./PlaySettingsOptions";
-import PlaySettingsFilters, { IPlaySettingsFiltersState } from "./PlaySettingsFilters";
-
-const DEFAULT_PLAY_OPTIONS_STATE = { shuffle_options: true, shuffle_quizzes: false, shuffle_questions: true, instant_feedback: true, flatten_mix: false, partial_score: true } as IPlaySettingsOptionsState;
-
-const DEFAULT_PLAY_FILTERS_STATE = { time_allocated: [15, 60], excluded_difficulty: [], excluded_types: [] } as IPlaySettingsFiltersState;
+import PlaySettingsOptions, { IPlaySettingsOptionsState, DEFAULT_PLAY_OPTIONS_STATE } from "./PlaySettingsOptions";
+import PlaySettingsFilters, { IPlaySettingsFiltersState, DEFAULT_PLAY_FILTERS_STATE } from "./PlaySettingsFilters";
+import PlaySettingsButton from "./PlaySettingsButton";
 
 export default function (props: PlaySettingsProps) {
   const { quizzes, selectedQuizzes } = props;
   let PLAY_SETTINGS: any = localStorage.getItem('PLAY_SETTINGS');
   PLAY_SETTINGS = PLAY_SETTINGS ? JSON.parse(PLAY_SETTINGS) : undefined;
-  const { theme, settings, sounds } = useThemeSettings();
 
-  const { swoosh, horn, } = sounds;
+  const { theme } = useThemeSettings();
 
-  const play_options_state = (PLAY_SETTINGS?.play_options ?? DEFAULT_PLAY_OPTIONS_STATE) as IPlaySettingsOptionsState;
-  const play_filters_state = (PLAY_SETTINGS?.play_filters ?? DEFAULT_PLAY_FILTERS_STATE) as IPlaySettingsFiltersState;
-  const [play_options, setPlaySettingsOptions] = useState(play_options_state);
-  const [play_filters, setPlaySettingsFilters] = useState(play_filters_state);
-  const { enqueueSnackbar } = useSnackbar();
+  const [play_options, setPlaySettingsOptions] = useState((PLAY_SETTINGS?.play_options ?? DEFAULT_PLAY_OPTIONS_STATE) as IPlaySettingsOptionsState);
+  const [play_filters, setPlaySettingsFilters] = useState((PLAY_SETTINGS?.play_filters ?? DEFAULT_PLAY_FILTERS_STATE) as IPlaySettingsFiltersState);
+
   const PlaySettingsState = {
     play_options,
     play_filters,
@@ -53,32 +45,7 @@ export default function (props: PlaySettingsProps) {
         <PlaySettingsOptions play_settings_options={play_options} setPlaySettingsOptions={setPlaySettingsOptions} />
         <PlaySettingsFilters play_settings_filters={play_filters} setPlaySettingsFilters={setPlaySettingsFilters} />
         <div className="PlaySettings-total" style={{ backgroundColor: theme.color.dark, color: filtered_questions.length === 0 ? theme.palette.error.main : theme.palette.success.main }}>{filtered_questions.length} Questions</div>
-        <Button disabled={(filtered_questions.length === 0 && selectedQuizzes.length !== 0) || selectedQuizzes.length === 0} className="PlaySettings-button" color="primary" variant="contained" onClick={() => {
-          if (props.selectedQuizzes.length > 0 && filtered_questions.length > 0) {
-            if (settings.sound) swoosh.play();
-            props.setPlaying(true)
-          }
-          else if (filtered_questions.length === 0 && selectedQuizzes.length !== 0) {
-            if (settings.sound) horn.play()
-            enqueueSnackbar('You must have atleast one question to play', {
-              variant: 'error',
-              anchorOrigin: {
-                vertical: 'bottom',
-                horizontal: 'center',
-              },
-            })
-          }
-          else if (selectedQuizzes.length === 0) {
-            if (settings.sound) horn.play()
-            enqueueSnackbar('You must have atleast one quiz selected', {
-              variant: 'error',
-              anchorOrigin: {
-                vertical: 'bottom',
-                horizontal: 'center',
-              },
-            })
-          }
-        }}>Start</Button>
+        <PlaySettingsButton filtered_questions={filtered_questions} selected_quizzes={props.selectedQuizzes} setPlaying={props.setPlaying} />
       </div>
     } as IPlaySettingsRProps)
   );

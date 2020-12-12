@@ -7,7 +7,7 @@ import { IPlaySettingsOptionsState, PlaySettingsOptionsProps } from "./types";
 
 import useThemeSettings from "../../../../hooks/useThemeSettings";
 
-const DEFAULT_PLAY_OPTIONS_STATE = { shuffle_options: true, shuffle_quizzes: false, shuffle_questions: true, instant_feedback: true, flatten_mix: false, partial_score: true } as IPlaySettingsOptionsState;
+const PLAY_OPTIONS_STATE = { shuffle_options: true, shuffle_quizzes: false, shuffle_questions: true, instant_feedback: true, flatten_mix: false, partial_score: true } as IPlaySettingsOptionsState;
 
 export default function ({ play_settings_options, setPlaySettingsOptions }: PlaySettingsOptionsProps) {
   const { theme, settings, sounds: { reset } } = useThemeSettings();
@@ -50,10 +50,12 @@ export default function ({ play_settings_options, setPlaySettingsOptions }: Play
 
     <Button className="PlaySettings-group-button" variant="contained" color="primary" onClick={() => {
       if (settings.sound) reset.play()
-      setPlaySettingsOptions(DEFAULT_PLAY_OPTIONS_STATE)
+      setPlaySettingsOptions(PLAY_OPTIONS_STATE)
     }}>Reset</Button>
 
   </div>
 }
+
+export const DEFAULT_PLAY_OPTIONS_STATE = JSON.parse(JSON.stringify(PLAY_OPTIONS_STATE)) as IPlaySettingsOptionsState
 
 export * from "./types";

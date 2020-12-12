@@ -4,7 +4,7 @@ import useThemeSettings from "../../../../hooks/useThemeSettings";
 import { QuestionDifficulty, QuestionType } from "../../../../types";
 import { IPlaySettingsFiltersState, PlaySettingsFiltersProps } from "./types";
 
-const DEFAULT_PLAY_FILTERS_STATE = { time_allocated: [15, 60], excluded_difficulty: [], excluded_types: [] } as IPlaySettingsFiltersState;
+const PLAY_FILTERS_STATE = { time_allocated: [15, 60], excluded_difficulty: [], excluded_types: [] } as IPlaySettingsFiltersState;
 
 export default function ({ play_settings_filters, setPlaySettingsFilters }: PlaySettingsFiltersProps) {
   const { theme, settings, sounds: { reset, click, pop_off, pop_on } } = useThemeSettings();
@@ -56,9 +56,10 @@ export default function ({ play_settings_filters, setPlaySettingsFilters }: Play
     </div>
     <Button className="PlaySettings-group-button" variant="contained" color="primary" onClick={() => {
       if (settings.sound) reset.play()
-      setPlaySettingsFilters(DEFAULT_PLAY_FILTERS_STATE)
+      setPlaySettingsFilters(PLAY_FILTERS_STATE)
     }}>Reset</Button>
   </div>
 }
 
 export * from "./types"
+export const DEFAULT_PLAY_FILTERS_STATE = JSON.parse(JSON.stringify(PLAY_FILTERS_STATE)) as IPlaySettingsFiltersState
