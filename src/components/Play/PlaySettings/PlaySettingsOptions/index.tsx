@@ -20,22 +20,32 @@ export default function ({ play_settings_options, setPlaySettingsOptions }: Play
         [event.target.name]: checked
       }))} />
 
-      {/* {Object.keys(play_settings_options).map((key, index) => {
-        let isDisabled = false;
-        if (Boolean(key.match(/(shuffle_questions|shuffle_quizzes)/) && play_options.flatten_mix)) isDisabled = true;
-        return <FormControlLabel key={key + index}
-          control={
-            <Checkbox
-              disabled={isDisabled}
-              checked={play_options[key as play_options_keys]}
-              onChange={(event, checked) => {
-                if (key === "flatten_mix") setPlaySettingsOptions({ ...play_options, [event.target.name]: checked, shuffle_questions: checked, shuffle_quizzes: checked })
-                else setPlaySettingsOptions({ ...play_options, [event.target.name]: checked })
-              }}
-            />
-          }
-        />
-      })} */}
+      <Checkbox name={"shuffle_quizzes"} checked={play_settings_options.shuffle_quizzes} disabled={play_settings_options.flatten_mix} onChange={(event, checked) => (setPlaySettingsOptions({
+        ...play_settings_options,
+        [event.target.name]: checked
+      }))} />
+
+      <Checkbox name={"shuffle_questions"} checked={play_settings_options.shuffle_questions} disabled={play_settings_options.flatten_mix} onChange={(event, checked) => (setPlaySettingsOptions({
+        ...play_settings_options,
+        [event.target.name]: checked
+      }))} />
+
+      <Checkbox name={"instant_feedback"} checked={play_settings_options.instant_feedback} onChange={(event, checked) => (setPlaySettingsOptions({
+        ...play_settings_options,
+        [event.target.name]: checked
+      }))} />
+
+      <Checkbox name={"flatten_mix"} checked={play_settings_options.flatten_mix} onChange={(event, checked) => (setPlaySettingsOptions({
+        ...play_settings_options,
+        shuffle_questions: checked,
+        shuffle_quizzes: checked,
+        [event.target.name]: checked
+      }))} />
+
+      <Checkbox name={"disable_timer"} checked={play_settings_options.disable_timer} onChange={(event, checked) => (setPlaySettingsOptions({
+        ...play_settings_options,
+        [event.target.name]: checked
+      }))} />
     </div>
 
     <Button className="PlaySettings-group-button" variant="contained" color="primary" onClick={() => {
