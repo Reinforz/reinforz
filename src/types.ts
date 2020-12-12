@@ -1,6 +1,7 @@
 import { Language } from "prism-react-renderer";
 import { ThemeOptions, Theme } from '@material-ui/core/styles';
 import { IPlaySettingsOptionsState } from "./components/Play/PlaySettings/PlaySettingsOptions/types";
+import { IPlaySettingsFiltersState } from "./components/Play/PlaySettings/PlaySettingsFilters/types";
 
 // Basic Components
 
@@ -119,12 +120,6 @@ export interface PlaySettingsProps {
   setPlaying: (isPlaying: boolean) => any,
   quizzes: QuizInputFull[]
 }
-export interface IPlaySettingsFiltersState {
-  time_allocated: [number, number],
-  excluded_difficulty: QuestionDifficulty[],
-  excluded_types: QuestionType[],
-}
-
 export interface IPlaySettingsState {
   play_options: IPlaySettingsOptionsState,
   play_filters: IPlaySettingsFiltersState,

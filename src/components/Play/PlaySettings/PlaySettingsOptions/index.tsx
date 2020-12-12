@@ -55,3 +55,5 @@ export default function ({ play_settings_options, setPlaySettingsOptions }: Play
 
   </div>
 }
+
+export * from "./types";
