@@ -1,1 +1,1 @@
-export * from "./OnoffSwitch";
+export * from "./OnoffSwitch"

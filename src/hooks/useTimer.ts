@@ -1,8 +1,8 @@
 import { useEffect, useState, useContext } from "react";
 
-import SettingsContext from "../context/SettingsContext";
+import { SettingsState } from "../components/Settings";
 
-import { ISettings } from "../types";
+import SettingsContext from "../context/SettingsContext";
 
 const tic = new Audio(process.env.PUBLIC_URL + "/sounds/tic.mp3");
 tic.volume = 0.5;
@@ -10,7 +10,7 @@ tic.volume = 0.5;
 export default function (limit: number, onTimerEnd: any) {
   const [timeout, setTimeout] = useState(limit);
 
-  const settings = useContext(SettingsContext) as ISettings;
+  const settings = useContext(SettingsContext) as SettingsState;
 
   const displayTime = () => {
     const min = Math.floor(timeout / 60);

@@ -11,10 +11,10 @@ import SettingsContext from "./context/SettingsContext";
 
 import generateTheme from "./utils/theme";
 
-import { ExtendedTheme, ISettings } from './types';
+import { ExtendedTheme } from './types';
 
 import './index.scss';
-import Settings from './components/Settings/Settings';
+import Settings, { SettingsState } from './components/Settings';
 
 const App = () => {
   let local_settings: any = localStorage.getItem("SETTINGS");
@@ -24,7 +24,7 @@ const App = () => {
   local_settings.hovertips = local_settings.hovertips ? (local_settings.hovertips === "true" ? true : false) : true;
   local_settings.theme = local_settings.theme || "dark";
 
-  const [settings, setSettings] = useState(local_settings as ISettings);
+  const [settings, setSettings] = useState(local_settings as SettingsState);
   const generatedTheme = generateTheme(settings.theme) as ExtendedTheme;
 
   return <ThemeProvider theme={generatedTheme}>

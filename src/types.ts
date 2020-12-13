@@ -322,17 +322,6 @@ export interface ExtendedTheme extends Theme {
 }
 
 export type AllowedTheme = "dark" | "light"
-export interface ISettings {
-  theme: AllowedTheme,
-  animation: boolean,
-  sound: boolean,
-  hovertips: boolean
-}
-export interface SettingsProps {
-  settings: ISettings,
-  setSettings: (settings: ISettings) => any
-}
-
 export interface IPlayContext {
   setPlaying: (isPlaying: boolean) => void,
   setQuizzes: (quizzes: QuizInputFull[]) => void,
