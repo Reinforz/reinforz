@@ -3,14 +3,14 @@ import { Button, } from "@material-ui/core";
 import marked from "marked";
 import createDOMPurify from 'dompurify';
 
-import Timer from "../Basic/Timer";
+import Timer, { TimerRProps } from "../Basic/Timer";
 import QuestionHighlighter from "./QuestionHighlighter/QuestionHighlighter";
 import QuestionOptions from "./QuestionOptions/QuestionOptions";
 import QuestionHints from "./QuestionHints/QuestionHints";
 
 import useThemeSettings from "../../hooks/useThemeSettings";
 
-import { TimerRProps, QuestionProps, QuestionHintsRProps } from "../../types";
+import { QuestionProps, QuestionHintsRProps } from "../../types";
 
 import "./Question.scss";
 import { HotKeys } from "react-hotkeys";
@@ -55,6 +55,7 @@ export default function Question(props: QuestionProps) {
         if (settings.sound) sounds.click.play();
         props.changeCounter(type !== "FIB" ? user_answers.filter(user_answer => user_answer !== "") : fibRefs.current.map(fibRef => fibRef?.current?.value ?? ""), time_allocated - time_taken, QuestionHintsState.hints_used)
       }
+
       return <Timer timeout={time_allocated} onTimerEnd={() => {
         onButtonClick(time_allocated)
       }}>

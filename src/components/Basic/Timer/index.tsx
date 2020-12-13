@@ -1,11 +1,12 @@
 import { useTheme } from "@material-ui/styles";
 import React from "react";
 
-import useTimer from "../../hooks/useTimer";
+import useTimer from "../../../hooks/useTimer";
 
-import { TimerProps, TimerRProps, ExtendedTheme } from "../../types";
+import { ExtendedTheme } from "../../../types";
 
-import "./Timer.scss";
+import "./style.scss";
+import { TimerRProps, TimerProps } from "./types";
 
 export default function (props: TimerProps) {
 
@@ -18,3 +19,5 @@ export default function (props: TimerProps) {
     TimerState: { timeout },
   } as TimerRProps);
 }
+
+export * from "./types"

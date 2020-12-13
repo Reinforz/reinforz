@@ -1,31 +1,14 @@
 import React from 'react';
 import { BsMoon, BsSun } from 'react-icons/bs';
-import { Button, FormControlLabel, FormGroup, InputLabel, Radio, RadioGroup, Switch, withStyles } from '@material-ui/core';
+import { Button, FormControlLabel, FormGroup, InputLabel, Radio, RadioGroup } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
-import { green, red } from '@material-ui/core/colors';
 
+import { OnoffSwitch } from "../Basic";
 import useThemeSettings from '../../hooks/useThemeSettings';
 
 import { SettingsProps } from '../../types';
 
 import "./Settings.scss";
-
-const OnOffSwitch = withStyles({
-  switchBase: {
-    color: red[500],
-
-    '&$checked': {
-      color: green[500],
-    },
-    '&$checked + $track': {
-      backgroundColor: green[500],
-    },
-  },
-  'track': {
-    backgroundColor: red[500],
-  },
-  checked: {},
-})(Switch);
 
 function Settings(props: SettingsProps) {
   const { settings, setSettings } = props;
@@ -46,9 +29,9 @@ function Settings(props: SettingsProps) {
         </RadioGroup>
         <FormGroup row className="Settings-content-group" style={{ backgroundColor: THEME.color.base }}>
           <InputLabel className="Settings-content-group-label">Animation</InputLabel>
-          <OnOffSwitch
+          <OnoffSwitch
             checked={settings.animation}
-            onChange={(e) => {
+            onChange={() => {
               if (!animation && settings.sound) switch_on.play();
               else if (animation && settings.sound) switch_off.play();
               setSettings({ ...settings, animation: !animation })
@@ -57,9 +40,9 @@ function Settings(props: SettingsProps) {
         </FormGroup>
         <FormGroup row className="Settings-content-group" style={{ backgroundColor: THEME.color.base }}>
           <InputLabel className="Settings-content-group-label">Sound</InputLabel>
-          <OnOffSwitch
+          <OnoffSwitch
             checked={settings.sound}
-            onChange={(e) => {
+            onChange={() => {
               if (!sound && settings.sound) switch_on.play();
               else if (sound && settings.sound) switch_off.play();
               setSettings({ ...settings, sound: !sound })
@@ -68,9 +51,9 @@ function Settings(props: SettingsProps) {
         </FormGroup>
         <FormGroup row className="Settings-content-group" style={{ backgroundColor: THEME.color.base }}>
           <InputLabel className="Settings-content-group-label">Hovertips</InputLabel>
-          <OnOffSwitch
+          <OnoffSwitch
             checked={settings.hovertips}
-            onChange={(e) => {
+            onChange={() => {
               if (!hovertips && settings.sound) switch_on.play();
               else if (hovertips && settings.sound) switch_off.play();
               setSettings({ ...settings, hovertips: !hovertips })
