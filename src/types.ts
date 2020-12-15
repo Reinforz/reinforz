@@ -277,13 +277,6 @@ export interface Result {
   weight: number
 }
 
-export interface ReportProps {
-  results: Result[],
-  all_questions_map: Record<string, QuestionInputFull>,
-  selected_quizzes: QuizIdentifiers[],
-  setResults: (results: any[]) => any
-}
-
 export interface IReportFilterState {
   time_taken: [number, number],
   verdict: boolean | 'mixed',

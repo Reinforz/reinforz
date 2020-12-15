@@ -4,7 +4,7 @@ import shortid from "shortid";
 import clone from "just-clone";
 
 import Question from "../Question/Question";
-import Report from "../Report/Report";
+import Report from "../Report";
 import Stats from "../Basic/Stats";
 
 import shuffle from "../../utils/arrayShuffler";

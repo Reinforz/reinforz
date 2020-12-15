@@ -1,10 +1,11 @@
 import React, { useCallback, useState } from 'react';
 import GetAppIcon from '@material-ui/icons/GetApp';
-import { InputLabel, FormControl, Select, MenuItem } from '@material-ui/core';
 import { safeDump } from 'js-yaml';
 import clone from 'just-clone';
 
 import Icon from '../../Basic/Icon';
+
+import { CustomSelect } from '../../Basic';
 
 import useThemeSettings from '../../../hooks/useThemeSettings';
 
@@ -47,31 +48,9 @@ export default function (props: ReportExportProps) {
 
   return (
     <div className="ReportExport">
-      <FormControl >
-        <InputLabel >Export Type</InputLabel>
-        <Select
-          value={export_type}
-          onChange={(e) => {
-            if (settings.sound) click.play()
-            setExportType((e.target as any).value)
-          }}
-        >
-          <MenuItem value={'Original'}>Original</MenuItem>
-          <MenuItem value={'Report'}>Report</MenuItem>
-        </Select>
-      </FormControl>
-      <FormControl >
-        <InputLabel >Export As</InputLabel>
-        <Select
-          value={export_as}
-          onChange={(e) => {
-            if (settings.sound) click.play()
-            setExportAs((e.target as any).value)
-          }}
-        >
-          {['YAML', 'JSON'].map(((type, index) => <MenuItem value={type} key={type + index}>{type}</MenuItem>))}
-        </Select>
-      </FormControl>
+      <CustomSelect label={"Export Type"} value={export_type} onChange={(e) => setExportType((e.target as any).value)} items={['Original', 'Report']} />
+      <CustomSelect label={"Export As"} value={export_as} onChange={(e) => setExportAs((e.target as any).value)} items={['YAML', 'JSON']} />
+
       <Icon popoverText={`Export ${export_type} as ${export_as}`} >
         <GetAppIcon style={{ fill: theme.color.opposite_dark }} onClick={() => {
           if (settings.sound) click.play()

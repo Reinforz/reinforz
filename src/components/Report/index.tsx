@@ -12,9 +12,10 @@ import PlayContext from '../../context/PlayContext';
 
 import useThemeSettings from '../../hooks/useThemeSettings';
 
-import { IPlayContext, QuestionInputFull, QuizInputFull, ReportFilterRProps, ReportProps, MenuRProps } from "../../types";
+import { IPlayContext, QuestionInputFull, QuizInputFull, ReportFilterRProps, MenuRProps } from "../../types";
 
-import "./Report.scss";
+import "./style.scss";
+import { ReportProps } from './types';
 
 const accumulator = (header: string, contents: Array<any>, total_weights: number) => {
   switch (header) {
@@ -49,7 +50,6 @@ const transformValue = (header: string, content: any) => {
 }
 
 export default function (props: ReportProps) {
-
   const { settings, sounds } = useThemeSettings(),
     history = useHistory(),
     PlayContextValue = useContext(PlayContext) as IPlayContext;
@@ -111,3 +111,5 @@ export default function (props: ReportProps) {
     </div>
   );
 }
+
+export * from "./types"
