@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { InputLabel, FormGroup, TextField, RadioGroup, FormControlLabel, Radio, Checkbox, Button, Select, MenuItem } from '@material-ui/core';
+import { InputLabel, FormGroup, TextField, FormControlLabel, Checkbox, Button, Select, MenuItem } from '@material-ui/core';
 
 import useThemeSettings from "../../../hooks/useThemeSettings";
 
 import { IReportFilterState, QuestionDifficulty, QuestionType, QuizIdentifiers } from "../../../types";
 
 import "./ReportFilter.scss";
+import { CustomRadio } from "../../Basic/Radio";
 
 const DEFAULT_REPORT_FILTER_STATE = { time_taken: [0, 60], verdict: 'mixed', hints_used: 'any', excluded_types: [], excluded_difficulty: [], excluded_quizzes: [], excluded_columns: [] } as IReportFilterState;
 
@@ -17,7 +18,7 @@ export default function (props: { selected_quizzes: QuizIdentifiers[], children:
   let REPORT_FILTERS: any = localStorage.getItem('REPORT_FILTERS');
   REPORT_FILTERS = REPORT_FILTERS ? JSON.parse(REPORT_FILTERS) : undefined;
 
-  const { settings, sounds: { click, reset, switch_on, pop_off, pop_on } } = useThemeSettings();
+  const { settings, sounds: { click, reset, pop_off, pop_on } } = useThemeSettings();
 
   const [report_filter_state, setReportFilterState] = useState((REPORT_FILTERS ? REPORT_FILTERS : DEFAULT_REPORT_FILTER_STATE) as IReportFilterState);
   return props.children({
@@ -34,20 +35,10 @@ export default function (props: { selected_quizzes: QuizIdentifiers[], children:
             setReportFilterState({ ...report_filter_state, time_taken: [report_filter_state.time_taken[0], (e.target as any).value,] })
           }} />
         </FormGroup>
-        <RadioGroup name="verdict" value={report_filter_state.verdict} >
-          <InputLabel>Verdict</InputLabel>
-          {[true, false, "mixed"].map((verdict, index) => <FormControlLabel onClick={(e: any) => {
-            if (settings.sound) switch_on.play();
-            setReportFilterState({ ...report_filter_state, verdict: e.target.value })
-          }} key={verdict.toString() + index} value={verdict.toString()} control={<Radio color="primary" />} label={verdict.toString()} />)}
-        </RadioGroup>
-        <RadioGroup name="hints_used" value={report_filter_state.hints_used} >
-          <InputLabel>Hints Used</InputLabel>
-          {["0", "1", "2", "any"].map((hints, index) => <FormControlLabel onClick={(e: any) => {
-            if (settings.sound) switch_on.play();
-            setReportFilterState({ ...report_filter_state, hints_used: e.target.value })
-          }} key={hints + index} value={hints} control={<Radio color="primary" />} label={hints} />)}
-        </RadioGroup>
+
+        <CustomRadio name={"verdict"} items={[true, false, "mixed"]} state={report_filter_state} setState={setReportFilterState} />
+        <CustomRadio name={"hints_used"} items={["0", "1", "2", "any"]} state={report_filter_state} setState={setReportFilterState} />
+
         <FormGroup>
           <InputLabel>Exluded Difficulty</InputLabel>
           {['Beginner', 'Intermediate', 'Advanced'].map((difficulty, index) => <FormControlLabel key={difficulty + index} label={difficulty} control={<Checkbox checked={report_filter_state.excluded_difficulty.includes(difficulty as QuestionDifficulty)} name={difficulty} onChange={(e) => {

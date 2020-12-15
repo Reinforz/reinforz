@@ -11,7 +11,7 @@ import useThemeSettings from '../../../hooks/useThemeSettings';
 
 import { download } from "../../../utils";
 
-import { ReportExportProps } from "./types";
+import { ReportExportProps, TReportExportAs, TReportExportType } from "./types";
 
 import "./style.scss"
 
@@ -21,8 +21,8 @@ export default function (props: ReportExportProps) {
   REPORT_EXPORT = REPORT_EXPORT ? JSON.parse(REPORT_EXPORT) : undefined;
   const { theme, settings, sounds: { click } } = useThemeSettings();
 
-  const [export_type, setExportType] = useState((REPORT_EXPORT ? REPORT_EXPORT.export_type : 'Original') as string);
-  const [export_as, setExportAs] = useState((REPORT_EXPORT ? REPORT_EXPORT.export_as : 'YAML') as string);
+  const [export_type, setExportType] = useState((REPORT_EXPORT ? REPORT_EXPORT.export_type : 'Original') as TReportExportType);
+  const [export_as, setExportAs] = useState((REPORT_EXPORT ? REPORT_EXPORT.export_as : 'YAML') as TReportExportAs);
 
   const cloned_download = useCallback((type) => {
     Object.values(filtered_quizzes).forEach(quiz => {
@@ -34,6 +34,7 @@ export default function (props: ReportExportProps) {
       type === "yaml" ? download(`${quiz.subject} - ${quiz.title}.yaml`, safeDump(quiz)) : download(`${quiz.subject} - ${quiz.title}.json`, JSON.stringify(quiz, undefined, 2))
     })
   }, [filtered_quizzes])
+
   const downloadfiles = () => {
     if (export_as === "JSON") {
       if (export_type === "Report") download(`Report${Date.now()}.json`, JSON.stringify(filtered_results, undefined, 2));
