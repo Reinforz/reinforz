@@ -10,7 +10,7 @@ import useThemeSettings from '../../../hooks/useThemeSettings';
 
 import { PlayErrorLog, PlayErrorLogState, QuestionInputFull, QuizInputPartial } from '../../../types';
 
-import { generateQuestionInputConfigs } from '../../../utils/generateConfigs';
+import { generateQuestionInputConfigs } from '../../../utils';
 
 import "./PlayUpload.scss";
 

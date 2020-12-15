@@ -1,7 +1,7 @@
 import { useTheme } from "@material-ui/styles";
 import React from "react";
 
-import flattenObj from "../../utils/flattenObj";
+import { flattenObj } from "../../utils";
 
 import { ExtendedTheme, StatsProps } from "../../types";
 

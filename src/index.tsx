@@ -9,7 +9,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import Play from "./components/Play/Play"
 import SettingsContext from "./context/SettingsContext";
 
-import generateTheme from "./utils/theme";
+import { generateTheme } from "./utils";
 
 import { ExtendedTheme } from './types';
 

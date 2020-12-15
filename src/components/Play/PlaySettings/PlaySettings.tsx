@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import useThemeSettings from "../../../hooks/useThemeSettings";
 
-import shuffle from "../../../utils/arrayShuffler";
+import { arrayShuffler } from "../../../utils";
 
 import { PlaySettingsProps, QuestionDifficulty, QuestionType, QuizInputFull, QuestionInputFull, IPlaySettingsRProps } from "../../../types";
 
@@ -28,8 +28,8 @@ export default function (props: PlaySettingsProps) {
 
   let filtered_quizzes = quizzes.filter(quiz => selectedQuizzes.includes(quiz._id)) as QuizInputFull[];
   const filtered_questions: QuestionInputFull[] = [];
-  if (play_options.shuffle_quizzes && !play_options.flatten_mix) filtered_quizzes = shuffle(filtered_quizzes);
-  if (play_options.shuffle_questions && !play_options.flatten_mix) filtered_quizzes.forEach(quiz => quiz.questions = shuffle(quiz.questions));
+  if (play_options.shuffle_quizzes && !play_options.flatten_mix) filtered_quizzes = arrayShuffler(filtered_quizzes);
+  if (play_options.shuffle_questions && !play_options.flatten_mix) filtered_quizzes.forEach(quiz => quiz.questions = arrayShuffler(quiz.questions));
   filtered_quizzes.forEach(quiz => {
     filtered_questions.push(...quiz.questions.filter(question => !play_filters.excluded_difficulty.includes(question.difficulty as QuestionDifficulty) && !play_filters.excluded_types.includes(question.type as QuestionType) && play_filters.time_allocated[0] <= question.time_allocated && play_filters.time_allocated[1] >= question.time_allocated));
   });

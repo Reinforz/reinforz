@@ -292,11 +292,6 @@ export interface ReportFilterRProps {
   ReportFilter: JSX.Element
 }
 
-export interface ReportExportProps {
-  filtered_results: Result[],
-  filtered_quizzes: QuizInputFull[]
-}
-
 type color = {
   dark: string,
   base: string,

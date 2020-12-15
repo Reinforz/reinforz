@@ -7,8 +7,7 @@ import Question from "../Question/Question";
 import Report from "../Report";
 import Stats from "../Basic/Stats";
 
-import shuffle from "../../utils/arrayShuffler";
-import checkTextAnswer from "../../utils/checkTextAnswer";
+import { arrayShuffler, checkTextAnswer } from "../../utils";
 
 import { Result, QuizProps, QuestionInputFull } from "../../types";
 
@@ -36,7 +35,7 @@ export default function Quiz(props: QuizProps) {
       const options_md5_map: Record<string, number> = {};
       if (current_question.options) {
         current_question.options.forEach((option, index) => options_md5_map[md5(option.toString())] = index);
-        current_question.options = play_options.shuffle_options ? shuffle(current_question.options) : current_question.options;
+        current_question.options = play_options.shuffle_options ? arrayShuffler(current_question.options) : current_question.options;
       }
       let total_correct_answers = 0;
       return <Fragment>

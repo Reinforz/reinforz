@@ -9,11 +9,11 @@ import { CustomSelect } from '../../Basic';
 
 import useThemeSettings from '../../../hooks/useThemeSettings';
 
-import download from "../../../utils/download";
+import { download } from "../../../utils";
 
-import { ReportExportProps } from "../../../types";
+import { ReportExportProps } from "./types";
 
-import "./ReportExport.scss"
+import "./style.scss"
 
 export default function (props: ReportExportProps) {
   const { filtered_results, filtered_quizzes } = props;
@@ -61,3 +61,4 @@ export default function (props: ReportExportProps) {
   );
 }
 
+export * from "./types";

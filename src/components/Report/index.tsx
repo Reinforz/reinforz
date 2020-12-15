@@ -5,7 +5,7 @@ import clone from 'just-clone';
 
 import Table from "../Basic/Table";
 import ReportFilter from './ReportFilter/ReportFilter';
-import ReportExport from './ReportExport/ReportExport';
+import ReportExport from './ReportExport';
 import Menu from "../Basic/Menu";
 
 import PlayContext from '../../context/PlayContext';
