@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { InputLabel, FormGroup, TextField, FormControlLabel, Checkbox, Button, Select, MenuItem } from '@material-ui/core';
+import { InputLabel, FormGroup, TextField, FormControlLabel, Checkbox, Select, MenuItem } from '@material-ui/core';
 
 import useThemeSettings from "../../../hooks/useThemeSettings";
 
 import { IReportFilterState, QuestionDifficulty, QuestionType, QuizIdentifiers } from "../../../types";
 
 import "./ReportFilter.scss";
-import { CustomRadio } from "../../Basic/Radio";
+import { ResetButton, CustomRadio } from "../../Basic";
 
 const DEFAULT_REPORT_FILTER_STATE = { time_taken: [0, 60], verdict: 'mixed', hints_used: 'any', excluded_types: [], excluded_difficulty: [], excluded_quizzes: [], excluded_columns: [] } as IReportFilterState;
 
@@ -18,7 +18,7 @@ export default function (props: { selected_quizzes: QuizIdentifiers[], children:
   let REPORT_FILTERS: any = localStorage.getItem('REPORT_FILTERS');
   REPORT_FILTERS = REPORT_FILTERS ? JSON.parse(REPORT_FILTERS) : undefined;
 
-  const { settings, sounds: { click, reset, pop_off, pop_on } } = useThemeSettings();
+  const { settings, sounds: { click, pop_off, pop_on } } = useThemeSettings();
 
   const [report_filter_state, setReportFilterState] = useState((REPORT_FILTERS ? REPORT_FILTERS : DEFAULT_REPORT_FILTER_STATE) as IReportFilterState);
   return props.children({
@@ -53,6 +53,7 @@ export default function (props: { selected_quizzes: QuizIdentifiers[], children:
           }}
             color="primary" />} />)}
         </FormGroup>
+
         <FormGroup>
           <InputLabel>Exluded Type</InputLabel>
           {['FIB', 'MS', 'MCQ', "Snippet"].map((type, index) => <FormControlLabel key={type + index} label={type} control={<Checkbox checked={report_filter_state.excluded_types.includes(type as QuestionType)} name={type} onChange={(e) => {
@@ -67,6 +68,7 @@ export default function (props: { selected_quizzes: QuizIdentifiers[], children:
           }}
             color="primary" />} />)}
         </FormGroup>
+
         <FormGroup>
           <InputLabel>Exluded Quizzes</InputLabel>
           <Select value={report_filter_state.excluded_quizzes}
@@ -80,6 +82,7 @@ export default function (props: { selected_quizzes: QuizIdentifiers[], children:
             )}
           </Select>
         </FormGroup>
+
         <FormGroup>
           <InputLabel>Exluded Columns</InputLabel>
           <Select value={report_filter_state.excluded_columns}
@@ -94,11 +97,11 @@ export default function (props: { selected_quizzes: QuizIdentifiers[], children:
             )}
           </Select>
         </FormGroup>
-        <Button variant="contained" color="primary" onClick={() => {
-          if (settings.sound) reset.play()
+
+        <ResetButton onClick={() => {
           setReportFilterState(DEFAULT_REPORT_FILTER_STATE)
-        }
-        } style={{ width: "100%" }}>Reset</Button>
+        }} />
+
       </div>,
     ReportFilterState: report_filter_state
   })
