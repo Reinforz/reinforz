@@ -5,8 +5,8 @@ import useThemeSettings from "../../../hooks/useThemeSettings";
 
 import { IReportFilterState, QuestionDifficulty, QuestionType, QuizIdentifiers } from "../../../types";
 
-import "./ReportFilter.scss";
-import { ResetButton, CustomRadio } from "../../Basic";
+import "./style.scss";
+import { MultiCheckbox, ResetButton, CustomRadio } from "../../Basic";
 
 const DEFAULT_REPORT_FILTER_STATE = { time_taken: [0, 60], verdict: 'mixed', hints_used: 'any', excluded_types: [], excluded_difficulty: [], excluded_quizzes: [], excluded_columns: [] } as IReportFilterState;
 

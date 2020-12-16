@@ -4,9 +4,9 @@ import { useHistory } from 'react-router-dom';
 import clone from 'just-clone';
 
 import Table from "../Basic/Table";
-import ReportFilter from './ReportFilter/ReportFilter';
+import ReportFilter from './ReportFilter';
 import ReportExport from './ReportExport';
-import Menu from "../Basic/Menu";
+import Menu from "../Basic/Menu"
 
 import PlayContext from '../../context/PlayContext';
 

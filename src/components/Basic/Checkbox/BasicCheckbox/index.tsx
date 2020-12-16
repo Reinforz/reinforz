@@ -1,14 +1,12 @@
-import { FormControlLabel, Checkbox, CheckboxProps } from "@material-ui/core";
+import { FormControlLabel, Checkbox } from "@material-ui/core";
 import React from "react";
-import useThemeSettings from "../../hooks/useThemeSettings";
+import useThemeSettings from "../../../../hooks/useThemeSettings";
 
-interface ICheckboxProps extends CheckboxProps {
-  disabled?: boolean,
-  checked: boolean,
-  name: string,
-}
+import { BasicCheckboxProps } from "./types";
 
-export default function ({ onChange, name, checked, disabled = false }: ICheckboxProps) {
+import "./style.scss";
+
+export function BasicCheckbox({ onChange, name, checked, disabled = false }: BasicCheckboxProps) {
   const { settings, sounds: { pop_off, pop_on } } = useThemeSettings();
 
   const label = name.split("_").map(k => k.charAt(0).toUpperCase() + k.substr(1)).join(" ");
@@ -21,3 +19,5 @@ export default function ({ onChange, name, checked, disabled = false }: ICheckbo
     }} onChange={onChange} />
   } label={label} />
 }
+
+export * from "./types"
