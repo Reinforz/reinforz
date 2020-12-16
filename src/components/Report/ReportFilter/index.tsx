@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { InputLabel, FormGroup, TextField, FormControlLabel, Checkbox, Select, MenuItem } from '@material-ui/core';
+import { InputLabel, FormGroup, TextField, Select, MenuItem } from '@material-ui/core';
 
 import useThemeSettings from "../../../hooks/useThemeSettings";
 
-import { IReportFilterState, QuestionDifficulty, QuestionType, QuizIdentifiers } from "../../../types";
+import { IReportFilterState, QuizIdentifiers } from "../../../types";
 
 import "./style.scss";
 import { MultiCheckbox, ResetButton, CustomRadio } from "../../Basic";
@@ -18,7 +18,7 @@ export default function (props: { selected_quizzes: QuizIdentifiers[], children:
   let REPORT_FILTERS: any = localStorage.getItem('REPORT_FILTERS');
   REPORT_FILTERS = REPORT_FILTERS ? JSON.parse(REPORT_FILTERS) : undefined;
 
-  const { settings, sounds: { click, pop_off, pop_on } } = useThemeSettings();
+  const { settings, sounds: { click } } = useThemeSettings();
 
   const [report_filter_state, setReportFilterState] = useState((REPORT_FILTERS ? REPORT_FILTERS : DEFAULT_REPORT_FILTER_STATE) as IReportFilterState);
   return props.children({
@@ -39,35 +39,8 @@ export default function (props: { selected_quizzes: QuizIdentifiers[], children:
         <CustomRadio name={"verdict"} items={[true, false, "mixed"]} state={report_filter_state} setState={setReportFilterState} />
         <CustomRadio name={"hints_used"} items={["0", "1", "2", "any"]} state={report_filter_state} setState={setReportFilterState} />
 
-        <FormGroup>
-          <InputLabel>Exluded Difficulty</InputLabel>
-          {['Beginner', 'Intermediate', 'Advanced'].map((difficulty, index) => <FormControlLabel key={difficulty + index} label={difficulty} control={<Checkbox checked={report_filter_state.excluded_difficulty.includes(difficulty as QuestionDifficulty)} name={difficulty} onChange={(e) => {
-            if ((e.target as any).checked) {
-              if (settings.sound) pop_on.play()
-              setReportFilterState({ ...report_filter_state, excluded_difficulty: report_filter_state.excluded_difficulty.concat(difficulty as QuestionDifficulty) });
-            }
-            else {
-              if (settings.sound) pop_off.play()
-              setReportFilterState({ ...report_filter_state, excluded_difficulty: report_filter_state.excluded_difficulty.filter(excluded_difficulty => excluded_difficulty !== difficulty) })
-            }
-          }}
-            color="primary" />} />)}
-        </FormGroup>
-
-        <FormGroup>
-          <InputLabel>Exluded Type</InputLabel>
-          {['FIB', 'MS', 'MCQ', "Snippet"].map((type, index) => <FormControlLabel key={type + index} label={type} control={<Checkbox checked={report_filter_state.excluded_types.includes(type as QuestionType)} name={type} onChange={(e) => {
-            if ((e.target as any).checked) {
-              if (settings.sound) pop_on.play()
-              setReportFilterState({ ...report_filter_state, excluded_types: report_filter_state.excluded_types.concat(type as QuestionType) });
-            }
-            else {
-              if (settings.sound) pop_off.play()
-              setReportFilterState({ ...report_filter_state, excluded_types: report_filter_state.excluded_types.filter(excluded_type => excluded_type !== type) })
-            }
-          }}
-            color="primary" />} />)}
-        </FormGroup>
+        <MultiCheckbox name={"excluded_difficulty"} state={report_filter_state} setState={setReportFilterState} items={['Beginner', 'Intermediate', 'Advanced']} />
+        <MultiCheckbox name={"excluded_types"} state={report_filter_state} setState={setReportFilterState} items={['FIB', 'MS', 'MCQ', "Snippet"]} />
 
         <FormGroup>
           <InputLabel>Exluded Quizzes</InputLabel>
