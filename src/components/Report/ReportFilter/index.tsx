@@ -6,14 +6,9 @@ import useThemeSettings from "../../../hooks/useThemeSettings";
 import { ReportFilterState, ReportFilterProps } from "./types";
 
 import "./style.scss";
-import { MultiCheckbox, ResetButton, CustomRadio } from "../../Basic";
+import { MultiCheckbox, ResetButton, CustomRadio, MultiSelect } from "../../Basic";
 
 const DEFAULT_REPORT_FILTER_STATE = { time_taken: [0, 60], verdict: 'mixed', hints_used: 'any', excluded_types: [], excluded_difficulty: [], excluded_quizzes: [], excluded_columns: [] } as ReportFilterState;
-
-const transformLabel = (stat: string) => {
-  let label = stat.replace(/(\.|_)/g, " ");
-  return label.split(" ").map(c => c.charAt(0).toUpperCase() + c.substr(1)).join(" ");
-}
 
 export default function (props: ReportFilterProps) {
   let REPORT_FILTERS: any = localStorage.getItem('REPORT_FILTERS');
@@ -22,6 +17,7 @@ export default function (props: ReportFilterProps) {
   const { settings, sounds: { click } } = useThemeSettings();
 
   const [report_filter_state, setReportFilterState] = useState<ReportFilterState>(REPORT_FILTERS ? REPORT_FILTERS : JSON.parse(JSON.stringify(DEFAULT_REPORT_FILTER_STATE)));
+  console.log(report_filter_state.excluded_columns);
 
   return props.children({
     ReportFilter:
@@ -44,34 +40,13 @@ export default function (props: ReportFilterProps) {
         <MultiCheckbox name={"excluded_difficulty"} state={report_filter_state} setState={setReportFilterState} items={['Beginner', 'Intermediate', 'Advanced']} />
         <MultiCheckbox name={"excluded_types"} state={report_filter_state} setState={setReportFilterState} items={['FIB', 'MS', 'MCQ', "Snippet"]} />
 
-        <FormGroup>
-          <InputLabel>Exluded Quizzes</InputLabel>
-          <Select value={report_filter_state.excluded_quizzes}
-            multiple
-            onChange={(e) => {
-              if (settings.sound) click.play();
-              setReportFilterState({ ...report_filter_state, excluded_quizzes: e.target.value as string[] })
-            }}>
-            {props.selected_quizzes.map(selected_quiz =>
-              <MenuItem key={selected_quiz._id} value={selected_quiz._id}>{selected_quiz.subject + "-" + selected_quiz.title}</MenuItem>
-            )}
-          </Select>
-        </FormGroup>
+        <MultiSelect items={["quiz", "subject", "question", "type", "difficulty", "verdict", "score", "time_allocated", "time_taken", "answers", "weight", "user_answers", "hints_used"]} label={"Exluded Columns"} value={report_filter_state.excluded_columns} onChange={(e) => setReportFilterState({ ...report_filter_state, excluded_columns: e.target.value })} />
 
-        <FormGroup>
-          <InputLabel>Exluded Columns</InputLabel>
-          <Select value={report_filter_state.excluded_columns}
-            multiple
-            renderValue={(selected) => (selected as string[]).map((report_stat) => <div key={report_stat + "excluded_columns"}>{transformLabel(report_stat)}</div>)}
-            onChange={(e) => {
-              if (settings.sound) click.play();
-              setReportFilterState({ ...report_filter_state, excluded_columns: e.target.value as string[] })
-            }}>
-            {["quiz", "subject", "question", "type", "difficulty", "verdict", "score", "time_allocated", "time_taken", "answers", "weight", "user_answers", "hints_used"].map(report_stat =>
-              <MenuItem key={report_stat} value={report_stat}>{transformLabel(report_stat)}</MenuItem>
-            )}
-          </Select>
-        </FormGroup>
+        {/* <Select value={report_filter_state.excluded_quizzes}>
+          {props.selected_quizzes.map(selected_quiz =>
+            <MenuItem key={selected_quiz._id} value={selected_quiz._id}>{selected_quiz.subject + "-" + selected_quiz.title}</MenuItem>
+          )}
+        </Select> */}
 
         <ResetButton onClick={() => {
           setReportFilterState(DEFAULT_REPORT_FILTER_STATE)

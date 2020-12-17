@@ -1,9 +1,9 @@
-export interface CustomSelectProps {
+export interface MultiSelectProps {
   label: string,
   onChange: (e: React.ChangeEvent<{
     name?: string | undefined;
-    value: unknown;
+    value: string[];
   }>) => void,
+  value: string[],
   items: string[],
-  value: string
 }
