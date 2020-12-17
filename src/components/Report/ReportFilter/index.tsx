@@ -3,25 +3,26 @@ import { InputLabel, FormGroup, TextField, Select, MenuItem } from '@material-ui
 
 import useThemeSettings from "../../../hooks/useThemeSettings";
 
-import { IReportFilterState, QuizIdentifiers } from "../../../types";
+import { ReportFilterState, ReportFilterProps } from "./types";
 
 import "./style.scss";
 import { MultiCheckbox, ResetButton, CustomRadio } from "../../Basic";
 
-const DEFAULT_REPORT_FILTER_STATE = { time_taken: [0, 60], verdict: 'mixed', hints_used: 'any', excluded_types: [], excluded_difficulty: [], excluded_quizzes: [], excluded_columns: [] } as IReportFilterState;
+const DEFAULT_REPORT_FILTER_STATE = { time_taken: [0, 60], verdict: 'mixed', hints_used: 'any', excluded_types: [], excluded_difficulty: [], excluded_quizzes: [], excluded_columns: [] } as ReportFilterState;
 
 const transformLabel = (stat: string) => {
   let label = stat.replace(/(\.|_)/g, " ");
   return label.split(" ").map(c => c.charAt(0).toUpperCase() + c.substr(1)).join(" ");
 }
 
-export default function (props: { selected_quizzes: QuizIdentifiers[], children: any }) {
+export default function (props: ReportFilterProps) {
   let REPORT_FILTERS: any = localStorage.getItem('REPORT_FILTERS');
   REPORT_FILTERS = REPORT_FILTERS ? JSON.parse(REPORT_FILTERS) : undefined;
 
   const { settings, sounds: { click } } = useThemeSettings();
 
-  const [report_filter_state, setReportFilterState] = useState((REPORT_FILTERS ? REPORT_FILTERS : DEFAULT_REPORT_FILTER_STATE) as IReportFilterState);
+  const [report_filter_state, setReportFilterState] = useState<ReportFilterState>(REPORT_FILTERS ? REPORT_FILTERS : JSON.parse(JSON.stringify(DEFAULT_REPORT_FILTER_STATE)));
+
   return props.children({
     ReportFilter:
       <div className="ReportFilter">
@@ -80,3 +81,5 @@ export default function (props: { selected_quizzes: QuizIdentifiers[], children:
     ReportFilterState: report_filter_state
   })
 }
+
+export * from "./types"

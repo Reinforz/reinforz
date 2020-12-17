@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import clone from 'just-clone';
 
 import Table from "../Basic/Table";
-import ReportFilter from './ReportFilter';
+import ReportFilter, { ReportFilterRProps } from './ReportFilter';
 import ReportExport from './ReportExport';
 import Menu from "../Basic/Menu"
 
@@ -12,7 +12,7 @@ import PlayContext from '../../context/PlayContext';
 
 import useThemeSettings from '../../hooks/useThemeSettings';
 
-import { IPlayContext, QuestionInputFull, QuizInputFull, ReportFilterRProps, MenuRProps } from "../../types";
+import { IPlayContext, QuestionInputFull, QuizInputFull, MenuRProps } from "../../types";
 
 import "./style.scss";
 import { ReportProps } from './types';
