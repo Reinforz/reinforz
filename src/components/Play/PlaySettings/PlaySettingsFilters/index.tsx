@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Checkbox, FormControlLabel, FormGroup, InputLabel, TextField } from "@material-ui/core";
-import useThemeSettings from "../../../../hooks/useThemeSettings";
+
+import { useThemeSettings } from "../../../../hooks";
 import { QuestionDifficulty, QuestionType } from "../../../../types";
 import { IPlaySettingsFiltersState, PlaySettingsFiltersProps } from "./types";
 

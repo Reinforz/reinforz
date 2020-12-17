@@ -17,7 +17,7 @@ import createDOMPurify from 'dompurify';
 
 import Icon from "./Icon";
 
-import useThemeSettings from '../../hooks/useThemeSettings';
+import { useThemeSettings } from '../../hooks';
 
 import { TableRowsProps, TableProps, ExtendedTheme, TableHeaderProps } from "../../types"
 

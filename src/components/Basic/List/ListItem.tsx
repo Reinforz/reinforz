@@ -6,8 +6,7 @@ import { XYCoord } from 'dnd-core'
 
 import Icon from '../Icon';
 
-import useThemeSettings from '../../../hooks/useThemeSettings';
-import useListItems from '../../../hooks/useListItems';
+import { useThemeSettings, useListItems } from '../../../hooks';
 
 import { ListItemProps, DragItem } from '../../../types';
 

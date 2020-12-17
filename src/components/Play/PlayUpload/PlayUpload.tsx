@@ -6,7 +6,7 @@ import { useSnackbar, OptionsObject } from "notistack";
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import shortid from "shortid"
 
-import useThemeSettings from '../../../hooks/useThemeSettings';
+import { useThemeSettings } from '../../../hooks'
 
 import { PlayErrorLog, PlayErrorLogState, QuestionInputFull, QuizInputPartial } from '../../../types';
 

@@ -5,8 +5,7 @@ import * as CSS from 'csstype';
 
 import Icon from './Icon';
 
-import useThemeSettings from '../../hooks/useThemeSettings';
-import useToggle from '../../hooks/useToggle';
+import { useToggle, useThemeSettings } from '../../hooks';
 
 import "./View.scss";
 

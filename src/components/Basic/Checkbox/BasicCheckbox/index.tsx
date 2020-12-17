@@ -1,6 +1,7 @@
 import { FormControlLabel, Checkbox } from "@material-ui/core";
 import React from "react";
-import useThemeSettings from "../../../../hooks/useThemeSettings";
+
+import { useThemeSettings } from "../../../../hooks";
 
 import { BasicCheckboxProps } from "./types";
 

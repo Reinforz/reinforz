@@ -8,7 +8,7 @@ import "prismjs/components/prism-csharp";
 import "prismjs/components/prism-java";
 import "prismjs/components/prism-git";
 
-import useThemeSettings from "../../../hooks/useThemeSettings";
+import { useThemeSettings } from "../../../hooks";
 
 import { QuestionHighlighterProps } from "../../../types";
 

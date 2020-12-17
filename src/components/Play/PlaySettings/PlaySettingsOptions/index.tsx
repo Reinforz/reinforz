@@ -5,7 +5,7 @@ import { BasicCheckbox } from "../../../Basic";
 
 import { IPlaySettingsOptionsState, PlaySettingsOptionsProps } from "./types";
 
-import useThemeSettings from "../../../../hooks/useThemeSettings";
+import { useThemeSettings } from "../../../../hooks";
 
 const PLAY_OPTIONS_STATE = { shuffle_options: true, shuffle_quizzes: false, shuffle_questions: true, instant_feedback: true, flatten_mix: false, partial_score: true } as IPlaySettingsOptionsState;
 

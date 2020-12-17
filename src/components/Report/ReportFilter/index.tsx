@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { InputLabel, FormGroup, TextField } from '@material-ui/core';
 
-import useThemeSettings from "../../../hooks/useThemeSettings";
+import { useThemeSettings } from "../../../hooks";
 
 import { ReportFilterState, ReportFilterProps } from "./types";
 

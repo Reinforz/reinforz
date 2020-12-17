@@ -7,8 +7,7 @@ import update from 'immutability-helper'
 import Icon from "../../Basic/Icon"
 import ListItem from "./ListItem";
 
-import useList from "../../../hooks/useList";
-import useThemeSettings from "../../../hooks/useThemeSettings";
+import { useList, useThemeSettings } from "../../../hooks";
 
 import { ListProps } from "../../../types";
 

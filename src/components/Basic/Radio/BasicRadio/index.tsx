@@ -5,7 +5,7 @@ import { BasicRadioProps } from "./types";
 
 import "./style.scss";
 
-import useThemeSettings from "../../../../hooks/useThemeSettings";
+import { useThemeSettings } from "../../../../hooks";
 
 export function BasicRadio<T>({ name, state, setState, items }: BasicRadioProps<T>) {
   const { settings, sounds: { switch_on } } = useThemeSettings();

@@ -1,7 +1,7 @@
 import { FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
 import React from "react";
 
-import useThemeSettings from "../../../../hooks/useThemeSettings";
+import { useThemeSettings } from "../../../../hooks";
 
 import "./style.scss";
 

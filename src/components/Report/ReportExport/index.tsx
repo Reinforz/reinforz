@@ -7,7 +7,7 @@ import Icon from '../../Basic/Icon';
 
 import { CustomSelect } from '../../Basic';
 
-import useThemeSettings from '../../../hooks/useThemeSettings';
+import { useThemeSettings } from '../../../hooks'
 
 import { download } from "../../../utils";
 

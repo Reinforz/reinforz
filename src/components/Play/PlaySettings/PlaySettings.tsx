@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import useThemeSettings from "../../../hooks/useThemeSettings";
+import { useThemeSettings } from "../../../hooks";
 
 import { arrayShuffler } from "../../../utils";
 

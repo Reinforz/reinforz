@@ -9,7 +9,7 @@ import Highlighter from "../../Basic/Highlighter";
 
 import { QuestionOptionsProps } from '../../../types';
 
-import useThemeSettings from '../../../hooks/useThemeSettings';
+import { useThemeSettings } from '../../../hooks'
 
 import "./QuestionOptions.scss";
 

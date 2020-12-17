@@ -3,7 +3,7 @@ import { BsMoon, BsSun } from 'react-icons/bs';
 import { Button, FormControlLabel, InputLabel, Radio, RadioGroup } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 
-import useThemeSettings from '../../hooks/useThemeSettings';
+import { useThemeSettings } from '../../hooks';
 
 import "./style.scss";
 

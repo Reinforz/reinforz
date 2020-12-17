@@ -10,7 +10,7 @@ import Menu from "../Basic/Menu"
 
 import PlayContext from '../../context/PlayContext';
 
-import useThemeSettings from '../../hooks/useThemeSettings';
+import { useThemeSettings } from '../../hooks';
 
 import { IPlayContext, QuestionInputFull, QuizInputFull, MenuRProps } from "../../types";
 

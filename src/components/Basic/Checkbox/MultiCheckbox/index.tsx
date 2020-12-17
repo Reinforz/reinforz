@@ -5,7 +5,7 @@ import { capitalize } from "../../../../utils";
 
 import "./style.scss";
 import { MultiCheckboxProps } from "./types";
-import useThemeSettings from "../../../../hooks/useThemeSettings";
+import { useThemeSettings } from "../../../../hooks";
 
 export function MultiCheckbox<S>({ name, state, setState, items }: MultiCheckboxProps<S>) {
   const { settings, sounds: { pop_off, pop_on } } = useThemeSettings();

@@ -8,7 +8,7 @@ import QuestionHighlighter from "./QuestionHighlighter/QuestionHighlighter";
 import QuestionOptions from "./QuestionOptions/QuestionOptions";
 import QuestionHints from "./QuestionHints/QuestionHints";
 
-import useThemeSettings from "../../hooks/useThemeSettings";
+import { useThemeSettings } from "../../hooks";
 
 import { QuestionProps, QuestionHintsRProps } from "../../types";
 

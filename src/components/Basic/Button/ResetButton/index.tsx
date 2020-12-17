@@ -5,7 +5,7 @@ import { ResetButtonProps } from "./types";
 
 import "./style.scss";
 
-import useThemeSettings from "../../../../hooks/useThemeSettings";
+import { useThemeSettings } from "../../../../hooks";
 
 export function ResetButton(props: ResetButtonProps) {
   const { settings, sounds: { reset } } = useThemeSettings();

@@ -2,7 +2,7 @@ import { Button } from "@material-ui/core";
 import React from "react";
 import { useSnackbar } from "notistack";
 
-import useThemeSettings from "../../../../hooks/useThemeSettings";
+import { useThemeSettings } from "../../../../hooks";
 
 import { PlaySettingsButtonProps } from "./types";
 

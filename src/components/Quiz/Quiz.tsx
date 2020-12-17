@@ -11,8 +11,7 @@ import { arrayShuffler, checkTextAnswer } from "../../utils";
 
 import { Result, QuizProps, QuestionInputFull } from "../../types";
 
-import useThemeSettings from "../../hooks/useThemeSettings";
-import useCycle from "../../hooks/useCycle";
+import { useThemeSettings, useCycle } from "../../hooks";
 
 import "./Quiz.scss";
 

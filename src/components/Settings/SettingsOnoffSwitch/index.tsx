@@ -1,7 +1,7 @@
 import { capitalize, FormGroup, InputLabel } from '@material-ui/core';
 import React from 'react';
 
-import useThemeSettings from '../../../hooks/useThemeSettings';
+import { useThemeSettings } from '../../../hooks'
 import { OnoffSwitch } from '../../Basic/Switch/OnoffSwitch';
 import { SettingsSwitchProps } from './types';
 
