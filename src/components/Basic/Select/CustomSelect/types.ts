@@ -5,5 +5,5 @@ export interface CustomSelectProps {
     name?: string | undefined;
     value: unknown;
   }>) => void,
-  items: string[]
+  items: string[],
 }

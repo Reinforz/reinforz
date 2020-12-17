@@ -14,6 +14,7 @@ const transformLabel = (stat: string) => {
   let label = stat.replace(/(\.|_)/g, " ");
   return label.split(" ").map(c => c.charAt(0).toUpperCase() + c.substr(1)).join(" ");
 }
+
 export default function (props: { selected_quizzes: QuizIdentifiers[], children: any }) {
   let REPORT_FILTERS: any = localStorage.getItem('REPORT_FILTERS');
   REPORT_FILTERS = REPORT_FILTERS ? JSON.parse(REPORT_FILTERS) : undefined;
@@ -60,7 +61,7 @@ export default function (props: { selected_quizzes: QuizIdentifiers[], children:
           <InputLabel>Exluded Columns</InputLabel>
           <Select value={report_filter_state.excluded_columns}
             multiple
-            renderValue={(selected) => (selected as string[]).map((report_stat, index) => <div key={report_stat + "excluded_columns" + index}>{transformLabel(report_stat)}</div>)}
+            renderValue={(selected) => (selected as string[]).map((report_stat) => <div key={report_stat + "excluded_columns"}>{transformLabel(report_stat)}</div>)}
             onChange={(e) => {
               if (settings.sound) click.play();
               setReportFilterState({ ...report_filter_state, excluded_columns: e.target.value as string[] })
