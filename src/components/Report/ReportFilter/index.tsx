@@ -6,7 +6,7 @@ import useThemeSettings from "../../../hooks/useThemeSettings";
 import { ReportFilterState, ReportFilterProps } from "./types";
 
 import "./style.scss";
-import { MultiCheckbox, ResetButton, CustomRadio, MultiSelect, AdvancedSelect } from "../../Basic";
+import { MultiCheckbox, ResetButton, BasicRadio, MultiSelect, AdvancedSelect } from "../../Basic";
 
 const DEFAULT_REPORT_FILTER_STATE = { time_taken: [0, 60], verdict: 'mixed', hints_used: 'any', excluded_types: [], excluded_difficulty: [], excluded_quizzes: [], excluded_columns: [] } as ReportFilterState;
 
@@ -33,8 +33,8 @@ export default function (props: ReportFilterProps) {
           }} />
         </FormGroup>
 
-        <CustomRadio name={"verdict"} items={[true, false, "mixed"]} state={report_filter_state} setState={setReportFilterState} />
-        <CustomRadio name={"hints_used"} items={["0", "1", "2", "any"]} state={report_filter_state} setState={setReportFilterState} />
+        <BasicRadio name={"verdict"} items={[true, false, "mixed"]} state={report_filter_state} setState={setReportFilterState} />
+        <BasicRadio name={"hints_used"} items={["0", "1", "2", "any"]} state={report_filter_state} setState={setReportFilterState} />
 
         <MultiCheckbox name={"excluded_difficulty"} state={report_filter_state} setState={setReportFilterState} items={['Beginner', 'Intermediate', 'Advanced']} />
         <MultiCheckbox name={"excluded_types"} state={report_filter_state} setState={setReportFilterState} items={['FIB', 'MS', 'MCQ', "Snippet"]} />
@@ -45,7 +45,6 @@ export default function (props: ReportFilterProps) {
         <ResetButton onClick={() => {
           setReportFilterState(DEFAULT_REPORT_FILTER_STATE)
         }} />
-
       </div>,
     ReportFilterState: report_filter_state
   })
