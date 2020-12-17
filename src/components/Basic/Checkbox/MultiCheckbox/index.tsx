@@ -12,7 +12,7 @@ export function MultiCheckbox<S>({ name, state, setState, items }: MultiCheckbox
 
   return <FormGroup>
     <InputLabel>{capitalize(name as string)}</InputLabel>
-    {items.map((item) => <FormControlLabel key={item} label={item} control={<Checkbox checked={(state[name] as any).includes(item)} name={item} onChange={(e) => {
+    {items.map((item) => <FormControlLabel key={item.toString()} label={item} control={<Checkbox checked={(state[name] as any).includes(item)} name={item.toString()} onChange={(e) => {
       if ((e.target as any).checked) {
         if (settings.sound) pop_on.play()
         setState({ ...state, [name]: (state[name] as any).concat(item) });

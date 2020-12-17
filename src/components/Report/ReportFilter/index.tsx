@@ -6,7 +6,7 @@ import useThemeSettings from "../../../hooks/useThemeSettings";
 import { ReportFilterState, ReportFilterProps } from "./types";
 
 import "./style.scss";
-import { MultiCheckbox, ResetButton, BasicRadioGroup, MultiSelect, AdvancedSelect } from "../../Basic";
+import { MultiCheckboxGroup, ResetButton, BasicRadioGroup, MultiSelect, AdvancedSelect } from "../../Basic";
 
 const DEFAULT_REPORT_FILTER_STATE = { time_taken: [0, 60], verdict: 'mixed', hints_used: 'any', excluded_types: [], excluded_difficulty: [], excluded_quizzes: [], excluded_columns: [] } as ReportFilterState;
 
@@ -34,9 +34,7 @@ export default function (props: ReportFilterProps) {
         </FormGroup>
 
         <BasicRadioGroup items={[["verdict", [true, false, "mixed"]], ["hints_used", ["0", "1", "2", "any"]]]} state={report_filter_state} setState={setReportFilterState} />
-
-        <MultiCheckbox name={"excluded_difficulty"} state={report_filter_state} setState={setReportFilterState} items={['Beginner', 'Intermediate', 'Advanced']} />
-        <MultiCheckbox name={"excluded_types"} state={report_filter_state} setState={setReportFilterState} items={['FIB', 'MS', 'MCQ', "Snippet"]} />
+        <MultiCheckboxGroup items={[["excluded_difficulty", ['Beginner', 'Intermediate', 'Advanced']], ["excluded_types", ['FIB', 'MS', 'MCQ', "Snippet"]]]} state={report_filter_state} setState={setReportFilterState} />
 
         <MultiSelect items={["quiz", "subject", "question", "type", "difficulty", "verdict", "score", "time_allocated", "time_taken", "answers", "weight", "user_answers", "hints_used"]} label={"Exluded Columns"} value={report_filter_state.excluded_columns} onChange={(e) => setReportFilterState({ ...report_filter_state, excluded_columns: e.target.value })} />
         <AdvancedSelect transformDisplay={(item) => item.subject + "-" + item.title} items={props.selected_quizzes} label={"Excluded Quizzes"} value={report_filter_state.excluded_quizzes} onChange={(e) => setReportFilterState({ ...report_filter_state, excluded_quizzes: e.target.value })} />
