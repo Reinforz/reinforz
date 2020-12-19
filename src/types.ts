@@ -66,12 +66,6 @@ export interface TableRowsProps extends Table_RowsCommonProps {
   index: number,
 }
 
-export interface TableHeaderProps {
-  headers: string[],
-  collapseContents?: string[]
-  onHeaderClick: (header: string, order: "ASC" | "DESC") => any,
-}
-
 export interface PlayErrorLogsProps {
   quizzes: QuizInputFull[],
   setQuizzes: (quizzes: any[]) => void,
