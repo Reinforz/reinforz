@@ -61,13 +61,6 @@ interface Table_RowsCommonProps {
   title?: string
 }
 
-export interface TableProps<Values> extends Table_RowsCommonProps {
-  contents: Values[],
-  accumulator: (header: string, contents: Array<any>) => string | null | number,
-  className?: string,
-  onHeaderClick: (header: string, order: "ASC" | "DESC") => any,
-}
-
 export interface TableRowsProps extends Table_RowsCommonProps {
   content: any,
   index: number,

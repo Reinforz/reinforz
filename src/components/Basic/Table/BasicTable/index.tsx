@@ -15,13 +15,15 @@ import { MdPlayArrow } from "react-icons/md";
 import marked from "marked";
 import createDOMPurify from 'dompurify';
 
-import { Icon } from "./";
+import { Icon } from "../..";
 
-import { useThemeSettings } from '../../hooks';
+import { useThemeSettings } from '../../../../hooks';
 
-import { TableRowsProps, TableProps, ExtendedTheme, TableHeaderProps } from "../../types"
+import { TableRowsProps, ExtendedTheme, TableHeaderProps } from "../../../../types"
 
-import "./Table.scss";
+import "./style.scss";
+
+import { BasicTableProps } from './types';
 
 const DOMPurify = createDOMPurify(window);
 
@@ -107,7 +109,7 @@ function TableHeaders(props: TableHeaderProps) {
   </TableRow>
 }
 
-export default React.memo((props: TableProps<Record<string, any>>) => {
+export const BasicTable = React.memo((props: BasicTableProps<Record<string, any>>) => {
   const classes = useStyles();
   const accumulator: Record<string, Array<any>> = {};
   const { theme } = useThemeSettings();
@@ -136,3 +138,5 @@ export default React.memo((props: TableProps<Record<string, any>>) => {
     </TableContainer>
   );
 }, ((prevProp, currentProp) => prevProp.contents.length === currentProp.contents.length))
+
+export * from "./types"

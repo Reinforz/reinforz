@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
-import Table from "../../Basic/Table"
+import { BasicTable } from "../../Basic"
 
-import { QuizInputFull } from '../../../types';
+import { PlayTableProps } from './types';
 
-import "./PlayTable.scss";
+import "./style.scss";
 
-function PlayTable(props: { quizzes: QuizInputFull[] }) {
+export function PlayTable(props: PlayTableProps) {
   const [difficulty_map, setDifficultyMap] = useState([] as any[]);
   const [type_map, setTypeMap] = useState([] as any[]);
   const [time_allocated_map, setTimeAllocatedMap] = useState([] as any[])
@@ -57,7 +57,7 @@ function PlayTable(props: { quizzes: QuizInputFull[] }) {
 
   return (
     <div className="PlayTable">
-      <Table className="PlayTable--difficulty" title={"QuestionDifficulty based Table"} accumulator={(header, contents) => {
+      <BasicTable className="PlayTable--difficulty" title={"QuestionDifficulty based Table"} accumulator={(header, contents) => {
         switch (header) {
           case "Beginner":
           case "Intermediate":
@@ -69,7 +69,7 @@ function PlayTable(props: { quizzes: QuizInputFull[] }) {
       }} contents={difficulty_map} headers={['title', "Beginner", "Intermediate", "Advanced"]} onHeaderClick={(header, order) => {
         setDifficultyMap([...difficulty_map.sort((a_diff, b_diff) => order === "DESC" ? (parseInt(b_diff[header]) - parseInt(a_diff[header])) : (parseInt(a_diff[header]) - parseInt(b_diff[header])))])
       }} />
-      <Table className="PlayTable--type" title={"Type based Table"} accumulator={(header, contents) => {
+      <BasicTable className="PlayTable--type" title={"Type based Table"} accumulator={(header, contents) => {
         switch (header) {
           case "Snippet":
           case "MS":
@@ -82,7 +82,7 @@ function PlayTable(props: { quizzes: QuizInputFull[] }) {
       }} contents={type_map} headers={['title', "Snippet", "MS", "MCQ", "FIB"]} onHeaderClick={(header, order) => {
         setTypeMap([...type_map.sort((a_diff, b_diff) => order === "DESC" ? (parseInt(b_diff[header]) - parseInt(a_diff[header])) : (parseInt(a_diff[header]) - parseInt(b_diff[header])))])
       }} />
-      <Table className="PlayTable--time_allocated" title={"Time based Table"} accumulator={(header, contents) => {
+      <BasicTable className="PlayTable--time_allocated" title={"Time based Table"} accumulator={(header, contents) => {
         if (header.match(/(title|_id)/)) return null;
         else return contents?.reduce((acc: number, cur: number) => acc + (cur ?? 0), 0);
       }} contents={time_allocated_map} headers={['title', "15", "30", "45", "60"]} onHeaderClick={(header, order) => {
@@ -92,4 +92,4 @@ function PlayTable(props: { quizzes: QuizInputFull[] }) {
   );
 }
 
-export default PlayTable;
+export * from "./types"

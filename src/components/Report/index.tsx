@@ -3,7 +3,7 @@ import { Button } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import clone from 'just-clone';
 
-import Table from "../Basic/Table";
+import { BasicTable } from "../Basic";
 import ReportFilter, { ReportFilterRProps } from './ReportFilter';
 import ReportExport from './ReportExport';
 import Menu from "../Basic/Menu"
@@ -83,7 +83,7 @@ export default function (props: ReportProps) {
                 {MenuComponent}
                 <div id="Report-content" className="Report-content" style={{ ...MenuExtra.content_elem_style }}>
                   <ReportExport filtered_results={filtered_results} filtered_quizzes={Object.values(filtered_quizzes)} />
-                  <Table accumulator={(header, contents) => accumulator(header, contents, props.results.reduce((acc, cur) => acc + cur.weight, 0))} transformValue={transformValue} contents={filtered_results} collapseContents={["explanation"]} headers={["quiz", "subject", "question", "type", "difficulty", "verdict", "score", "time_allocated", "time_taken", "answers", "weight", "user_answers", "hints_used"].filter(report_stat => !ReportFilterState.excluded_columns.includes(report_stat))} onHeaderClick={(header, order) => {
+                  <BasicTable accumulator={(header, contents) => accumulator(header, contents, props.results.reduce((acc, cur) => acc + cur.weight, 0))} transformValue={transformValue} contents={filtered_results} collapseContents={["explanation"]} headers={["quiz", "subject", "question", "type", "difficulty", "verdict", "score", "time_allocated", "time_taken", "answers", "weight", "user_answers", "hints_used"].filter(report_stat => !ReportFilterState.excluded_columns.includes(report_stat))} onHeaderClick={(header, order) => {
                     if (header.match(/(score|time|hints)/))
                       props.setResults(filtered_results.sort((a, b) => order === "DESC" ? (a as any)[header] - (b as any)[header] : (b as any)[header] - (a as any)[header]))
                     else if (header === "verdict") props.setResults(filtered_results.sort((a, b) => order === "DESC" ? (a as any)[header] === false ? -1 : 1 : (a as any)[header] === true ? -1 : 1))

@@ -10,7 +10,7 @@ import debounced from 'just-debounce'
 import PlayUpload from "./PlayUpload/PlayUpload";
 import Quiz from "../Quiz/Quiz";
 import PlaySettings from "./PlaySettings/PlaySettings";
-import PlayTable from "./PlayTable/PlayTable";
+import { PlayTable } from "./PlayTable";
 import { Icon } from '../Basic';
 import List from "../Basic/List/List";
 import View from '../Basic/View';
