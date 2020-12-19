@@ -1,31 +1,22 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
-import Collapse from '@material-ui/core/Collapse';
 import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import { TableFooter } from '@material-ui/core';
-import marked from "marked";
-import createDOMPurify from 'dompurify';
-
-import { Icon } from "../..";
+import { TableFooter, TableRow } from '@material-ui/core';
 
 import { useThemeSettings } from '../../../../hooks';
 
-import { TableRowsProps, ExtendedTheme } from "../../../../types"
+import { ExtendedTheme } from "../../../../types"
 
 import "./style.scss";
 
 import { BasicTableProps } from './types';
 import { BasicTableHeaders } from './Header';
-
-const DOMPurify = createDOMPurify(window);
+import { BasicTableRows } from './Rows';
 
 const useStyles = makeStyles((theme: ExtendedTheme) => ({
   th: {
@@ -48,43 +39,6 @@ const useStyles = makeStyles((theme: ExtendedTheme) => ({
   }
 }));
 
-function TableRows(props: TableRowsProps) {
-  const [open, setOpen] = React.useState(false);
-  const classes = useStyles();
-  const { title, content, headers, index, collapseContents, transformValue } = props;
-  const { theme } = useThemeSettings();
-
-  return <Fragment>
-    {title && <div className="Table-title">{title}</div>}
-    <TableRow className={classes.tr} >
-      {collapseContents && <TableCell className={classes.td}>
-        <Icon popoverText="Click to show explanation" >
-          <KeyboardArrowUpIcon onClick={() => setOpen(!open)} style={{ display: !open ? "initial" : "none", color: theme.color.opposite_dark }} />
-        </Icon>
-        <Icon popoverText="Click to hide explanation" >
-          <KeyboardArrowDownIcon onClick={() => setOpen(!open)} style={{ display: open ? "initial" : "none", color: theme.color.opposite_dark }} />
-        </Icon>
-      </TableCell>}
-      <TableCell className={classes.td}>{index + 1}</TableCell>
-      {headers.map((header, index) => <TableCell className={classes.td} key={header + 'row' + index} align="center">{transformValue ? transformValue(header, content) : content[header]?.toString() ?? "N/A"}</TableCell>)}
-    </TableRow>
-    {collapseContents && <TableRow className={classes.tr}>
-      <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={headers.length} className={classes.td}>
-        <Collapse in={open} timeout="auto" unmountOnExit>
-          {collapseContents.map((collapseContent, collapseContentIndex) => <div key={index + "collapse" + collapseContent + collapseContentIndex}>
-            <div className="Table-row-collapseheader">
-              {collapseContent}
-            </div>
-            <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked(content[collapseContent].toString())) }} className="Table-row-collapsecontent" />
-          </div>)}
-        </Collapse>
-      </TableCell>
-    </TableRow>}
-  </Fragment>
-}
-
-
-
 export const BasicTable = React.memo((props: BasicTableProps<Record<string, any>>) => {
   const classes = useStyles();
   const accumulator: Record<string, Array<any>> = {};
@@ -101,7 +55,7 @@ export const BasicTable = React.memo((props: BasicTableProps<Record<string, any>
           <BasicTableHeaders headers={props.headers} collapseContents={props.collapseContents} onHeaderClick={props.onHeaderClick} />
         </TableHead>
         <TableBody className="Table-body" style={{ backgroundColor: theme.color.base }}>
-          {props.contents.map((content, index) => <TableRows transformValue={props.transformValue} collapseContents={props.collapseContents} key={content._id} content={content} headers={props.headers} index={index} />)}
+          {props.contents.map((content, index) => <BasicTableRows transformValue={props.transformValue} collapseContents={props.collapseContents} key={content._id} content={content} headers={props.headers} index={index} />)}
         </TableBody>
         <TableFooter className="Table-footer" style={{ backgroundColor: theme.color.dark }}>
           <TableRow>

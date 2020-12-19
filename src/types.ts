@@ -54,18 +54,6 @@ export interface StatsProps {
   stats: (string | undefined)[],
 };
 
-interface Table_RowsCommonProps {
-  collapseContents?: string[]
-  transformValue?: (header: string, content: any) => string
-  headers: string[],
-  title?: string
-}
-
-export interface TableRowsProps extends Table_RowsCommonProps {
-  content: any,
-  index: number,
-}
-
 export interface PlayErrorLogsProps {
   quizzes: QuizInputFull[],
   setQuizzes: (quizzes: any[]) => void,
