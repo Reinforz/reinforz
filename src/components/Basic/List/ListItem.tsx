@@ -4,7 +4,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd'
 import { XYCoord } from 'dnd-core'
 
-import Icon from '../Icon';
+import { Icon } from '../';
 
 import { useThemeSettings, useListItems } from '../../../hooks';
 

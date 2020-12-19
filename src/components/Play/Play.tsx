@@ -11,8 +11,8 @@ import PlayUpload from "./PlayUpload/PlayUpload";
 import Quiz from "../Quiz/Quiz";
 import PlaySettings from "./PlaySettings/PlaySettings";
 import PlayTable from "./PlayTable/PlayTable";
+import { Icon } from '../Basic';
 import List from "../Basic/List/List";
-import Icon from '../Basic/Icon';
 import View from '../Basic/View';
 import Menu from "../Basic/Menu";
 
@@ -96,9 +96,9 @@ const renderPlayMenu = ({ ListRenderProps, PlayUploadRenderProps, IPlaySettingsR
 }
 
 const PlayContent = (props: { renderprops: { ListRenderProps: ListRProps, PlayUploadRenderProps: PlayUploadRProps, MenuRenderProps: MenuRProps } }) => {
+  const history = useHistory(), { theme, settings, sounds } = useThemeSettings();
+
   const { ListRenderProps, PlayUploadRenderProps, MenuRenderProps } = props.renderprops;
-  const history = useHistory();
-  const { theme, settings, sounds } = useThemeSettings();
   const { ListComponent } = ListRenderProps;
   const { PlayUploadComponents, PlayUploadState } = PlayUploadRenderProps;
   const { MenuExtra } = MenuRenderProps;

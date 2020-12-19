@@ -3,7 +3,7 @@ import { BiGridHorizontal, BiGridVertical } from "react-icons/bi";
 import { HiSwitchVertical, HiSwitchHorizontal } from "react-icons/hi";
 import * as CSS from 'csstype';
 
-import Icon from './Icon';
+import { Icon } from './';
 
 import { useToggle, useThemeSettings } from '../../hooks';
 

@@ -4,7 +4,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import update from 'immutability-helper'
 
-import Icon from "../../Basic/Icon"
+import { Icon } from "../../Basic"
 import ListItem from "./ListItem";
 
 import { useList, useThemeSettings } from "../../../hooks";

@@ -5,7 +5,7 @@ import { RiArrowLeftRightLine } from "react-icons/ri";
 
 import { ExtendedTheme, MenuProps } from "../../types";
 
-import Icon from "./Icon";
+import { Icon } from ".";
 
 import "./Menu.scss";
 

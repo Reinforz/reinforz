@@ -3,9 +3,7 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import { safeDump } from 'js-yaml';
 import clone from 'just-clone';
 
-import Icon from '../../Basic/Icon';
-
-import { CustomSelect } from '../../Basic';
+import { Icon,CustomSelect } from '../../Basic';
 
 import { useThemeSettings } from '../../../hooks'
 

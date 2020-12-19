@@ -2,8 +2,9 @@ import React, { Fragment, useContext, useEffect } from 'react';
 import { Popover, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import SettingsContext from '../../context/SettingsContext';
-import { SettingsState } from '../Settings';
+import { SettingsState } from '../../Settings';
+import { IconProps } from './types';
+import SettingsContext from "../../../context/SettingsContext"
 
 const useStyles = makeStyles((theme) => ({
   popover: {
@@ -14,13 +15,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export interface IconProps {
-  className?: string,
-  popoverText: string,
-  children: JSX.Element
-}
-
-export default function (props: IconProps) {
+export function Icon(props: IconProps) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const settings = useContext(SettingsContext) as SettingsState;
@@ -55,3 +50,5 @@ export default function (props: IconProps) {
       onClose={() => setAnchorEl(null)} disableRestoreFocus ><Typography>{popoverText}</Typography></Popover>}
   </Fragment> : children
 }
+
+export * from "./types"

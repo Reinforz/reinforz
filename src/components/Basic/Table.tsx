@@ -15,7 +15,7 @@ import { MdPlayArrow } from "react-icons/md";
 import marked from "marked";
 import createDOMPurify from 'dompurify';
 
-import Icon from "./Icon";
+import { Icon } from "./";
 
 import { useThemeSettings } from '../../hooks';
 
