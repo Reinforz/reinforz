@@ -4,7 +4,6 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
 import Paper from '@material-ui/core/Paper';
 import { TableFooter, TableRow } from '@material-ui/core';
 
@@ -15,7 +14,7 @@ import { ExtendedTheme } from "../../../../types"
 import "./style.scss";
 
 import { BasicTableProps } from './types';
-import { BasicTableHeaders } from './Header';
+import { BasicTableHeader } from './Header';
 import { BasicTableRows } from './Rows';
 
 const useStyles = makeStyles((theme: ExtendedTheme) => ({
@@ -28,15 +27,6 @@ const useStyles = makeStyles((theme: ExtendedTheme) => ({
     backgroundColor: theme.color.dark,
     padding: "15px 0px"
   },
-  td: {
-    fontWeight: 500,
-    userSelect: "none",
-    borderBottom: 0,
-    textAlign: 'center'
-  },
-  tr: {
-    borderBottom: 0
-  }
 }));
 
 export const BasicTable = React.memo((props: BasicTableProps<Record<string, any>>) => {
@@ -51,9 +41,7 @@ export const BasicTable = React.memo((props: BasicTableProps<Record<string, any>
   return (
     <TableContainer component={Paper} className={`Table ${props.className || ''}`}>
       <Table stickyHeader>
-        <TableHead className="Table-header" style={{ backgroundColor: theme.color.dark }}>
-          <BasicTableHeaders headers={props.headers} collapseContents={props.collapseContents} onHeaderClick={props.onHeaderClick} />
-        </TableHead>
+        <BasicTableHeader headers={props.headers} collapseContents={props.collapseContents} onHeaderClick={props.onHeaderClick} />
         <TableBody className="Table-body" style={{ backgroundColor: theme.color.base }}>
           {props.contents.map((content, index) => <BasicTableRows transformValue={props.transformValue} collapseContents={props.collapseContents} key={content._id} content={content} headers={props.headers} index={index} />)}
         </TableBody>
