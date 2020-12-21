@@ -1,7 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
@@ -15,7 +14,7 @@ import "./style.scss";
 
 import { BasicTableProps } from './types';
 import { BasicTableHeader } from './Header';
-import { BasicTableRows } from './Rows';
+import { BasicTableBody } from './Body';
 
 const useStyles = makeStyles((theme: ExtendedTheme) => ({
   th: {
@@ -42,9 +41,7 @@ export const BasicTable = React.memo((props: BasicTableProps<Record<string, any>
     <TableContainer component={Paper} className={`Table ${props.className || ''}`}>
       <Table stickyHeader>
         <BasicTableHeader headers={props.headers} collapseContents={props.collapseContents} onHeaderClick={props.onHeaderClick} />
-        <TableBody className="Table-body" style={{ backgroundColor: theme.color.base }}>
-          {props.contents.map((content, index) => <BasicTableRows transformValue={props.transformValue} collapseContents={props.collapseContents} key={content._id} content={content} headers={props.headers} index={index} />)}
-        </TableBody>
+        <BasicTableBody transformValue={props.transformValue} collapseContents={props.collapseContents} contents={props.contents} headers={props.headers} />
         <TableFooter className="Table-footer" style={{ backgroundColor: theme.color.dark }}>
           <TableRow>
             {props.collapseContents && <TableCell className={classes.th}></TableCell>}

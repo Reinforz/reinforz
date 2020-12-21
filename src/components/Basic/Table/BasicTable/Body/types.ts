@@ -1,6 +1,5 @@
-export interface BasicTableRowsProps {
-  content: any,
-  index: number,
+export interface BasicTableBodyProps<T = Record<string, any>> {
+  contents: T[],
   collapseContents?: string[]
   transformValue?: (header: string, content: any) => string
   headers: string[],
