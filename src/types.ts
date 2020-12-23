@@ -1,7 +1,7 @@
 import { Language } from "prism-react-renderer";
 import { ThemeOptions, Theme } from '@material-ui/core/styles';
-import { IPlaySettingsOptionsState } from "./components/Play/PlaySettings/PlaySettingsOptions/types";
-import { IPlaySettingsFiltersState } from "./components/Play/PlaySettings/PlaySettingsFilters/types";
+import { IPlaySettingsOptionsState } from "./components/Play/Settings/Options/types";
+import { IPlaySettingsFiltersState } from "./components/Play/Settings/Filters/types";
 
 // Basic Components
 

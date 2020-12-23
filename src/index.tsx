@@ -6,7 +6,7 @@ import { SnackbarProvider } from "notistack";
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
-import Play from "./components/Play/Play"
+import Play from "./components/Play"
 import SettingsContext from "./context/SettingsContext";
 
 import { generateTheme } from "./utils";

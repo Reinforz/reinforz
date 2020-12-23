@@ -6,12 +6,13 @@ import { arrayShuffler } from "../../../utils";
 
 import { PlaySettingsProps, QuestionDifficulty, QuestionType, QuizInputFull, QuestionInputFull, IPlaySettingsRProps } from "../../../types";
 
-import "./PlaySettings.scss";
-import PlaySettingsOptions, { IPlaySettingsOptionsState, DEFAULT_PLAY_OPTIONS_STATE } from "./PlaySettingsOptions";
-import PlaySettingsFilters, { IPlaySettingsFiltersState, DEFAULT_PLAY_FILTERS_STATE } from "./PlaySettingsFilters";
-import PlaySettingsButton from "./PlaySettingsButton";
+import "./style.scss";
 
-export default function (props: PlaySettingsProps) {
+import PlaySettingsOptions, { IPlaySettingsOptionsState, DEFAULT_PLAY_OPTIONS_STATE } from "./Options";
+import PlaySettingsFilters, { IPlaySettingsFiltersState, DEFAULT_PLAY_FILTERS_STATE } from "./Filters";
+import PlaySettingsButton from "./Button";
+
+export function PlaySettings(props: PlaySettingsProps) {
   const { quizzes, selectedQuizzes } = props;
   let PLAY_SETTINGS: any = localStorage.getItem('PLAY_SETTINGS');
   PLAY_SETTINGS = PLAY_SETTINGS ? JSON.parse(PLAY_SETTINGS) : undefined;

@@ -7,10 +7,10 @@ import Pane from 'react-split-pane/lib/Pane';
 // @ts-ignore
 import debounced from 'just-debounce'
 
-import PlayUpload from "./PlayUpload/PlayUpload";
+import PlayUpload from "./Upload/PlayUpload";
 import Quiz from "../Quiz/Quiz";
-import PlaySettings from "./PlaySettings/PlaySettings";
-import { PlayTable } from "./PlayTable";
+import { PlaySettings } from "./Settings";
+import { PlayTable } from "./Table";
 import { Icon } from '../Basic';
 import List from "../Basic/List/List";
 import View from '../Basic/View';
@@ -27,26 +27,14 @@ import {
   PlayUploadRProps,
 } from "../../types";
 
-import "./Play.scss";
+import "./style.scss";
+import { IPlayRProps } from "./types";
 
 let prev_pane_size = localStorage.getItem("Play_pane_size");
 
 const setToLs = debounced((size: string) => {
   localStorage.setItem("Play_pane_size", size || "50%")
 }, 2500)
-
-interface IPlayState {
-  playing: boolean
-}
-
-interface IPlayUtils {
-  setPlaying: (playing: boolean) => void
-}
-
-interface IPlayRProps {
-  PlayState: IPlayState,
-  PlayUtils: IPlayUtils
-}
 
 const renderPlayUpload = (PlayRenderProps: IPlayRProps) =>
   <PlayUpload>
