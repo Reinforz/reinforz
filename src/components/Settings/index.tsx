@@ -8,7 +8,7 @@ import { useThemeSettings } from '../../hooks';
 import "./style.scss";
 
 import { SettingsProps } from './types';
-import { SettingsOnoffSwitch } from './SettingsOnoffSwitch';
+import { SettingsOnoffSwitch } from './OnoffSwitch';
 
 function Settings(props: SettingsProps) {
   const { settings, setSettings } = props;
@@ -49,4 +49,4 @@ export default Settings;
 
 export * from "./types"
 
-export * from "./SettingsOnoffSwitch"
+export * from "./OnoffSwitch"

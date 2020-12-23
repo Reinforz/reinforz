@@ -1,34 +1,29 @@
-import React, { useState, Fragment } from "react";
-import { useHistory } from "react-router-dom";
+// @ts-ignore
+import debounced from 'just-debounce';
+import React, { Fragment, useState } from "react";
 import { FcSettings } from "react-icons/fc";
+import { useHistory } from "react-router-dom";
 import SplitPane from 'react-split-pane';
 // @ts-ignore
 import Pane from 'react-split-pane/lib/Pane';
-// @ts-ignore
-import debounced from 'just-debounce'
-
-import PlayUpload from "./Upload/PlayUpload";
-import Quiz from "../Quiz/Quiz";
-import { PlaySettings } from "./Settings";
-import { PlayTable } from "./Table";
-import { Icon } from '../Basic';
-import List from "../Basic/List/List";
-import View from '../Basic/View';
-import Menu from "../Basic/Menu";
-
-import PlayContext from "../../context/PlayContext"
-
+import PlayContext from "../../context/PlayContext";
 import { useThemeSettings } from "../../hooks";
-
 import {
   IPlaySettingsRProps,
   ListRProps,
   MenuRProps,
-  PlayUploadRProps,
+  PlayUploadRProps
 } from "../../types";
-
+import { Icon } from '../Basic';
+import List from "../Basic/List/List";
+import Menu from "../Basic/Menu";
+import View from '../Basic/View';
+import Quiz from "../Quiz/Quiz";
+import { PlaySettings } from "./Settings";
 import "./style.scss";
+import { PlayTable } from "./Table";
 import { IPlayRProps } from "./types";
+import { PlayUpload } from "./Upload";
 
 let prev_pane_size = localStorage.getItem("Play_pane_size");
 

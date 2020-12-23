@@ -1,18 +1,15 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
 import yaml from 'js-yaml';
-import { useDropzone, DropzoneState } from 'react-dropzone';
-import { useSnackbar, OptionsObject } from "notistack";
+import { OptionsObject, useSnackbar } from "notistack";
+import React, { useState } from 'react';
+import { DropzoneState, useDropzone } from 'react-dropzone';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import shortid from "shortid"
-
-import { useThemeSettings } from '../../../hooks'
-
-import { PlayErrorLog, PlayErrorLogState, QuestionInputFull, QuizInputPartial } from '../../../types';
-
+import shortid from "shortid";
+import styled from 'styled-components';
+import { useThemeSettings } from '../../../hooks';
+import { QuestionInputFull, QuizInputPartial } from '../../../types';
 import { generateQuestionInputConfigs } from '../../../utils';
-
-import "./PlayUpload.scss";
+import "./style.scss";
+import { PlayErrorLog, PlayErrorLogState } from './types';
 
 const getColor = (props: DropzoneState) => {
   if (props.isDragAccept)
@@ -37,7 +34,7 @@ const centerBottomErrorNotistack = {
   },
 } as OptionsObject;
 
-export default function PlayUpload(props: { children: any }) {
+export function PlayUpload(props: { children: any }) {
   const [items, setItems] = useState([] as any[]);
   const { enqueueSnackbar } = useSnackbar();
   const [error_logs, setErrorLogs] = useState([] as PlayErrorLogState);
@@ -157,3 +154,6 @@ export default function PlayUpload(props: { children: any }) {
     }
   })
 }
+
+export * from "./types";
+

@@ -63,15 +63,6 @@ export interface PlayErrorLogsProps {
 export interface PlayErrorLogsRProps {
   PlayErrorLogsComponent: JSX.Element
 }
-export interface PlayErrorLog {
-  quiz: string,
-  target: string,
-  message: string,
-  level: "ERROR" | "WARN",
-  _id: string
-}
-
-export type PlayErrorLogState = PlayErrorLog[];
 
 export interface PlaySettingsProps {
   children: any,
