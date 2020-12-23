@@ -1,7 +1,7 @@
 import { useTheme } from "@material-ui/styles";
 import { useContext } from "react";
 
-import SettingsContext from "../context/SettingsContext";
+import { SettingsContext } from "../context";
 
 import { SettingsState } from "../components/Settings";
 import { ExtendedTheme } from "../types";

@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import SplitPane from 'react-split-pane';
 // @ts-ignore
 import Pane from 'react-split-pane/lib/Pane';
-import PlayContext from "../../context/PlayContext";
+import { PlayContext } from "../../context";
 import { useThemeSettings } from "../../hooks";
 import {
   IPlaySettingsRProps,
@@ -114,7 +114,7 @@ const PlayContent = (props: { renderprops: { ListRenderProps: ListRProps, PlayUp
   </div>
 }
 
-function Play() {
+export function Play() {
   const [playing, setPlaying] = useState(false);
 
   return renderPlayUpload({
@@ -122,8 +122,6 @@ function Play() {
     PlayState: { playing }
   });
 }
-
-export default Play;
 
 export * from "./Settings"
 export * from "./Table"

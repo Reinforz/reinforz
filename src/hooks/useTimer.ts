@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from "react";
 
 import { SettingsState } from "../components/Settings";
 
-import SettingsContext from "../context/SettingsContext";
+import { SettingsContext } from "../context";
 
 const tic = new Audio(process.env.PUBLIC_URL + "/sounds/tic.mp3");
 tic.volume = 0.5;

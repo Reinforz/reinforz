@@ -8,7 +8,7 @@ import ReportFilter, { ReportFilterRProps } from './Filter';
 import ReportExport from './Export';
 import Menu from "../Basic/Menu"
 
-import PlayContext from '../../context/PlayContext';
+import { PlayContext } from '../../context';
 
 import { useThemeSettings } from '../../hooks';
 

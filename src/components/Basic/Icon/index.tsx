@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { SettingsState } from '../../Settings';
 import { IconProps } from './types';
-import SettingsContext from "../../../context/SettingsContext"
+import { SettingsContext } from "../../../context"
 
 const useStyles = makeStyles((theme) => ({
   popover: {
