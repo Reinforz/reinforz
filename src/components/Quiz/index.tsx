@@ -13,9 +13,9 @@ import { Result, QuizProps, QuestionInputFull } from "../../types";
 
 import { useThemeSettings, useCycle } from "../../hooks";
 
-import "./Quiz.scss";
+import "./style.scss";
 
-export default function Quiz(props: QuizProps) {
+export function Quiz(props: QuizProps) {
   const [results, setResults] = useState([] as Result[]),
     { theme } = useThemeSettings(),
     { is_last_item, current_item, getNextIndex, hasEnded, current_index } = useCycle(props.all_questions);

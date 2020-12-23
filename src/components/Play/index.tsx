@@ -14,16 +14,15 @@ import {
   MenuRProps,
   PlayUploadRProps
 } from "../../types";
+
 import { Icon } from '../Basic';
 import List from "../Basic/List/List";
 import Menu from "../Basic/Menu";
 import View from '../Basic/View';
-import Quiz from "../Quiz/Quiz";
-import { PlaySettings } from "./Settings";
+
+import { PlayUpload, IPlayRProps, PlayTable, PlaySettings, Quiz } from "../";
+
 import "./style.scss";
-import { PlayTable } from "./Table";
-import { IPlayRProps } from "./types";
-import { PlayUpload } from "./Upload";
 
 let prev_pane_size = localStorage.getItem("Play_pane_size");
 
@@ -125,3 +124,8 @@ function Play() {
 }
 
 export default Play;
+
+export * from "./Settings"
+export * from "./Table"
+export * from "./Upload"
+export * from "./types"
