@@ -6,7 +6,7 @@ export interface IPlayUtils {
   setPlaying: (playing: boolean) => void
 }
 
-export interface IPlayRProps {
+export interface IPlayRenderProps {
   PlayState: IPlayState,
   PlayUtils: IPlayUtils
 }

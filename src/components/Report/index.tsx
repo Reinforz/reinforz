@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import clone from 'just-clone';
 
 import { BasicTable } from "../Basic";
-import ReportFilter, { ReportFilterRProps } from './Filter';
+import ReportFilter, { ReportFilterRenderProps } from './Filter';
 import ReportExport from './Export';
 import Menu from "../Basic/Menu"
 
@@ -12,7 +12,7 @@ import { PlayContext } from '../../context';
 
 import { useThemeSettings } from '../../hooks';
 
-import { IPlayContext, QuestionInputFull, QuizInputFull, MenuRProps } from "../../types";
+import { IPlayContext, QuestionInputFull, QuizInputFull, MenuRenderProps } from "../../types";
 
 import "./style.scss";
 import { ReportProps } from './types';
@@ -49,7 +49,7 @@ const transformValue = (header: string, content: any) => {
   }
 }
 
-export default function (props: ReportProps) {
+export function Report(props: ReportProps) {
   const { settings, sounds } = useThemeSettings(),
     history = useHistory(),
     PlayContextValue = useContext(PlayContext) as IPlayContext;
@@ -57,7 +57,7 @@ export default function (props: ReportProps) {
   return (
     <div className="Report">
       <ReportFilter selected_quizzes={props.selected_quizzes}>
-        {({ ReportFilterState, ReportFilter }: ReportFilterRProps) => {
+        {({ ReportFilterState, ReportFilter }: ReportFilterRenderProps) => {
           const { excluded_types, excluded_quizzes, excluded_difficulty, verdict, hints_used, time_taken } = ReportFilterState;
           const filtered_results = props.results.filter(result => !excluded_types.includes(result.type) && !excluded_difficulty.includes(result.difficulty) && (verdict === "mixed" || verdict.toString() === result.verdict?.toString()) && (hints_used === "any" || result.hints_used <= hints_used) && time_taken[0] <= result.time_taken && time_taken[1] >= result.time_taken && !excluded_quizzes.includes(result.quizId))
           const filtered_quizzes: Record<string, QuizInputFull> = {};
@@ -78,7 +78,7 @@ export default function (props: ReportProps) {
           });
 
           return <Menu lskey="Report_menu" content={ReportFilter}>
-            {({ MenuComponent, MenuExtra }: MenuRProps) => {
+            {({ MenuComponent, MenuExtra }: MenuRenderProps) => {
               return <Fragment>
                 {MenuComponent}
                 <div id="Report-content" className="Report-content" style={{ ...MenuExtra.content_elem_style }}>
@@ -113,3 +113,5 @@ export default function (props: ReportProps) {
 }
 
 export * from "./types"
+export * from "./Filter"
+export * from "./Export"

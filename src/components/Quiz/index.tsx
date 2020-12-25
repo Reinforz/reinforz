@@ -3,8 +3,8 @@ import md5 from "md5";
 import shortid from "shortid";
 import clone from "just-clone";
 
-import Question from "../Question/Question";
-import Report from "../Report";
+import { Question } from "../Question";
+import { Report } from "../Report";
 import Stats from "../Basic/Stats";
 
 import { arrayShuffler, checkTextAnswer } from "../../utils";

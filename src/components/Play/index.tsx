@@ -9,10 +9,10 @@ import Pane from 'react-split-pane/lib/Pane';
 import { PlayContext } from "../../context";
 import { useThemeSettings } from "../../hooks";
 import {
-  IPlaySettingsRProps,
-  ListRProps,
-  MenuRProps,
-  PlayUploadRProps
+  IPlaySettingsRenderProps,
+  ListRenderProps,
+  MenuRenderProps,
+  PlayUploadRenderProps
 } from "../../types";
 
 import { Icon } from '../Basic';
@@ -20,7 +20,7 @@ import List from "../Basic/List/List";
 import Menu from "../Basic/Menu";
 import View from '../Basic/View';
 
-import { PlayUpload, IPlayRProps, PlayTable, PlaySettings, Quiz } from "../";
+import { PlayUpload, IPlayRenderProps, PlayTable, PlaySettings, Quiz } from "../";
 
 import "./style.scss";
 
@@ -30,28 +30,28 @@ const setToLs = debounced((size: string) => {
   localStorage.setItem("Play_pane_size", size || "50%")
 }, 2500)
 
-const renderPlayUpload = (PlayRenderProps: IPlayRProps) =>
+const renderPlayUpload = (PlayRenderProps: IPlayRenderProps) =>
   <PlayUpload>
-    {(PlayUploadRenderProps: PlayUploadRProps) =>
+    {(PlayUploadRenderProps: PlayUploadRenderProps) =>
       renderList({ PlayUploadRenderProps, PlayRenderProps })
     }
   </PlayUpload>
 
-const renderList = ({ PlayUploadRenderProps, PlayRenderProps }: { PlayRenderProps: IPlayRProps, PlayUploadRenderProps: PlayUploadRProps }) => {
+const renderList = ({ PlayUploadRenderProps, PlayRenderProps }: { PlayRenderProps: IPlayRenderProps, PlayUploadRenderProps: PlayUploadRenderProps }) => {
   const { PlayUploadState, PlayUploadUtils } = PlayUploadRenderProps;
   return <List header="Uploaded Quizzes" items={PlayUploadState.items} setItems={PlayUploadUtils.setItems} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]} onDelete={PlayUploadUtils.removeErrorLogs}>
-    {(ListRenderProps: ListRProps) =>
+    {(ListRenderProps: ListRenderProps) =>
       renderPlaySettings({ ListRenderProps, PlayUploadRenderProps, PlayRenderProps })
     }
   </List>
 }
 
-const renderPlaySettings = ({ ListRenderProps, PlayUploadRenderProps, PlayRenderProps }: { PlayRenderProps: IPlayRProps, ListRenderProps: ListRProps, PlayUploadRenderProps: PlayUploadRProps }) => {
+const renderPlaySettings = ({ ListRenderProps, PlayUploadRenderProps, PlayRenderProps }: { PlayRenderProps: IPlayRenderProps, ListRenderProps: ListRenderProps, PlayUploadRenderProps: PlayUploadRenderProps }) => {
   const { ListState, ListUtils } = ListRenderProps;
   const { PlayUploadState, PlayUploadUtils } = PlayUploadRenderProps;
   const { PlayState: { playing }, PlayUtils: { setPlaying } } = PlayRenderProps;
   return <PlaySettings quizzes={PlayUploadState.items} setPlaying={setPlaying} selectedQuizzes={ListState.selectedItems}>
-    {(IPlaySettingsRenderProps: IPlaySettingsRProps) => {
+    {(IPlaySettingsRenderProps: IPlaySettingsRenderProps) => {
       const { PlaySettingsState, PlaySettingsExtra } = IPlaySettingsRenderProps;
       if (playing)
         localStorage.setItem('PLAY_SETTINGS', JSON.stringify(PlaySettingsState))
@@ -63,11 +63,11 @@ const renderPlaySettings = ({ ListRenderProps, PlayUploadRenderProps, PlayRender
   </PlaySettings>
 }
 
-const renderPlayMenu = ({ ListRenderProps, PlayUploadRenderProps, IPlaySettingsRenderProps }: { ListRenderProps: ListRProps, PlayUploadRenderProps: PlayUploadRProps, IPlaySettingsRenderProps: IPlaySettingsRProps }) => {
+const renderPlayMenu = ({ ListRenderProps, PlayUploadRenderProps, IPlaySettingsRenderProps }: { ListRenderProps: ListRenderProps, PlayUploadRenderProps: PlayUploadRenderProps, IPlaySettingsRenderProps: IPlaySettingsRenderProps }) => {
   const { PlaySettingsComponent } = IPlaySettingsRenderProps;
   return <div className="Play" id="Play">
     <Menu content={PlaySettingsComponent} lskey="Play_menu">
-      {(MenuRenderProps: MenuRProps) =>
+      {(MenuRenderProps: MenuRenderProps) =>
         <Fragment>
           {MenuRenderProps.MenuComponent}
           <PlayContent renderprops={{ ListRenderProps, PlayUploadRenderProps, MenuRenderProps }} />
@@ -77,7 +77,7 @@ const renderPlayMenu = ({ ListRenderProps, PlayUploadRenderProps, IPlaySettingsR
   </div>
 }
 
-const PlayContent = (props: { renderprops: { ListRenderProps: ListRProps, PlayUploadRenderProps: PlayUploadRProps, MenuRenderProps: MenuRProps } }) => {
+const PlayContent = (props: { renderprops: { ListRenderProps: ListRenderProps, PlayUploadRenderProps: PlayUploadRenderProps, MenuRenderProps: MenuRenderProps } }) => {
   const history = useHistory(), { theme, settings, sounds } = useThemeSettings();
 
   const { ListRenderProps, PlayUploadRenderProps, MenuRenderProps } = props.renderprops;

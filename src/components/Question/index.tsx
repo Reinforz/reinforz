@@ -2,22 +2,24 @@ import React, { useState, Fragment, useRef, createRef, RefObject, useEffect } fr
 import { Button, } from "@material-ui/core";
 import marked from "marked";
 import createDOMPurify from 'dompurify';
+import { HotKeys } from "react-hotkeys";
 
-import Timer, { TimerRProps } from "../Basic/Timer";
+import Timer, { TimerRenderProps } from "../Basic/Timer";
 import QuestionHighlighter from "./QuestionHighlighter/QuestionHighlighter";
 import QuestionOptions from "./QuestionOptions/QuestionOptions";
 import QuestionHints from "./QuestionHints/QuestionHints";
 
 import { useThemeSettings } from "../../hooks";
 
-import { QuestionProps, QuestionHintsRProps } from "../../types";
+import { QuestionHintsRenderProps } from "../../types";
 
-import "./Question.scss";
-import { HotKeys } from "react-hotkeys";
+import "./style.scss";
+
+import { QuestionProps } from "./types";
 
 const DOMPurify = createDOMPurify(window);
 
-export default function Question(props: QuestionProps) {
+export function Question(props: QuestionProps) {
   const { hasEnd, index, question: { question, options, _id, type, image, format, time_allocated, hints, answers, language } } = props;
   const total_fibs = question.match(/(%_%)/g)?.length;
   const [user_answers, changeUserAnswers] = useState(type === "FIB" ? Array(total_fibs ?? 1).fill('') as string[] : ['']);
@@ -50,7 +52,7 @@ export default function Question(props: QuestionProps) {
   const QuestionOption = type !== "FIB" && <QuestionOptions changeOption={changeUserAnswers} user_answers={user_answers} question={props.question} />;
   const GeneratedQuestion = generateQuestion();
   return <QuestionHints hints={hints}>
-    {({ QuestionHintsComponent, QuestionHintsState, QuestionHintsUtils }: QuestionHintsRProps) => {
+    {({ QuestionHintsComponent, QuestionHintsState, QuestionHintsUtils }: QuestionHintsRenderProps) => {
       const onButtonClick = (time_taken: number) => {
         if (settings.sound) sounds.click.play();
         props.changeCounter(type !== "FIB" ? user_answers.filter(user_answer => user_answer !== "") : fibRefs.current.map(fibRef => fibRef?.current?.value ?? ""), time_allocated - time_taken, QuestionHintsState.hints_used)
@@ -59,7 +61,7 @@ export default function Question(props: QuestionProps) {
       return <Timer timeout={time_allocated} onTimerEnd={() => {
         onButtonClick(time_allocated)
       }}>
-        {({ TimerComponent, TimerState }: TimerRProps) => {
+        {({ TimerComponent, TimerState }: TimerRenderProps) => {
           const keyMap: any = {
             next_question: "right",
             next_hint: "down"
@@ -111,3 +113,5 @@ export default function Question(props: QuestionProps) {
     }}
   </QuestionHints>
 }
+
+export * from "./types"

@@ -6,7 +6,7 @@ import { useTimer } from "../../../hooks";
 import { ExtendedTheme } from "../../../types";
 
 import "./style.scss";
-import { TimerRProps, TimerProps } from "./types";
+import { TimerRenderProps, TimerProps } from "./types";
 
 export default function (props: TimerProps) {
 
@@ -17,7 +17,7 @@ export default function (props: TimerProps) {
   return props.children({
     TimerComponent: <div style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }} className="Timer">{displayTime()}</div>,
     TimerState: { timeout },
-  } as TimerRProps);
+  } as TimerRenderProps);
 }
 
 export * from "./types"

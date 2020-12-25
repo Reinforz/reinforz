@@ -4,7 +4,7 @@ import { useThemeSettings } from "../../../hooks";
 
 import { arrayShuffler } from "../../../utils";
 
-import { PlaySettingsProps, QuestionDifficulty, QuestionType, QuizInputFull, QuestionInputFull, IPlaySettingsRProps } from "../../../types";
+import { PlaySettingsProps, QuestionDifficulty, QuestionType, QuizInputFull, QuestionInputFull, IPlaySettingsRenderProps } from "../../../types";
 
 import "./style.scss";
 
@@ -48,6 +48,6 @@ export function PlaySettings(props: PlaySettingsProps) {
         <div className="PlaySettings-total" style={{ backgroundColor: theme.color.dark, color: filtered_questions.length === 0 ? theme.palette.error.main : theme.palette.success.main }}>{filtered_questions.length} Questions</div>
         <PlaySettingsButton filtered_questions={filtered_questions} selected_quizzes={props.selectedQuizzes} setPlaying={props.setPlaying} />
       </div>
-    } as IPlaySettingsRProps)
+    } as IPlaySettingsRenderProps)
   );
 }

@@ -15,7 +15,7 @@ export interface ReportFilterState {
   excluded_columns: string[]
 }
 
-export interface ReportFilterRProps {
+export interface ReportFilterRenderProps {
   ReportFilterState: ReportFilterState,
   ReportFilter: JSX.Element
 }

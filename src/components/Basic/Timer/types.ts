@@ -9,7 +9,7 @@ export interface TimerState {
   timer: undefined | number
 }
 
-export interface TimerRProps {
+export interface TimerRenderProps {
   TimerComponent: JSX.Element,
   TimerState: TimerState,
 }

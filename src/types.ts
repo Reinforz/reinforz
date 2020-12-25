@@ -37,7 +37,7 @@ export interface ListUtils {
   setSelectedItems: (items: string[]) => void
 }
 
-export interface ListRProps {
+export interface ListRenderProps {
   ListComponent: JSX.Element,
   ListState: ListState,
   ListUtils: ListUtils
@@ -60,7 +60,7 @@ export interface PlayErrorLogsProps {
   children: any
 }
 
-export interface PlayErrorLogsRProps {
+export interface PlayErrorLogsRenderProps {
   PlayErrorLogsComponent: JSX.Element
 }
 
@@ -75,7 +75,7 @@ export interface IPlaySettingsState {
   play_filters: IPlaySettingsFiltersState,
 }
 
-export interface IPlaySettingsRProps {
+export interface IPlaySettingsRenderProps {
   PlaySettingsComponent: JSX.Element,
   PlaySettingsState: IPlaySettingsState,
   PlaySettingsExtra: {
@@ -84,7 +84,7 @@ export interface IPlaySettingsRProps {
   }
 }
 
-export interface PlayUploadRProps {
+export interface PlayUploadRenderProps {
   PlayUploadComponents: {
     PlayUpload: JSX.Element,
     PlayErrorLogs: JSX.Element
@@ -97,15 +97,6 @@ export interface PlayUploadRProps {
     removeErrorLogs: (items: any[]) => any,
   }
 }
-
-export interface QuestionProps {
-  question: QuestionInputFull,
-  changeCounter: (user_answers: string[], time_taken: number, hints_used: number) => void,
-  hasEnd: boolean,
-  index: number,
-  total: number
-};
-
 export interface QuizInputPartial {
   title: string,
   subject: string,
@@ -188,7 +179,7 @@ export interface IQuestionHintsState {
   hints_used: number
 }
 
-export interface QuestionHintsRProps {
+export interface QuestionHintsRenderProps {
   QuestionHintsComponent: JSX.Element,
   QuestionHintsState: IQuestionHintsState
   QuestionHintsUtils: {
@@ -276,14 +267,14 @@ export interface MenuProps {
   content: JSX.Element
 }
 
-export interface MenuRProps {
+export interface MenuRenderProps {
   MenuComponent: JSX.Element,
   MenuExtra: {
     content_elem_style: any
   }
 }
 
-export interface ToggleItemsRProps {
+export interface ToggleItemsRenderProps {
   ToggleButton: JSX.Element,
   ToggleItems: JSX.Element,
   ToggleItemsUtils: {
