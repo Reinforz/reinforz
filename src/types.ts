@@ -158,41 +158,6 @@ export interface QuestionInputFull extends Required<QuestionInput & { quiz: Quiz
 export type QuestionInputsPartial = QuestionInputPartial[];
 export type QuestionInputsFull = QuestionInputFull[];
 
-export interface HighlighterProps {
-  code: string,
-  language: Language,
-}
-
-export interface QuestionHighlighterProps extends HighlighterProps {
-  type: QuestionType,
-  fibRefs: React.MutableRefObject<React.RefObject<HTMLInputElement>[]>,
-  answers: string[],
-  image?: string
-}
-
-export interface QuestionHintsProps {
-  hints: string[],
-  children: any
-}
-
-export interface IQuestionHintsState {
-  hints_used: number
-}
-
-export interface QuestionHintsRenderProps {
-  QuestionHintsComponent: JSX.Element,
-  QuestionHintsState: IQuestionHintsState
-  QuestionHintsUtils: {
-    getNextIndex: () => void
-  }
-}
-
-export interface QuestionOptionsProps {
-  changeOption: (val: string[]) => any,
-  user_answers: string[],
-  question: QuestionInputFull,
-}
-
 export interface QuizIdentifiers {
   title: string,
   _id: string,

@@ -5,13 +5,11 @@ import createDOMPurify from 'dompurify';
 import { HotKeys } from "react-hotkeys";
 
 import Timer, { TimerRenderProps } from "../Basic/Timer";
-import QuestionHighlighter from "./QuestionHighlighter/QuestionHighlighter";
-import QuestionOptions from "./QuestionOptions/QuestionOptions";
-import QuestionHints from "./QuestionHints/QuestionHints";
+import { QuestionHighlighter } from "./Highlighter";
+import { QuestionOptions } from "./Options";
+import { QuestionHints, QuestionHintsRenderProps } from "./Hints";
 
 import { useThemeSettings } from "../../hooks";
-
-import { QuestionHintsRenderProps } from "../../types";
 
 import "./style.scss";
 

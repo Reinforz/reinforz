@@ -7,11 +7,10 @@ import createDOMPurify from 'dompurify';
 
 import Highlighter from "../../Basic/Highlighter";
 
-import { QuestionOptionsProps } from '../../../types';
-
 import { useThemeSettings } from '../../../hooks'
 
-import "./QuestionOptions.scss";
+import "./style.scss";
+import { QuestionOptionsProps } from './types';
 
 const DOMPurify = createDOMPurify(window);
 
@@ -27,7 +26,7 @@ const optionLabelFormat = (option: string) => {
   else return option.toString()
 }
 
-export default function (props: QuestionOptionsProps) {
+export function QuestionOptions(props: QuestionOptionsProps) {
   const { theme, settings, sounds: { option_click } } = useThemeSettings();
   const { changeOption, user_answers, question: { _id, type, options } } = props;
   const generateOptions = () => {
@@ -94,3 +93,4 @@ export default function (props: QuestionOptionsProps) {
   );
 }
 
+export * from "./types"

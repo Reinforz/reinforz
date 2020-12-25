@@ -9,7 +9,8 @@ import "prismjs/components/prism-csharp";
 import "prismjs/components/prism-java";
 import "prismjs/components/prism-git";
 
-import { ExtendedTheme, HighlighterProps } from "../../types";
+import { ExtendedTheme } from "../../types";
+import { HighlighterProps } from "../Question/Highlighter";
 
 export default React.memo((props: HighlighterProps) => {
   const { code, language } = props;

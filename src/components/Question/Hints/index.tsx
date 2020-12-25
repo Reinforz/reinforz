@@ -1,12 +1,13 @@
 import React from 'react';
 
-import { QuestionHintsProps, QuestionHintsRenderProps, ToggleItemsRenderProps } from '../../../types';
+import { ToggleItemsRenderProps } from '../../../types';
 
-import "./QuestionHints.scss";
+import "./style.scss";
 
 import ToggleItems from '../../Basic/ToggleItems';
+import { QuestionHintsProps, QuestionHintsRenderProps } from './types';
 
-export default function (props: QuestionHintsProps) {
+export function QuestionHints(props: QuestionHintsProps) {
   const { hints, children } = props;
   return <ToggleItems items={hints} name={"hints"}>
     {({ ToggleButton, ToggleItems, ToggleItemsState, ToggleItemsUtils }: ToggleItemsRenderProps) => {
@@ -25,3 +26,5 @@ export default function (props: QuestionHintsProps) {
     }}
   </ToggleItems>
 }
+
+export * from "./types"
