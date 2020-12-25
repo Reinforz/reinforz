@@ -10,10 +10,9 @@ import { SettingsContext } from "../../context";
 import { SettingsOnoffSwitch } from './OnoffSwitch';
 
 function Settings() {
-  const { settings, setSettings } = useContext(SettingsContext);
-  const { theme, animation, sound, hovertips } = settings;
-  const history = useHistory();
-  const { theme: THEME, sounds: { switch_on, swoosh } } = useThemeSettings();
+  const { settings, settings: { theme, animation, sound, hovertips }, setSettings } = useContext(SettingsContext),
+    history = useHistory(),
+    { theme: THEME, sounds: { switch_on, swoosh } } = useThemeSettings();
 
   return (
     <div className="Settings" style={{ backgroundColor: THEME.color.light }}>
@@ -24,7 +23,7 @@ function Settings() {
           {["dark", "light"].map((_theme, index) => <FormControlLabel onClick={(e: any) => {
             if (settings.sound) switch_on.play();
             setSettings({ ...settings, theme: theme === "dark" ? "light" : "dark" })
-          }} key={_theme.toString() + index} value={_theme} control={<Radio color="primary" />} label={_theme === "dark" ? <BsMoon className="Settings-icon Settings-icon--theme" style={{ fill: THEME.color.opposite_dark }} /> : <BsSun className="Settings-icon Settings-icon--theme" style={{ fill: THEME.color.opposite_dark }} />} />)}
+          }} key={_theme.toString()} value={_theme} control={<Radio color="primary" />} label={_theme === "dark" ? <BsMoon className="Settings-icon Settings-icon--theme" style={{ fill: THEME.color.opposite_dark }} /> : <BsSun className="Settings-icon Settings-icon--theme" style={{ fill: THEME.color.opposite_dark }} />} />)}
         </RadioGroup>
         <SettingsOnoffSwitch prop={"animation"} settings={settings} setSettings={setSettings} />
         <SettingsOnoffSwitch prop={"sound"} settings={settings} setSettings={setSettings} />

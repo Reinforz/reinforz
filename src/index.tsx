@@ -17,14 +17,14 @@ import './index.scss';
 import Settings, { SettingsState } from './components/Settings';
 
 const App = () => {
-  let local_settings: any = localStorage.getItem("SETTINGS");
-  local_settings = local_settings ? JSON.parse(local_settings) : {}
-  local_settings.animation = local_settings.animation ? (local_settings.animation === "true" ? true : false) : true;
-  local_settings.sound = local_settings.sound ? (local_settings.sound === "true" ? true : false) : true;
-  local_settings.hovertips = local_settings.hovertips ? (local_settings.hovertips === "true" ? true : false) : true;
-  local_settings.theme = local_settings.theme || "dark";
+  const lsvalue = localStorage.getItem("SETTINGS");
+  const local_settings = lsvalue ? JSON.parse(lsvalue) : {} as SettingsState;
+  local_settings.animation = (local_settings?.animation === "true" ? true : false);
+  local_settings.sound = (local_settings?.sound === "true" ? true : false);
+  local_settings.hovertips = local_settings?.hovertips === "true" ? true : false;
+  local_settings.theme = local_settings?.theme ?? "dark";
 
-  const [settings, setSettings] = useState(local_settings as SettingsState);
+  const [settings, setSettings] = useState(local_settings);
   const generatedTheme = generateTheme(settings.theme) as ExtendedTheme;
 
   return <ThemeProvider theme={generatedTheme}>
@@ -33,7 +33,7 @@ const App = () => {
         <SettingsContext.Provider value={{ settings, setSettings }}>
           <div className={`App ${generatedTheme.palette.type === "dark" ? "dark" : "light"}`} style={{ backgroundColor: generatedTheme.color.dark }}>
             <Switch>
-              <Route exact path="/" render={() => <Play />} />
+              <Route exact path="/" component={Play} />
               <Route exact path="/settings" component={Settings} />
             </Switch>
           </div>
@@ -43,10 +43,9 @@ const App = () => {
   </ThemeProvider>
 }
 
-const Index = () => {
-  return <Router basename={process.env.PUBLIC_URL}>
-    <App />
-  </Router >
-};
 
-ReactDOM.render(<Index />, document.getElementById('root'));
+ReactDOM.render(
+  <Router basename={process.env.PUBLIC_URL}>
+    <App />
+  </Router >,
+  document.getElementById('root'));

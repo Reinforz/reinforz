@@ -1,12 +1,4 @@
-export interface IPlayState {
-  playing: boolean
-}
-
-export interface IPlayUtils {
+export interface PlayState {
+  playing: boolean,
   setPlaying: (playing: boolean) => void
-}
-
-export interface IPlayRenderProps {
-  PlayState: IPlayState,
-  PlayUtils: IPlayUtils
 }

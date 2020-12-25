@@ -1,3 +1,5 @@
 import React from "react";
 
-export default React.createContext({})
+import { PlayState } from "../components";
+
+export default React.createContext<PlayState>({} as any)
