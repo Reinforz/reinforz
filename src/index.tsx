@@ -30,11 +30,11 @@ const App = () => {
   return <ThemeProvider theme={generatedTheme}>
     <SnackbarProvider maxSnack={4}>
       <DndProvider backend={HTML5Backend}>
-        <SettingsContext.Provider value={settings}>
+        <SettingsContext.Provider value={{ settings, setSettings }}>
           <div className={`App ${generatedTheme.palette.type === "dark" ? "dark" : "light"}`} style={{ backgroundColor: generatedTheme.color.dark }}>
             <Switch>
               <Route exact path="/" render={() => <Play />} />
-              <Route exact path="/settings" render={() => <Settings settings={settings} setSettings={setSettings} />} />
+              <Route exact path="/settings" component={Settings} />
             </Switch>
           </div>
         </SettingsContext.Provider>

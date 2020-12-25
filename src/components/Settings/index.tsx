@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { BsMoon, BsSun } from 'react-icons/bs';
 import { Button, FormControlLabel, InputLabel, Radio, RadioGroup } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
@@ -6,12 +6,11 @@ import { useHistory } from 'react-router-dom';
 import { useThemeSettings } from '../../hooks';
 
 import "./style.scss";
-
-import { SettingsProps } from './types';
+import { SettingsContext } from "../../context";
 import { SettingsOnoffSwitch } from './OnoffSwitch';
 
-function Settings(props: SettingsProps) {
-  const { settings, setSettings } = props;
+function Settings() {
+  const { settings, setSettings } = useContext(SettingsContext);
   const { theme, animation, sound, hovertips } = settings;
   const history = useHistory();
   const { theme: THEME, sounds: { switch_on, swoosh } } = useThemeSettings();

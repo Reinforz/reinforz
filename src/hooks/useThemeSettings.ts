@@ -3,7 +3,6 @@ import { useContext } from "react";
 
 import { SettingsContext } from "../context";
 
-import { SettingsState } from "../components/Settings";
 import { ExtendedTheme } from "../types";
 
 const sounds: any = {};
@@ -16,6 +15,6 @@ const sounds: any = {};
 
 export default function () {
   const theme = useTheme() as ExtendedTheme;
-  const settings = useContext(SettingsContext) as SettingsState;
+  const { settings } = useContext(SettingsContext);
   return { theme, settings, sounds }
 }
