@@ -82,16 +82,13 @@ const PlayContent = (props: { renderprops: { ListRenderProps: ListRenderProps, P
 export function Play() {
   const [playing, setPlaying] = useState(false);
   return <PlayContext.Provider value={{ playing, setPlaying }}>
-    <PlayUpload>
-      {(PlayUploadRenderProps: PlayUploadRenderProps) => {
-        const { PlayUploadState, PlayUploadUtils } = PlayUploadRenderProps;
-
-      }}
-    </PlayUpload>
+    <PlayUpload />
   </PlayContext.Provider>
 }
 
 export * from "./Settings"
 export * from "./Table"
 export * from "./Upload"
+export * from "./List"
+export * from "./Errorlogs"
 export * from "./types"

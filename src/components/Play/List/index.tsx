@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { PlaySettings } from "../..";
+import { PlaySettings, Quiz } from "../..";
 import { PlayContext, PlayUploadContext, PlaySettingsContext } from "../../../context";
 import List from "../../Basic/List/List";
 
