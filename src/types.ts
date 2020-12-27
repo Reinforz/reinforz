@@ -63,13 +63,6 @@ export interface PlayErrorLogsProps {
 export interface PlayErrorLogsRenderProps {
   PlayErrorLogsComponent: JSX.Element
 }
-
-export interface PlaySettingsProps {
-  children: any,
-  selectedQuizzes: string[],
-  setPlaying: (isPlaying: boolean) => any,
-  quizzes: QuizInputFull[]
-}
 export interface IPlaySettingsState {
   play_options: IPlaySettingsOptionsState,
   play_filters: IPlaySettingsFiltersState,

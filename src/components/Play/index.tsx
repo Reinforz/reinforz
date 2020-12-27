@@ -30,7 +30,6 @@ const setToLs = debounced((size: string) => {
   localStorage.setItem("Play_pane_size", size || "50%")
 }, 2500)
 
-
 const renderPlayMenu = ({ ListRenderProps, PlayUploadRenderProps, IPlaySettingsRenderProps }: { ListRenderProps: ListRenderProps, PlayUploadRenderProps: PlayUploadRenderProps, IPlaySettingsRenderProps: IPlaySettingsRenderProps }) => {
   const { PlaySettingsComponent } = IPlaySettingsRenderProps;
   return <div className="Play" id="Play">
@@ -86,20 +85,7 @@ export function Play() {
     <PlayUpload>
       {(PlayUploadRenderProps: PlayUploadRenderProps) => {
         const { PlayUploadState, PlayUploadUtils } = PlayUploadRenderProps;
-        return <List header="Uploaded Quizzes" items={PlayUploadState.items} setItems={PlayUploadUtils.setItems} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]} onDelete={PlayUploadUtils.removeErrorLogs}>
-          {(ListRenderProps: ListRenderProps) => {
-            const { ListState } = ListRenderProps, { PlayUploadState } = PlayUploadRenderProps;
-            return <PlaySettings quizzes={PlayUploadState.items} setPlaying={setPlaying} selectedQuizzes={ListState.selectedItems}>
-              {(IPlaySettingsRenderProps: IPlaySettingsRenderProps) => {
-                const { PlaySettingsState, PlaySettingsExtra } = IPlaySettingsRenderProps;
-                if (playing)
-                  localStorage.setItem('PLAY_SETTINGS', JSON.stringify(PlaySettingsState))
-                return playing ? <Quiz selected_quizzes={PlaySettingsExtra.selected_quizzes} play_options={PlaySettingsState.play_options} all_questions={PlaySettingsExtra.filtered_questions} />
-                  : renderPlayMenu({ ListRenderProps, PlayUploadRenderProps, IPlaySettingsRenderProps })
-              }}
-            </PlaySettings>
-          }}
-        </List>
+
       }}
     </PlayUpload>
   </PlayContext.Provider>

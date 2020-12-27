@@ -4,7 +4,7 @@ import { useThemeSettings } from "../../../hooks";
 
 import { arrayShuffler } from "../../../utils";
 
-import { PlaySettingsProps, QuestionDifficulty, QuestionType, QuizInputFull, QuestionInputFull, IPlaySettingsRenderProps } from "../../../types";
+import { QuestionDifficulty, QuestionType, QuizInputFull, QuestionInputFull, IPlaySettingsRenderProps } from "../../../types";
 
 import "./style.scss";
 
@@ -51,3 +51,8 @@ export function PlaySettings(props: PlaySettingsProps) {
     } as IPlaySettingsRenderProps)
   );
 }
+
+export * from "./types"
+export * from "./Options"
+export * from "./Filters"
+export * from "./Button"

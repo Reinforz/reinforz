@@ -12,7 +12,7 @@ import { PlayContext } from '../../context';
 
 import { useThemeSettings } from '../../hooks';
 
-import { IPlayContext, QuestionInputFull, QuizInputFull, MenuRenderProps } from "../../types";
+import { QuestionInputFull, QuizInputFull, MenuRenderProps } from "../../types";
 
 import "./style.scss";
 import { ReportProps } from './types';
@@ -52,7 +52,7 @@ const transformValue = (header: string, content: any) => {
 export function Report(props: ReportProps) {
   const { settings, sounds } = useThemeSettings(),
     history = useHistory(),
-    PlayContextValue = useContext(PlayContext) as IPlayContext;
+    PlayContextValue = useContext(PlayContext);
 
   return (
     <div className="Report">

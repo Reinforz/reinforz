@@ -1,7 +1,3 @@
-import PlayContext from "./PlayContext"
-import SettingsContext from "./SettingsContext"
-
-export {
-  SettingsContext,
-  PlayContext
-}
+export * from "./PlayContext";
+export * from "./SettingsContext";
+export * from "./PlayUploadContext"
