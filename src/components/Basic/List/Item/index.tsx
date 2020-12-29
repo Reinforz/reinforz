@@ -4,11 +4,11 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd'
 import { XYCoord } from 'dnd-core'
 
-import { Icon } from '../';
+import { Icon } from '../..';
+import { ListItemProps } from "./types"
+import { useThemeSettings, useListItems } from '../../../../hooks';
 
-import { useThemeSettings, useListItems } from '../../../hooks';
-
-import { ListItemProps, DragItem } from '../../../types';
+import { DragItem } from '../../../../types';
 
 export default function ListItem<T extends { _id: string }>(props: ListItemProps<T>) {
   const { items, item, fields, index, setSelectedItems, setItems, selectedItems } = props;
@@ -95,3 +95,5 @@ export default function ListItem<T extends { _id: string }>(props: ListItemProps
     </div>
   )
 }
+
+export * from "./types"

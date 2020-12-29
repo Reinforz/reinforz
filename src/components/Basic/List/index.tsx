@@ -4,15 +4,13 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import update from 'immutability-helper'
 
-import { Icon } from "../../Basic"
-import ListItem from "./ListItem";
+import { Icon } from ".."
+import ListItem from "./Item";
 
 import { useList, useThemeSettings } from "../../../hooks";
 
-import { ListProps } from "../../../types";
-
-import "./List.scss";
-import { ListState } from "./types";
+import "./style.scss";
+import { ListProps, ListState } from "./types";
 
 function List<T extends { _id: string }>(props: ListProps<T>) {
   const { children, items, setItems, header, fields } = props;

@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { PlaySettings, PlayUploadContext, PlayListContext } from "..";
-import List, { ListState } from "../../Basic/List/List";
+import List, { ListState } from "../../Basic/List";
 
 import "./style.scss";
 
