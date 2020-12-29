@@ -4,14 +4,11 @@ import { OptionsObject, useSnackbar } from "notistack";
 import { DropzoneState, useDropzone } from 'react-dropzone';
 import shortid from "shortid";
 import styled from 'styled-components';
-import { PlayErrorlog, PlayErrorlogs } from '..';
-import { PlayUploadContext } from '../../../context';
-import { PlayErrorlogsContext } from '../../../context/PlayErrorLogsContext';
+import { PlayErrorlog, PlayErrorlogsContext, PlayUploadContext } from '..';
 import { useThemeSettings } from '../../../hooks';
 import { QuestionInputFull, QuizInputFull, QuizInputPartial } from '../../../types';
 import { generateQuestionInputConfigs } from '../../../utils';
 import "./style.scss";
-import { TapAndPlay } from '@material-ui/icons';
 
 const getColor = (props: DropzoneState) => {
   if (props.isDragAccept)
@@ -37,10 +34,10 @@ const centerBottomErrorNotistack = {
 } as OptionsObject;
 
 export function PlayUpload() {
-  const [items, setItems] = useState([] as QuizInputFull[]);
-  const { enqueueSnackbar } = useSnackbar();
-  const { theme } = useThemeSettings();
-  const { error_logs, setErrorLogs } = useContext(PlayErrorlogsContext)
+  const [items, setItems] = useState([] as QuizInputFull[]),
+    { enqueueSnackbar } = useSnackbar(),
+    { theme } = useThemeSettings(),
+    { error_logs, setErrorLogs } = useContext(PlayErrorlogsContext)
 
   const onDrop = (acceptedFiles: any) => {
     let filePromises: Promise<QuizInputPartial>[] = [];
@@ -109,19 +106,19 @@ export function PlayUpload() {
   };
 
   const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({ onDrop, accept: [".yml", ".yaml", "application/json"] })
-  return <PlayErrorlogs>
-    <PlayUploadContext.Provider value={{ items, setItems }}>
-      <Container style={{ backgroundColor: theme.color.light, color: theme.palette.text.secondary }} className="PlayUpload" {...getRootProps({ isDragActive, isDragAccept, isDragReject })}>
-        <input {...getInputProps()} />
-        {
-          isDragActive ?
-            <p>Drop the files here ...</p> :
-            <p>Drag 'n' drop some files here, or click to upload files (.json or .yaml files)</p>
-        }
-      </Container>
-    </PlayUploadContext.Provider>
-  </PlayErrorlogs>
+  return <PlayUploadContext.Provider value={{ items, setItems }}>
+    <Container style={{ backgroundColor: theme.color.light, color: theme.palette.text.secondary }} className="PlayUpload" {...getRootProps({ isDragActive, isDragAccept, isDragReject })}>
+      <input {...getInputProps()} />
+      {
+        isDragActive ?
+          <p>Drop the files here ...</p> :
+          <p>Drag 'n' drop some files here, or click to upload files (.json or .yaml files)</p>
+      }
+    </Container>
+    {/* <PlayList /> */}
+  </PlayUploadContext.Provider>
 }
 
 export * from "./types";
+export * from "./context";
 

@@ -1,4 +1,4 @@
-export interface IPlaySettingsOptionsState {
+export interface PlaySettingsOptionsState {
   shuffle_options: boolean,
   shuffle_quizzes: boolean,
   shuffle_questions: boolean,
@@ -9,6 +9,6 @@ export interface IPlaySettingsOptionsState {
 }
 
 export interface PlaySettingsOptionsProps {
-  play_settings_options: IPlaySettingsOptionsState,
-  setPlaySettingsOptions: (state: IPlaySettingsOptionsState) => void
+  play_settings_options: PlaySettingsOptionsState,
+  setPlaySettingsOptions: (state: PlaySettingsOptionsState) => void
 }

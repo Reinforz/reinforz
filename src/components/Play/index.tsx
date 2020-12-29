@@ -6,21 +6,19 @@ import { useHistory } from "react-router-dom";
 import SplitPane from 'react-split-pane';
 // @ts-ignore
 import Pane from 'react-split-pane/lib/Pane';
-import { PlayContext } from "../../context";
+import { PlayContext } from "./context";
 import { useThemeSettings } from "../../hooks";
 import {
-  IPlaySettingsRenderProps,
   ListRenderProps,
   MenuRenderProps,
   PlayUploadRenderProps
 } from "../../types";
 
 import { Icon } from '../Basic';
-import List from "../Basic/List/List";
 import Menu from "../Basic/Menu";
 import View from '../Basic/View';
 
-import { PlayUpload, PlayTable, PlaySettings, Quiz } from "../";
+import { PlayErrorlogs } from "../";
 
 import "./style.scss";
 
@@ -30,7 +28,7 @@ const setToLs = debounced((size: string) => {
   localStorage.setItem("Play_pane_size", size || "50%")
 }, 2500)
 
-const renderPlayMenu = ({ ListRenderProps, PlayUploadRenderProps, IPlaySettingsRenderProps }: { ListRenderProps: ListRenderProps, PlayUploadRenderProps: PlayUploadRenderProps, IPlaySettingsRenderProps: IPlaySettingsRenderProps }) => {
+/* const renderPlayMenu = ({ ListRenderProps, PlayUploadRenderProps, IPlaySettingsRenderProps }: { ListRenderProps: ListRenderProps, PlayUploadRenderProps: PlayUploadRenderProps, IPlaySettingsRenderProps: IPlaySettingsRenderProps }) => {
   const { PlaySettingsComponent } = IPlaySettingsRenderProps;
   return <div className="Play" id="Play">
     <Menu content={PlaySettingsComponent} lskey="Play_menu">
@@ -42,9 +40,9 @@ const renderPlayMenu = ({ ListRenderProps, PlayUploadRenderProps, IPlaySettingsR
       }
     </Menu>
   </div>
-}
+} */
 
-const PlayContent = (props: { renderprops: { ListRenderProps: ListRenderProps, PlayUploadRenderProps: PlayUploadRenderProps, MenuRenderProps: MenuRenderProps } }) => {
+/* const PlayContent = (props: { renderprops: { ListRenderProps: ListRenderProps, PlayUploadRenderProps: PlayUploadRenderProps, MenuRenderProps: MenuRenderProps } }) => {
   const history = useHistory(), { theme, settings, sounds } = useThemeSettings();
 
   const { ListRenderProps, PlayUploadRenderProps, MenuRenderProps } = props.renderprops;
@@ -77,18 +75,18 @@ const PlayContent = (props: { renderprops: { ListRenderProps: ListRenderProps, P
       <PlayTable quizzes={PlayUploadState.items} />
     </SplitPane>
   </div>
-}
+} */
 
 export function Play() {
   const [playing, setPlaying] = useState(false);
   return <PlayContext.Provider value={{ playing, setPlaying }}>
-    <PlayUpload />
+    <PlayErrorlogs />
   </PlayContext.Provider>
 }
 
-export * from "./Settings"
-export * from "./Table"
-export * from "./Upload"
-export * from "./List"
+// export * from "./Settings"
+// export * from "./Table"
+// export * from "./Upload"
+// export * from "./List"
 export * from "./Errorlogs"
 export * from "./types"

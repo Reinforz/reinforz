@@ -13,7 +13,7 @@ import { ListProps } from "../../../types";
 
 import "./List.scss";
 
-export default React.memo((props: ListProps<Record<string, any>>) => {
+function List<T extends { _id: string }>(props: ListProps<T>) {
   const { children, items, setItems, header, fields } = props;
   const { theme, settings, sounds } = useThemeSettings();
   const { pop_on, pop_off, remove } = sounds;
@@ -84,4 +84,6 @@ export default React.memo((props: ListProps<Record<string, any>>) => {
       setSelectedItems
     }
   })
-})
+}
+
+export default List;

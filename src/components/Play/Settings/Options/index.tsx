@@ -3,11 +3,11 @@ import React from "react";
 
 import { BasicCheckbox } from "../../../Basic";
 
-import { IPlaySettingsOptionsState, PlaySettingsOptionsProps } from "./types";
+import { PlaySettingsOptionsState, PlaySettingsOptionsProps } from "./types";
 
 import { useThemeSettings } from "../../../../hooks";
 
-const PLAY_OPTIONS_STATE = { shuffle_options: true, shuffle_quizzes: false, shuffle_questions: true, instant_feedback: true, flatten_mix: false, partial_score: true } as IPlaySettingsOptionsState;
+const PLAY_OPTIONS_STATE = { shuffle_options: true, shuffle_quizzes: false, shuffle_questions: true, instant_feedback: true, flatten_mix: false, partial_score: true } as PlaySettingsOptionsState;
 
 export default function ({ play_settings_options, setPlaySettingsOptions }: PlaySettingsOptionsProps) {
   const { theme, settings, sounds: { reset } } = useThemeSettings();
@@ -56,6 +56,6 @@ export default function ({ play_settings_options, setPlaySettingsOptions }: Play
   </div>
 }
 
-export const DEFAULT_PLAY_OPTIONS_STATE = JSON.parse(JSON.stringify(PLAY_OPTIONS_STATE)) as IPlaySettingsOptionsState
+export const DEFAULT_PLAY_OPTIONS_STATE = JSON.parse(JSON.stringify(PLAY_OPTIONS_STATE)) as PlaySettingsOptionsState
 
 export * from "./types";

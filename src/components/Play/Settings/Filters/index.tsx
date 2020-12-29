@@ -3,9 +3,9 @@ import { Button, Checkbox, FormControlLabel, FormGroup, InputLabel, TextField } 
 
 import { useThemeSettings } from "../../../../hooks";
 import { QuestionDifficulty, QuestionType } from "../../../../types";
-import { IPlaySettingsFiltersState, PlaySettingsFiltersProps } from "./types";
+import { PlaySettingsFiltersState, PlaySettingsFiltersProps } from "./types";
 
-const PLAY_FILTERS_STATE = { time_allocated: [15, 60], excluded_difficulty: [], excluded_types: [] } as IPlaySettingsFiltersState;
+const PLAY_FILTERS_STATE = { time_allocated: [15, 60], excluded_difficulty: [], excluded_types: [] } as PlaySettingsFiltersState;
 
 export default function ({ play_settings_filters, setPlaySettingsFilters }: PlaySettingsFiltersProps) {
   const { theme, settings, sounds: { reset, click, pop_off, pop_on } } = useThemeSettings();
@@ -63,4 +63,4 @@ export default function ({ play_settings_filters, setPlaySettingsFilters }: Play
 }
 
 export * from "./types"
-export const DEFAULT_PLAY_FILTERS_STATE = JSON.parse(JSON.stringify(PLAY_FILTERS_STATE)) as IPlaySettingsFiltersState
+export const DEFAULT_PLAY_FILTERS_STATE = JSON.parse(JSON.stringify(PLAY_FILTERS_STATE)) as PlaySettingsFiltersState

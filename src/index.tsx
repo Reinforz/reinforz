@@ -6,15 +6,13 @@ import { SnackbarProvider } from "notistack";
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
-import { Play } from "./components"
-import { SettingsContext } from "./context";
+import { Play, Settings, SettingsState, SettingsContext } from "./components"
 
 import { generateTheme } from "./utils";
 
 import { ExtendedTheme } from './types';
 
 import './index.scss';
-import Settings, { SettingsState } from './components/Settings';
 
 const App = () => {
   const lsvalue = localStorage.getItem("SETTINGS");

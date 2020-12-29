@@ -1,8 +1,3 @@
-import { QuizInputFull } from "../../../types";
+import { PlaySettingsOptionsProps, PlaySettingsFiltersProps } from ".";
 
-export interface PlaySettingsProps {
-  children: any,
-  selectedQuizzes: string[],
-  setPlaying: (isPlaying: boolean) => any,
-  quizzes: QuizInputFull[]
-}
+export interface PlaySettingsState extends PlaySettingsOptionsProps, PlaySettingsFiltersProps { }

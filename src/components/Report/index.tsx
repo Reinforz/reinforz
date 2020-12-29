@@ -56,7 +56,7 @@ export function Report(props: ReportProps) {
 
   return (
     <div className="Report">
-      <ReportFilter selected_quizzes={props.selected_quizzes}>
+      {/* <ReportFilter selected_quizzes={props.selected_quizzes}>
         {({ ReportFilterState, ReportFilter }: ReportFilterRenderProps) => {
           const { excluded_types, excluded_quizzes, excluded_difficulty, verdict, hints_used, time_taken } = ReportFilterState;
           const filtered_results = props.results.filter(result => !excluded_types.includes(result.type) && !excluded_difficulty.includes(result.difficulty) && (verdict === "mixed" || verdict.toString() === result.verdict?.toString()) && (hints_used === "any" || result.hints_used <= hints_used) && time_taken[0] <= result.time_taken && time_taken[1] >= result.time_taken && !excluded_quizzes.includes(result.quizId))
@@ -107,7 +107,7 @@ export function Report(props: ReportProps) {
             }}
           </Menu>
         }}
-      </ReportFilter>
+      </ReportFilter> */}
     </div>
   );
 }

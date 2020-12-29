@@ -10,7 +10,7 @@ import { useThemeSettings, useListItems } from '../../../hooks';
 
 import { ListItemProps, DragItem } from '../../../types';
 
-export default function ListItem(props: ListItemProps<Record<string, any>>) {
+export default function ListItem<T extends { _id: string }>(props: ListItemProps<T>) {
   const { items, item, fields, index, setSelectedItems, setItems, selectedItems } = props;
   const { _id } = item;
   const { theme, settings, sounds } = useThemeSettings();
@@ -91,7 +91,7 @@ export default function ListItem(props: ListItemProps<Record<string, any>>) {
           }} style={{ fill: theme.palette.error.dark }} />
         </Icon>
       </div>
-      {fields.map((field, index) => <div className="List-content-item-field" key={_id + field + index}>{typeof field === "string" ? item[field] : field(item)}</div>)}
+      {fields.map((field, index) => <div className="List-content-item-field" key={_id + field + index}>{typeof field === "string" ? (item as any)[field] : field(item)}</div>)}
     </div>
   )
 }

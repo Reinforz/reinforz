@@ -6,10 +6,10 @@ import { useHistory } from 'react-router-dom';
 import { useThemeSettings } from '../../hooks';
 
 import "./style.scss";
-import { SettingsContext } from "../../context";
+import { SettingsContext } from "./context";
 import { SettingsOnoffSwitch } from './OnoffSwitch';
 
-function Settings() {
+export function Settings() {
   const { settings, settings: { theme, animation, sound, hovertips }, setSettings } = useContext(SettingsContext),
     history = useHistory(),
     { theme: THEME, sounds: { switch_on, swoosh } } = useThemeSettings();
@@ -43,8 +43,7 @@ function Settings() {
   );
 }
 
-export default Settings;
-
 export * from "./types"
+export * from "./context"
 
 export * from "./OnoffSwitch"

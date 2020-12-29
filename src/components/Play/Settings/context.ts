@@ -1,5 +1,5 @@
 import React from "react";
 
-import { PlaySettingsState } from "../components";
+import { PlaySettingsState } from "./types";
 
 export const PlaySettingsContext = React.createContext<PlaySettingsState>({} as any)

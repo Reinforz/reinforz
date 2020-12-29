@@ -1,7 +1,6 @@
 import { Language } from "prism-react-renderer";
 import { ThemeOptions, Theme } from '@material-ui/core/styles';
-import { IPlaySettingsOptionsState } from "./components/Play/Settings/Options/types";
-import { IPlaySettingsFiltersState } from "./components/Play/Settings/Filters/types";
+import { PlaySettingsOptionsState } from "./components/Play/Settings/Options/types";
 
 // Basic Components
 
@@ -63,20 +62,6 @@ export interface PlayErrorLogsProps {
 export interface PlayErrorLogsRenderProps {
   PlayErrorLogsComponent: JSX.Element
 }
-export interface IPlaySettingsState {
-  play_options: IPlaySettingsOptionsState,
-  play_filters: IPlaySettingsFiltersState,
-}
-
-export interface IPlaySettingsRenderProps {
-  PlaySettingsComponent: JSX.Element,
-  PlaySettingsState: IPlaySettingsState,
-  PlaySettingsExtra: {
-    filtered_questions: QuestionInputFull[],
-    selected_quizzes: QuizIdentifiers[]
-  }
-}
-
 export interface PlayUploadRenderProps {
   PlayUploadComponents: {
     PlayUpload: JSX.Element,
@@ -158,7 +143,7 @@ export interface QuizIdentifiers {
 }
 export interface QuizProps {
   all_questions: QuestionInputFull[],
-  play_options: IPlaySettingsOptionsState,
+  play_options: PlaySettingsOptionsState,
   selected_quizzes: QuizIdentifiers[]
 }
 
