@@ -25,6 +25,7 @@ const Container = styled.div`
 ` as any;
 
 const trimLower = (data: string) => data.replace(/\s/g, '').toLowerCase();
+
 const centerBottomErrorNotistack = {
   variant: 'error',
   anchorOrigin: {
@@ -36,11 +37,10 @@ const centerBottomErrorNotistack = {
 export function PlayUpload() {
   const [items, setItems] = useState([] as QuizInputFull[]),
     { enqueueSnackbar } = useSnackbar(),
-    { theme } = useThemeSettings(),
-    { error_logs, setErrorLogs } = useContext(PlayErrorlogsContext)
+    { theme } = useThemeSettings();
 
   const onDrop = (acceptedFiles: any) => {
-    let filePromises: Promise<QuizInputPartial>[] = [];
+    const filePromises: Promise<QuizInputPartial>[] = [];
 
     acceptedFiles.forEach((file: File) => {
       const reader = new FileReader();
@@ -100,7 +100,6 @@ export function PlayUpload() {
           return false
         }
       }) as any;
-      setErrorLogs([...error_logs, ...log_messages]);
       setItems([...items, ...filtered_quizzes]);
     });
   };
@@ -115,6 +114,7 @@ export function PlayUpload() {
           <p>Drag 'n' drop some files here, or click to upload files (.json or .yaml files)</p>
       }
     </Container>
+    <PlayErrorlogs />
     <PlayList />
   </PlayUploadContext.Provider>
 }
