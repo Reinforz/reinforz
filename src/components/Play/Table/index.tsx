@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { BasicTable } from "../../Basic"
-
-import { PlayTableProps } from './types';
+import { PlayUploadContext } from '../Upload';
 
 import "./style.scss";
 
-export function PlayTable(props: PlayTableProps) {
+export function PlayTable() {
   const [difficulty_map, setDifficultyMap] = useState([] as any[]);
   const [type_map, setTypeMap] = useState([] as any[]);
   const [time_allocated_map, setTimeAllocatedMap] = useState([] as any[])
+  const { items: quizzes } = useContext(PlayUploadContext);
 
   useEffect(() => {
-    setTimeAllocatedMap(props.quizzes.map(({ questions, title, _id }) => {
+    setTimeAllocatedMap(quizzes.map(({ questions, title, _id }) => {
       const time_allocated_map: Record<string, any> = {
         _id,
         title
@@ -25,7 +25,7 @@ export function PlayTable(props: PlayTableProps) {
       return time_allocated_map;
     }));
 
-    setTypeMap(props.quizzes.map(({ questions, title, _id }) => {
+    setTypeMap(quizzes.map(({ questions, title, _id }) => {
       const type_map: Record<string, any> = {
         Snippet: 0,
         MS: 0,
@@ -40,7 +40,7 @@ export function PlayTable(props: PlayTableProps) {
       return type_map;
     }))
 
-    setDifficultyMap(props.quizzes.map(({ questions, title, _id }) => {
+    setDifficultyMap(quizzes.map(({ questions, title, _id }) => {
       const difficulty_map: Record<string, any> = {
         Beginner: 0,
         Intermediate: 0,
@@ -53,7 +53,7 @@ export function PlayTable(props: PlayTableProps) {
       })
       return difficulty_map;
     }))
-  }, [props.quizzes])
+  }, [quizzes])
 
   return (
     <div className="PlayTable">
@@ -91,5 +91,3 @@ export function PlayTable(props: PlayTableProps) {
     </div>
   );
 }
-
-export * from "./types"
