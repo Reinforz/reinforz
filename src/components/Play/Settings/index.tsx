@@ -11,10 +11,10 @@ import "./style.scss";
 import PlaySettingsOptions, { PlaySettingsOptionsState, DEFAULT_PLAY_OPTIONS_STATE } from "./Options";
 import PlaySettingsFilters, { PlaySettingsFiltersState, DEFAULT_PLAY_FILTERS_STATE } from "./Filters";
 import PlaySettingsButton from "./Button";
-import { PlayUploadContext } from "..";
+import { PlayListContext, PlayUploadContext } from "..";
 
 export function PlaySettings() {
-  const { items: quizzes, setItems } = useContext(PlayUploadContext);
+  const { items: quizzes } = useContext(PlayUploadContext), { selectedItems } = useContext(PlayListContext);
 
   let PLAY_SETTINGS: any = localStorage.getItem('PLAY_SETTINGS');
   PLAY_SETTINGS = PLAY_SETTINGS ? JSON.parse(PLAY_SETTINGS) : undefined;
@@ -24,7 +24,7 @@ export function PlaySettings() {
   const [play_options, setPlaySettingsOptions] = useState((PLAY_SETTINGS?.play_options ?? DEFAULT_PLAY_OPTIONS_STATE) as PlaySettingsOptionsState);
   const [play_filters, setPlaySettingsFilters] = useState((PLAY_SETTINGS?.play_filters ?? DEFAULT_PLAY_FILTERS_STATE) as PlaySettingsFiltersState);
 
-  let filtered_quizzes = quizzes.filter(quiz => selectedQuizzes.includes(quiz._id)) as QuizInputFull[];
+  let filtered_quizzes = quizzes.filter(quiz => selectedItems.includes(quiz._id)) as QuizInputFull[];
   const selected_quizzes = filtered_quizzes.map(filtered_quiz => ({ _id: filtered_quiz._id, title: filtered_quiz.title, subject: filtered_quiz.subject }))
   const filtered_questions: QuestionInputFull[] = [];
   if (play_options.shuffle_quizzes && !play_options.flatten_mix) filtered_quizzes = arrayShuffler(filtered_quizzes);
@@ -37,7 +37,7 @@ export function PlaySettings() {
     <PlaySettingsOptions play_settings_options={play_options} setPlaySettingsOptions={setPlaySettingsOptions} />
     <PlaySettingsFilters play_settings_filters={play_filters} setPlaySettingsFilters={setPlaySettingsFilters} />
     <div className="PlaySettings-total" style={{ backgroundColor: theme.color.dark, color: filtered_questions.length === 0 ? theme.palette.error.main : theme.palette.success.main }}>{filtered_questions.length} Questions</div>
-    <PlaySettingsButton filtered_questions={filtered_questions} selected_quizzes={props.selectedQuizzes} setPlaying={props.setPlaying} />
+    <PlaySettingsButton filtered_questions={filtered_questions} selected_quizzes_length={selected_quizzes.length} />
   </div>
 }
 

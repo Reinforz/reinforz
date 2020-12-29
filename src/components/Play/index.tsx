@@ -7,9 +7,7 @@ import SplitPane from 'react-split-pane';
 // @ts-ignore
 import Pane from 'react-split-pane/lib/Pane';
 import { PlayContext } from "./context";
-import { useThemeSettings } from "../../hooks";
 import {
-  ListRenderProps,
   MenuRenderProps,
   PlayUploadRenderProps
 } from "../../types";
