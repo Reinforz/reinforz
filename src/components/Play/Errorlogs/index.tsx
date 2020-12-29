@@ -1,10 +1,8 @@
-import { useState } from "react";
-import React from "react";
-import { PlayErrorlogsContext } from "./context";
-import { PlayErrorlog } from "./types";
+import React, { useState } from "react";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { useThemeSettings } from "../../../hooks";
-// import { PlayUpload } from "../index"
+import { PlayErrorlog, PlayErrorlogsContext, PlayUpload } from "../"
+
 import "./style.scss";
 
 export const PlayErrorlogs = () => {
@@ -40,7 +38,7 @@ export const PlayErrorlogs = () => {
         </TransitionGroup> : <div style={{ fontSize: "1.25em", fontWeight: "bold", position: "absolute", transform: "translate(-50%,-50%)", top: "50%", left: "50%", textAlign: 'center' }}>No Errors or Warnings!</div>}
       </div>
     </div>
-    {/* <PlayUpload /> */}
+    <PlayUpload />
   </PlayErrorlogsContext.Provider>
 }
 

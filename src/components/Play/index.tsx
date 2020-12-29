@@ -84,9 +84,10 @@ export function Play() {
   </PlayContext.Provider>
 }
 
-// export * from "./Settings"
+export * from "./Settings"
 // export * from "./Table"
-// export * from "./Upload"
-// export * from "./List"
+export * from "./List"
+export * from "./Upload"
 export * from "./Errorlogs"
 export * from "./types"
+export * from "./context"

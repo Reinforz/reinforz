@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import { useThemeSettings } from "../../../hooks";
 
@@ -11,10 +11,11 @@ import "./style.scss";
 import PlaySettingsOptions, { PlaySettingsOptionsState, DEFAULT_PLAY_OPTIONS_STATE } from "./Options";
 import PlaySettingsFilters, { PlaySettingsFiltersState, DEFAULT_PLAY_FILTERS_STATE } from "./Filters";
 import PlaySettingsButton from "./Button";
+import { PlayUploadContext } from "..";
 
-export function PlaySettings(props: { children: JSX.Element }) {
-  return null;
-  /* const { quizzes, selectedQuizzes } = props;
+export function PlaySettings() {
+  const { items: quizzes, setItems } = useContext(PlayUploadContext);
+
   let PLAY_SETTINGS: any = localStorage.getItem('PLAY_SETTINGS');
   PLAY_SETTINGS = PLAY_SETTINGS ? JSON.parse(PLAY_SETTINGS) : undefined;
 
@@ -37,7 +38,7 @@ export function PlaySettings(props: { children: JSX.Element }) {
     <PlaySettingsFilters play_settings_filters={play_filters} setPlaySettingsFilters={setPlaySettingsFilters} />
     <div className="PlaySettings-total" style={{ backgroundColor: theme.color.dark, color: filtered_questions.length === 0 ? theme.palette.error.main : theme.palette.success.main }}>{filtered_questions.length} Questions</div>
     <PlaySettingsButton filtered_questions={filtered_questions} selected_quizzes={props.selectedQuizzes} setPlaying={props.setPlaying} />
-  </div> */
+  </div>
 }
 
 export * from "./types"

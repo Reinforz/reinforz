@@ -2,9 +2,8 @@ import React, { Fragment, useContext, useEffect } from 'react';
 import { Popover, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { SettingsProps } from '../../Settings';
+import { SettingsContext } from '../../Settings';
 import { IconProps } from './types';
-import { SettingsContext } from "../../../context"
 
 const useStyles = makeStyles((theme) => ({
   popover: {
@@ -18,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 export function Icon(props: IconProps) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const { settings } = useContext(SettingsContext) as SettingsProps;
+  const { settings } = useContext(SettingsContext);
 
   const open = Boolean(anchorEl);
 

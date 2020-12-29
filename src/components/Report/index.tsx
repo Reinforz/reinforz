@@ -8,14 +8,13 @@ import ReportFilter, { ReportFilterRenderProps } from './Filter';
 import ReportExport from './Export';
 import Menu from "../Basic/Menu"
 
-import { PlayContext } from '../../context';
-
 import { useThemeSettings } from '../../hooks';
 
 import { QuestionInputFull, QuizInputFull, MenuRenderProps } from "../../types";
 
 import "./style.scss";
 import { ReportProps } from './types';
+import { PlayContext } from '..';
 
 const accumulator = (header: string, contents: Array<any>, total_weights: number) => {
   switch (header) {

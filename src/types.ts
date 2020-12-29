@@ -28,10 +28,6 @@ export interface ListItemProps<T> extends ListPropsCommon<T> {
   onDrag: (dragIndex: number, hoverIndex: number) => void
 }
 
-export interface ListState {
-  selectedItems: string[]
-}
-
 export interface ListUtils {
   setSelectedItems: (items: string[]) => void
 }

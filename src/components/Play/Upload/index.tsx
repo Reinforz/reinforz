@@ -4,7 +4,7 @@ import { OptionsObject, useSnackbar } from "notistack";
 import { DropzoneState, useDropzone } from 'react-dropzone';
 import shortid from "shortid";
 import styled from 'styled-components';
-import { PlayErrorlog, PlayErrorlogsContext, PlayUploadContext } from '..';
+import { PlayList, PlayErrorlog, PlayErrorlogsContext, PlayUploadContext } from '..';
 import { useThemeSettings } from '../../../hooks';
 import { QuestionInputFull, QuizInputFull, QuizInputPartial } from '../../../types';
 import { generateQuestionInputConfigs } from '../../../utils';
@@ -115,7 +115,7 @@ export function PlayUpload() {
           <p>Drag 'n' drop some files here, or click to upload files (.json or .yaml files)</p>
       }
     </Container>
-    {/* <PlayList /> */}
+    <PlayList />
   </PlayUploadContext.Provider>
 }
 

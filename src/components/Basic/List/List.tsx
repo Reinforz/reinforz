@@ -12,6 +12,7 @@ import { useList, useThemeSettings } from "../../../hooks";
 import { ListProps } from "../../../types";
 
 import "./List.scss";
+import { ListState } from "./types";
 
 function List<T extends { _id: string }>(props: ListProps<T>) {
   const { children, items, setItems, header, fields } = props;
@@ -36,8 +37,8 @@ function List<T extends { _id: string }>(props: ListProps<T>) {
     [items],
   )
 
-  return children({
-    ListComponent: <div className="List" style={{ backgroundColor: theme.color.base }}>
+  return <>
+    <div className="List" style={{ backgroundColor: theme.color.base }}>
       <div className="List-header" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>
         <Checkbox color="primary" key={"checkbox"} onClick={(e) => {
           if ((e.target as any).checked) {
@@ -76,14 +77,14 @@ function List<T extends { _id: string }>(props: ListProps<T>) {
               <ListItem onDrag={moveItem} key={item._id} items={items} selectedItems={selectedItems} setSelectedItems={setSelectedItems} setItems={setItems} item={item} fields={fields} index={index} /></CSSTransition>)}
         </TransitionGroup> : <div style={{ fontSize: "1.25em", fontWeight: "bold", position: "absolute", transform: "translate(-50%,-50%)", top: "50%", left: "50%", textAlign: 'center' }}>No items uploaded</div>}
       </div>
-    </div>,
-    ListState: {
-      selectedItems
-    },
-    ListUtils: {
+    </div>
+    {children({
+      selectedItems,
       setSelectedItems
-    }
-  })
+    } as ListState)}
+  </>
 }
 
 export default List;
+
+export * from "./types"
