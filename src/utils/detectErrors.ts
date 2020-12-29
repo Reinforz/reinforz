@@ -50,7 +50,5 @@ export function detectErrors(question: QuestionInputFull) {
     question.difficulty = "Beginner";
   }
 
-  if (res.format !== question.format && question.format !== undefined) logs.warns.push(`Question is of format ${res.format} but given ${question.format}`);
-
   return logs;
 }

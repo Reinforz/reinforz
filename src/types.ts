@@ -17,28 +17,6 @@ export interface StatsProps {
   stats: (string | undefined)[],
 };
 
-export interface PlayErrorLogsProps {
-  quizzes: QuizInputFull[],
-  setQuizzes: (quizzes: any[]) => void,
-  children: any
-}
-
-export interface PlayErrorLogsRenderProps {
-  PlayErrorLogsComponent: JSX.Element
-}
-export interface PlayUploadRenderProps {
-  PlayUploadComponents: {
-    PlayUpload: JSX.Element,
-    PlayErrorLogs: JSX.Element
-  },
-  PlayUploadState: {
-    items: any[],
-  },
-  PlayUploadUtils: {
-    setItems: (items: any[]) => any,
-    removeErrorLogs: (items: any[]) => any,
-  }
-}
 export interface QuizInputPartial {
   title: string,
   subject: string,
@@ -159,11 +137,6 @@ export interface ExtendedTheme extends Theme {
 }
 
 export type AllowedTheme = "dark" | "light"
-export interface IPlayContext {
-  setPlaying: (isPlaying: boolean) => void,
-  setQuizzes: (quizzes: QuizInputFull[]) => void,
-  setSelected: (selected: string[]) => void
-}
 
 export interface MenuProps {
   initial_position?: "left" | "right",

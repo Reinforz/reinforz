@@ -8,7 +8,6 @@ export interface PlayErrorlog {
 
 export type PlayErrorlogsState = {
   error_logs: PlayErrorlog[],
-  setErrorLogs: (error_logs: PlayErrorlog[]) => void
 };
 
 export interface PlayErrorlogsContextValue extends PlayErrorlogsState {

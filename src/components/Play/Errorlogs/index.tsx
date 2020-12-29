@@ -1,15 +1,32 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { useThemeSettings } from "../../../hooks";
-import { PlayErrorlog, PlayErrorlogsContext } from "../"
+import { PlayErrorlog, PlayErrorlogsContext, PlayUploadContext } from "../"
+import shortid from "shortid"
 
 import "./style.scss";
+import { detectErrors } from "../../../utils/detectErrors";
 
 export const PlayErrorlogs = () => {
-  const [error_logs, setErrorLogs] = useState([] as PlayErrorlog[]);
-  const { theme, settings } = useThemeSettings();
+  const { theme, settings } = useThemeSettings(), { items: quizzes } = useContext(PlayUploadContext);
 
-  return <PlayErrorlogsContext.Provider value={{ error_logs, setErrorLogs }}>
+  const error_logs: PlayErrorlog[] = []
+  quizzes.forEach((quiz, index) => {
+    quiz.questions.forEach((question, index) => {
+      const { warns, errors } = detectErrors(question);
+      warns.forEach(message => error_logs.push({ _id: shortid(), level: "WARN", quiz: quiz.title, target: `Question ${index + 1}`, message }))
+      errors.forEach(message => error_logs.push({ _id: shortid(), level: "ERROR", quiz: quiz.title, target: `Question ${index + 1}`, message }))
+    })
+
+    if (!quiz.title)
+      error_logs.push({ _id: shortid(), level: "ERROR", quiz: quiz.title, target: `Quiz ${index + 1}`, message: "Quiz title absent" });
+    if (!quiz.subject)
+      error_logs.push({ _id: shortid(), level: "ERROR", quiz: quiz.title, target: `Quiz ${index + 1}`, message: "Quiz subject absent" });
+    if (quiz.questions.length <= 0)
+      error_logs.push({ _id: shortid(), level: "ERROR", quiz: quiz.title, target: `Quiz ${index + 1}`, message: "Quiz must have atleast 1 question" });
+  });
+
+  return <PlayErrorlogsContext.Provider value={{ error_logs }}>
     <div className="Play-Errorlogs" style={{ backgroundColor: theme.color.base, color: theme.palette.text.secondary }}>
       <div className="Play-Errorlogs-header" style={{ backgroundColor: theme.color.dark }}>Errors {"&"} Warnings</div>
       <div className="Play-Errorlogs-content" style={{ backgroundColor: theme.color.dark }}>
