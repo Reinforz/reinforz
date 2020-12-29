@@ -23,17 +23,17 @@ export function detectErrors(question: QuestionInputFull) {
     if (question.type === "MS") {
       if (!question.options) logs.errors.push(`Options must be provided for ${question.type} questions`)
       question.answers.forEach(answer => {
-        if (parseInt(answer) < 0 || parseInt(answer) > (question as any).options.length - 1) logs.errors.push(`MS Answer must be within 0-${(question as any).options.length - 1}, provided ${res.answers[0]}`)
+        if (parseInt(answer) < 0 || parseInt(answer) > (question as any).options.length - 1) logs.errors.push(`MS Answer must be within 0-${(question as any).options.length - 1}, provided ${question.answers[0]}`)
       })
     }
-    else if (question.type === "MCQ") {
+    else if (question.type === "MCQ" && question.options) {
       if (question.answers.length > question.options.length)
         logs.warns.push(`Provided more answers than options, truncating to ${(question as any).options.length}`);
-      if (parseInt(question.answers[0]) > (question as any).options.length - 1 || parseInt(question.answers[0]) < 0) logs.errors.push(`MCQ Answer must be within 0-${(question as any).options.length - 1}, provided ${res.answers[0]}`);
+      if (parseInt(question.answers[0]) > (question as any).options.length - 1 || parseInt(question.answers[0]) < 0) logs.errors.push(`MCQ Answer must be within 0-${(question as any).options.length - 1}, provided ${question.answers[0]}`);
     }
-    if (question.options.length < 2)
+    if (question.options && question.options.length < 2)
       logs.errors.push(`Question must have at least 2 options, but given ${question.options.length}`);
-    else if (question.options.length > 6)
+    else if (question.options && question.options.length > 6)
       logs.errors.push(`Question must have at most 6 options, but given ${question.options.length}, changing to 6`);
   }
 

@@ -17,14 +17,11 @@ export interface StatsProps {
   stats: (string | undefined)[],
 };
 
-export interface QuizInputPartial {
-  title: string,
-  subject: string,
+export interface QuizInputPartial extends QuizIdentifiers {
   source?: string,
   image?: string,
   explanation?: string,
   questions: QuestionInputsPartial,
-  _id: string,
 }
 
 export interface QuizInputFull extends Required<QuizInputPartial> {
@@ -83,6 +80,7 @@ export interface QuizIdentifiers {
   _id: string,
   subject: string
 }
+
 export interface QuizProps {
   all_questions: QuestionInputFull[],
   play_options: PlaySettingsOptionsState,
