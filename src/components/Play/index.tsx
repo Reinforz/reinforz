@@ -6,9 +6,11 @@ import "./style.scss";
 
 export function Play() {
   const [playing, setPlaying] = useState(false);
-  return <PlayContext.Provider value={{ playing, setPlaying }}>
-    <PlayUpload />
-  </PlayContext.Provider>
+  return <div className="Play">
+    <PlayContext.Provider value={{ playing, setPlaying }}>
+      <PlayUpload />
+    </PlayContext.Provider>
+  </div>
 }
 
 export * from "./Settings"

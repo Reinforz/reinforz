@@ -1,12 +1,11 @@
 .Play {
   height: 100%;
+  display: grid;
+  grid-template-columns: 1.5fr 1.5fr 1fr;
+  grid-template-rows: 100px 310px 310px 30px;
+  grid-gap: 5px;
+
   &-content{
-    // display: grid;
-    // grid-template-columns: 1.5fr 1.5fr 550px;
-    // grid-template-rows: 100px 620px 30px;
-    // grid-gap: 5px;
-    height: 100%;
-    
     .Play-pane{
       display: grid;
       grid-template-rows: 100px 620px 30px;

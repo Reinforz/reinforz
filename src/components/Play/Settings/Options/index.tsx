@@ -6,15 +6,16 @@ import { BasicCheckbox } from "../../../Basic";
 import { PlaySettingsOptionsState, PlaySettingsOptionsProps } from "./types";
 
 import { useThemeSettings } from "../../../../hooks";
+import "./style.scss";
 
 const PLAY_OPTIONS_STATE = { shuffle_options: true, shuffle_quizzes: false, shuffle_questions: true, instant_feedback: true, flatten_mix: false, partial_score: true } as PlaySettingsOptionsState;
 
-export default function ({ play_settings_options, setPlaySettingsOptions }: PlaySettingsOptionsProps) {
+export function PlaySettingsOptions({ play_settings_options, setPlaySettingsOptions }: PlaySettingsOptionsProps) {
   const { theme, settings, sounds: { reset } } = useThemeSettings();
 
-  return <div className="PlaySettings-group PlaySettings-group--options">
-    <div className="PlaySettings-group-header PlaySettings-group-header--options" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>Options</div>
-    <div className="PlaySettings-group-content PlaySettings-group-content--options">
+  return <div className="Play-Settings-item Play-Settings-Options">
+    <div className="Play-Settings-item-header Play-Settings-Options-header" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>Options</div>
+    <div className="Play-Settings-item-content Play-Settings-Options-content">
       <BasicCheckbox name={"shuffle_options"} checked={play_settings_options.shuffle_options} onChange={(event, checked) => (setPlaySettingsOptions({
         ...play_settings_options,
         [event.target.name]: checked
@@ -48,7 +49,7 @@ export default function ({ play_settings_options, setPlaySettingsOptions }: Play
       }))} />
     </div>
 
-    <Button className="PlaySettings-group-button" variant="contained" color="primary" onClick={() => {
+    <Button className="Play-Settings-item-reset_button Play-Settings-Options-reset_button" variant="contained" color="primary" onClick={() => {
       if (settings.sound) reset.play()
       setPlaySettingsOptions(PLAY_OPTIONS_STATE)
     }}>Reset</Button>

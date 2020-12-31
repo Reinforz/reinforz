@@ -1,8 +1,10 @@
-.PlayTable {
+.Play-Table {
   height: 100%;
   display: grid;
   grid-template-rows: repeat(3, 1fr);
   grid-gap: 10px;
+  grid-area: 1/2/5/3;
+
   .MuiTableContainer-root {
     height: 250px;
   }

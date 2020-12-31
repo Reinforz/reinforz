@@ -8,8 +8,8 @@ import { QuestionDifficulty, QuestionType, QuizInputFull, QuestionInputFull } fr
 
 import "./style.scss";
 
-import PlaySettingsOptions, { PlaySettingsOptionsState, DEFAULT_PLAY_OPTIONS_STATE } from "./Options";
-import PlaySettingsFilters, { PlaySettingsFiltersState, DEFAULT_PLAY_FILTERS_STATE } from "./Filters";
+import { PlaySettingsOptions, PlaySettingsOptionsState, DEFAULT_PLAY_OPTIONS_STATE } from "./Options";
+import { PlaySettingsFilters, PlaySettingsFiltersState, DEFAULT_PLAY_FILTERS_STATE } from "./Filters";
 import PlaySettingsButton from "./Button";
 import { PlayListContext, PlayTable, PlayUploadContext } from "..";
 
@@ -38,7 +38,7 @@ export function PlaySettings() {
     <div className="Play-Settings" style={{ backgroundColor: theme.color.base, color: theme.palette.text.primary }}>
       <PlaySettingsOptions play_settings_options={play_options} setPlaySettingsOptions={setPlaySettingsOptions} />
       <PlaySettingsFilters play_settings_filters={play_filters} setPlaySettingsFilters={setPlaySettingsFilters} />
-      <div className="PlaySettings-total" style={{ backgroundColor: theme.color.dark, color: filtered_questions.length === 0 ? theme.palette.error.main : theme.palette.success.main }}>{filtered_questions.length} Questions</div>
+      <div className="Play-Settings-total_questions" style={{ backgroundColor: theme.color.dark, color: filtered_questions.length === 0 ? theme.palette.error.main : theme.palette.success.main }}>{filtered_questions.length} Questions</div>
       <PlaySettingsButton filtered_questions={filtered_questions} selected_quizzes_length={selected_quizzes.length} />
     </div>
   </>

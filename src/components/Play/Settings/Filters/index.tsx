@@ -1,20 +1,20 @@
 import React from "react";
 import { Button, Checkbox, FormControlLabel, FormGroup, InputLabel, TextField } from "@material-ui/core";
-
+import "./style.scss";
 import { useThemeSettings } from "../../../../hooks";
 import { QuestionDifficulty, QuestionType } from "../../../../types";
 import { PlaySettingsFiltersState, PlaySettingsFiltersProps } from "./types";
 
 const PLAY_FILTERS_STATE = { time_allocated: [15, 60], excluded_difficulty: [], excluded_types: [] } as PlaySettingsFiltersState;
 
-export default function ({ play_settings_filters, setPlaySettingsFilters }: PlaySettingsFiltersProps) {
+export function PlaySettingsFilters({ play_settings_filters, setPlaySettingsFilters }: PlaySettingsFiltersProps) {
   const { theme, settings, sounds: { reset, click, pop_off, pop_on } } = useThemeSettings();
 
-  return <div className="PlaySettings-group PlaySettings-group--filters">
-    <div className="PlaySettings-group-header PlaySettings-group-header--filters" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>
+  return <div className="Play-Settings-item Play-Settings-Filters">
+    <div className="Play-Settings-item-header Play-Settings-Filters-header" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>
       Filters
     </div>
-    <div className="PlaySettings-group-content PlaySettings-group-content--filters">
+    <div className="Play-Settings-item-content Play-Settings-Filters-content">
       <FormGroup>
         <InputLabel>Time Allocated range</InputLabel>
         <TextField type="number" inputProps={{ max: play_settings_filters.time_allocated[1], step: 5, min: 0 }} value={play_settings_filters.time_allocated[0]} onChange={(e) => {
@@ -55,7 +55,7 @@ export default function ({ play_settings_filters, setPlaySettingsFilters }: Play
           color="primary" />} />)}
       </FormGroup>
     </div>
-    <Button className="PlaySettings-group-button" variant="contained" color="primary" onClick={() => {
+    <Button className="Play-Settings-item-reset_button Play-Settings-Filters-reset_button" variant="contained" color="primary" onClick={() => {
       if (settings.sound) reset.play()
       setPlaySettingsFilters(PLAY_FILTERS_STATE)
     }}>Reset</Button>

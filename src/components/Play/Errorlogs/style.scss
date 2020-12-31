@@ -1,8 +1,6 @@
-.PlayErrorLogs {
-  /* display: flex;
-  flex-direction: column;
-  padding: 5px;
-  height: calc(100% - 10px);
+.Play-Errorlogs {
+  grid-area: 3/1/4/2;
+  
   &-header {
     font-size: 1.25em;
     font-weight: bold;
@@ -25,5 +23,5 @@
       font-size: 1rem;
       width: calc(100% - 17px);
     }
-  } */
+  }
 }
