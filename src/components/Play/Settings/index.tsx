@@ -11,7 +11,7 @@ import "./style.scss";
 import PlaySettingsOptions, { PlaySettingsOptionsState, DEFAULT_PLAY_OPTIONS_STATE } from "./Options";
 import PlaySettingsFilters, { PlaySettingsFiltersState, DEFAULT_PLAY_FILTERS_STATE } from "./Filters";
 import PlaySettingsButton from "./Button";
-import { PlayListContext, PlayUploadContext } from "..";
+import { PlayListContext, PlayTable, PlayUploadContext } from "..";
 
 export function PlaySettings() {
   const { items: quizzes } = useContext(PlayUploadContext), { selectedItems } = useContext(PlayListContext);
@@ -33,12 +33,15 @@ export function PlaySettings() {
     filtered_questions.push(...quiz.questions.filter(question => !play_filters.excluded_difficulty.includes(question.difficulty as QuestionDifficulty) && !play_filters.excluded_types.includes(question.type as QuestionType) && play_filters.time_allocated[0] <= question.time_allocated && play_filters.time_allocated[1] >= question.time_allocated));
   });
 
-  return <div className="PlaySettings" style={{ backgroundColor: theme.color.base, color: theme.palette.text.primary }}>
-    <PlaySettingsOptions play_settings_options={play_options} setPlaySettingsOptions={setPlaySettingsOptions} />
-    <PlaySettingsFilters play_settings_filters={play_filters} setPlaySettingsFilters={setPlaySettingsFilters} />
-    <div className="PlaySettings-total" style={{ backgroundColor: theme.color.dark, color: filtered_questions.length === 0 ? theme.palette.error.main : theme.palette.success.main }}>{filtered_questions.length} Questions</div>
-    <PlaySettingsButton filtered_questions={filtered_questions} selected_quizzes_length={selected_quizzes.length} />
-  </div>
+  return <>
+    <PlayTable />
+    <div className="Play-Settings" style={{ backgroundColor: theme.color.base, color: theme.palette.text.primary }}>
+      <PlaySettingsOptions play_settings_options={play_options} setPlaySettingsOptions={setPlaySettingsOptions} />
+      <PlaySettingsFilters play_settings_filters={play_filters} setPlaySettingsFilters={setPlaySettingsFilters} />
+      <div className="PlaySettings-total" style={{ backgroundColor: theme.color.dark, color: filtered_questions.length === 0 ? theme.palette.error.main : theme.palette.success.main }}>{filtered_questions.length} Questions</div>
+      <PlaySettingsButton filtered_questions={filtered_questions} selected_quizzes_length={selected_quizzes.length} />
+    </div>
+  </>
 }
 
 export * from "./types"

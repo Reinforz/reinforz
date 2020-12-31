@@ -1,28 +1,23 @@
 import React, { useState } from 'react';
 import yaml from 'js-yaml';
 import { OptionsObject, useSnackbar } from "notistack";
-import { DropzoneState, useDropzone } from 'react-dropzone';
+import { DropzoneRootProps, useDropzone } from 'react-dropzone';
 import shortid from "shortid";
-import styled from 'styled-components';
 import { PlayList, PlayErrorlogs, PlayUploadContext } from '..';
 import { useThemeSettings } from '../../../hooks';
 import { QuizInputFull, QuizInputPartial } from '../../../types';
 import { generateQuestionInputConfigs } from '../../../utils';
 import "./style.scss";
 
-const getColor = (props: DropzoneState) => {
-  if (props.isDragAccept)
+const getColor = (props: DropzoneRootProps) => {
+  if (props?.isDragAccept)
     return '#00e676';
-  if (props.isDragReject)
+  if (props?.isDragReject)
     return '#ff1744';
-  if (props.isDragActive)
+  if (props?.isDragActive)
     return '#2196f3';
   return '#404040';
 }
-
-const Container = styled.div`
-  border-color: ${(props: DropzoneState) => getColor(props)};
-` as any;
 
 const trimLower = (data: string) => data.replace(/\s/g, '').toLowerCase();
 
@@ -79,16 +74,17 @@ export function PlayUpload() {
     });
   };
 
-  const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({ onDrop, accept: [".yml", ".yaml", "application/json"] })
+  const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({ onDrop, accept: [".yml", ".yaml", "application/json"] });
+  const root_props = getRootProps({ isDragActive, isDragAccept, isDragReject });
   return <PlayUploadContext.Provider value={{ items, setItems }}>
-    <Container style={{ backgroundColor: theme.color.light, color: theme.palette.text.secondary }} className="PlayUpload" {...getRootProps({ isDragActive, isDragAccept, isDragReject })}>
+    <div style={{ backgroundColor: theme.color.light, color: theme.palette.text.secondary, borderColor: getColor(root_props) }} className="Play-Upload">
       <input {...getInputProps()} />
       {
         isDragActive ?
           <p>Drop the files here ...</p> :
           <p>Drag 'n' drop some files here, or click to upload files (.json or .yaml files)</p>
       }
-    </Container>
+    </div>
     <PlayErrorlogs />
     <PlayList />
   </PlayUploadContext.Provider>

@@ -6,7 +6,7 @@ import "./style.scss";
 
 export const PlayList = () => {
   const { items, setItems } = useContext(PlayUploadContext);
-  return <List header="Uploaded Quizzes" items={items} setItems={setItems} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]}>
+  return <List className="Play-List" header="Uploaded Quizzes" items={items} setItems={setItems} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]}>
     {({ selectedItems, setSelectedItems }: ListState) => <PlayListContext.Provider value={{ selectedItems, setSelectedItems }}><PlaySettings /></PlayListContext.Provider>}
   </List>
 }

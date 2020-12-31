@@ -14,4 +14,5 @@ export interface ListProps<T> extends ListPropsCommon<T> {
   header: string,
   children: any,
   setItems: (data: T[]) => void,
+  className: string
 }

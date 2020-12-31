@@ -3,6 +3,7 @@ import { Checkbox } from "@material-ui/core";
 import CancelIcon from '@material-ui/icons/Cancel';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import update from 'immutability-helper'
+import clsx from "clsx";
 
 import { Icon } from ".."
 import ListItem from "./Item";
@@ -13,7 +14,7 @@ import "./style.scss";
 import { ListProps, ListState } from "./types";
 
 function List<T extends { _id: string }>(props: ListProps<T>) {
-  const { children, items, setItems, header, fields } = props;
+  const { children, items, setItems, header, fields, className } = props;
   const { theme, settings, sounds } = useThemeSettings();
   const { pop_on, pop_off, remove } = sounds;
 
@@ -36,7 +37,7 @@ function List<T extends { _id: string }>(props: ListProps<T>) {
   )
 
   return <>
-    <div className="List" style={{ backgroundColor: theme.color.base }}>
+    <div className={clsx("List", className)} style={{ backgroundColor: theme.color.base }}>
       <div className="List-header" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>
         <Checkbox color="primary" key={"checkbox"} onClick={(e) => {
           if ((e.target as any).checked) {

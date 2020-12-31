@@ -56,8 +56,8 @@ export function PlayTable() {
   }, [quizzes])
 
   return (
-    <div className="PlayTable">
-      <BasicTable className="PlayTable--difficulty" title={"QuestionDifficulty based Table"} accumulator={(header, contents) => {
+    <div className="Play-Table">
+      <BasicTable className="Play-Table--difficulty" title={"Difficulty Table"} accumulator={(header, contents) => {
         switch (header) {
           case "Beginner":
           case "Intermediate":
@@ -69,7 +69,7 @@ export function PlayTable() {
       }} contents={difficulty_map} headers={['title', "Beginner", "Intermediate", "Advanced"]} onHeaderClick={(header, order) => {
         setDifficultyMap([...difficulty_map.sort((a_diff, b_diff) => order === "DESC" ? (parseInt(b_diff[header]) - parseInt(a_diff[header])) : (parseInt(a_diff[header]) - parseInt(b_diff[header])))])
       }} />
-      <BasicTable className="PlayTable--type" title={"Type based Table"} accumulator={(header, contents) => {
+      <BasicTable className="Play-Table--type" title={"Type Table"} accumulator={(header, contents) => {
         switch (header) {
           case "Snippet":
           case "MS":
@@ -82,7 +82,7 @@ export function PlayTable() {
       }} contents={type_map} headers={['title', "Snippet", "MS", "MCQ", "FIB"]} onHeaderClick={(header, order) => {
         setTypeMap([...type_map.sort((a_diff, b_diff) => order === "DESC" ? (parseInt(b_diff[header]) - parseInt(a_diff[header])) : (parseInt(a_diff[header]) - parseInt(b_diff[header])))])
       }} />
-      <BasicTable className="PlayTable--time_allocated" title={"Time based Table"} accumulator={(header, contents) => {
+      <BasicTable className="Play-Table--time_allocated" title={"Time allocated Table"} accumulator={(header, contents) => {
         if (header.match(/(title|_id)/)) return null;
         else return contents?.reduce((acc: number, cur: number) => acc + (cur ?? 0), 0);
       }} contents={time_allocated_map} headers={['title', "15", "30", "45", "60"]} onHeaderClick={(header, order) => {
