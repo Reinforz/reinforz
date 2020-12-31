@@ -16,7 +16,7 @@ function List<T extends { _id: string }>(props: ListProps<T>) {
   const { children, items, header, fields, className } = props;
   const { theme, settings, sounds: { pop_on, pop_off, remove } } = useThemeSettings();
 
-  const { selected_items, selectItems, deselectAllItems, deleteItem, selectAllItems, toggleItem, total_selected, deleteSelectedItems } = useList(items)
+  const { selected_items, deselectAllItems, deleteItem, selectAllItems, toggleItem, total_selected, deleteSelectedItems } = useList(items)
 
   return <>
     <div className={clsx("List", className)} style={{ backgroundColor: theme.color.base }}>
@@ -60,7 +60,6 @@ function List<T extends { _id: string }>(props: ListProps<T>) {
     </div>
     {children({
       selected_items,
-      selectItems
     } as ListState)}
   </>
 }

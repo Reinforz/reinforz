@@ -4,7 +4,7 @@ import { useThemeSettings } from "../../../hooks";
 
 import { arrayShuffler } from "../../../utils";
 
-import { QuestionDifficulty, QuestionType, QuizInputFull, QuestionInputFull } from "../../../types";
+import { QuestionDifficulty, QuestionType, QuestionInputFull } from "../../../types";
 
 import "./style.scss";
 
@@ -24,7 +24,7 @@ export function PlaySettings() {
   const [play_options, setPlaySettingsOptions] = useState((PLAY_SETTINGS?.play_options ?? DEFAULT_PLAY_OPTIONS_STATE) as PlaySettingsOptionsState);
   const [play_filters, setPlaySettingsFilters] = useState((PLAY_SETTINGS?.play_filters ?? DEFAULT_PLAY_FILTERS_STATE) as PlaySettingsFiltersState);
 
-  let filtered_quizzes = quizzes.filter(quiz => selected_items.includes(quiz._id)) as QuizInputFull[];
+  let filtered_quizzes = quizzes.filter(quiz => selected_items.includes(quiz._id));
   const selected_quizzes = filtered_quizzes.map(filtered_quiz => ({ _id: filtered_quiz._id, title: filtered_quiz.title, subject: filtered_quiz.subject }))
   const filtered_questions: QuestionInputFull[] = [];
   if (play_options.shuffle_quizzes && !play_options.flatten_mix) filtered_quizzes = arrayShuffler(filtered_quizzes);

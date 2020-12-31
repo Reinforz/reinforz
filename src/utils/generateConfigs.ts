@@ -17,7 +17,6 @@ function setObjectValues(
 export function generateQuestionInputConfigs(
   question: QuestionInputPartial,
 ) {
-
   const res = clone(question);
 
   if (res.options) {

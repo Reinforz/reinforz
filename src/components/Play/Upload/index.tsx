@@ -65,12 +65,12 @@ export function PlayUpload() {
     });
 
     Promise.all(filePromises).then(quizzes => {
-      setItems([...items, ...quizzes.map(quiz => {
-        quiz.questions = quiz.questions.map(generateQuestionInputConfigs);
+      setItems(items.concat(quizzes.map(quiz => {
+        quiz.questions = quiz.questions.map((question) => generateQuestionInputConfigs(question));
         if (!quiz._id)
           quiz._id = shortid()
         return quiz as QuizInputFull;
-      })]);
+      })));
     });
   };
 

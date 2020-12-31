@@ -18,7 +18,7 @@ export const PlayErrorlogs = () => {
       const { warns, errors } = detectErrors(question);
       warns.forEach(message => error_logs.push({ _id: shortid(), level: "WARN", quiz: quiz.title, target: `Question ${index + 1}`, message }))
       errors.forEach(message => error_logs.push({ _id: shortid(), level: "ERROR", quiz: quiz.title, target: `Question ${index + 1}`, message }))
-      return warns.length !== 0 && errors.length !== 0;
+      return (warns.length === 0 && errors.length === 0);
     })
 
     if (!quiz.title) {

@@ -1,6 +1,5 @@
 export interface ListState {
   selected_items: string[],
-  selectItems: (data: string[]) => void
 }
 
 export interface ListPropsCommon<T extends { _id: string }> {
