@@ -6,12 +6,6 @@ import { PlaySettingsOptionsState } from "./components/Play/Settings/Options/typ
 
 export type ListAction = "add" | "remove";
 
-export interface DragItem {
-  index: number
-  id: string
-  type: string
-}
-
 export interface StatsProps {
   item: any,
   stats: (string | undefined)[],

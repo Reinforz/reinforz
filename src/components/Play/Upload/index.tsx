@@ -77,7 +77,7 @@ export function PlayUpload() {
   const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({ onDrop, accept: [".yml", ".yaml", "application/json"] });
   const root_props = getRootProps({ isDragActive, isDragAccept, isDragReject });
   return <PlayUploadContext.Provider value={{ items, setItems }}>
-    <div style={{ backgroundColor: theme.color.light, color: theme.palette.text.secondary, borderColor: getColor(root_props) }} className="Play-Upload">
+    <div {...root_props} style={{ backgroundColor: theme.color.light, color: theme.palette.text.secondary, borderColor: getColor(root_props) }} className="Play-Upload">
       <input {...getInputProps()} />
       {
         isDragActive ?

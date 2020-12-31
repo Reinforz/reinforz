@@ -53,7 +53,6 @@ export function PlaySettingsOptions({ play_settings_options, setPlaySettingsOpti
       if (settings.sound) reset.play()
       setPlaySettingsOptions(PLAY_OPTIONS_STATE)
     }}>Reset</Button>
-
   </div>
 }
 

@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 import { ThemeProvider } from '@material-ui/styles';
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 import { SnackbarProvider } from "notistack";
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import { Play, Settings, SettingsState, SettingsContext } from "./components"
 
@@ -27,16 +25,14 @@ const App = () => {
 
   return <ThemeProvider theme={generatedTheme}>
     <SnackbarProvider maxSnack={4}>
-      <DndProvider backend={HTML5Backend}>
-        <SettingsContext.Provider value={{ settings, setSettings }}>
-          <div className={`App ${generatedTheme.palette.type === "dark" ? "dark" : "light"}`} style={{ backgroundColor: generatedTheme.color.dark }}>
-            <Switch>
-              <Route exact path="/" component={Play} />
-              <Route exact path="/settings" component={Settings} />
-            </Switch>
-          </div>
-        </SettingsContext.Provider>
-      </DndProvider>
+      <SettingsContext.Provider value={{ settings, setSettings }}>
+        <div className={`App ${generatedTheme.palette.type === "dark" ? "dark" : "light"}`} style={{ backgroundColor: generatedTheme.color.dark }}>
+          <Switch>
+            <Route exact path="/" component={Play} />
+            <Route exact path="/settings" component={Settings} />
+          </Switch>
+        </div>
+      </SettingsContext.Provider>
     </SnackbarProvider>
   </ThemeProvider>
 }
