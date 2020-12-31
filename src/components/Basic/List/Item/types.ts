@@ -1,8 +1,8 @@
 import { ListPropsCommon } from "../types";
-export interface ListItemProps<T> extends ListPropsCommon<T> {
+export interface ListItemProps<T extends { _id: string }> extends ListPropsCommon<T> {
   item: T,
   index: number,
-  setItems: any,
-  setSelectedItems: any,
-  selectedItems: string[],
+  deleteItem: (id: string) => void,
+  toggleItem: (id: string) => void,
+  selected_items: string[],
 }

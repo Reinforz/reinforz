@@ -14,7 +14,7 @@ import { PlaySettingsButton } from "./Button";
 import { PlayListContext, PlayTable, PlayUploadContext } from "..";
 
 export function PlaySettings() {
-  const { items: quizzes } = useContext(PlayUploadContext), { selectedItems } = useContext(PlayListContext);
+  const { items: quizzes } = useContext(PlayUploadContext), { selected_items } = useContext(PlayListContext);
 
   let PLAY_SETTINGS: any = localStorage.getItem('PLAY_SETTINGS');
   PLAY_SETTINGS = PLAY_SETTINGS ? JSON.parse(PLAY_SETTINGS) : undefined;
@@ -24,7 +24,7 @@ export function PlaySettings() {
   const [play_options, setPlaySettingsOptions] = useState((PLAY_SETTINGS?.play_options ?? DEFAULT_PLAY_OPTIONS_STATE) as PlaySettingsOptionsState);
   const [play_filters, setPlaySettingsFilters] = useState((PLAY_SETTINGS?.play_filters ?? DEFAULT_PLAY_FILTERS_STATE) as PlaySettingsFiltersState);
 
-  let filtered_quizzes = quizzes.filter(quiz => selectedItems.includes(quiz._id)) as QuizInputFull[];
+  let filtered_quizzes = quizzes.filter(quiz => selected_items.includes(quiz._id)) as QuizInputFull[];
   const selected_quizzes = filtered_quizzes.map(filtered_quiz => ({ _id: filtered_quiz._id, title: filtered_quiz.title, subject: filtered_quiz.subject }))
   const filtered_questions: QuestionInputFull[] = [];
   if (play_options.shuffle_quizzes && !play_options.flatten_mix) filtered_quizzes = arrayShuffler(filtered_quizzes);

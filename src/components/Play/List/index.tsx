@@ -1,13 +1,14 @@
 import React, { useContext } from "react";
-import { PlaySettings, PlayUploadContext, PlayListContext } from "..";
-import List, { ListState } from "../../Basic/List";
+import { PlaySettings, PlayListContext } from "..";
+import List from "../../Basic/List";
+import { PlayErrorlogsContext } from "../Errorlogs";
 
 import "./style.scss";
 
 export const PlayList = () => {
-  const { items, setItems } = useContext(PlayUploadContext);
-  return <List className="Play-List" header="Uploaded Quizzes" items={items} setItems={setItems} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]}>
-    {({ selectedItems, setSelectedItems }: ListState) => <PlayListContext.Provider value={{ selectedItems, setSelectedItems }}><PlaySettings /></PlayListContext.Provider>}
+  const { correct_quizzes } = useContext(PlayErrorlogsContext);
+  return <List className="Play-List" header="Uploaded Quizzes" items={correct_quizzes} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]}>
+    {({ selected_items, selectItems }) => <PlayListContext.Provider value={{ selected_items, selectItems }}><PlaySettings /></PlayListContext.Provider>}
   </List>
 }
 

@@ -1,18 +1,16 @@
 export interface ListState {
-  selectedItems: string[],
-  setSelectedItems: (data: string[]) => void
+  selected_items: string[],
+  selectItems: (data: string[]) => void
 }
 
-export interface ListPropsCommon<T> {
+export interface ListPropsCommon<T extends { _id: string }> {
   fields: (string | ((data: T) => string))[],
   icons?: ((index: number, _id: string) => void)[],
-  onDelete?: (items: T[]) => void
-  items: T[],
 }
 
-export interface ListProps<T> extends ListPropsCommon<T> {
+export interface ListProps<T extends { _id: string }> extends ListPropsCommon<T> {
   header: string,
-  children: any,
-  setItems: (data: T[]) => void,
+  children: (state: ListState) => JSX.Element,
+  items: T[],
   className: string
 }
