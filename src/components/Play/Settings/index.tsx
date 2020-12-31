@@ -10,7 +10,7 @@ import "./style.scss";
 
 import { PlaySettingsOptions, PlaySettingsOptionsState, DEFAULT_PLAY_OPTIONS_STATE } from "./Options";
 import { PlaySettingsFilters, PlaySettingsFiltersState, DEFAULT_PLAY_FILTERS_STATE } from "./Filters";
-import PlaySettingsButton from "./Button";
+import { PlaySettingsButton } from "./Button";
 import { PlayListContext, PlayTable, PlayUploadContext } from "..";
 
 export function PlaySettings() {
@@ -45,7 +45,7 @@ export function PlaySettings() {
 }
 
 export * from "./types"
+export * from "./context"
 export * from "./Options"
 export * from "./Filters"
 export * from "./Button"
-export * from "./context"

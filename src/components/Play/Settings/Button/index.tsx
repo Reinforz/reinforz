@@ -7,7 +7,7 @@ import { useThemeSettings } from "../../../../hooks";
 import { PlaySettingsButtonProps } from "./types";
 import { PlayContext } from "../..";
 
-export default function ({ filtered_questions, selected_quizzes_length }: PlaySettingsButtonProps) {
+export function PlaySettingsButton({ filtered_questions, selected_quizzes_length }: PlaySettingsButtonProps) {
   const { settings, sounds: { swoosh, horn } } = useThemeSettings(), { setPlaying } = useContext(PlayContext);
   const { enqueueSnackbar } = useSnackbar();
 

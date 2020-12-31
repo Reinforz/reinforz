@@ -1,5 +1,6 @@
 import React from "react";
 
-import { PlayErrorlogsState } from "../..";
+import { PlayErrorlogsContextValue } from "./types";
 
-export const PlayErrorlogsContext = React.createContext<PlayErrorlogsState>({} as any)
+export const PlayErrorlogsContext = React.createContext<PlayErrorlogsContextValue>({} as any)
+PlayErrorlogsContext.displayName = "PlayErrorLogsContext"

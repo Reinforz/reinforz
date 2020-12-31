@@ -3,7 +3,7 @@ import yaml from 'js-yaml';
 import { OptionsObject, useSnackbar } from "notistack";
 import { DropzoneRootProps, useDropzone } from 'react-dropzone';
 import shortid from "shortid";
-import { PlayList, PlayErrorlogs, PlayUploadContext } from '..';
+import { PlayErrorlogs, PlayUploadContext } from '..';
 import { useThemeSettings } from '../../../hooks';
 import { QuizInputFull, QuizInputPartial } from '../../../types';
 import { generateQuestionInputConfigs } from '../../../utils';
@@ -77,7 +77,7 @@ export function PlayUpload() {
   const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({ onDrop, accept: [".yml", ".yaml", "application/json"] });
   const root_props = getRootProps({ isDragActive, isDragAccept, isDragReject });
   return <PlayUploadContext.Provider value={{ items, setItems }}>
-    <div {...root_props} style={{ backgroundColor: theme.color.light, color: theme.palette.text.secondary, borderColor: getColor(root_props) }} className="Play-Upload">
+    <div {...getRootProps()} style={{ backgroundColor: theme.color.light, color: theme.palette.text.secondary, borderColor: getColor(root_props) }} className="Play-Upload">
       <input {...getInputProps()} />
       {
         isDragActive ?
@@ -86,7 +86,6 @@ export function PlayUpload() {
       }
     </div>
     <PlayErrorlogs />
-    <PlayList />
   </PlayUploadContext.Provider>
 }
 
