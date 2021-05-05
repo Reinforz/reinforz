@@ -1,8 +1,14 @@
 import React, { useState } from "react";
-import { PlayContext } from "./context";
 import { PlayUpload } from "../";
-
 import "./style.scss";
+
+interface PlayState {
+  playing: boolean,
+  setPlaying: (playing: boolean) => void
+}
+
+export const PlayContext = React.createContext<PlayState>({} as any)
+PlayContext.displayName = "PlayContext"
 
 export function Play() {
   const [playing, setPlaying] = useState(false);
@@ -13,10 +19,10 @@ export function Play() {
   </div>
 }
 
-export * from "./Settings"
-export * from "./Table"
-export * from "./List"
-export * from "./Upload"
-export * from "./Errorlogs"
-export * from "./types"
-export * from "./context"
+export * from "./Upload";
+// export * from "./Settings"
+// export * from "./Table"
+// export * from "./List"
+// export * from "./Errorlogs"
+// export * from "./types"
+// export * from "./context"

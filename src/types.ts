@@ -161,3 +161,11 @@ export interface ToggleItemsRenderProps {
     is_disabled: boolean;
   };
 }
+
+export interface IPlayErrorlog {
+  quiz: string;
+  target: string;
+  message: string;
+  level: 'ERROR' | 'WARN';
+  _id: string;
+}

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { PlayListContext, PlayUploadContext } from "..";
 import { useThemeSettings } from "../../../hooks";
-import { QuestionDifficulty, QuestionInputFull, QuestionType } from "../../../types";
+import { QuestionInputFull, TQuestionDifficulty, TQuestionType } from "../../../types";
 import { arrayShuffler } from "../../../utils";
 import { PlaySettingsButton } from "./Button";
 import { DEFAULT_PLAY_FILTERS_STATE, PlaySettingsFilters, PlaySettingsFiltersState } from "./Filters";
@@ -25,7 +25,7 @@ export function PlaySettings() {
   if (play_options.shuffle_quizzes && !play_options.flatten_mix) filtered_quizzes = arrayShuffler(filtered_quizzes);
   if (play_options.shuffle_questions && !play_options.flatten_mix) filtered_quizzes.forEach(quiz => quiz.questions = arrayShuffler(quiz.questions));
   filtered_quizzes.forEach(quiz => {
-    filtered_questions.push(...quiz.questions.filter(question => !play_filters.excluded_difficulty.includes(question.difficulty as QuestionDifficulty) && !play_filters.excluded_types.includes(question.type as QuestionType) && play_filters.time_allocated[0] <= question.time_allocated && play_filters.time_allocated[1] >= question.time_allocated));
+    filtered_questions.push(...quiz.questions.filter(question => !play_filters.excluded_difficulty.includes(question.difficulty as TQuestionDifficulty) && !play_filters.excluded_types.includes(question.type as TQuestionType) && play_filters.time_allocated[0] <= question.time_allocated && play_filters.time_allocated[1] >= question.time_allocated));
   });
 
   return <>

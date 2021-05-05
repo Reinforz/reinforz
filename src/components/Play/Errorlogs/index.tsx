@@ -1,17 +1,24 @@
 import React, { useContext } from "react";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
+import shortid from "shortid";
+import { PlayUploadContext } from "../";
 import { useThemeSettings } from "../../../hooks";
-import { PlayErrorlog, PlayList, PlayUploadContext } from "../"
-import shortid from "shortid"
-
-import "./style.scss";
+import { IPlayErrorlog, IQuizInputFull } from "../../../types";
 import { detectErrors } from "../../../utils/detectErrors";
-import { PlayErrorlogsContext } from "./context";
+import "./style.scss";
+
+export interface PlayErrorlogsContextValue {
+  correct_quizzes: IQuizInputFull[];
+}
+
+export const PlayErrorlogsContext = React.createContext<PlayErrorlogsContextValue>({} as any)
+PlayErrorlogsContext.displayName = "PlayErrorLogsContext"
 
 export const PlayErrorlogs = () => {
-  const { theme, settings } = useThemeSettings(), { items: quizzes } = useContext(PlayUploadContext);
+  const { theme, settings } = useThemeSettings(), playUploadContext = useContext(PlayUploadContext);
+  const quizzes = playUploadContext.items as IQuizInputFull[];
 
-  const error_logs: PlayErrorlog[] = [];
+  const error_logs: IPlayErrorlog[] = [];
 
   const correct_quizzes = quizzes.filter((quiz, index) => {
     quiz.questions = quiz.questions.filter((question, index) => {
@@ -30,7 +37,7 @@ export const PlayErrorlogs = () => {
       return false;
     }
     if (quiz.questions.length <= 0) {
-      error_logs.push({ _id: shortid(), level: "ERROR", quiz: quiz.title, target: `Quiz ${index + 1}`, message: "Quiz must have atleast 1 question" });
+      error_logs.push({ _id: shortid(), level: "ERROR", quiz: quiz.title, target: `Quiz ${index + 1}`, message: "Quiz must have at least 1 question" });
       return false;
     }
     return true;
@@ -57,9 +64,6 @@ export const PlayErrorlogs = () => {
         </TransitionGroup> : <div style={{ fontSize: "1.25em", fontWeight: "bold", position: "absolute", transform: "translate(-50%,-50%)", top: "50%", left: "50%", textAlign: 'center' }}>No Errors or Warnings!</div>}
       </div>
     </div>
-    <PlayList />
+    {/* <PlayList /> */}
   </PlayErrorlogsContext.Provider>
 }
-
-export * from "./types"
-export * from "./context"
