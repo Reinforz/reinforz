@@ -1,17 +1,12 @@
 import React, { useContext, useState } from "react";
-
+import { PlayListContext, PlayUploadContext } from "..";
 import { useThemeSettings } from "../../../hooks";
-
+import { QuestionDifficulty, QuestionInputFull, QuestionType } from "../../../types";
 import { arrayShuffler } from "../../../utils";
-
-import { QuestionDifficulty, QuestionType, QuestionInputFull } from "../../../types";
-
-import "./style.scss";
-
-import { PlaySettingsOptions, PlaySettingsOptionsState, DEFAULT_PLAY_OPTIONS_STATE } from "./Options";
-import { PlaySettingsFilters, PlaySettingsFiltersState, DEFAULT_PLAY_FILTERS_STATE } from "./Filters";
 import { PlaySettingsButton } from "./Button";
-import { PlayListContext, PlayTable, PlayUploadContext } from "..";
+import { DEFAULT_PLAY_FILTERS_STATE, PlaySettingsFilters, PlaySettingsFiltersState } from "./Filters";
+import { DEFAULT_PLAY_OPTIONS_STATE, PlaySettingsOptions, PlaySettingsOptionsState } from "./Options";
+import "./style.scss";
 
 export function PlaySettings() {
   const { items: quizzes } = useContext(PlayUploadContext), { selected_items } = useContext(PlayListContext);
@@ -44,8 +39,9 @@ export function PlaySettings() {
   </>
 }
 
-export * from "./types"
-export * from "./context"
-export * from "./Options"
-export * from "./Filters"
-export * from "./Button"
+export * from "./Button";
+export * from "./context";
+export * from "./Filters";
+export * from "./Options";
+export * from "./types";
+

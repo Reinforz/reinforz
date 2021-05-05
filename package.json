@@ -19,7 +19,6 @@
     "just-clone": "^3.1.0",
     "marked": "^2.0.3",
     "md5": "^2.3.0",
-    "node-sass": "^4.14.1",
     "notistack": "^1.0.0",
     "prism-react-renderer": "^1.1.1",
     "prismjs": "^1.21.0",
