@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { DropzoneRootProps, useDropzone } from 'react-dropzone';
 
 const getColor = (props: DropzoneRootProps) => {
@@ -17,13 +18,10 @@ interface Options<F = any, P = any> {
     items: P[]
   ) => any;
   onResolved: (currentItems: F[], newItems: P[]) => F[];
-  items: F[];
-  setItems: React.Dispatch<React.SetStateAction<F[]>>;
 }
 
 export const useUpload = <F = any, P = any>(options: Options<F, P>) => {
-  const { items, setItems } = options;
-
+  const [items, setItems] = useState<F[]>([]);
   const onDrop = (acceptedFiles: any) => {
     const filePromises: Promise<P>[] = [];
 

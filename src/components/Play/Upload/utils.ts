@@ -12,6 +12,7 @@ export const isDuplicate = (
       trimLower(item.title) === trimLower(loadedData.title) &&
       trimLower(item.subject) === trimLower(loadedData.subject)
   ) !== -1;
+
 export const onResolved = (
   currentItems: IQuizInputFull[],
   newItems: IQuizInputPartial[]
