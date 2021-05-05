@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { DropzoneRootProps, useDropzone } from 'react-dropzone';
 
 const getColor = (props: DropzoneRootProps) => {
@@ -11,12 +10,19 @@ const getColor = (props: DropzoneRootProps) => {
 interface Options<F = any, P = any> {
   onAbortMessage?: string;
   onErrorMessage?: string;
-  onLoad: (resolve: (value: P | PromiseLike<P>) => void, items: P[]) => any;
-  onResolved: (prevItems: F[], newItems: P[]) => F[];
+  onLoad: (
+    reader: FileReader,
+    file: File,
+    resolve: (value: P | PromiseLike<P>) => void,
+    items: P[]
+  ) => any;
+  onResolved: (currentItems: F[], newItems: P[]) => F[];
+  items: F[];
+  setItems: React.Dispatch<React.SetStateAction<F[]>>;
 }
 
 export const useUpload = <F = any, P = any>(options: Options<F, P>) => {
-  const [items, setItems] = useState([] as F[]);
+  const { items, setItems } = options;
 
   const onDrop = (acceptedFiles: any) => {
     const filePromises: Promise<P>[] = [];
@@ -29,7 +35,8 @@ export const useUpload = <F = any, P = any>(options: Options<F, P>) => {
             reject(options.onAbortMessage ?? 'file reading was aborted');
           reader.onerror = () =>
             reject(options.onErrorMessage ?? 'file reading has failed');
-          reader.onload = () => options.onLoad(resolve, items as any);
+          reader.onload = () =>
+            options.onLoad(reader, file, resolve, items as any);
         })
       );
       reader.readAsText(file);
