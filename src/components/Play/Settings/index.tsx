@@ -34,7 +34,7 @@ export function PlaySettings() {
   });
 
   return <>
-    <PlayTable />
+    {/* <PlayTable /> */}
     <div className="Play-Settings" style={{ backgroundColor: theme.color.base, color: theme.palette.text.primary }}>
       <PlaySettingsOptions play_settings_options={play_options} setPlaySettingsOptions={setPlaySettingsOptions} />
       <PlaySettingsFilters play_settings_filters={play_filters} setPlaySettingsFilters={setPlaySettingsFilters} />

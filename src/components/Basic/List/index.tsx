@@ -13,22 +13,21 @@ import "./style.scss";
 import { ListProps, ListState } from "./types";
 
 function List<T extends { _id: string }>(props: ListProps<T>) {
-  const { children, items, header, fields, className } = props;
+  const { children, items, header, fields, className, setItems } = props;
   const { theme, settings, sounds: { pop_on, pop_off, remove } } = useThemeSettings();
 
-  const { selected_items, deselectAllItems, deleteItem, selectAllItems, toggleItem, total_selected, deleteSelectedItems } = useList(items)
-
+  const { selected_items, selectItems, toggleItem, total_selected } = useList()
   return <>
     <div className={clsx("List", className)} style={{ backgroundColor: theme.color.base }}>
       <div className="List-header" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>
-        <Checkbox color="primary" key={"checkbox"} onClick={(e) => {
+        <Checkbox color="primary" onClick={(e) => {
           if ((e.target as any).checked) {
             if (settings.sound) pop_on.play();
-            selectAllItems()
+            selectItems(items.map(item => item._id))
           }
           else {
             if (settings.sound) pop_off.play();
-            deselectAllItems()
+            selectItems([])
           }
         }} checked={items.length !== 0 && total_selected === items.length} />
         {total_selected}/{items.length}
@@ -37,7 +36,9 @@ function List<T extends { _id: string }>(props: ListProps<T>) {
           <Icon popoverText={`Remove ${total_selected} selected items`} key={"deleteicon"} >
             <CancelIcon className={"List-header-icons--cancel"} onClick={() => {
               if (settings.sound) remove.play();
-              deleteSelectedItems()
+              const remaining_items = items.filter(item => !selected_items.includes(item._id));
+              setItems(remaining_items)
+              selectItems(remaining_items.map(remaining_item => remaining_item._id))
             }} />
           </Icon>
         </div>
@@ -54,7 +55,7 @@ function List<T extends { _id: string }>(props: ListProps<T>) {
               key={item._id}
               classNames={settings.animation ? "fade" : undefined}
             >
-              <ListItem key={item._id} item={item} selected_items={selected_items} toggleItem={toggleItem} deleteItem={deleteItem} fields={fields as any} index={index} /></CSSTransition>)}
+              <ListItem items={items} key={item._id} item={item} selected_items={selected_items} toggleItem={toggleItem} setItems={setItems} fields={fields as any} index={index} /></CSSTransition>)}
         </TransitionGroup> : <div style={{ fontSize: "1.25em", fontWeight: "bold", position: "absolute", transform: "translate(-50%,-50%)", top: "50%", left: "50%", textAlign: 'center' }}>No items uploaded</div>}
       </div>
     </div>

@@ -7,11 +7,9 @@ import { ListItemProps } from "./types"
 import { useThemeSettings } from '../../../../hooks';
 
 export default function ListItem<T extends { _id: string }>(props: ListItemProps<T>) {
-  const { item, fields, index, toggleItem, deleteItem, selected_items } = props;
-  const { _id } = item;
+  const { items, item, item: { _id }, fields, index, toggleItem, setItems, selected_items } = props;
   const { theme, settings, sounds } = useThemeSettings();
   const { pop_on, pop_off, remove } = sounds;
-
   return (
     <div className="List-content-item" key={_id} style={{ backgroundColor: theme.color.light }}>
       <div className="List-content-item-icons">
@@ -22,7 +20,7 @@ export default function ListItem<T extends { _id: string }>(props: ListItemProps
         <Icon key={_id + "icon" + index} popoverText="Delete this item">
           <CancelIcon className="List-content-item-icons--cancel" onClick={() => {
             if (settings.sound) remove.play();
-            deleteItem(_id)
+            setItems(items.filter(item => item._id !== _id) as T[])
           }} style={{ fill: theme.palette.error.dark }} />
         </Icon>
       </div>
