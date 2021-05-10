@@ -1,30 +1,19 @@
-import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
 import { ThemeProvider } from '@material-ui/styles';
-import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 import { SnackbarProvider } from "notistack";
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
-
-import Play from "./components/Play/Play"
-import SettingsContext from "./context/SettingsContext";
-
-import generateTheme from "./utils/theme";
-
-import { ExtendedTheme, ISettings } from './types';
-
-import './index.scss';
+import React, { useState } from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import ReactDOM from 'react-dom';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Play from "./components/Play/Play";
 import Settings from './components/Settings/Settings';
+import SettingsContext from "./context/SettingsContext";
+import './index.scss';
+import { ExtendedTheme } from './types';
+import { generateTheme, getSettings } from './utils';
 
 const App = () => {
-  let local_settings: any = localStorage.getItem("SETTINGS");
-  local_settings = local_settings ? JSON.parse(local_settings) : {}
-  local_settings.animation = local_settings.animation ? (local_settings.animation === "true" ? true : false) : true;
-  local_settings.sound = local_settings.sound ? (local_settings.sound === "true" ? true : false) : true;
-  local_settings.hovertips = local_settings.hovertips ? (local_settings.hovertips === "true" ? true : false) : true;
-  local_settings.theme = local_settings.theme || "dark";
-
-  const [settings, setSettings] = useState(local_settings as ISettings);
+  const [settings, setSettings] = useState(getSettings());
   const generatedTheme = generateTheme(settings.theme) as ExtendedTheme;
 
   return <ThemeProvider theme={generatedTheme}>
@@ -43,10 +32,6 @@ const App = () => {
   </ThemeProvider>
 }
 
-const Index = () => {
-  return <Router basename={process.env.PUBLIC_URL}>
-    <App />
-  </Router >
-};
-
-ReactDOM.render(<Index />, document.getElementById('root'));
+ReactDOM.render(<Router basename={process.env.PUBLIC_URL}>
+  <App />
+</Router >, document.getElementById('root'));

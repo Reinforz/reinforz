@@ -3,10 +3,11 @@ import checkTextAnswer from "./checkTextAnswer"
 import download from "./download"
 import flattenObj from "./flattenObj"
 import generateConfigs from "./generateConfigs"
-import theme from "./theme"
+import generateTheme from "./generateTheme"
 
+export * from "./getSettings"
 export {
-  theme,
+  generateTheme,
   generateConfigs,
   flattenObj,
   download,
