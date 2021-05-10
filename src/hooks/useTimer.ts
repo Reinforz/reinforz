@@ -1,13 +1,13 @@
-import { useEffect, useState, useContext } from "react";
-
+import { useContext, useEffect, useState } from "react";
 import SettingsContext from "../context/SettingsContext";
-
 import { ISettings } from "../types";
+
+
 
 const tic = new Audio(process.env.PUBLIC_URL + "/sounds/tic.mp3");
 tic.volume = 0.5;
 
-export default function (limit: number, onTimerEnd: any) {
+export default function useTimer(limit: number, onTimerEnd: any) {
   const [timeout, setTimeout] = useState(limit);
 
   const settings = useContext(SettingsContext) as ISettings;

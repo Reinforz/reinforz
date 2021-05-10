@@ -1,9 +1,9 @@
 import { useTheme } from "@material-ui/styles";
 import { useContext } from "react";
-
 import SettingsContext from "../context/SettingsContext";
-
 import { ExtendedTheme, ISettings } from "../types";
+
+
 
 const sounds: any = {};
 
@@ -13,7 +13,7 @@ const sounds: any = {};
   sounds[sound_url] = audio;
 });
 
-export default function () {
+export default function useThemeSettings() {
   const theme = useTheme() as ExtendedTheme;
   const settings = useContext(SettingsContext) as ISettings;
   return { theme, settings, sounds }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { usePrevious } from "react-use";
 
-export default function (items: any[], setItems: any) {
+export default function useList(items: any[], setItems: any) {
   const [selectedItems, setSelectedItems] = useState([] as string[])
 
   const prevItems = usePrevious(items);

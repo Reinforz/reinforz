@@ -1,4 +1,4 @@
-export default function (items: any[], selectedItems: string[], setItems: any, setSelectedItems: any) {
+export default function useListItems(items: any[], selectedItems: string[], setItems: any, setSelectedItems: any) {
 
   const selectEndFromClickWithCurrent = (index: number) => {
     setSelectedItems(selectedItems.concat(items.filter((item, i) => i >= index).map(item => item._id)));

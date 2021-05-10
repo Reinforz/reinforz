@@ -6,16 +6,13 @@ import { useHistory } from "react-router-dom";
 import SplitPane from 'react-split-pane';
 import PlayContext from "../../context/PlayContext";
 import useThemeSettings from "../../hooks/useThemeSettings";
+import { Icon, List, Menu, View } from '../../shared';
 import {
   IPlaySettingsRProps,
   ListRProps,
   MenuRProps,
   PlayUploadRProps
 } from "../../types";
-import Icon from '../Basic/Icon';
-import List from "../Basic/List/List";
-import Menu from "../Basic/Menu";
-import View from '../Basic/View';
 import Quiz from "../Quiz/Quiz";
 import "./Play.scss";
 import PlaySettings from "./PlaySettings/PlaySettings";

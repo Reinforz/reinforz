@@ -15,7 +15,7 @@ export interface UseCycleOutput {
   is_last_item: boolean;
 }
 
-export default function (items: any[]): UseCycleOutput {
+export default function useCycle(items: any[]): UseCycleOutput {
   const [current_index, setCurrentIndex] = useState(0);
 
   return {

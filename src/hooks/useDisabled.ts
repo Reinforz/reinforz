@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function (timeout: number) {
+export default function useDisabled(timeout: number) {
   const [is_disabled, setIsDisabled] = useState(false);
 
   return {
