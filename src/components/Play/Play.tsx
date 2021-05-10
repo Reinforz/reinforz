@@ -5,7 +5,7 @@ import { FcSettings } from "react-icons/fc";
 import { useHistory } from "react-router-dom";
 import SplitPane from 'react-split-pane';
 import PlayContext from "../../context/PlayContext";
-import useThemeSettings from "../../hooks/useThemeSettings";
+import { useThemeSettings } from "../../hooks";
 import { Icon, List, Menu, View } from '../../shared';
 import {
   IPlaySettingsRProps,

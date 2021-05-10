@@ -3,8 +3,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import { XYCoord } from 'dnd-core';
 import React, { useRef } from 'react';
 import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
-import useListItems from '../../hooks/useListItems';
-import useThemeSettings from '../../hooks/useThemeSettings';
+import { useListItems, useThemeSettings } from '../../hooks';
 import { DragItem, ListItemProps } from '../../types';
 import Icon from '../Icon';
 

@@ -1,17 +1,14 @@
-import React from "react";
 import Highlight, { defaultProps, Language } from "prism-react-renderer";
-import DarkTheme from "prism-react-renderer/themes/vsDark";
 import LightTheme from "prism-react-renderer/themes/github";
+import DarkTheme from "prism-react-renderer/themes/vsDark";
 import Prism from "prismjs";
-import "prismjs/components/prism-dart";
 import "prismjs/components/prism-csharp";
-import "prismjs/components/prism-java";
+import "prismjs/components/prism-dart";
 import "prismjs/components/prism-git";
-
-import useThemeSettings from "../../../hooks/useThemeSettings";
-
+import "prismjs/components/prism-java";
+import React from "react";
+import { useThemeSettings } from "../../../hooks";
 import { QuestionHighlighterProps } from "../../../types";
-
 import "./QuestionHighlighter.scss";
 
 export default function QuestionHighlighter(props: QuestionHighlighterProps) {

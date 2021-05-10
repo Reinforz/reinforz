@@ -14,7 +14,7 @@ import createDOMPurify from 'dompurify';
 import marked from "marked";
 import React, { Fragment, useState } from 'react';
 import { MdPlayArrow } from "react-icons/md";
-import useThemeSettings from '../../hooks/useThemeSettings';
+import { useThemeSettings } from '../../hooks';
 import { ExtendedTheme, TableHeaderProps, TableProps, TableRowsProps } from "../../types";
 import Icon from "../Icon";
 import "./style.scss";

@@ -1,6 +1,6 @@
 import { useTheme } from "@material-ui/styles";
 import React from "react";
-import useTimer from "../../hooks/useTimer";
+import { useTimer } from "../../hooks";
 import { ExtendedTheme, TimerProps, TimerRProps } from "../../types";
 import "./style.scss";
 

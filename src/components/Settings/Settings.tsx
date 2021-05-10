@@ -1,14 +1,14 @@
+import { Button, FormControlLabel, FormGroup, InputLabel, Radio, RadioGroup, Switch, withStyles } from '@material-ui/core';
+import { green, red } from '@material-ui/core/colors';
 import React from 'react';
 import { BsMoon, BsSun } from 'react-icons/bs';
-import { Button, FormControlLabel, FormGroup, InputLabel, Radio, RadioGroup, Switch, withStyles } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
-import { green, red } from '@material-ui/core/colors';
-
-import useThemeSettings from '../../hooks/useThemeSettings';
-
+import { useThemeSettings } from '../../hooks';
 import { SettingsProps } from '../../types';
-
 import "./Settings.scss";
+
+
+
 
 const OnOffSwitch = withStyles({
   switchBase: {

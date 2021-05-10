@@ -1,10 +1,7 @@
+import { Button, Checkbox, FormControlLabel, FormGroup, InputLabel, MenuItem, Radio, RadioGroup, Select, TextField } from '@material-ui/core';
 import React, { useState } from "react";
-import { InputLabel, FormGroup, TextField, RadioGroup, FormControlLabel, Radio, Checkbox, Button, Select, MenuItem } from '@material-ui/core';
-
-import useThemeSettings from "../../../hooks/useThemeSettings";
-
+import { useThemeSettings } from "../../../hooks";
 import { IReportFilterState, QuestionDifficulty, QuestionType, QuizIdentifiers } from "../../../types";
-
 import "./ReportFilter.scss";
 
 const DEFAULT_REPORT_FILTER_STATE = { time_taken: [0, 60], verdict: 'mixed', hints_used: 'any', excluded_types: [], excluded_difficulty: [], excluded_quizzes: [], excluded_columns: [] } as IReportFilterState;
@@ -13,7 +10,7 @@ const transformLabel = (stat: string) => {
   let label = stat.replace(/(\.|_)/g, " ");
   return label.split(" ").map(c => c.charAt(0).toUpperCase() + c.substr(1)).join(" ");
 }
-export default function (props: { selected_quizzes: QuizIdentifiers[], children: any }) {
+export default function ReportFilter(props: { selected_quizzes: QuizIdentifiers[], children: any }) {
   let REPORT_FILTERS: any = localStorage.getItem('REPORT_FILTERS');
   REPORT_FILTERS = REPORT_FILTERS ? JSON.parse(REPORT_FILTERS) : undefined;
 

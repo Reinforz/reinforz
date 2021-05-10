@@ -1,26 +1,22 @@
-import React, { Fragment, useState } from 'react';
+import { TableFooter } from '@material-ui/core';
+import Collapse from '@material-ui/core/Collapse';
+import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
-import Collapse from '@material-ui/core/Collapse';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import { TableFooter } from '@material-ui/core';
-import { MdPlayArrow } from "react-icons/md";
-import marked from "marked";
 import createDOMPurify from 'dompurify';
-
+import marked from "marked";
+import React, { Fragment, useState } from 'react';
+import { MdPlayArrow } from "react-icons/md";
+import { useThemeSettings } from '../../hooks';
+import { ExtendedTheme, TableHeaderProps, TableProps, TableRowsProps } from "../../types";
 import Icon from "./Icon";
-
-import useThemeSettings from '../../hooks/useThemeSettings';
-
-import { TableRowsProps, TableProps, ExtendedTheme, TableHeaderProps } from "../../types"
-
 import "./Table.scss";
 
 const DOMPurify = createDOMPurify(window);

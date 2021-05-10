@@ -2,8 +2,7 @@ import * as CSS from 'csstype';
 import React from 'react';
 import { BiGridHorizontal, BiGridVertical } from "react-icons/bi";
 import { HiSwitchHorizontal, HiSwitchVertical } from "react-icons/hi";
-import useThemeSettings from '../../hooks/useThemeSettings';
-import useToggle from '../../hooks/useToggle';
+import { useThemeSettings, useToggle } from '../../hooks';
 import Icon from '../Icon';
 import "./style.scss";
 

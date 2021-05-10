@@ -3,9 +3,7 @@ import createDOMPurify from 'dompurify';
 import marked from "marked";
 import React from "react";
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import useCycle from "../../hooks/useCycle";
-import useDisabled from "../../hooks/useDisabled";
-import useThemeSettings from "../../hooks/useThemeSettings";
+import { useCycle, useDisabled, useThemeSettings } from "../../hooks";
 
 const DOMPurify = createDOMPurify(window);
 

@@ -1,13 +1,9 @@
+import * as CSS from 'csstype';
 import React from 'react';
 import { BiGridHorizontal, BiGridVertical } from "react-icons/bi";
-import { HiSwitchVertical, HiSwitchHorizontal } from "react-icons/hi";
-import * as CSS from 'csstype';
-
+import { HiSwitchHorizontal, HiSwitchVertical } from "react-icons/hi";
+import { useThemeSettings, useToggle } from '../../hooks';
 import Icon from './Icon';
-
-import useThemeSettings from '../../hooks/useThemeSettings';
-import useToggle from '../../hooks/useToggle';
-
 import "./View.scss";
 
 export default function View(props: { children: any, lskey: string }) {
