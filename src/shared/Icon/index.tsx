@@ -13,13 +13,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export interface IconProps {
+interface Props {
   className?: string,
   popoverText: string,
   children: JSX.Element
 }
 
-export default function (props: IconProps) {
+export default function Icon(props: Props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const settings = useContext(SettingsContext) as ISettings;

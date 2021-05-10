@@ -3,10 +3,10 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import update from 'immutability-helper';
 import React, { useCallback } from "react";
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import useList from "../../../hooks/useList";
-import useThemeSettings from "../../../hooks/useThemeSettings";
-import { ListProps } from "../../../types";
-import Icon from "../../Basic/Icon";
+import useList from "../../hooks/useList";
+import useThemeSettings from "../../hooks/useThemeSettings";
+import { ListProps } from "../../types";
+import Icon from "../Icon";
 import ListItem from "./ListItem";
 import "./style.scss";
 

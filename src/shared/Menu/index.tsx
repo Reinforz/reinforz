@@ -3,10 +3,10 @@ import React, { useState } from "react";
 import { FaArrowAltCircleRight } from "react-icons/fa";
 import { RiArrowLeftRightLine } from "react-icons/ri";
 import { ExtendedTheme, MenuProps } from "../../types";
-import Icon from "./Icon";
+import Icon from "../Icon";
 import "./style.scss";
 
-export default function (props: MenuProps) {
+export default function Menu(props: MenuProps) {
   const { width = 300, initial_position, lskey, initial_open, content, children } = props;
   let menu_ls_state = {
     position: initial_position || "left",

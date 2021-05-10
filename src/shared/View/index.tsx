@@ -4,7 +4,7 @@ import { BiGridHorizontal, BiGridVertical } from "react-icons/bi";
 import { HiSwitchHorizontal, HiSwitchVertical } from "react-icons/hi";
 import useThemeSettings from '../../hooks/useThemeSettings';
 import useToggle from '../../hooks/useToggle';
-import Icon from './Icon';
+import Icon from '../Icon';
 import "./style.scss";
 
 export default function View(props: { children: any, lskey: string }) {

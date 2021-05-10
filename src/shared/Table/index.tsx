@@ -16,7 +16,7 @@ import React, { Fragment, useState } from 'react';
 import { MdPlayArrow } from "react-icons/md";
 import useThemeSettings from '../../hooks/useThemeSettings';
 import { ExtendedTheme, TableHeaderProps, TableProps, TableRowsProps } from "../../types";
-import Icon from "./Icon";
+import Icon from "../Icon";
 import "./style.scss";
 
 const DOMPurify = createDOMPurify(window);
