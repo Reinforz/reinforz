@@ -7,9 +7,6 @@ import { useThemeSettings } from '../../hooks';
 import { SettingsProps } from '../../types';
 import "./Settings.scss";
 
-
-
-
 const OnOffSwitch = withStyles({
   switchBase: {
     color: red[500],
