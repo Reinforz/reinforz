@@ -1,22 +1,16 @@
-import React, { Fragment, useContext } from 'react';
 import { Button } from '@material-ui/core';
-import { useHistory } from 'react-router-dom';
 import clone from 'just-clone';
-
-import Table from "../Basic/Table";
-import ReportFilter from './ReportFilter/ReportFilter';
-import ReportExport from './ReportExport/ReportExport';
-import Menu from "../Basic/Menu";
-
+import React, { Fragment, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import PlayContext from '../../context/PlayContext';
-
-import useThemeSettings from '../../hooks/useThemeSettings';
-
-import { IPlayContext, QuestionInputFull, QuizInputFull, ReportFilterRProps, ReportProps, MenuRProps } from "../../types";
-
+import { useThemeSettings } from '../../hooks';
+import { Menu, Table } from "../../shared";
+import { IPlayContext, MenuRProps, QuestionInputFull, QuizInputFull, ReportFilterRProps, ReportProps } from "../../types";
 import "./Report.scss";
+import ReportExport from './ReportExport/ReportExport';
+import ReportFilter from './ReportFilter/ReportFilter';
 
-export default function (props: ReportProps) {
+export default function Report(props: ReportProps) {
   const transformValue = (header: string, content: any) => {
     const value = content[header];
     switch (header) {

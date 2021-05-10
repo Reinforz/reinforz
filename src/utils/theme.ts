@@ -1,8 +1,8 @@
-import { createMuiTheme, lighten, darken } from '@material-ui/core/styles';
 import { grey } from '@material-ui/core/colors';
+import { createMuiTheme, darken, lighten } from '@material-ui/core/styles';
 import { ExtendedThemeOptions } from '../types';
 
-export default function (theme: "dark" | "light") {
+export default function theme(theme: "dark" | "light") {
   if (theme === "dark")
     return createMuiTheme({
       palette: {

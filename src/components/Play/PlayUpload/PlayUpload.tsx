@@ -1,17 +1,13 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
 import yaml from 'js-yaml';
-import { useDropzone, DropzoneState } from 'react-dropzone';
-import { useSnackbar, OptionsObject } from "notistack";
+import { OptionsObject, useSnackbar } from "notistack";
+import React, { useState } from 'react';
+import { DropzoneState, useDropzone } from 'react-dropzone';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import shortid from "shortid"
-
-import useThemeSettings from '../../../hooks/useThemeSettings';
-
+import shortid from "shortid";
+import styled from 'styled-components';
+import { useThemeSettings } from '../../../hooks';
 import { PlayErrorLog, PlayErrorLogState, QuestionInputFull, QuizInputPartial } from '../../../types';
-
-import { generateQuestionInputConfigs } from '../../../utils/generateConfigs';
-
+import { generateConfigs } from '../../../utils';
 import "./PlayUpload.scss";
 
 const getColor = (props: DropzoneState) => {
@@ -79,7 +75,7 @@ export default function PlayUpload(props: { children: any }) {
           quiz._id = shortid();
           const generated_questions: QuestionInputFull[] = [];
           quiz.questions.forEach((question, _index) => {
-            const [generatedquestion, logs] = generateQuestionInputConfigs(question);
+            const [generatedquestion, logs] = generateConfigs(question);
             if (logs.errors.length === 0) {
               generatedquestion.quiz = { subject: quiz.subject, title: quiz.title, _id: quiz._id };
               generated_questions.push(generatedquestion);

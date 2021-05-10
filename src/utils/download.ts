@@ -1,4 +1,4 @@
-export default function (filename: string, text: string) {
+export default function download(filename: string, text: string) {
   filename = filename ? filename : `${Date.now()}.json`;
   const element = document.createElement('a');
   element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));

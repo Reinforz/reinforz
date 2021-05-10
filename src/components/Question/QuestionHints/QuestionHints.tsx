@@ -1,14 +1,11 @@
 import React from 'react';
-
+import { Toggle } from '../../../shared';
 import { QuestionHintsProps, QuestionHintsRProps, ToggleItemsRProps } from '../../../types';
-
 import "./QuestionHints.scss";
 
-import ToggleItems from '../../Basic/ToggleItems';
-
-export default function (props: QuestionHintsProps) {
+export default function QuestionHints(props: QuestionHintsProps) {
   const { hints, children } = props;
-  return <ToggleItems items={hints} name={"hints"}>
+  return <Toggle items={hints} name={"hints"}>
     {({ ToggleButton, ToggleItems, ToggleItemsState, ToggleItemsUtils }: ToggleItemsRProps) => {
       return children({
         QuestionHintsComponent: <div className="QuestionHints">
@@ -23,5 +20,5 @@ export default function (props: QuestionHintsProps) {
         }
       }) as QuestionHintsRProps
     }}
-  </ToggleItems>
+  </Toggle>
 }

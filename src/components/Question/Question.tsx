@@ -1,19 +1,15 @@
-import React, { useState, Fragment, useRef, createRef, RefObject, useEffect } from "react";
-import { Button, } from "@material-ui/core";
-import marked from "marked";
+import { Button } from "@material-ui/core";
 import createDOMPurify from 'dompurify';
-
-import Timer from "../Basic/Timer";
-import QuestionHighlighter from "./QuestionHighlighter/QuestionHighlighter";
-import QuestionOptions from "./QuestionOptions/QuestionOptions";
-import QuestionHints from "./QuestionHints/QuestionHints";
-
-import useThemeSettings from "../../hooks/useThemeSettings";
-
-import { TimerRProps, QuestionProps, QuestionHintsRProps } from "../../types";
-
-import "./Question.scss";
+import marked from "marked";
+import React, { createRef, Fragment, RefObject, useEffect, useRef, useState } from "react";
 import { HotKeys } from "react-hotkeys";
+import { useThemeSettings } from "../../hooks";
+import { Timer } from "../../shared";
+import { QuestionHintsRProps, QuestionProps, TimerRProps } from "../../types";
+import "./Question.scss";
+import QuestionHighlighter from "./QuestionHighlighter/QuestionHighlighter";
+import QuestionHints from "./QuestionHints/QuestionHints";
+import QuestionOptions from "./QuestionOptions/QuestionOptions";
 
 const DOMPurify = createDOMPurify(window);
 

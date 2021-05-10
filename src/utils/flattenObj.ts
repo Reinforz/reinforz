@@ -5,7 +5,7 @@ function isPOJO(arg: any): boolean {
   return proto === Object.prototype;
 }
 
-export default function (obj: Record<string, any>) {
+export default function flattenObj(obj: Record<string, any>) {
   function objectVisitor(obj: any, parents: string[] = []) {
     let res: Record<string, any> = {};
     const entries = Object.entries(obj);

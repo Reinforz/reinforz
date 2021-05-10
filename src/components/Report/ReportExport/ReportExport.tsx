@@ -1,20 +1,15 @@
-import React, { useCallback, useState } from 'react';
+import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
-import { InputLabel, FormControl, Select, MenuItem } from '@material-ui/core';
 import { safeDump } from 'js-yaml';
 import clone from 'just-clone';
-
-import Icon from '../../Basic/Icon';
-
-import useThemeSettings from '../../../hooks/useThemeSettings';
-
-import download from "../../../utils/download";
-
+import React, { useCallback, useState } from 'react';
+import { useThemeSettings } from '../../../hooks';
+import { Icon } from '../../../shared';
 import { ReportExportProps } from "../../../types";
+import { download } from "../../../utils";
+import "./ReportExport.scss";
 
-import "./ReportExport.scss"
-
-export default function (props: ReportExportProps) {
+export default function ReportExport(props: ReportExportProps) {
   const { filtered_results, filtered_quizzes } = props;
   let REPORT_EXPORT: any = localStorage.getItem('REPORT_EXPORT');
   REPORT_EXPORT = REPORT_EXPORT ? JSON.parse(REPORT_EXPORT) : undefined;

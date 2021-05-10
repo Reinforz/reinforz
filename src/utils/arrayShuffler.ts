@@ -1,4 +1,4 @@
-export default function shuffle(array: any[]) {
+export default function arrayShuffler(array: any[]) {
   let currentIndex = array.length,
     temporaryValue,
     randomIndex;

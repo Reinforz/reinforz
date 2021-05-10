@@ -1,7 +1,7 @@
 import clone from "just-clone";
-import shortid from "shortid"
+import shortid from "shortid";
+import { QuestionInputFull, QuestionInputPartial } from '../types';
 
-import { QuestionInputPartial, QuestionInputFull } from '../types';
 
 function setObjectValues(
   parent: any,
@@ -14,7 +14,7 @@ function setObjectValues(
   });
 }
 
-export function generateQuestionInputConfigs(
+export default function generateQuestionInputConfigs(
   question: QuestionInputPartial,
 ) {
   const logs: { warns: string[], errors: string[] } = { warns: [], errors: [] };

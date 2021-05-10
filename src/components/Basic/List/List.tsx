@@ -1,18 +1,13 @@
-import React, { useCallback } from "react";
 import { Checkbox } from "@material-ui/core";
 import CancelIcon from '@material-ui/icons/Cancel';
+import update from 'immutability-helper';
+import React, { useCallback } from "react";
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import update from 'immutability-helper'
-
-import Icon from "../../Basic/Icon"
-import ListItem from "./ListItem";
-
-import useList from "../../../hooks/useList";
-import useThemeSettings from "../../../hooks/useThemeSettings";
-
+import { useList, useThemeSettings } from "../../../hooks";
+import { Icon } from "../../../shared";
 import { ListProps } from "../../../types";
-
 import "./List.scss";
+import ListItem from "./ListItem";
 
 export default React.memo((props: ListProps<Record<string, any>>) => {
   const { children, items, setItems, header, fields } = props;

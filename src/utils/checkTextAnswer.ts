@@ -49,7 +49,7 @@ function matchAnswer(answer: string, user_answer: string) {
   return [isCorrect, alts] as [boolean, number[]];
 }
 
-export default function (user_answer: string[], answers: string[]) {
+export default function checkTextAnswer(user_answer: string[], answers: string[]) {
   const checked_answers: number[] = [];
   user_answer.forEach((user_answer, i) => {
     let isCorrect = false;

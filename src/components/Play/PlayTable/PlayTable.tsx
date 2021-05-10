@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
-
-import Table from "../../Basic/Table"
-
+import { Table } from "../../../shared";
 import { QuizInputFull } from '../../../types';
-
 import "./PlayTable.scss";
 
 function PlayTable(props: { quizzes: QuizInputFull[] }) {
