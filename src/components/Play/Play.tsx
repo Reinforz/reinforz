@@ -1,33 +1,26 @@
-import React, { useState, Fragment } from "react";
-import { useHistory } from "react-router-dom";
+// @ts-ignore
+import debounced from 'just-debounce';
+import React, { Fragment, useState } from "react";
 import { FcSettings } from "react-icons/fc";
+import { useHistory } from "react-router-dom";
 import SplitPane from 'react-split-pane';
-// @ts-ignore
-import Pane from 'react-split-pane/lib/Pane';
-// @ts-ignore
-import debounced from 'just-debounce'
-
-import PlayUpload from "./PlayUpload/PlayUpload";
-import Quiz from "../Quiz/Quiz";
-import PlaySettings from "./PlaySettings/PlaySettings";
-import PlayTable from "./PlayTable/PlayTable";
-import List from "../Basic/List/List";
-import Icon from '../Basic/Icon';
-import View from '../Basic/View';
-import Menu from "../Basic/Menu";
-
-import PlayContext from "../../context/PlayContext"
-
+import PlayContext from "../../context/PlayContext";
 import useThemeSettings from "../../hooks/useThemeSettings";
-
 import {
   IPlaySettingsRProps,
   ListRProps,
   MenuRProps,
-  PlayUploadRProps,
+  PlayUploadRProps
 } from "../../types";
-
+import Icon from '../Basic/Icon';
+import List from "../Basic/List/List";
+import Menu from "../Basic/Menu";
+import View from '../Basic/View';
+import Quiz from "../Quiz/Quiz";
 import "./Play.scss";
+import PlaySettings from "./PlaySettings/PlaySettings";
+import PlayTable from "./PlayTable/PlayTable";
+import PlayUpload from "./PlayUpload/PlayUpload";
 
 let prev_pane_size = localStorage.getItem("Play_pane_size");
 
@@ -111,10 +104,10 @@ const PlayContent = (props: { renderprops: { ListRenderProps: ListRProps, PlayUp
           history.push("/settings")
         }} />
       </Icon>
-      <SplitPane split="vertical" onChange={(size: any) => {
+      <SplitPane defaultSize={prev_pane_size || "50%"} minSize="30%" maxSize="70%" split="vertical" onChange={(size: any) => {
         setToLs(size[0])
       }}>
-        <Pane initialSize={prev_pane_size || "50%"} minSize="30%" maxSize="70%" className="Play-pane">
+        <div className="Play-pane">
           {PlayUploadComponents.PlayUpload}
           <View lskey="PlayLists">
             {({ ViewComponent, ViewExtra }: any) =>
@@ -125,7 +118,7 @@ const PlayContent = (props: { renderprops: { ListRenderProps: ListRProps, PlayUp
             }
           </View>
           <div className="Help" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>Need help, <a style={{ color: theme.palette.text.secondary }} href="http://github.com/Devorein/reinforz" rel="noopener noreferrer" target="_blank">click here</a> to go to the doc</div>
-        </Pane>
+        </div>
         <PlayTable quizzes={PlayUploadState.items} />
       </SplitPane>
     </Fragment>
