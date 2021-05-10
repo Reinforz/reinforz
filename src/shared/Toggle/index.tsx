@@ -1,16 +1,15 @@
-import React from "react";
 import { Button } from "@material-ui/core";
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import marked from "marked";
 import createDOMPurify from 'dompurify';
-
+import marked from "marked";
+import React from "react";
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import useCycle from "../../hooks/useCycle";
 import useDisabled from "../../hooks/useDisabled";
 import useThemeSettings from "../../hooks/useThemeSettings";
 
 const DOMPurify = createDOMPurify(window);
 
-export default function (props: { items: string[], name: string, children: any }) {
+export default function Toggle(props: { items: string[], name: string, children: any }) {
   const { items, name, children } = props;
   const { hasEnded, getNextIndex, current_index } = useCycle(items);
   const { is_disabled, disable } = useDisabled(2500);

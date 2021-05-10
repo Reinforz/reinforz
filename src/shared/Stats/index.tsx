@@ -1,11 +1,8 @@
 import { useTheme } from "@material-ui/styles";
 import React from "react";
-
-import flattenObj from "../../utils/flattenObj";
-
 import { ExtendedTheme, StatsProps } from "../../types";
-
-import "./Stats.scss";
+import flattenObj from "../../utils/flattenObj";
+import "./style.scss";
 
 function Stats(props: StatsProps) {
   const theme = useTheme() as ExtendedTheme;

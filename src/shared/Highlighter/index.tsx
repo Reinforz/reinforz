@@ -1,14 +1,13 @@
-import React from "react";
-import Highlight, { defaultProps, Language } from "prism-react-renderer";
-import DarkTheme from "prism-react-renderer/themes/vsDark";
-import LightTheme from "prism-react-renderer/themes/github";
 import { useTheme } from "@material-ui/core/styles";
+import Highlight, { defaultProps, Language } from "prism-react-renderer";
+import LightTheme from "prism-react-renderer/themes/github";
+import DarkTheme from "prism-react-renderer/themes/vsDark";
 import Prism from "prismjs";
-import "prismjs/components/prism-dart";
 import "prismjs/components/prism-csharp";
-import "prismjs/components/prism-java";
+import "prismjs/components/prism-dart";
 import "prismjs/components/prism-git";
-
+import "prismjs/components/prism-java";
+import React from "react";
 import { ExtendedTheme, HighlighterProps } from "../../types";
 
 export default React.memo((props: HighlighterProps) => {

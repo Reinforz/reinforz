@@ -1,13 +1,10 @@
 import { useTheme } from "@material-ui/styles";
 import React from "react";
-
 import useTimer from "../../hooks/useTimer";
+import { ExtendedTheme, TimerProps, TimerRProps } from "../../types";
+import "./style.scss";
 
-import { TimerProps, TimerRProps, ExtendedTheme } from "../../types";
-
-import "./Timer.scss";
-
-export default function (props: TimerProps) {
+export default function Timer(props: TimerProps) {
 
   const { timeout, displayTime } = useTimer(props.timeout, props.onTimerEnd);
 

@@ -1,9 +1,7 @@
-import React, { Fragment, useContext, useEffect } from 'react';
 import { Popover, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-
+import React, { Fragment, useContext, useEffect } from 'react';
 import SettingsContext from '../../context/SettingsContext';
-
 import { ISettings } from '../../types';
 
 const useStyles = makeStyles((theme) => ({

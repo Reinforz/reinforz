@@ -1,12 +1,12 @@
-import Highlighter from "./Highlighter/Highlighter";
-import Icon from "./Icon/Icon";
-import List from "./List/List";
-import Menu from "./Menu/Menu";
-import Stats from "./Stats/Stats";
-import Table from "./Table/Table";
-import Timer from "./Timer/Timer";
-import Toggle from "./Toggle/ToggleItems";
-import View from "./View/View";
+import Highlighter from "./Highlighter";
+import Icon from "./Icon";
+import List from "./List";
+import Menu from "./Menu";
+import Stats from "./Stats";
+import Table from "./Table";
+import Timer from "./Timer";
+import Toggle from "./Toggle";
+import View from "./View";
 
 export {
   View,
@@ -19,3 +19,4 @@ export {
   Table,
   Stats
 };
+
