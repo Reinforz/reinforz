@@ -3,13 +3,10 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import { XYCoord } from 'dnd-core';
 import React, { useRef } from 'react';
 import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
-import useListItems from '../../../hooks/useListItems';
-import useThemeSettings from '../../../hooks/useThemeSettings';
-import { DragItem, ListItemProps } from '../../../types';
+import useListItems from '../../hooks/useListItems';
+import useThemeSettings from '../../hooks/useThemeSettings';
+import { DragItem, ListItemProps } from '../../types';
 import Icon from '../Icon';
-
-
-
 
 export default function ListItem(props: ListItemProps<Record<string, any>>) {
   const { items, item, fields, index, setSelectedItems, setItems, selectedItems } = props;

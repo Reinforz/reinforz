@@ -2,8 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import SettingsContext from "../context/SettingsContext";
 import { ISettings } from "../types";
 
-
-
 const tic = new Audio(process.env.PUBLIC_URL + "/sounds/tic.mp3");
 tic.volume = 0.5;
 

@@ -3,8 +3,6 @@ import { useContext } from "react";
 import SettingsContext from "../context/SettingsContext";
 import { ExtendedTheme, ISettings } from "../types";
 
-
-
 const sounds: any = {};
 
 ['pop_on', 'pop_off', 'remove', 'switch_off', 'switch_on', 'swoosh', 'reset', 'horn', 'click', 'option_click'].forEach(sound_url => {

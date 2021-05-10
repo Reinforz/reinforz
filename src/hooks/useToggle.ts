@@ -1,7 +1,6 @@
 import { useState } from "react";
 import useThemeSettings from "./useThemeSettings";
 
-
 export default function useToggle<T>(initial: T | (() => T), toggles: [T, T], key?: string) {
   const [toggle, setToggle] = useState(() => {
     let value = initial;
