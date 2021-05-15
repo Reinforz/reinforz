@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { useThemeSettings } from '../../../hooks';
 import { PlayContext } from '../Play';
+import "./PlayErrorlogs.scss";
 
 export default function PlayErrorlogs() {
   const { theme, settings } = useThemeSettings();

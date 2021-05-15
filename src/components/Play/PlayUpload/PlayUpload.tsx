@@ -74,7 +74,7 @@ export default function PlayUpload() {
   };
 
   const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({ onDrop, accept: [".yml", ".yaml", "application/json"] })
-  return <div className="PlayUpload"><Container style={{ backgroundColor: theme.color.light, color: theme.palette.text.secondary }} className="PlayUpload" {...getRootProps({ isDragActive, isDragAccept, isDragReject })}>
+  return <Container style={{ backgroundColor: theme.color.light, color: theme.palette.text.secondary }} className="PlayUpload" {...getRootProps({ isDragActive, isDragAccept, isDragReject })}>
     <input {...getInputProps()} />
     {
       isDragActive ?
@@ -82,7 +82,6 @@ export default function PlayUpload() {
         <p>Drag 'n' drop some files here, or click to upload files (.json or .yaml files)</p>
     }
   </Container>
-  </div>
 }
 
 
