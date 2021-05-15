@@ -6,6 +6,7 @@ import {
   PlayErrorLog,
   QuizInputFull
 } from "../../types";
+import shuffle from "../../utils/arrayShuffler";
 import "./Play.scss";
 import PlayErrorlogs from "./PlayErrorlogs/PlayErrorlogs";
 import PlaySettings from "./PlaySettings/PlaySettings";
@@ -93,6 +94,7 @@ interface IPlayContext {
   setUploadedQuizzes: React.Dispatch<React.SetStateAction<QuizInputFull[]>>
   selectedQuizzes: string[],
   setSelectedQuizzes: React.Dispatch<React.SetStateAction<string[]>>
+  filteredQuizzes: QuizInputFull[],
   errorLogs: PlayErrorLog[],
   setErrorLogs: React.Dispatch<React.SetStateAction<PlayErrorLog[]>>
   playSettings: IPlaySettings
@@ -115,8 +117,16 @@ function Play() {
   const [selectedQuizzes, setSelectedQuizzes] = useState<string[]>([]);
   const [errorLogs, setErrorLogs] = useState<PlayErrorLog[]>([]);
 
+  let filteredQuizzes = uploadedQuizzes.filter(quiz => selectedQuizzes.includes(quiz._id));
+
+  if (playSettings.options.shuffle_quizzes && !playSettings.options.flatten_mix) filteredQuizzes = shuffle(filteredQuizzes);
+  if (playSettings.options.shuffle_questions && !playSettings.options.flatten_mix) filteredQuizzes.forEach(quiz => quiz.questions = shuffle(quiz.questions));
+  filteredQuizzes.forEach(filteredQuiz => {
+    filteredQuiz.questions = filteredQuiz.questions.filter(question => !playSettings.filters.excluded_difficulty.includes(question.difficulty) && !playSettings.filters.excluded_types.includes(question.type) && playSettings.filters.time_allocated[0] <= question.time_allocated && playSettings.filters.time_allocated[1] >= question.time_allocated);
+  });
+
   return <div className="Play">
-    <PlayContext.Provider value={{ setPlaySettings, playSettings, errorLogs, setErrorLogs, setPlaying, playing, uploadedQuizzes, selectedQuizzes, setUploadedQuizzes, setSelectedQuizzes }}>
+    <PlayContext.Provider value={{ filteredQuizzes, setPlaySettings, playSettings, errorLogs, setErrorLogs, setPlaying, playing, uploadedQuizzes, selectedQuizzes, setUploadedQuizzes, setSelectedQuizzes }}>
       <PlayUpload />
       <PlayErrorlogs />
       <List selectedItems={selectedQuizzes} setSelectedItems={setSelectedQuizzes} header="Uploaded Quizzes" items={uploadedQuizzes} setItems={setUploadedQuizzes} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]} />
