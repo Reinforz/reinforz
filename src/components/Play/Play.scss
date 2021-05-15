@@ -5,8 +5,12 @@
   grid-template-rows: 100px 1fr 1fr;
   grid-gap: 5px;
   
+  .List{
+    grid-area: 2/1/3/2;
+    height: calc(100% - 15px);
+  }
+
   &-content{
-    
     .Play-pane{
       display: grid;
       grid-template-rows: 100px 620px 30px;

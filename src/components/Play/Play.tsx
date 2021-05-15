@@ -90,8 +90,8 @@ interface IPlayContext {
   setPlaying: React.Dispatch<React.SetStateAction<boolean>>
   uploadedQuizzes: QuizInputFull[],
   setUploadedQuizzes: React.Dispatch<React.SetStateAction<QuizInputFull[]>>
-  selectedQuizzes: QuizInputFull[],
-  setSelectedQuizzes: React.Dispatch<React.SetStateAction<QuizInputFull[]>>
+  selectedQuizzes: string[],
+  setSelectedQuizzes: React.Dispatch<React.SetStateAction<string[]>>
   errorLogs: PlayErrorLog[],
   setErrorLogs: React.Dispatch<React.SetStateAction<PlayErrorLog[]>>
 }
@@ -101,18 +101,14 @@ export const PlayContext = React.createContext({} as IPlayContext)
 function Play() {
   const [playing, setPlaying] = useState(false);
   const [uploadedQuizzes, setUploadedQuizzes] = useState<QuizInputFull[]>([]);
-  const [selectedQuizzes, setSelectedQuizzes] = useState<QuizInputFull[]>([]);
+  const [selectedQuizzes, setSelectedQuizzes] = useState<string[]>([]);
   const [errorLogs, setErrorLogs] = useState<PlayErrorLog[]>([]);
 
   return <div className="Play">
     <PlayContext.Provider value={{ errorLogs, setErrorLogs, setPlaying, playing, uploadedQuizzes, selectedQuizzes, setUploadedQuizzes, setSelectedQuizzes }}>
       <PlayUpload />
       <PlayErrorlogs />
-      <List header="Uploaded Quizzes" items={uploadedQuizzes} setItems={setSelectedQuizzes} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]} onDelete={PlayUploadUtils.removeErrorLogs}>
-        {(ListRenderProps: ListRProps) =>
-          renderPlaySettings({ ListRenderProps, PlayUploadRenderProps, PlayRenderProps })
-        }
-      </List>
+      <List selectedItems={selectedQuizzes} setSelectedItems={setSelectedQuizzes} header="Uploaded Quizzes" items={uploadedQuizzes} setItems={setUploadedQuizzes} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]} />
     </PlayContext.Provider>
   </div>
 }

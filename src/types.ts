@@ -5,26 +5,6 @@ import { Language } from "prism-react-renderer";
 
 export type ListAction = "add" | "remove";
 
-export interface ListState {
-  selectedItems: string[]
-}
-
-export interface ListUtils {
-  setSelectedItems: (items: string[]) => void
-}
-
-export interface ListRProps {
-  ListComponent: JSX.Element,
-  ListState: ListState,
-  ListUtils: ListUtils
-}
-
-export interface DragItem {
-  index: number
-  id: string
-  type: string
-}
-
 export interface StatsProps {
   item: any,
   stats: (string | undefined)[],
