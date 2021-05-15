@@ -1,5 +1,5 @@
+import { Theme, ThemeOptions } from '@material-ui/core/styles';
 import { Language } from "prism-react-renderer";
-import { ThemeOptions, Theme } from '@material-ui/core/styles';
 
 // Basic Components
 
@@ -145,20 +145,6 @@ export interface IPlaySettingsRProps {
   PlaySettingsExtra: {
     filtered_questions: QuestionInputFull[],
     selected_quizzes: QuizIdentifiers[]
-  }
-}
-
-export interface PlayUploadRProps {
-  PlayUploadComponents: {
-    PlayUpload: JSX.Element,
-    PlayErrorLogs: JSX.Element
-  },
-  PlayUploadState: {
-    items: any[],
-  },
-  PlayUploadUtils: {
-    setItems: (items: any[]) => any,
-    removeErrorLogs: (items: any[]) => any,
   }
 }
 
