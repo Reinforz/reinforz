@@ -70,13 +70,6 @@ export interface PlayErrorLog {
 
 export type PlayErrorLogState = PlayErrorLog[];
 
-export interface PlaySettingsProps {
-  children: any,
-  selectedQuizzes: string[],
-  setPlaying: (isPlaying: boolean) => any,
-  quizzes: QuizInputFull[]
-}
-
 export interface IPlaySettingsOptionsState {
   shuffle_options: boolean,
   shuffle_quizzes: boolean,
@@ -95,15 +88,6 @@ export interface IPlaySettingsFiltersState {
 export interface IPlaySettingsState {
   play_options: IPlaySettingsOptionsState,
   play_filters: IPlaySettingsFiltersState,
-}
-
-export interface IPlaySettingsRProps {
-  PlaySettingsComponent: JSX.Element,
-  PlaySettingsState: IPlaySettingsState,
-  PlaySettingsExtra: {
-    filtered_questions: QuestionInputFull[],
-    selected_quizzes: QuizIdentifiers[]
-  }
 }
 
 export interface QuestionProps {

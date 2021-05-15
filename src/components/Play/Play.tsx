@@ -1,21 +1,15 @@
 import React, { useState } from "react";
 import { List } from "../../shared";
 import {
+  IPlaySettingsFiltersState,
+  IPlaySettingsOptionsState,
   PlayErrorLog,
   QuizInputFull
 } from "../../types";
 import "./Play.scss";
 import PlayErrorlogs from "./PlayErrorlogs/PlayErrorlogs";
+import PlaySettings from "./PlaySettings/PlaySettings";
 import PlayUpload from "./PlayUpload/PlayUpload";
-
-// const renderList = ({ PlayUploadRenderProps, PlayRenderProps }: { PlayRenderProps: IPlayRProps, PlayUploadRenderProps: PlayUploadRProps }) => {
-//   const { PlayUploadState, PlayUploadUtils } = PlayUploadRenderProps;
-//   return <List header="Uploaded Quizzes" items={PlayUploadState.items} setItems={PlayUploadUtils.setItems} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]} onDelete={PlayUploadUtils.removeErrorLogs}>
-//     {(ListRenderProps: ListRProps) =>
-//       renderPlaySettings({ ListRenderProps, PlayUploadRenderProps, PlayRenderProps })
-//     }
-//   </List>
-// }
 
 // const renderPlaySettings = ({ ListRenderProps, PlayUploadRenderProps, PlayRenderProps }: { PlayRenderProps: IPlayRProps, ListRenderProps: ListRProps, PlayUploadRenderProps: PlayUploadRProps }) => {
 //   const { ListState, ListUtils } = ListRenderProps;
@@ -85,6 +79,13 @@ import PlayUpload from "./PlayUpload/PlayUpload";
 //   </div>
 // }
 
+const DEFAULT_PLAY_OPTIONS_STATE = { shuffle_options: true, shuffle_quizzes: false, shuffle_questions: true, instant_feedback: true, flatten_mix: false, partial_score: true } as IPlaySettingsOptionsState,
+  DEFAULT_PLAY_FILTERS_STATE = { time_allocated: [15, 60], excluded_difficulty: [], excluded_types: [] } as IPlaySettingsFiltersState;
+
+export interface IPlaySettings {
+  options: IPlaySettingsOptionsState,
+  filters: IPlaySettingsFiltersState
+}
 interface IPlayContext {
   playing: boolean
   setPlaying: React.Dispatch<React.SetStateAction<boolean>>
@@ -94,21 +95,32 @@ interface IPlayContext {
   setSelectedQuizzes: React.Dispatch<React.SetStateAction<string[]>>
   errorLogs: PlayErrorLog[],
   setErrorLogs: React.Dispatch<React.SetStateAction<PlayErrorLog[]>>
+  playSettings: IPlaySettings
+  setPlaySettings: React.Dispatch<React.SetStateAction<IPlaySettings>>
 }
 
 export const PlayContext = React.createContext({} as IPlayContext)
 
 function Play() {
+  let PLAY_SETTINGS: any = localStorage.getItem('PLAY_SETTINGS');
+  PLAY_SETTINGS = PLAY_SETTINGS ? JSON.parse(PLAY_SETTINGS) : undefined;
+
+  const [playSettings, setPlaySettings] = useState<IPlaySettings>({
+    options: PLAY_SETTINGS ? PLAY_SETTINGS.play_options : DEFAULT_PLAY_OPTIONS_STATE,
+    filters: PLAY_SETTINGS ? PLAY_SETTINGS.play_filters : DEFAULT_PLAY_FILTERS_STATE
+  });
+
   const [playing, setPlaying] = useState(false);
   const [uploadedQuizzes, setUploadedQuizzes] = useState<QuizInputFull[]>([]);
   const [selectedQuizzes, setSelectedQuizzes] = useState<string[]>([]);
   const [errorLogs, setErrorLogs] = useState<PlayErrorLog[]>([]);
 
   return <div className="Play">
-    <PlayContext.Provider value={{ errorLogs, setErrorLogs, setPlaying, playing, uploadedQuizzes, selectedQuizzes, setUploadedQuizzes, setSelectedQuizzes }}>
+    <PlayContext.Provider value={{ setPlaySettings, playSettings, errorLogs, setErrorLogs, setPlaying, playing, uploadedQuizzes, selectedQuizzes, setUploadedQuizzes, setSelectedQuizzes }}>
       <PlayUpload />
       <PlayErrorlogs />
       <List selectedItems={selectedQuizzes} setSelectedItems={setSelectedQuizzes} header="Uploaded Quizzes" items={uploadedQuizzes} setItems={setUploadedQuizzes} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]} />
+      <PlaySettings />
     </PlayContext.Provider>
   </div>
 }
