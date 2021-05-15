@@ -1,5 +1,5 @@
-// @ts-ignore
 import React, { useState } from "react";
+import { List } from "../../shared";
 import {
   PlayErrorLog,
   QuizInputFull
@@ -7,13 +7,6 @@ import {
 import "./Play.scss";
 import PlayErrorlogs from "./PlayErrorlogs/PlayErrorlogs";
 import PlayUpload from "./PlayUpload/PlayUpload";
-
-/* let prev_pane_size = localStorage.getItem("Play_pane_size");
-
-const setToLs = debounced((size: string) => {
-  localStorage.setItem("Play_pane_size", size || "50%")
-}, 2500) */
-
 
 // const renderList = ({ PlayUploadRenderProps, PlayRenderProps }: { PlayRenderProps: IPlayRProps, PlayUploadRenderProps: PlayUploadRProps }) => {
 //   const { PlayUploadState, PlayUploadUtils } = PlayUploadRenderProps;
@@ -115,6 +108,11 @@ function Play() {
     <PlayContext.Provider value={{ errorLogs, setErrorLogs, setPlaying, playing, uploadedQuizzes, selectedQuizzes, setUploadedQuizzes, setSelectedQuizzes }}>
       <PlayUpload />
       <PlayErrorlogs />
+      <List header="Uploaded Quizzes" items={uploadedQuizzes} setItems={setSelectedQuizzes} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]} onDelete={PlayUploadUtils.removeErrorLogs}>
+        {(ListRenderProps: ListRProps) =>
+          renderPlaySettings({ ListRenderProps, PlayUploadRenderProps, PlayRenderProps })
+        }
+      </List>
     </PlayContext.Provider>
   </div>
 }

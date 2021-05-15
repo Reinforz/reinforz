@@ -1,83 +1,78 @@
 import { Checkbox } from "@material-ui/core";
 import CancelIcon from '@material-ui/icons/Cancel';
-import update from 'immutability-helper';
-import React, { useCallback } from "react";
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { useList, useThemeSettings } from "../../hooks";
-import { ListProps } from "../../types";
+import React from "react";
+import { useThemeSettings } from "../../hooks";
 import Icon from "../Icon";
-import ListItem from "./ListItem";
 import "./style.scss";
 
-export default React.memo((props: ListProps<Record<string, any>>) => {
-  const { children, items, setItems, header, fields } = props;
+export interface Props<T extends { _id: string } & Record<string, any>> {
+  header: string
+  setItems: (data: T[]) => void
+  setSelectedItems: (data: string[]) => void
+  fields: (keyof T | ((data: T) => string))[]
+  icons?: ((index: number, _id: string) => void)[]
+  onDelete?: (items: T[]) => void
+  items: T[]
+  selectedItems: string[]
+}
+
+export default function List<T extends { _id: string }>(props: Props<T>) {
+  const { items, selectedItems, setItems, setSelectedItems, header, fields } = props;
   const { theme, settings, sounds } = useThemeSettings();
   const { pop_on, pop_off, remove } = sounds;
 
-  const { selectedItems, setSelectedItems, resetSelectedItems, setAllSelected, total_selected, deleteSelectedItems } = useList(items, setItems)
-
-  const moveItem = useCallback(
-    (dragIndex: number, hoverIndex: number) => {
-      const item = items[dragIndex];
-      setItems(
-        update(items, {
-          $splice: [
-            [dragIndex, 1],
-            [hoverIndex, 0, item],
-          ],
-        }),
-      )
-    },
-    // eslint-disable-next-line
-    [items],
-  )
-
-  return children({
-    ListComponent: <div className="List" style={{ backgroundColor: theme.color.base }}>
-      <div className="List-header" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>
-        <Checkbox color="primary" key={"checkbox"} onClick={(e) => {
-          if ((e.target as any).checked) {
-            if (settings.sound) pop_on.play();
-            setAllSelected()
-          }
-          else {
-            if (settings.sound) pop_off.play();
-            resetSelectedItems()
-          }
-        }} checked={items.length !== 0 && total_selected === items.length} />
-        {total_selected}/{items.length}
-        <div className="List-header-title">{header}</div>
-        <div className="List-header-icons">
-          <Icon popoverText={`Remove ${total_selected} selected items`} key={"deleteicon"} >
-            <CancelIcon className={"List-header-icons--cancel"} onClick={() => {
-              if (settings.sound) remove.play();
-              const new_items = deleteSelectedItems()
-              props.onDelete && props.onDelete(new_items)
-            }} />
-          </Icon>
-        </div>
+  return <div className="List" style={{ backgroundColor: theme.color.base }}>
+    <div className="List-header" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>
+      <Checkbox color="primary" key={"checkbox"} onClick={(e) => {
+        if ((e.target as any).checked) {
+          if (settings.sound) pop_on.play();
+          setSelectedItems(items.map(item => item._id))
+        }
+        else {
+          if (settings.sound) pop_off.play();
+          setSelectedItems([])
+        }
+      }} checked={items.length !== 0 && selectedItems.length === items.length} />
+      {selectedItems.length}/{items.length}
+      <div className="List-header-title">{header}</div>
+      <div className="List-header-icons">
+        <Icon popoverText={`Remove ${selectedItems.length} selected items`} key={"deleteicon"} >
+          <CancelIcon className={"List-header-icons--cancel"} onClick={() => {
+            if (settings.sound) remove.play();
+            const remainingItems = items.filter(item => !selectedItems.includes(item._id))
+            setItems(remainingItems)
+            props.onDelete && props.onDelete(remainingItems)
+          }} />
+        </Icon>
       </div>
-      <div className="List-content" style={{ color: theme.palette.text.primary, backgroundColor: theme.color.dark }}>
-        {items.length > 0 ? <TransitionGroup component={null}>
-          {items.map((item, index) =>
-            <CSSTransition
-              appear
-              timeout={{
-                enter: (index + 1) * 250,
-                exit: 250
-              }}
-              key={item._id}
-              classNames={settings.animation ? "fade" : undefined}
-            >
-              <ListItem onDrag={moveItem} key={item._id} items={items} selectedItems={selectedItems} setSelectedItems={setSelectedItems} setItems={setItems} item={item} fields={fields} index={index} /></CSSTransition>)}
-        </TransitionGroup> : <div style={{ fontSize: "1.25em", fontWeight: "bold", position: "absolute", transform: "translate(-50%,-50%)", top: "50%", left: "50%", textAlign: 'center' }}>No items uploaded</div>}
-      </div>
-    </div>,
-    ListState: {
-      selectedItems
-    },
-    ListUtils: {
-      setSelectedItems
-    }
-  })
-})
+    </div>
+    <div className="List-content" style={{ color: theme.palette.text.primary, backgroundColor: theme.color.dark }}>
+      {items.length > 0 ?
+        items.map((item, index) => {
+          const { _id } = item
+          return <div className="List-content-item" key={_id} style={{ backgroundColor: theme.color.light }}>
+            <div className="List-content-item-icons">
+              <Checkbox color="primary" className="List-content-item-icons--checkbox" key={_id + "checkbox" + index} onClick={(e) => {
+                if ((e.target as any).checked) {
+                  if (settings.sound) pop_on.play();
+                  setSelectedItems([...selectedItems, _id])
+                }
+                else {
+                  if (settings.sound) pop_off.play();
+                  setSelectedItems(selectedItems.filter(selectedItem => selectedItem !== _id))
+                }
+              }} checked={selectedItems.includes(_id)} value={_id} />
+              <Icon key={_id + "icon" + index} popoverText="Delete this item">
+                <CancelIcon className="List-content-item-icons--cancel" onClick={() => {
+                  if (settings.sound) remove.play();
+                  props.onDelete && props.onDelete([item])
+                  setItems(items.filter(_item => _item._id !== _id))
+                }} style={{ fill: theme.palette.error.dark }} />
+              </Icon>
+            </div>
+            {fields.map((field, index) => <div className="List-content-item-field" key={_id + field + index}>{typeof field === "function" ? field(item) : item[field]}</div>)}
+          </div>
+        }) : <div style={{ fontSize: "1.25em", fontWeight: "bold", position: "absolute", transform: "translate(-50%,-50%)", top: "50%", left: "50%", textAlign: 'center' }}>No items uploaded</div>}
+    </div>
+  </div>
+}

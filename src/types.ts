@@ -5,28 +5,6 @@ import { Language } from "prism-react-renderer";
 
 export type ListAction = "add" | "remove";
 
-interface ListPropsCommon<T> {
-  fields: (string | ((data: T) => string))[],
-  icons?: ((index: number, _id: string) => void)[],
-  onDelete?: (items: T[]) => void
-  items: T[],
-}
-
-export interface ListProps<T> extends ListPropsCommon<T> {
-  header: string,
-  children: any,
-  setItems: (data: T[]) => void,
-}
-
-export interface ListItemProps<T> extends ListPropsCommon<T> {
-  item: T,
-  index: number,
-  setItems: any,
-  setSelectedItems: any,
-  selectedItems: string[],
-  onDrag: (dragIndex: number, hoverIndex: number) => void
-}
-
 export interface ListState {
   selectedItems: string[]
 }
