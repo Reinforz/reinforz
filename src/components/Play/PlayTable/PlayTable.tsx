@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Table } from "../../../shared";
-import { QuizInputFull } from '../../../types';
+import { PlayContext } from '../Play';
 import "./PlayTable.scss";
 
-function PlayTable(props: { quizzes: QuizInputFull[] }) {
+function PlayTable() {
+  const { filteredQuizzes } = useContext(PlayContext);
+
   const [difficulty_map, setDifficultyMap] = useState([] as any[]);
   const [type_map, setTypeMap] = useState([] as any[]);
   const [time_allocated_map, setTimeAllocatedMap] = useState([] as any[])
 
   useEffect(() => {
-    setTimeAllocatedMap(props.quizzes.map(({ questions, title, _id }) => {
+    setTimeAllocatedMap(filteredQuizzes.map(({ questions, title, _id }) => {
       const time_allocated_map: Record<string, any> = {
         _id,
         title
@@ -22,7 +24,7 @@ function PlayTable(props: { quizzes: QuizInputFull[] }) {
       return time_allocated_map;
     }));
 
-    setTypeMap(props.quizzes.map(({ questions, title, _id }) => {
+    setTypeMap(filteredQuizzes.map(({ questions, title, _id }) => {
       const type_map: Record<string, any> = {
         Snippet: 0,
         MS: 0,
@@ -37,7 +39,7 @@ function PlayTable(props: { quizzes: QuizInputFull[] }) {
       return type_map;
     }))
 
-    setDifficultyMap(props.quizzes.map(({ questions, title, _id }) => {
+    setDifficultyMap(filteredQuizzes.map(({ questions, title, _id }) => {
       const difficulty_map: Record<string, any> = {
         Beginner: 0,
         Intermediate: 0,
@@ -50,7 +52,7 @@ function PlayTable(props: { quizzes: QuizInputFull[] }) {
       })
       return difficulty_map;
     }))
-  }, [props.quizzes])
+  }, [filteredQuizzes])
 
   return (
     <div className="PlayTable">
