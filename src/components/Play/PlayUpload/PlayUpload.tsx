@@ -1,13 +1,13 @@
 import yaml from 'js-yaml';
 import { OptionsObject, useSnackbar } from "notistack";
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { DropzoneState, useDropzone } from 'react-dropzone';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import shortid from "shortid";
 import styled from 'styled-components';
 import { useThemeSettings } from '../../../hooks';
-import { PlayErrorLog, PlayErrorLogState, QuestionInputFull, QuizInputPartial } from '../../../types';
+import { PlayErrorLog, QuestionInputFull, QuizInputFull, QuizInputPartial } from '../../../types';
 import { generateConfigs } from '../../../utils';
+import { PlayContext } from '../Play';
 import "./PlayUpload.scss";
 
 const getColor = (props: DropzoneState) => {
@@ -34,10 +34,9 @@ const centerBottomErrorNotistack = {
 } as OptionsObject;
 
 export default function PlayUpload() {
-  const [items, setItems] = useState([] as any[]);
+  const { uploadedQuizzes, errorLogs, setUploadedQuizzes, setErrorLogs } = useContext(PlayContext);
   const { enqueueSnackbar } = useSnackbar();
-  const [error_logs, setErrorLogs] = useState([] as PlayErrorLogState);
-  const { theme, settings } = useThemeSettings();
+  const { theme } = useThemeSettings();
 
   const onDrop = (acceptedFiles: any) => {
     let filePromises: Promise<QuizInputPartial>[] = [];
@@ -53,7 +52,7 @@ export default function PlayUpload() {
           if (result) {
             try {
               const QuizData = ext.match(/(yaml|yml)/) ? yaml.safeLoad(result as string) as any : JSON.parse(result.toString());
-              const isAdded = items.find((currentQuiz: any) => trimLower(currentQuiz.title) === trimLower(QuizData.title) && trimLower(currentQuiz.subject) === trimLower(QuizData.subject));
+              const isAdded = uploadedQuizzes.find((currentQuiz) => trimLower(currentQuiz.title) === trimLower(QuizData.title) && trimLower(currentQuiz.subject) === trimLower(QuizData.subject));
               if (isAdded)
                 enqueueSnackbar(`${file.name} has already been added`, centerBottomErrorNotistack);
               else
@@ -98,14 +97,14 @@ export default function PlayUpload() {
             log_messages.push({ _id: shortid(), level: "ERROR", quiz: `${quiz.subject} - ${quiz.title}`, target: `Quiz ${index + 1}`, message: "Quiz must have atleast 1 question" });
           return false
         }
-      });
-      setErrorLogs([...error_logs, ...log_messages]);
-      setItems([...items, ...filtered_quizzes]);
+      }) as QuizInputFull[];
+      setErrorLogs([...errorLogs, ...log_messages]);
+      setUploadedQuizzes([...uploadedQuizzes, ...filtered_quizzes]);
     });
   };
 
   const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({ onDrop, accept: [".yml", ".yaml", "application/json"] })
-  return <><Container style={{ backgroundColor: theme.color.light, color: theme.palette.text.secondary }} className="PlayUpload" {...getRootProps({ isDragActive, isDragAccept, isDragReject })}>
+  return <div className="PlayUpload"><Container style={{ backgroundColor: theme.color.light, color: theme.palette.text.secondary }} className="PlayUpload" {...getRootProps({ isDragActive, isDragAccept, isDragReject })}>
     <input {...getInputProps()} />
     {
       isDragActive ?
@@ -113,26 +112,7 @@ export default function PlayUpload() {
         <p>Drag 'n' drop some files here, or click to upload files (.json or .yaml files)</p>
     }
   </Container>
-    <div className="PlayErrorLogs" style={{ backgroundColor: theme.color.base, color: theme.palette.text.secondary }}>
-      <div className="PlayErrorLogs-header" style={{ backgroundColor: theme.color.dark }}>Errors {"&"} Warnings</div>
-      <div className="PlayErrorLogs-content" style={{ backgroundColor: theme.color.dark }}>
-        {error_logs.length > 0 ? <TransitionGroup component={null}>
-          {error_logs.map((error_log, index) => (
-            <CSSTransition
-              key={error_log._id + index}
-              timeout={{
-                enter: (index + 1) * 250,
-                exit: (index + 1) * 250
-              }}
-              classNames={settings.animation ? "fade" : undefined}
-              appear
-              style={{ backgroundColor: error_log.level === "ERROR" ? theme.palette.error.main : theme.palette.warning.main, color: theme.palette.text.primary }}
-            >
-              <div className="PlayErrorLogs-content-item">{error_log.quiz}: {error_log.target}, {error_log.message}</div></CSSTransition>
-          ))}
-        </TransitionGroup> : <div style={{ fontSize: "1.25em", fontWeight: "bold", position: "absolute", transform: "translate(-50%,-50%)", top: "50%", left: "50%", textAlign: 'center' }}>No Errors or Warnings!</div>}
-      </div>
-    </div></>
+  </div>
 }
 
 

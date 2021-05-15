@@ -1,9 +1,11 @@
 // @ts-ignore
 import React, { useState } from "react";
 import {
+  PlayErrorLog,
   QuizInputFull
 } from "../../types";
 import "./Play.scss";
+import PlayErrorlogs from "./PlayErrorlogs/PlayErrorlogs";
 import PlayUpload from "./PlayUpload/PlayUpload";
 
 /* let prev_pane_size = localStorage.getItem("Play_pane_size");
@@ -97,6 +99,8 @@ interface IPlayContext {
   setUploadedQuizzes: React.Dispatch<React.SetStateAction<QuizInputFull[]>>
   selectedQuizzes: QuizInputFull[],
   setSelectedQuizzes: React.Dispatch<React.SetStateAction<QuizInputFull[]>>
+  errorLogs: PlayErrorLog[],
+  setErrorLogs: React.Dispatch<React.SetStateAction<PlayErrorLog[]>>
 }
 
 export const PlayContext = React.createContext({} as IPlayContext)
@@ -105,11 +109,12 @@ function Play() {
   const [playing, setPlaying] = useState(false);
   const [uploadedQuizzes, setUploadedQuizzes] = useState<QuizInputFull[]>([]);
   const [selectedQuizzes, setSelectedQuizzes] = useState<QuizInputFull[]>([]);
+  const [errorLogs, setErrorLogs] = useState<PlayErrorLog[]>([]);
 
   return <div className="Play">
-    <PlayContext.Provider value={{ setPlaying, playing, uploadedQuizzes, selectedQuizzes, setUploadedQuizzes, setSelectedQuizzes }}>
+    <PlayContext.Provider value={{ errorLogs, setErrorLogs, setPlaying, playing, uploadedQuizzes, selectedQuizzes, setUploadedQuizzes, setSelectedQuizzes }}>
       <PlayUpload />
-
+      <PlayErrorlogs />
     </PlayContext.Provider>
   </div>
 }
