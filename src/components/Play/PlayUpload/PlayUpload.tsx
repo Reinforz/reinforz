@@ -75,10 +75,10 @@ export default function PlayUpload(props: { children: any }) {
           quiz._id = shortid();
           const generated_questions: QuestionInputFull[] = [];
           quiz.questions.forEach((question, _index) => {
-            const [generatedquestion, logs] = generateConfigs(question);
+            const [generatedQuestion, logs] = generateConfigs(question);
             if (logs.errors.length === 0) {
-              generatedquestion.quiz = { subject: quiz.subject, title: quiz.title, _id: quiz._id };
-              generated_questions.push(generatedquestion);
+              generatedQuestion.quiz = { subject: quiz.subject, title: quiz.title, _id: quiz._id };
+              generated_questions.push(generatedQuestion);
             }
             logs.warns.forEach(warn => {
               log_messages.push({ _id: shortid(), level: "WARN", quiz: `${quiz.subject} - ${quiz.title}`, target: `Question ${_index + 1}`, message: warn })
