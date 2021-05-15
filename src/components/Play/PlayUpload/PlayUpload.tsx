@@ -2,11 +2,10 @@ import yaml from 'js-yaml';
 import { OptionsObject, useSnackbar } from "notistack";
 import React, { useContext } from 'react';
 import { DropzoneState, useDropzone } from 'react-dropzone';
-import shortid from "shortid";
 import styled from 'styled-components';
 import { useThemeSettings } from '../../../hooks';
-import { PlayErrorLog, QuestionInputFull, QuizInputFull, QuizInputPartial } from '../../../types';
-import { generateConfigs } from '../../../utils';
+import { QuizInputPartial } from '../../../types';
+import { filterUploadedQuizzes } from "../../../utils";
 import { PlayContext } from '../Play';
 import "./PlayUpload.scss";
 
@@ -68,38 +67,9 @@ export default function PlayUpload() {
     });
 
     Promise.all(filePromises).then(quizzes => {
-      const log_messages: PlayErrorLog[] = [];
-      const filtered_quizzes = quizzes.filter((quiz, index) => {
-        if (quiz.title && quiz.subject && quiz.questions.length > 0) {
-          quiz._id = shortid();
-          const generated_questions: QuestionInputFull[] = [];
-          quiz.questions.forEach((question, _index) => {
-            const [generatedQuestion, logs] = generateConfigs(question);
-            if (logs.errors.length === 0) {
-              generatedQuestion.quiz = { subject: quiz.subject, title: quiz.title, _id: quiz._id };
-              generated_questions.push(generatedQuestion);
-            }
-            logs.warns.forEach(warn => {
-              log_messages.push({ _id: shortid(), level: "WARN", quiz: `${quiz.subject} - ${quiz.title}`, target: `Question ${_index + 1}`, message: warn })
-            })
-            logs.errors.forEach(error => {
-              log_messages.push({ _id: shortid(), level: "ERROR", quiz: `${quiz.subject} - ${quiz.title}`, target: `Question ${_index + 1}`, message: error })
-            })
-          });
-          quiz.questions = generated_questions;
-          return true
-        } else {
-          if (!quiz.title)
-            log_messages.push({ _id: shortid(), level: "ERROR", quiz: `${quiz.subject} - ${quiz.title}`, target: `Quiz ${index + 1}`, message: "Quiz title absent" });
-          if (!quiz.subject)
-            log_messages.push({ _id: shortid(), level: "ERROR", quiz: `${quiz.subject} - ${quiz.title}`, target: `Quiz ${index + 1}`, message: "Quiz subject absent" });
-          if (quiz.questions.length <= 0)
-            log_messages.push({ _id: shortid(), level: "ERROR", quiz: `${quiz.subject} - ${quiz.title}`, target: `Quiz ${index + 1}`, message: "Quiz must have atleast 1 question" });
-          return false
-        }
-      }) as QuizInputFull[];
-      setErrorLogs([...errorLogs, ...log_messages]);
-      setUploadedQuizzes([...uploadedQuizzes, ...filtered_quizzes]);
+      const [logMessages, filteredUploadedQuizzes] = filterUploadedQuizzes(quizzes)
+      setErrorLogs([...errorLogs, ...logMessages]);
+      setUploadedQuizzes([...uploadedQuizzes, ...filteredUploadedQuizzes]);
     });
   };
 
