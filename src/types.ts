@@ -5,11 +5,6 @@ import { Language } from "prism-react-renderer";
 
 export type ListAction = "add" | "remove";
 
-export interface StatsProps {
-  item: any,
-  stats: (string | undefined)[],
-};
-
 interface Table_RowsCommonProps {
   collapseContents?: string[]
   transformValue?: (header: string, content: any) => string
@@ -179,11 +174,6 @@ export interface QuizIdentifiers {
   title: string,
   _id: string,
   subject: string
-}
-export interface QuizProps {
-  all_questions: QuestionInputFull[],
-  play_options: IPlaySettingsOptionsState,
-  selected_quizzes: QuizIdentifiers[]
 }
 
 export type AnswerModifier = "IS" | "IC"

@@ -2,7 +2,6 @@ import { Button } from "@material-ui/core";
 import createDOMPurify from 'dompurify';
 import marked from "marked";
 import React, { createRef, Fragment, RefObject, useEffect, useRef, useState } from "react";
-import { HotKeys } from "react-hotkeys";
 import { useThemeSettings } from "../../hooks";
 import { Timer } from "../../shared";
 import { QuestionHintsRProps, QuestionProps, TimerRProps } from "../../types";
@@ -89,7 +88,7 @@ export default function Question(props: QuestionProps) {
             })
           }
 
-          return <HotKeys innerRef={ref} className="Question" keyMap={keyMap} handlers={handlers} allowChanges={true} style={{ outline: "none" }} >
+          return <div className="Question" style={{ outline: "none" }} >
             <div className="Question-container" style={{ display: image ? "flex" : "block" }}>
               {image && <div className="Question-image" style={{ width: "50%" }}><img src={image} alt="question" /></div>}
               {GeneratedQuestion}
@@ -100,7 +99,7 @@ export default function Question(props: QuestionProps) {
               {TimerComponent}
               <Button className="Quiz-button" variant="contained" color="primary" onClick={() => { onButtonClick(TimerState.timeout) }}>{!hasEnd ? "Next" : "Report"}</Button>
             </div>
-          </HotKeys>
+          </div>
         }}
       </Timer>
     }}
