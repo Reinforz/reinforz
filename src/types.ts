@@ -46,7 +46,7 @@ export interface TimerRProps {
   TimerState: TimerState,
 }
 
-export interface PlayErrorLog {
+export interface IErrorLog {
   quiz: string,
   target: string,
   message: string,
@@ -77,12 +77,12 @@ export interface IPlaySettings {
 export interface QuizInputPartial {
   title: string,
   subject: string,
-  questions: QuestionInputsPartial,
+  questions: QuestionInputPartial[],
   _id: string,
 }
 
 export interface QuizInputFull extends Required<QuizInputPartial> {
-  questions: QuestionInputsFull
+  questions: QuestionInputFull[]
 }
 
 export type QuestionType = 'MCQ' | 'MS' | 'FIB' | 'Snippet';
@@ -90,7 +90,7 @@ export type QuestionFormat = 'text' | 'code';
 export type QuestionDifficulty = 'Beginner' | 'Intermediate' | 'Advanced';
 
 export interface QuestionInputCommon {
-  question: string,
+  question: string | string[],
   // Options for the answers, only required for MCQ and MS types
   options?: string[],
   answers: QuestionAnswersType,
@@ -124,9 +124,6 @@ export type QuestionInputKeys = Array<keyof QuestionInputPartial>;
 
 export interface QuestionInputFull extends Required<QuestionInput & { quiz: QuizIdentifiers }>, QuestionInputCommon { }
 
-export type QuestionInputsPartial = QuestionInputPartial[];
-export type QuestionInputsFull = QuestionInputFull[];
-
 export interface HighlighterProps {
   code: string,
   language: Language,
@@ -137,23 +134,6 @@ export interface QuestionHighlighterProps extends HighlighterProps {
   fibRefs: React.MutableRefObject<React.RefObject<HTMLInputElement>[]>,
   answers: QuestionAnswersType,
   image?: string
-}
-
-export interface QuestionHintsProps {
-  hints: string[],
-  children: any
-}
-
-export interface IQuestionHintsState {
-  hints_used: number
-}
-
-export interface QuestionHintsRProps {
-  QuestionHintsComponent: JSX.Element,
-  QuestionHintsState: IQuestionHintsState
-  QuestionHintsUtils: {
-    getNextIndex: () => void
-  }
 }
 
 export interface QuestionOptionsProps {
@@ -183,7 +163,7 @@ export interface Result {
   verdict: boolean,
   score: number,
   answers: QuestionAnswersType,
-  question: string,
+  question: string | string[],
   type: QuestionType,
   time_allocated: number,
   time_taken: number,

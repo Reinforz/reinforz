@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { QUIZ_1 } from "../../data/quiz1";
 import { List } from "../../shared";
 import {
-  IPlaySettings, PlayErrorLog,
-  QuestionInputFull,
+  IErrorLog, IPlaySettings, QuestionInputFull,
   QuizInputFull
 } from "../../types";
 import { createDefaultPlaySettingsFiltersState, createDefaultPlaySettingsOptionsState } from "../../utils";
@@ -23,8 +22,8 @@ interface IPlayContext {
   selectedQuizzes: string[],
   setSelectedQuizzes: React.Dispatch<React.SetStateAction<string[]>>
   filteredQuizzes: QuizInputFull[],
-  errorLogs: PlayErrorLog[],
-  setErrorLogs: React.Dispatch<React.SetStateAction<PlayErrorLog[]>>
+  errorLogs: IErrorLog[],
+  setErrorLogs: React.Dispatch<React.SetStateAction<IErrorLog[]>>
   playSettings: IPlaySettings
   setPlaySettings: React.Dispatch<React.SetStateAction<IPlaySettings>>
   allQuestions: QuestionInputFull[]
@@ -48,7 +47,7 @@ function Play() {
   const [playing, setPlaying] = useState(true);
   const [uploadedQuizzes, setUploadedQuizzes] = useState<QuizInputFull[]>(quizzes);
   const [selectedQuizzes, setSelectedQuizzes] = useState<string[]>([QUIZ_1._id]);
-  const [errorLogs, setErrorLogs] = useState<PlayErrorLog[]>([]);
+  const [errorLogs, setErrorLogs] = useState<IErrorLog[]>([]);
 
   let filteredQuizzes = uploadedQuizzes.filter(quiz => selectedQuizzes.includes(quiz._id));
 

@@ -1,9 +1,8 @@
-import { Checkbox, FormControlLabel, FormGroup, Radio, RadioGroup, TextField } from "@material-ui/core";
+import { Checkbox, FormControlLabel, FormGroup, Radio, RadioGroup } from "@material-ui/core";
 import createDOMPurify from 'dompurify';
 import marked from "marked";
 import { Language } from 'prism-react-renderer';
 import React from 'react';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { useThemeSettings } from '../../../hooks';
 import { Highlighter } from "../../../shared";
 import { QuestionOptionsProps } from '../../../types';
@@ -29,28 +28,24 @@ export default function QuestionOptions(props: QuestionOptionsProps) {
   const generateOptions = () => {
     if (type === "MCQ" && options) {
       return <RadioGroup className="QuestionOptions-container QuestionOptions-container--MCQ" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }} defaultValue={undefined} value={user_answers[0] === '' ? [''] : user_answers[0]} onChange={e => changeOption([e.target.value])}>
-        <TransitionGroup component={null}>
-          {options.map((option, i) => {
-            const matches = option.match(/_(.*?)_(.+)/);
-            let format = "text";
-            if (matches) {
-              option = matches[2];
-              format = matches[1];
-            }
-            return <CSSTransition key={`${_id}option${i}`} classNames={settings.animation ? "fade" : undefined} timeout={{ enter: i * 250 }} appear>
-              <div className="QuestionOptions-container-item" style={{ backgroundColor: theme.color.base }}>
-                <FormControlLabel
-                  control={<Radio onClick={() => {
-                    if (settings.sound) option_click.play();
-                  }} color="primary" />}
-                  value={`${i}`}
-                  label={format.startsWith("code") ? <Highlighter code={option.toString()} language={(format.split("=")[1] || "javascript") as Language} /> : option.toString()}
-                  labelPlacement="end"
-                />
-              </div>
-            </CSSTransition>
-          })}
-        </TransitionGroup>
+        {options.map((option, i) => {
+          const matches = option.match(/_(.*?)_(.+)/);
+          let format = "text";
+          if (matches) {
+            option = matches[2];
+            format = matches[1];
+          }
+          return <div key={`${_id}option${i}`} className="QuestionOptions-container-item" style={{ backgroundColor: theme.color.base }}>
+            <FormControlLabel
+              control={<Radio onClick={() => {
+                if (settings.sound) option_click.play();
+              }} color="primary" />}
+              value={`${i}`}
+              label={format.startsWith("code") ? <Highlighter code={option.toString()} language={(format.split("=")[1] || "javascript") as Language} /> : option.toString()}
+              labelPlacement="end"
+            />
+          </div>
+        })}
       </RadioGroup>
     }
     else if (type === "MS" && options) {
@@ -60,27 +55,24 @@ export default function QuestionOptions(props: QuestionOptionsProps) {
         else
           changeOption(user_answers.filter(user_answer => user_answer !== e.target.value));
       }}>
-        <TransitionGroup component={null}>
-          {options.map((option, i) => {
-            return <CSSTransition key={`${_id}option${i}`} classNames={settings.animation ? "fade" : undefined} timeout={{ enter: i * 250 }} appear>
-              <div className={`QuestionOptions-container-item`} style={{ backgroundColor: theme.color.base }} key={`${_id}option${i}`}>
-                <FormControlLabel
-                  control={<Checkbox onClick={(e) => {
-                    if (settings.sound) option_click.play();
-                  }} checked={user_answers.includes(`${i}`)} value={`${i}`} color="primary" />}
-                  label={optionLabelFormat(option)}
-                /></div></CSSTransition>
-          })}
-        </TransitionGroup>
+        {options.map((option, i) => {
+          return <div key={`${_id}option${i}`} className={`QuestionOptions-container-item`} style={{ backgroundColor: theme.color.base }}>
+            <FormControlLabel
+              control={<Checkbox onClick={(e) => {
+                if (settings.sound) option_click.play();
+              }} checked={user_answers.includes(`${i}`)} value={`${i}`} color="primary" />}
+              label={optionLabelFormat(option)}
+            /></div>
+        })}
       </FormGroup>
     }
 
-    else if (type === "Snippet")
-      return <div className="QuestionOptions-container QuestionOptions-container--Snippet" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}><div className={`QuestionOptions-container-item`} style={{ backgroundColor: theme.color.base }}>
-        <TextField fullWidth value={user_answers[0]} onChange={e => {
-          user_answers[0] = e.target.value;
-          changeOption([...user_answers])
-        }} /></div></div>
+    /*     else if (type === "Snippet")
+          return <div className="QuestionOptions-container QuestionOptions-container--Snippet" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}><div className={`QuestionOptions-container-item`} style={{ backgroundColor: theme.color.base }}>
+            <TextField fullWidth value={user_answers[0]} onChange={e => {
+              user_answers[0] = e.target.value;
+              changeOption([...user_answers])
+            }} /></div></div> */
   }
 
   return (

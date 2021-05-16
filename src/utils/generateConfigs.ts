@@ -63,7 +63,7 @@ export default function generateQuestionInputConfigs(
 
   let format = 'text', time_allocated = 15, language = undefined;
 
-  const lines = res.question.split("\n");
+  const lines = Array.isArray(res.question) ? res.question : res.question.split("\n");
 
   language = lines[0].match(/\[(\w+)\]/);
   if (language) {

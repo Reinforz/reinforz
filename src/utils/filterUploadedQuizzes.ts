@@ -1,9 +1,9 @@
 import shortid from "shortid";
 import { generateConfigs } from '.';
-import { PlayErrorLog, QuestionInputFull, QuizInputFull, QuizInputPartial } from '../types';
+import { IErrorLog, QuestionInputFull, QuizInputFull, QuizInputPartial } from '../types';
 
 export default function filterUploadedQuizzes(quizzes: QuizInputPartial[]){
-  const logMessages: PlayErrorLog[] = [];
+  const logMessages: IErrorLog[] = [];
   const filteredUploadedQuizzes = quizzes.filter((quiz, index) => {
     if (quiz.title && quiz.subject && quiz.questions.length > 0) {
       quiz._id = shortid();

@@ -1,59 +1,66 @@
-import { Button } from "@material-ui/core";
 import createDOMPurify from 'dompurify';
-import marked from "marked";
-import React, { createRef, Fragment, RefObject, useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { useThemeSettings } from "../../hooks";
-import { Timer } from "../../shared";
-import { QuestionHintsRProps, QuestionInputFull, TimerRProps } from "../../types";
+import { QuestionInputFull } from "../../types";
+import { FIBQuestion } from "./FIBQuestion";
+import { MCQQuestion } from "./MCQQuestion";
+import { MSQuestion } from "./MSQuestion";
 import "./Question.scss";
-import QuestionHighlighter from "./QuestionHighlighter/QuestionHighlighter";
-import QuestionHints from "./QuestionHints/QuestionHints";
-import QuestionOptions from "./QuestionOptions/QuestionOptions";
+import { SnippetQuestion } from "./SnippetQuestion";
 
 const DOMPurify = createDOMPurify(window);
 
 interface Props {
   question: QuestionInputFull,
-  changeCounter: (user_answers: string[], time_taken: number, hints_used: number) => void,
+  changeCounter: (userAnswers: string[], time_taken: number, hints_used: number) => void,
   isLast: boolean,
 };
 
 export default function Question(props: Props) {
   const { isLast, question: { question, options, _id, type, image, format, time_allocated, hints, answers, language } } = props;
-  const total_fibs = question.match(/(%_%)/g)?.length;
-  const [user_answers, changeUserAnswers] = useState(type === "FIB" ? Array(total_fibs ?? 1).fill('') as string[] : ['']);
-  const fibRefs = useRef(Array(total_fibs).fill(0).map(() => createRef() as RefObject<HTMLInputElement>));
-  const { theme, settings, sounds } = useThemeSettings();
-  const ref = useRef(null);
+  const [userAnswers, changeUserAnswers] = useState<string[]>([]);
+  const [usedHints, setUsedHints] = useState<string[]>([]);
+  const { theme } = useThemeSettings();
 
-  useEffect(() => {
-    if (ref.current) (ref.current as any).focus();
-  }, [])
+  // const generateQuestion = () => {
+  //   if (format === "code") return <QuestionHighlighter image={image} answers={answers} fibRefs={fibRefs} type={type} language={language} code={question} />
+  //   else {
+  //     if (type !== "FIB") return <div className="Question-question" style={{ color: theme.palette.text.primary, backgroundColor: theme.color.dark, width: image ? "50%" : "100%" }} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked(question.toString())) }} />;
+  //     else {
+  //       const messages: string[] = question.split("%_%");
+  //       return <div className="Question-question" style={{ color: theme.palette.text.primary, backgroundColor: theme.color.dark }}>
+  //         {messages.map((message, i) => {
+  //           return <Fragment key={`${_id}option${i}`}>
+  //             <span className="Question-question--FIB" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked(message.toString())) }} />
+  //             {i !== messages.length - 1 && <input style={{ color: theme.palette.text.primary, backgroundColor: theme.color.light }} spellCheck={false} className="Highlighter-FIB-Code" />}
+  //           </Fragment>
+  //         })}
+  //       </div>
+  //     }
+  //   }
+  // }
 
-  const generateQuestion = () => {
-    if (format === "code") return <QuestionHighlighter image={image} answers={answers} fibRefs={fibRefs} type={type} language={language} code={question} />
-    else {
-      if (type !== "FIB") return <div className="Question-question" style={{ color: theme.palette.text.primary, backgroundColor: theme.color.dark, width: image ? "50%" : "100%" }} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked(question.toString())) }} />;
-      else {
-        const messages: string[] = question.split("%_%");
-        return <div className="Question-question" style={{ color: theme.palette.text.primary, backgroundColor: theme.color.dark }}>
-          {messages.map((message, i) => {
-            return <Fragment key={`${_id}option${i}`}>
-              <span className="Question-question--FIB" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked(message.toString())) }} />
-              {i !== messages.length - 1 && <input style={{ color: theme.palette.text.primary, backgroundColor: theme.color.light }} spellCheck={false} className="Highlighter-FIB-Code" ref={fibRefs.current[i]} />}
-            </Fragment>
-          })}
-        </div>
-      }
+  // const QuestionOption = type !== "FIB" && <QuestionOptions changeOption={changeUserAnswers} user_answers={user_answers} question={props.question} />;
+  // const GeneratedQuestion = generateQuestion();
+
+  switch (type) {
+    case "FIB": {
+      return <FIBQuestion />
+    }
+    case "MCQ": {
+      return <MCQQuestion usedHints={usedHints} setUsedHints={setUsedHints} question={props.question} userAnswers={userAnswers} changeUserAnswers={changeUserAnswers} />
+    }
+    case "MS": {
+      return <MSQuestion />
+    }
+    case "Snippet": {
+      return <SnippetQuestion />
     }
   }
 
-  const QuestionOption = type !== "FIB" && <QuestionOptions changeOption={changeUserAnswers} user_answers={user_answers} question={props.question} />;
-  const GeneratedQuestion = generateQuestion();
-  return <QuestionHints hints={hints}>
+  /* return <QuestionHints hints={hints}>
     {({ QuestionHintsComponent, QuestionHintsState, QuestionHintsUtils }: QuestionHintsRProps) => {
       const onButtonClick = (time_taken: number) => {
-        if (settings.sound) sounds.click.play();
         props.changeCounter(type !== "FIB" ? user_answers.filter(user_answer => user_answer !== "") : fibRefs.current.map(fibRef => fibRef?.current?.value ?? ""), time_allocated - time_taken, QuestionHintsState.hints_used)
       }
       return <Timer timeout={time_allocated} onTimerEnd={() => {
@@ -109,5 +116,5 @@ export default function Question(props: Props) {
         }}
       </Timer>
     }}
-  </QuestionHints>
+  </QuestionHints> */
 }
