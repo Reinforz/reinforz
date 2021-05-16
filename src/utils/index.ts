@@ -6,6 +6,7 @@ import flattenObj from "./flattenObj"
 import generateConfigs from "./generateConfigs"
 import generateTheme from "./generateTheme"
 import getAnswerResult from "./getAnswerResult"
+export * from "./createDefaultState"
 export * from "./getSettings"
 export {
   getAnswerResult,

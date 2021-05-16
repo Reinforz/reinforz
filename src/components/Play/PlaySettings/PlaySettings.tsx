@@ -2,12 +2,10 @@ import { Button, Checkbox, FormControlLabel, FormGroup, InputLabel, TextField } 
 import { useSnackbar } from "notistack";
 import React, { useContext } from "react";
 import { useThemeSettings } from "../../../hooks";
-import { IPlaySettingsFiltersState, IPlaySettingsOptionsState, QuestionDifficulty, QuestionType } from "../../../types";
+import { IPlaySettingsOptionsState, QuestionDifficulty, QuestionType } from "../../../types";
+import { createDefaultPlaySettingsFiltersState, createDefaultPlaySettingsOptionsState } from "../../../utils";
 import { PlayContext } from "../Play";
 import "./PlaySettings.scss";
-
-const DEFAULT_PLAY_OPTIONS_STATE = { shuffle_options: true, shuffle_quizzes: false, shuffle_questions: true, instant_feedback: true, flatten_mix: false, partial_score: true } as IPlaySettingsOptionsState,
-  DEFAULT_PLAY_FILTERS_STATE = { time_allocated: [15, 60], excluded_difficulty: [], excluded_types: [] } as IPlaySettingsFiltersState;
 
 export default function PlaySettings() {
   const { setPlaying, selectedQuizzes, playSettings, setPlaySettings, filteredQuizzes } = useContext(PlayContext);
@@ -49,7 +47,7 @@ export default function PlaySettings() {
       </div>
       <Button className="PlaySettings-group-button" variant="contained" color="primary" onClick={() => {
         if (settings.sound) reset.play()
-        setPlaySettings({ ...playSettings, options: DEFAULT_PLAY_OPTIONS_STATE })
+        setPlaySettings({ ...playSettings, options: createDefaultPlaySettingsOptionsState() })
       }}>Reset</Button>
     </div>
     <div className="PlaySettings-group PlaySettings-group--filters">
@@ -99,7 +97,7 @@ export default function PlaySettings() {
       </div>
       <Button className="PlaySettings-group-button" variant="contained" color="primary" onClick={() => {
         if (settings.sound) reset.play()
-        setPlaySettings({ ...playSettings, filters: DEFAULT_PLAY_FILTERS_STATE })
+        setPlaySettings({ ...playSettings, filters: createDefaultPlaySettingsFiltersState() })
       }}>Reset</Button>
 
     </div>

@@ -2,21 +2,16 @@ import React, { useState } from "react";
 import { QUIZ_1 } from "../../data/quiz1";
 import { List } from "../../shared";
 import {
-  IPlaySettings,
-  IPlaySettingsFiltersState,
-  IPlaySettingsOptionsState,
-  PlayErrorLog,
+  IPlaySettings, PlayErrorLog,
   QuizInputFull
 } from "../../types";
+import { createDefaultPlaySettingsFiltersState, createDefaultPlaySettingsOptionsState } from "../../utils";
 import shuffle from "../../utils/arrayShuffler";
 import "./Play.scss";
 import PlayErrorlogs from "./PlayErrorlogs/PlayErrorlogs";
 import PlaySettings from "./PlaySettings/PlaySettings";
 import PlayTable from "./PlayTable/PlayTable";
 import PlayUpload from "./PlayUpload/PlayUpload";
-
-const DEFAULT_PLAY_OPTIONS_STATE = { shuffle_options: true, shuffle_quizzes: false, shuffle_questions: true, instant_feedback: true, flatten_mix: false, partial_score: true } as IPlaySettingsOptionsState,
-  DEFAULT_PLAY_FILTERS_STATE = { time_allocated: [15, 60], excluded_difficulty: [], excluded_types: [] } as IPlaySettingsFiltersState;
 
 interface IPlayContext {
   playing: boolean
@@ -43,8 +38,8 @@ function Play() {
   PLAY_SETTINGS = PLAY_SETTINGS ? JSON.parse(PLAY_SETTINGS) : undefined;
 
   const [playSettings, setPlaySettings] = useState<IPlaySettings>({
-    options: PLAY_SETTINGS ? PLAY_SETTINGS.play_options : DEFAULT_PLAY_OPTIONS_STATE,
-    filters: PLAY_SETTINGS ? PLAY_SETTINGS.play_filters : DEFAULT_PLAY_FILTERS_STATE
+    options: PLAY_SETTINGS ? PLAY_SETTINGS.play_options : createDefaultPlaySettingsOptionsState(),
+    filters: PLAY_SETTINGS ? PLAY_SETTINGS.play_filters : createDefaultPlaySettingsFiltersState()
   });
 
   const [playing, setPlaying] = useState(false);
