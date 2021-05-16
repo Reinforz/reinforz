@@ -1,6 +1,5 @@
 import createDOMPurify from 'dompurify';
 import React, { useState } from "react";
-import { useThemeSettings } from "../../hooks";
 import { QuestionInputFull } from "../../types";
 import { FIBQuestion } from "./FIBQuestion";
 import { MCQQuestion } from "./MCQQuestion";
@@ -17,10 +16,9 @@ interface Props {
 };
 
 export default function Question(props: Props) {
-  const { isLast, question: { question, options, _id, type, image, format, time_allocated, hints, answers, language } } = props;
+  const { changeCounter, isLast, question: { type } } = props;
   const [userAnswers, changeUserAnswers] = useState<string[]>([]);
   const [usedHints, setUsedHints] = useState<string[]>([]);
-  const { theme } = useThemeSettings();
 
   // const generateQuestion = () => {
   //   if (format === "code") return <QuestionHighlighter image={image} answers={answers} fibRefs={fibRefs} type={type} language={language} code={question} />
@@ -40,15 +38,12 @@ export default function Question(props: Props) {
   //   }
   // }
 
-  // const QuestionOption = type !== "FIB" && <QuestionOptions changeOption={changeUserAnswers} user_answers={user_answers} question={props.question} />;
-  // const GeneratedQuestion = generateQuestion();
-
   switch (type) {
     case "FIB": {
       return <FIBQuestion />
     }
     case "MCQ": {
-      return <MCQQuestion usedHints={usedHints} setUsedHints={setUsedHints} question={props.question} userAnswers={userAnswers} changeUserAnswers={changeUserAnswers} />
+      return <MCQQuestion changeCounter={changeCounter} isLast={isLast} usedHints={usedHints} setUsedHints={setUsedHints} question={props.question} userAnswers={userAnswers} changeUserAnswers={changeUserAnswers} />
     }
     case "MS": {
       return <MSQuestion />
@@ -67,20 +62,6 @@ export default function Question(props: Props) {
         onButtonClick(time_allocated)
       }}>
         {({ TimerComponent, TimerState }: TimerRProps) => {
-          const keyMap: any = {
-            next_question: "right",
-            next_hint: "down"
-          };
-
-          const handlers: any = {
-            next_question: () => {
-              onButtonClick(TimerState.timeout)
-            },
-            next_hint: () => {
-              QuestionHintsUtils.getNextIndex()
-            }
-          };
-
           if (type.match(/(MCQ|MS)/)) {
             options && options.forEach((_, i) => {
               keyMap[i + 1] = `${i + 1}`;
@@ -101,17 +82,9 @@ export default function Question(props: Props) {
             })
           }
 
-          return <div className="Question" style={{ outline: "none" }} >
-            <div className="Question-container" style={{ display: image ? "flex" : "block" }}>
-              {image && <div className="Question-image" style={{ width: "50%" }}><img src={image} alt="question" /></div>}
-              {GeneratedQuestion}
-            </div>
-            {QuestionOption}
-            {QuestionHintsComponent}
-            <div style={{ display: "flex", gridArea: "3/2/4/3", justifyContent: "center" }}>
-              {TimerComponent}
-              <Button className="Quiz-button" variant="contained" color="primary" onClick={() => { onButtonClick(TimerState.timeout) }}>{!isLast ? "Next" : "Report"}</Button>
-            </div>
+          <div style={{ display: "flex", gridArea: "3/2/4/3", justifyContent: "center" }}>
+            {TimerComponent}
+            
           </div>
         }}
       </Timer>

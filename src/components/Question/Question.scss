@@ -1,14 +1,10 @@
 .Question {
   display: grid;
-  grid-template-rows: 290px 1fr 75px;
+  grid-template-rows: 290px 1fr 110px;
   grid-template-columns: 1fr 350px;
   margin: 5px;
   height: calc(100vh - 50px);
 
-  &-container {
-    width: 100%;
-    grid-area: 1/1/2/3;
-  }
   &-image {
     position: relative;
     img {
@@ -20,6 +16,13 @@
       left: 50%;
     }
   }
+
+  &Button.MuiButton-containedPrimary{
+    margin: 10px 0px 5px 5px;
+    grid-area: 3/2/4/3;
+    height: 50px;
+  }
+
   &-question {
     user-select: none;
     font-weight: bolder;
@@ -47,11 +50,6 @@
         font-size: 1.25rem;
       }
     }
-  }
-
-  &-hints_options-container {
-    width: 100%;
-    display: flex;
   }
 }
 

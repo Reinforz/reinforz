@@ -28,12 +28,12 @@ export default function QuestionHints(props: Props) {
   }
 
   return <div className="QuestionHints">
+    <Button disabled={is_disabled || hintsExhausted} color="primary" variant="contained" className="QuestionHints-button" onClick={() => {
+      onButtonClick()
+    }}>{hints.length > 0 ? `Show ${"hints"} ${totalUsedHints}/${hints.length}` : `No hints available`}</Button>
     <div className="QuestionHints-list" >
       {usedHints.map((hint, i) =>
         <div key={`hint${i}`} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked(`${i + 1}: ${hint}`.toString())) }} style={{ backgroundColor: theme.color.dark }} className="QuestionHints-list-item" />)}
     </div>
-    <Button disabled={is_disabled || hintsExhausted} color="primary" variant="contained" className="QuestionHints-button" onClick={() => {
-      onButtonClick()
-    }}>{hints.length > 0 ? `Show ${"hints"} ${totalUsedHints}/${hints.length}` : `No hints available`}</Button>
   </div>
 }
