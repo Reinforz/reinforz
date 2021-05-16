@@ -4,7 +4,7 @@ import marked from "marked";
 import React, { createRef, Fragment, RefObject, useEffect, useRef, useState } from "react";
 import { useThemeSettings } from "../../hooks";
 import { Timer } from "../../shared";
-import { QuestionHintsRProps, QuestionProps, TimerRProps } from "../../types";
+import { QuestionHintsRProps, QuestionInputFull, TimerRProps } from "../../types";
 import "./Question.scss";
 import QuestionHighlighter from "./QuestionHighlighter/QuestionHighlighter";
 import QuestionHints from "./QuestionHints/QuestionHints";
@@ -12,8 +12,14 @@ import QuestionOptions from "./QuestionOptions/QuestionOptions";
 
 const DOMPurify = createDOMPurify(window);
 
-export default function Question(props: QuestionProps) {
-  const { hasEnd, index, question: { question, options, _id, type, image, format, time_allocated, hints, answers, language } } = props;
+interface Props {
+  question: QuestionInputFull,
+  changeCounter: (user_answers: string[], time_taken: number, hints_used: number) => void,
+  isLast: boolean,
+};
+
+export default function Question(props: Props) {
+  const { isLast, question: { question, options, _id, type, image, format, time_allocated, hints, answers, language } } = props;
   const total_fibs = question.match(/(%_%)/g)?.length;
   const [user_answers, changeUserAnswers] = useState(type === "FIB" ? Array(total_fibs ?? 1).fill('') as string[] : ['']);
   const fibRefs = useRef(Array(total_fibs).fill(0).map(() => createRef() as RefObject<HTMLInputElement>));
@@ -32,7 +38,7 @@ export default function Question(props: QuestionProps) {
         const messages: string[] = question.split("%_%");
         return <div className="Question-question" style={{ color: theme.palette.text.primary, backgroundColor: theme.color.dark }}>
           {messages.map((message, i) => {
-            return <Fragment key={`${_id}option${index}${i}`}>
+            return <Fragment key={`${_id}option${i}`}>
               <span className="Question-question--FIB" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked(message.toString())) }} />
               {i !== messages.length - 1 && <input style={{ color: theme.palette.text.primary, backgroundColor: theme.color.light }} spellCheck={false} className="Highlighter-FIB-Code" ref={fibRefs.current[i]} />}
             </Fragment>
@@ -97,7 +103,7 @@ export default function Question(props: QuestionProps) {
             {QuestionHintsComponent}
             <div style={{ display: "flex", gridArea: "3/2/4/3", justifyContent: "center" }}>
               {TimerComponent}
-              <Button className="Quiz-button" variant="contained" color="primary" onClick={() => { onButtonClick(TimerState.timeout) }}>{!hasEnd ? "Next" : "Report"}</Button>
+              <Button className="Quiz-button" variant="contained" color="primary" onClick={() => { onButtonClick(TimerState.timeout) }}>{!isLast ? "Next" : "Report"}</Button>
             </div>
           </div>
         }}

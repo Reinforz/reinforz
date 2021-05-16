@@ -74,14 +74,6 @@ export interface IPlaySettings {
   filters: IPlaySettingsFiltersState
 }
 
-export interface QuestionProps {
-  question: QuestionInputFull,
-  changeCounter: (user_answers: string[], time_taken: number, hints_used: number) => void,
-  hasEnd: boolean,
-  index: number,
-  total: number
-};
-
 export interface QuizInputPartial {
   title: string,
   subject: string,
