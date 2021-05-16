@@ -18,9 +18,21 @@
   }
 
   &Button.MuiButton-containedPrimary{
-    margin: 10px 0px 5px 5px;
-    grid-area: 3/2/4/3;
+    margin: 5px;
     height: 50px;
+    flex: 1;
+  }
+
+  &Timer {
+    height: 40px;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1 1;
+    margin: 5px;
+    font-size: 1.25rem;
+    font-weight: bold;
   }
 
   &-question {

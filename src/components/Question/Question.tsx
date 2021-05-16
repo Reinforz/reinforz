@@ -1,13 +1,11 @@
-import createDOMPurify from 'dompurify';
 import React, { useState } from "react";
+import { useTimer } from '../../hooks';
 import { QuestionInputFull } from "../../types";
 import { FIBQuestion } from "./FIBQuestion";
 import { MCQQuestion } from "./MCQQuestion";
 import { MSQuestion } from "./MSQuestion";
 import "./Question.scss";
 import { SnippetQuestion } from "./SnippetQuestion";
-
-const DOMPurify = createDOMPurify(window);
 
 interface Props {
   question: QuestionInputFull,
@@ -16,9 +14,10 @@ interface Props {
 };
 
 export default function Question(props: Props) {
-  const { changeCounter, isLast, question: { type } } = props;
+  const { changeCounter, isLast, question: { type, time_allocated } } = props;
   const [userAnswers, changeUserAnswers] = useState<string[]>([]);
   const [usedHints, setUsedHints] = useState<string[]>([]);
+  const { timeout } = useTimer(time_allocated, changeCounter);
 
   // const generateQuestion = () => {
   //   if (format === "code") return <QuestionHighlighter image={image} answers={answers} fibRefs={fibRefs} type={type} language={language} code={question} />
@@ -43,7 +42,7 @@ export default function Question(props: Props) {
       return <FIBQuestion />
     }
     case "MCQ": {
-      return <MCQQuestion changeCounter={changeCounter} isLast={isLast} usedHints={usedHints} setUsedHints={setUsedHints} question={props.question} userAnswers={userAnswers} changeUserAnswers={changeUserAnswers} />
+      return <MCQQuestion currentTime={timeout} changeCounter={changeCounter} isLast={isLast} usedHints={usedHints} setUsedHints={setUsedHints} question={props.question} userAnswers={userAnswers} changeUserAnswers={changeUserAnswers} />
     }
     case "MS": {
       return <MSQuestion />
@@ -53,18 +52,12 @@ export default function Question(props: Props) {
     }
   }
 
-  /* return <QuestionHints hints={hints}>
-    {({ QuestionHintsComponent, QuestionHintsState, QuestionHintsUtils }: QuestionHintsRProps) => {
-      const onButtonClick = (time_taken: number) => {
-        props.changeCounter(type !== "FIB" ? user_answers.filter(user_answer => user_answer !== "") : fibRefs.current.map(fibRef => fibRef?.current?.value ?? ""), time_allocated - time_taken, QuestionHintsState.hints_used)
-      }
-      return <Timer timeout={time_allocated} onTimerEnd={() => {
+  /* return <Timer timeout={time_allocated} onTimerEnd={() => {
         onButtonClick(time_allocated)
       }}>
         {({ TimerComponent, TimerState }: TimerRProps) => {
           if (type.match(/(MCQ|MS)/)) {
             options && options.forEach((_, i) => {
-              keyMap[i + 1] = `${i + 1}`;
               handlers[i + 1] = (e: any) => {
                 e.persist();
                 const pressed_option = e.keyCode - 49;
@@ -78,16 +71,9 @@ export default function Question(props: Props) {
                   if (!isChecked)
                     changeUserAnswers([pressed_option.toString()])
                 }
-              }
             })
           }
-
-          <div style={{ display: "flex", gridArea: "3/2/4/3", justifyContent: "center" }}>
-            {TimerComponent}
-            
-          </div>
         }}
       </Timer>
-    }}
-  </QuestionHints> */
+    }}*/
 }
