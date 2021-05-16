@@ -2,10 +2,10 @@ import { Button } from '@material-ui/core';
 import clone from 'just-clone';
 import React, { Fragment, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import PlayContext from '../../context/PlayContext';
 import { useThemeSettings } from '../../hooks';
 import { Menu, Table } from "../../shared";
-import { IPlayContext, MenuRProps, QuestionInputFull, QuizInputFull, ReportFilterRProps, ReportProps } from "../../types";
+import { MenuRProps, QuestionInputFull, QuizInputFull, ReportFilterRProps, ReportProps } from "../../types";
+import { PlayContext } from '../Play/Play';
 import "./Report.scss";
 import ReportExport from './ReportExport/ReportExport';
 import ReportFilter from './ReportFilter/ReportFilter';
@@ -47,7 +47,7 @@ export default function Report(props: ReportProps) {
 
   const { settings, sounds } = useThemeSettings();
   const history = useHistory();
-  const PlayContextValue = useContext(PlayContext) as IPlayContext;
+  const { setPlaying, setUploadedQuizzes, setSelectedQuizzes } = useContext(PlayContext);
   return (
     <div className="Report">
       <ReportFilter selected_quizzes={props.selected_quizzes}>
@@ -87,9 +87,9 @@ export default function Report(props: ReportProps) {
                     <Button className="Report-buttons-item" variant="contained" color="primary" onClick={() => {
                       if (settings.sound) sounds.swoosh.play()
                       localStorage.setItem("REPORT_FILTERS", JSON.stringify(ReportFilterState))
-                      PlayContextValue.setPlaying(false);
-                      PlayContextValue.setQuizzes(Object.values(filtered_quizzes))
-                      PlayContextValue.setSelected(Object.values(filtered_quizzes).map(quiz => quiz._id))
+                      setPlaying(false);
+                      setUploadedQuizzes(Object.values(filtered_quizzes))
+                      setSelectedQuizzes(Object.values(filtered_quizzes).map(quiz => quiz._id))
                     }}>Back to Home</Button>
                     <Button className="Report-buttons-item" variant="contained" color="primary" onClick={() => {
                       if (settings.sound) sounds.swoosh.play()

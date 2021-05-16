@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { QUIZ_1 } from "../../data/quiz1";
 import { List } from "../../shared";
 import {
+  IPlaySettings,
   IPlaySettingsFiltersState,
   IPlaySettingsOptionsState,
   PlayErrorLog,
@@ -17,10 +18,6 @@ import PlayUpload from "./PlayUpload/PlayUpload";
 const DEFAULT_PLAY_OPTIONS_STATE = { shuffle_options: true, shuffle_quizzes: false, shuffle_questions: true, instant_feedback: true, flatten_mix: false, partial_score: true } as IPlaySettingsOptionsState,
   DEFAULT_PLAY_FILTERS_STATE = { time_allocated: [15, 60], excluded_difficulty: [], excluded_types: [] } as IPlaySettingsFiltersState;
 
-export interface IPlaySettings {
-  options: IPlaySettingsOptionsState,
-  filters: IPlaySettingsFiltersState
-}
 interface IPlayContext {
   playing: boolean
   setPlaying: React.Dispatch<React.SetStateAction<boolean>>
@@ -52,7 +49,7 @@ function Play() {
 
   const [playing, setPlaying] = useState(false);
   const [uploadedQuizzes, setUploadedQuizzes] = useState<QuizInputFull[]>(quizzes);
-  const [selectedQuizzes, setSelectedQuizzes] = useState<string[]>(['-QIv_LbJl']);
+  const [selectedQuizzes, setSelectedQuizzes] = useState<string[]>([QUIZ_1._id]);
   const [errorLogs, setErrorLogs] = useState<PlayErrorLog[]>([]);
 
   let filteredQuizzes = uploadedQuizzes.filter(quiz => selectedQuizzes.includes(quiz._id));

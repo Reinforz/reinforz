@@ -51,15 +51,6 @@ export interface TimerRProps {
   TimerState: TimerState,
 }
 
-export interface PlayErrorLogsProps {
-  quizzes: QuizInputFull[],
-  setQuizzes: (quizzes: any[]) => void,
-  children: any
-}
-
-export interface PlayErrorLogsRProps {
-  PlayErrorLogsComponent: JSX.Element
-}
 export interface PlayErrorLog {
   quiz: string,
   target: string,
@@ -67,8 +58,6 @@ export interface PlayErrorLog {
   level: "ERROR" | "WARN",
   _id: string
 }
-
-export type PlayErrorLogState = PlayErrorLog[];
 
 export interface IPlaySettingsOptionsState {
   shuffle_options: boolean,
@@ -85,9 +74,9 @@ export interface IPlaySettingsFiltersState {
   excluded_types: QuestionType[],
 }
 
-export interface IPlaySettingsState {
-  play_options: IPlaySettingsOptionsState,
-  play_filters: IPlaySettingsFiltersState,
+export interface IPlaySettings {
+  options: IPlaySettingsOptionsState,
+  filters: IPlaySettingsFiltersState
 }
 
 export interface QuestionProps {
@@ -281,12 +270,6 @@ export interface ISettings {
 export interface SettingsProps {
   settings: ISettings,
   setSettings: (settings: ISettings) => any
-}
-
-export interface IPlayContext {
-  setPlaying: (isPlaying: boolean) => void,
-  setQuizzes: (quizzes: QuizInputFull[]) => void,
-  setSelected: (selected: string[]) => void
 }
 
 export interface MenuProps {
