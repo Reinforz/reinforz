@@ -101,15 +101,11 @@ export interface QuestionProps {
 export interface QuizInputPartial {
   title: string,
   subject: string,
-  source?: string,
-  image?: string,
-  explanation?: string,
   questions: QuestionInputsPartial,
   _id: string,
 }
 
 export interface QuizInputFull extends Required<QuizInputPartial> {
-  title: string,
   questions: QuestionInputsFull
 }
 

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { QUIZ_1 } from "../../data/quiz1";
 import { List } from "../../shared";
 import {
   IPlaySettingsFiltersState,
@@ -34,6 +35,10 @@ interface IPlayContext {
   setPlaySettings: React.Dispatch<React.SetStateAction<IPlaySettings>>
 }
 
+const quizzes = [
+  QUIZ_1
+];
+
 export const PlayContext = React.createContext({} as IPlayContext)
 
 function Play() {
@@ -46,8 +51,8 @@ function Play() {
   });
 
   const [playing, setPlaying] = useState(false);
-  const [uploadedQuizzes, setUploadedQuizzes] = useState<QuizInputFull[]>([]);
-  const [selectedQuizzes, setSelectedQuizzes] = useState<string[]>([]);
+  const [uploadedQuizzes, setUploadedQuizzes] = useState<QuizInputFull[]>(quizzes);
+  const [selectedQuizzes, setSelectedQuizzes] = useState<string[]>(['-QIv_LbJl']);
   const [errorLogs, setErrorLogs] = useState<PlayErrorLog[]>([]);
 
   let filteredQuizzes = uploadedQuizzes.filter(quiz => selectedQuizzes.includes(quiz._id));
@@ -60,11 +65,13 @@ function Play() {
 
   return <div className="Play">
     <PlayContext.Provider value={{ filteredQuizzes, setPlaySettings, playSettings, errorLogs, setErrorLogs, setPlaying, playing, uploadedQuizzes, selectedQuizzes, setUploadedQuizzes, setSelectedQuizzes }}>
-      <PlayUpload />
-      <PlayErrorlogs />
-      <List selectedItems={selectedQuizzes} setSelectedItems={setSelectedQuizzes} header="Uploaded Quizzes" items={uploadedQuizzes} setItems={setUploadedQuizzes} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]} />
-      <PlaySettings />
-      <PlayTable />
+      {!playing ? <>
+        <PlayUpload />
+        <PlayErrorlogs />
+        <List selectedItems={selectedQuizzes} setSelectedItems={setSelectedQuizzes} header="Uploaded Quizzes" items={uploadedQuizzes} setItems={setUploadedQuizzes} fields={["subject", "title", (item: any) => item.questions.length + " Qs"]} />
+        <PlaySettings />
+        <PlayTable />
+      </> : null}
     </PlayContext.Provider>
   </div>
 }
