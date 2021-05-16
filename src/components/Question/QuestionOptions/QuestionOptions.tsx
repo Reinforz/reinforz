@@ -5,7 +5,7 @@ import { Language } from 'prism-react-renderer';
 import React from 'react';
 import { useThemeSettings } from '../../../hooks';
 import { Highlighter } from "../../../shared";
-import { QuestionOptionsProps } from '../../../types';
+import { QuestionInputFull } from '../../../types';
 import "./QuestionOptions.scss";
 
 const DOMPurify = createDOMPurify(window);
@@ -22,8 +22,14 @@ const optionLabelFormat = (option: string) => {
   else return option.toString()
 }
 
-export default function QuestionOptions(props: QuestionOptionsProps) {
-  const { theme, settings, sounds: { option_click } } = useThemeSettings();
+interface Props {
+  changeOption: (val: string[]) => any,
+  user_answers: string[],
+  question: QuestionInputFull,
+}
+
+export default function QuestionOptions(props: Props) {
+  const { theme } = useThemeSettings();
   const { changeOption, user_answers, question: { _id, type, options } } = props;
   const generateOptions = () => {
     if (type === "MCQ" && options) {
@@ -37,9 +43,7 @@ export default function QuestionOptions(props: QuestionOptionsProps) {
           }
           return <div key={`${_id}option${i}`} className="QuestionOptions-container-item" style={{ backgroundColor: theme.color.base }}>
             <FormControlLabel
-              control={<Radio onClick={() => {
-                if (settings.sound) option_click.play();
-              }} color="primary" />}
+              control={<Radio color="primary" />}
               value={`${i}`}
               label={format.startsWith("code") ? <Highlighter code={option.toString()} language={(format.split("=")[1] || "javascript") as Language} /> : option.toString()}
               labelPlacement="end"
@@ -58,9 +62,7 @@ export default function QuestionOptions(props: QuestionOptionsProps) {
         {options.map((option, i) => {
           return <div key={`${_id}option${i}`} className={`QuestionOptions-container-item`} style={{ backgroundColor: theme.color.base }}>
             <FormControlLabel
-              control={<Checkbox onClick={(e) => {
-                if (settings.sound) option_click.play();
-              }} checked={user_answers.includes(`${i}`)} value={`${i}`} color="primary" />}
+              control={<Checkbox checked={user_answers.includes(`${i}`)} value={`${i}`} color="primary" />}
               label={optionLabelFormat(option)}
             /></div>
         })}

@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { useTimer } from '../../hooks';
 import { QuestionInputFull } from "../../types";
+import { ChoiceQuestion } from "./ChoiceQuestion";
 import { FIBQuestion } from "./FIBQuestion";
-import { MCQQuestion } from "./MCQQuestion";
-import { MSQuestion } from "./MSQuestion";
 import "./Question.scss";
 import { SnippetQuestion } from "./SnippetQuestion";
 
@@ -41,11 +40,13 @@ export default function Question(props: Props) {
     case "FIB": {
       return <FIBQuestion />
     }
-    case "MCQ": {
-      return <MCQQuestion currentTime={timeout} changeCounter={changeCounter} isLast={isLast} usedHints={usedHints} setUsedHints={setUsedHints} question={props.question} userAnswers={userAnswers} changeUserAnswers={changeUserAnswers} />
-    }
+    case "MCQ":
     case "MS": {
-      return <MSQuestion />
+      return <ChoiceQuestion currentTime={timeout} changeCounter={(userAnswers, time_taken, hints_used) => {
+        changeCounter(userAnswers, time_taken, hints_used)
+        changeUserAnswers([])
+        setUsedHints([])
+      }} isLast={isLast} usedHints={usedHints} setUsedHints={setUsedHints} question={props.question} userAnswers={userAnswers} changeUserAnswers={changeUserAnswers} />
     }
     case "Snippet": {
       return <SnippetQuestion />
@@ -53,27 +54,15 @@ export default function Question(props: Props) {
   }
 
   /* return <Timer timeout={time_allocated} onTimerEnd={() => {
-        onButtonClick(time_allocated)
-      }}>
-        {({ TimerComponent, TimerState }: TimerRProps) => {
-          if (type.match(/(MCQ|MS)/)) {
-            options && options.forEach((_, i) => {
-              handlers[i + 1] = (e: any) => {
-                e.persist();
-                const pressed_option = e.keyCode - 49;
-                const isChecked = user_answers.includes(pressed_option.toString());
-                if (type === "MS") {
-                  if (!isChecked)
-                    changeUserAnswers([...user_answers, pressed_option.toString()])
-                  else
-                    changeUserAnswers(user_answers.filter(user_answer => user_answer !== pressed_option.toString()));
-                } else if (type === "MCQ") {
-                  if (!isChecked)
-                    changeUserAnswers([pressed_option.toString()])
-                }
-            })
-          }
-        }}
-      </Timer>
-    }}*/
+    const pressed_option = e.keyCode - 49;
+    const isChecked = user_answers.includes(pressed_option.toString());
+    if (type === "MS") {
+      if (!isChecked)
+        changeUserAnswers([...user_answers, pressed_option.toString()])
+      else
+        changeUserAnswers(user_answers.filter(user_answer => user_answer !== pressed_option.toString()));
+    } else if (type === "MCQ") {
+      if (!isChecked)
+        changeUserAnswers([pressed_option.toString()])
+  }}*/
 }

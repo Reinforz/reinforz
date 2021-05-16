@@ -27,7 +27,7 @@ export default function Quiz() {
         currentQuestion.options = playSettings.options.shuffle_options ? arrayShuffler(currentQuestion.options) : currentQuestion.options;
       }
       return <Fragment>
-        <Stats items={[["Quiz Title", currentQuestion.quiz.title], ["Quiz Subject", currentQuestion.quiz.subject], ['Total Correct', totalCorrectAnswers], ["Current", currentIndex], ["Total", totalQuestions], ["Type", currentQuestion.type], ["Format", currentQuestion.format], ["Weight", currentQuestion.weight], ["Time Allocated", currentQuestion.time_allocated], ["Difficulty", currentQuestion.difficulty]]} />
+        <Stats items={[["Quiz Title", currentQuestion.quiz.title], ["Quiz Subject", currentQuestion.quiz.subject], ['Total Correct', totalCorrectAnswers], ["Current", currentIndex + 1], ["Total", totalQuestions], ["Type", currentQuestion.type], ["Format", currentQuestion.format], ["Weight", currentQuestion.weight], ["Time Allocated", currentQuestion.time_allocated], ["Difficulty", currentQuestion.difficulty]]} />
         <Question isLast={isLastItem} question={currentQuestion} changeCounter={(user_answers, time_taken, hints_used) => {
           setResults([...results, getAnswerResult(currentQuestion, user_answers, time_taken, hints_used, options_md5_map, playSettings.options.partial_score)])
           getNextIndex();

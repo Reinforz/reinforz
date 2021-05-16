@@ -16,7 +16,7 @@ interface Props {
   currentTime: number
 }
 
-export const MCQQuestion = (props: Props) => {
+export const ChoiceQuestion = (props: Props) => {
   const { currentTime, isLast, changeCounter, usedHints, setUsedHints, userAnswers, changeUserAnswers, question: { question, image, hints } } = props;
   const theme = useTheme() as ExtendedTheme;
 

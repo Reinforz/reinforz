@@ -126,12 +126,6 @@ export interface QuestionHighlighterProps extends HighlighterProps {
   image?: string
 }
 
-export interface QuestionOptionsProps {
-  changeOption: (val: string[]) => any,
-  user_answers: string[],
-  question: QuestionInputFull,
-}
-
 export interface QuizIdentifiers {
   title: string,
   _id: string,

@@ -5,7 +5,7 @@ export const QUIZ_1: QuizInputFull = {
   "subject": "Dart",
   "questions": [
     {
-      "question": "**Hello world** %_% How are `you` %_% ",
+      "question": "Question 1",
       "answers": [
         "0"
       ],
@@ -41,7 +41,7 @@ export const QUIZ_1: QuizInputFull = {
       }
     },
     {
-      "question": "**Hello world** %_% How are `you` %_% ",
+      "question": "Question 2",
       "answers": [
         "0",
         "1"
@@ -60,17 +60,17 @@ export const QUIZ_1: QuizInputFull = {
       ],
       "explanation": "* List item 1\n* List item 2\n",
       "format": "text",
-      "image": 'https://www.freecodecamp.org/news/content/images/2020/02/Ekran-Resmi-2019-11-18-18.08.13.png',
+      "image": 'https://i1.wp.com/blog.enriqueoriol.com/wp-content/uploads/2018/08/reduxLogo.png?fit=1024%2C684',
       "weight": 1,
       "difficulty": "Beginner",
       "language": "javascript",
       "type": "MS",
       "time_allocated": 60,
-      "_id": "ln5zMGBRPU",
+      "_id": "ln5zMGBRPA",
       "quiz": {
         "subject": "Dart",
         "title": "Dart Basic Types",
-        "_id": "-QIv_LbJ2"
+        "_id": "-QIv_LbJ1"
       }
     }
   ],
