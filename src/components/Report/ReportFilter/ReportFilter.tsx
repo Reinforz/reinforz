@@ -1,6 +1,6 @@
-import { Button, FormControlLabel, FormGroup, InputLabel, MenuItem, Radio, RadioGroup, Select, TextField } from '@material-ui/core';
+import { Button, FormGroup, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
 import React, { useContext, useState } from "react";
-import { CheckboxGroup } from '../../../shared';
+import { CheckboxGroup, RadioGroup } from '../../../shared';
 import { IReportFilterState } from "../../../types";
 import { createDefaultReportFilterState } from '../../../utils';
 import { PlayContext } from '../../Play/Play';
@@ -28,18 +28,8 @@ export default function ReportFilter() {
         setReportFilterState({ ...report_filter_state, time_taken: [report_filter_state.time_taken[0], (e.target as any).value,] })
       }} />
     </FormGroup>
-    <RadioGroup name="verdict" value={report_filter_state.verdict} >
-      <InputLabel>Verdict</InputLabel>
-      {[true, false, "mixed"].map((verdict, index) => <FormControlLabel onClick={(e: any) => {
-        setReportFilterState({ ...report_filter_state, verdict: e.target.value })
-      }} key={verdict.toString() + index} value={verdict.toString()} control={<Radio color="primary" />} label={verdict.toString()} />)}
-    </RadioGroup>
-    <RadioGroup name="hints_used" value={report_filter_state.hints_used} >
-      <InputLabel>Hints Used</InputLabel>
-      {["0", "1", "2", "any"].map((hints, index) => <FormControlLabel onClick={(e: any) => {
-        setReportFilterState({ ...report_filter_state, hints_used: e.target.value })
-      }} key={hints + index} value={hints} control={<Radio color="primary" />} label={hints} />)}
-    </RadioGroup>
+    <RadioGroup items={["true", "false", "mixed"]} label={"Verdict"} setState={setReportFilterState} state={report_filter_state} stateKey={"verdict"} />
+    <RadioGroup items={["0", "1", "2", "any"]} label={"Hints Used"} setState={setReportFilterState} state={report_filter_state} stateKey={"hints_used"} />
     <CheckboxGroup label={'Excluded Difficulty'} items={['Beginner', 'Intermediate', 'Advanced']} setState={setReportFilterState} stateKey={'excluded_difficulty'} state={report_filter_state} />
     <CheckboxGroup label={'Excluded Type'} items={['FIB', 'MS', 'MCQ', "Snippet"]} setState={setReportFilterState} stateKey={'excluded_types'} state={report_filter_state} />
     <FormGroup>
