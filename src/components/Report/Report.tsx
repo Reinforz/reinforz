@@ -1,21 +1,22 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useThemeSettings } from '../../hooks';
-import { TQuestionFull, TQuestionResult } from "../../types";
+import { IQuizFull, TQuestionFull, TQuestionResult } from "../../types";
+import { createDefaultReportFilterState } from '../../utils';
 import { PlayContext } from '../Play/Play';
 import "./Report.scss";
+import ReportExport from './ReportExport/ReportExport';
 import ReportFilter from './ReportFilter/ReportFilter';
 
 export interface Props {
   results: TQuestionResult[],
-  all_questions_map: Record<string, TQuestionFull>,
   setResults: (results: any[]) => any
 }
 
 export default function Report(props: Props) {
-  const { settings, sounds } = useThemeSettings();
   const history = useHistory();
-  const { setPlaying, setUploadedQuizzes, setSelectedQuizzes, selectedQuizzes } = useContext(PlayContext);
+  const { setPlaying, setUploadedQuizzes, setSelectedQuizzes, selectedQuizzes, allQuestionsMap } = useContext(PlayContext);
+
+  const [reportFilter, setReportFilter] = useState(createDefaultReportFilterState());
 
   const transformValue = (header: string, content: any) => {
     const value = content[header];
@@ -34,6 +35,21 @@ export default function Report(props: Props) {
     }
   }
 
+  const { excluded_types, excluded_quizzes, excluded_difficulty, verdict, hints_used, time_taken } = reportFilter;
+  const filteredResults = props.results.filter(result => !excluded_types.includes(result.type) && !excluded_difficulty.includes(result.difficulty) && (verdict === "mixed" || verdict.toString() === result.verdict?.toString()) && (hints_used === "any" || result.hints_used <= hints_used) && time_taken[0] <= result.time_taken && time_taken[1] >= result.time_taken && !excluded_quizzes.includes(result.quiz._id))
+  const filteredQuizzes: Record<string, IQuizFull> = {};
+  filteredResults.forEach(filteredResult => {
+    const targetQuestion = allQuestionsMap.get(filteredResult.question_id)!
+    const clonedTargetQuestion = JSON.parse(JSON.stringify(targetQuestion)) as TQuestionFull;
+    if (!filteredQuizzes[targetQuestion.quiz._id]) filteredQuizzes[targetQuestion.quiz._id] = {
+      ...targetQuestion.quiz,
+      questions: [
+        clonedTargetQuestion
+      ]
+    };
+    else filteredQuizzes[targetQuestion.quiz._id].questions.push(clonedTargetQuestion)
+  });
+
   const total_weights = props.results.reduce((acc, cur) => acc + cur.weight, 0);
 
   const accumulator = (header: string, contents: Array<any>) => {
@@ -51,12 +67,11 @@ export default function Report(props: Props) {
     }
   }
 
-
   return (
     <div className="Report">
-      <ReportFilter />
-      {/* <ReportExport filtered_results={filtered_results} filtered_quizzes={Object.values(filtered_quizzes)} />
-      <Table accumulator={accumulator} transformValue={transformValue} contents={filtered_results} collapseContents={["explanation"]} headers={["quiz", "subject", "question", "type", "difficulty", "verdict", "score", "time_allocated", "time_taken", "answers", "weight", "user_answers", "hints_used"].filter(report_stat => !ReportFilterState.excluded_columns.includes(report_stat))} onHeaderClick={(header, order) => {
+      <ReportFilter reportFilter={reportFilter} setReportFilter={setReportFilter} />
+      <ReportExport filteredResults={filteredResults} filteredQuizzes={Object.values(filteredQuizzes)} />
+      {/* <Table accumulator={accumulator} transformValue={transformValue} contents={filtered_results} collapseContents={["explanation"]} headers={["quiz", "subject", "question", "type", "difficulty", "verdict", "score", "time_allocated", "time_taken", "answers", "weight", "user_answers", "hints_used"].filter(report_stat => !ReportFilterState.excluded_columns.includes(report_stat))} onHeaderClick={(header, order) => {
         if (header.match(/(score|time|hints)/))
           props.setResults(filtered_results.sort((a, b) => order === "DESC" ? (a as any)[header] - (b as any)[header] : (b as any)[header] - (a as any)[header]))
         else if (header === "verdict") props.setResults(filtered_results.sort((a, b) => order === "DESC" ? (a as any)[header] === false ? -1 : 1 : (a as any)[header] === true ? -1 : 1))
@@ -68,11 +83,6 @@ export default function Report(props: Props) {
         setPlaying(false);
         setUploadedQuizzes(Object.values(filtered_quizzes))
         setSelectedQuizzes(Object.values(filtered_quizzes).map(quiz => quiz._id))
-      }}>Back to Home</Button>
-
-      <Button className="Report-buttons-item" variant="contained" color="primary" onClick={() => {
-        if (settings.sound) sounds.swoosh.play()
-        history.push("/settings")
-      }}>Go to Settings</Button> */}
+      }}>Back to Home</Button> */}
     </div>)
 }

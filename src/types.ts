@@ -203,11 +203,6 @@ export interface IReportFilterState {
   excluded_columns: string[]
 }
 
-export interface ReportExportProps {
-  filtered_results: TQuestionResult[],
-  filtered_quizzes: IQuizFull[]
-}
-
 type color = {
   dark: string,
   base: string,

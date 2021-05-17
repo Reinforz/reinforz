@@ -32,10 +32,7 @@ export default function Quiz() {
         }} />
       </Fragment>
     }
-    else return <Report setResults={setResults} results={results} all_questions_map={allQuestions.reduce((acc, cur) => {
-      acc[cur._id] = cur;
-      return acc;
-    }, {} as any)} />
+    else return <Report setResults={setResults} results={results} />
   }
 
   return <div className="Quiz" style={{ backgroundColor: theme.color.base }}>

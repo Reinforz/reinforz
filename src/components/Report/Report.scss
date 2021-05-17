@@ -3,7 +3,7 @@
   user-select: none;
   display: grid;
   grid-template-columns: 300px 1fr;
-  grid-template-rows: 100px 1fr;
+  grid-template-rows: 50px 1fr;
 
   &Filter {
     padding: 10px;
@@ -14,7 +14,8 @@
   }
   
   &Export {
-    grid-area: 1/1/2/2;
+    grid-area: 1/2/2/3;
+    padding: 5px;
     display: flex;
     align-items: center;
     .MuiFormControl-root {
