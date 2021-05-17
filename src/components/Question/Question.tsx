@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { QuestionInputFull } from "../../types";
 import { ChoiceQuestion } from "./ChoiceQuestion";
-import { FIBQuestion } from "./FIBQuestion";
+import { InputQuestion } from "./InputQuestion";
 import "./Question.scss";
-import { SnippetQuestion } from "./SnippetQuestion";
 
 interface Props {
   question: QuestionInputFull,
@@ -60,30 +59,13 @@ export default function Question(props: Props) {
   // }
 
   switch (type) {
-    case "FIB": {
-      return <FIBQuestion />
+    case "FIB":
+    case "Snippet": {
+      return <InputQuestion />
     }
     case "MCQ":
     case "MS": {
-      return <ChoiceQuestion currentTime={timeout} changeCounter={(userAnswers, time_taken, hints_used) => {
-        onNextButtonPress()
-      }} isLast={isLast} usedHints={usedHints} setUsedHints={setUsedHints} question={props.question} userAnswers={userAnswers} changeUserAnswers={changeUserAnswers} />
-    }
-    case "Snippet": {
-      return <SnippetQuestion />
+      return <ChoiceQuestion currentTime={timeout} changeCounter={onNextButtonPress} isLast={isLast} usedHints={usedHints} setUsedHints={setUsedHints} question={props.question} userAnswers={userAnswers} changeUserAnswers={changeUserAnswers} />
     }
   }
-
-  /* return <Timer timeout={time_allocated} onTimerEnd={() => {
-    const pressed_option = e.keyCode - 49;
-    const isChecked = user_answers.includes(pressed_option.toString());
-    if (type === "MS") {
-      if (!isChecked)
-        changeUserAnswers([...user_answers, pressed_option.toString()])
-      else
-        changeUserAnswers(user_answers.filter(user_answer => user_answer !== pressed_option.toString()));
-    } else if (type === "MCQ") {
-      if (!isChecked)
-        changeUserAnswers([pressed_option.toString()])
-  }}*/
 }
