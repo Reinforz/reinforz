@@ -19,32 +19,31 @@ export default function Question(props: Props) {
   const { changeCounter, isLast, question: { type, image, hints, question, time_allocated } } = props;
   const [userAnswers, setUserAnswers] = useState<string[]>([]);
   const [usedHints, setUsedHints] = useState<string[]>([]);
-  const [timeout, setTimeout] = useState(time_allocated);
+  const [timeout, setTimeout] = useState<null | number>(null);
+  const [timer, setTimer] = useState<null | number>(null);
   const theme = useTheme() as ExtendedTheme;
 
   const onNextButtonPress = () => {
-    setTimeout(props.question.time_allocated)
-    changeCounter(userAnswers, time_allocated - timeout, usedHints.length)
     setUserAnswers([])
     setUsedHints([])
+    setTimer(null)
+    setTimeout(null)
+    typeof timer === "number" && clearInterval(timer)
+    changeCounter(userAnswers, time_allocated - (timeout as number), usedHints.length)
+  }
+
+  if (timeout === 0) {
+    onNextButtonPress()
   }
 
   useEffect(() => {
+    setTimeout(props.question.time_allocated)
     const timer = setInterval(() => {
-      if (timeout !== 0)
-        setTimeout((seconds) => {
-          return seconds - 1
-        })
-      else {
-        clearInterval(timer);
-        onNextButtonPress()
-      }
+      setTimeout((seconds) => {
+        return typeof seconds === "number" ? seconds - 1 : 0
+      })
     }, 1000);
-    return () => {
-      clearInterval(timer);
-      onNextButtonPress()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setTimer(timer)
   }, [props.question])
 
 
@@ -53,9 +52,9 @@ export default function Question(props: Props) {
     {image && <div className="Question-image" style={{ gridArea: `1/2/2/3` }}><img src={image} alt="Question" /></div>}
     {type.match(/(MCQ|MS)/) ? <QuestionOptions setUserAnswers={setUserAnswers} userAnswers={userAnswers} question={props.question} /> : <QuestionInputs setUserAnswers={setUserAnswers} userAnswers={userAnswers} question={props.question} />}
     <QuestionHints usedHints={usedHints} setUsedHints={setUsedHints} hints={hints} />
-    <div style={{ display: 'flex', gridArea: `3/2/4/3`, alignItems: `center`, height: '65px' }}>
+    {timeout && <div style={{ display: 'flex', gridArea: `3/2/4/3`, alignItems: `center`, height: '65px' }}>
       <Button className="QuestionButton" variant="contained" color="primary" onClick={onNextButtonPress}>{!isLast ? "Next" : "Report"}</Button>
       <div style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }} className="QuestionTimer">{displayTime(timeout)}</div>
-    </div>
+    </div>}
   </div>
 }

@@ -4,7 +4,7 @@ export const QUIZ_1: IQuizInputFull = {
   "title": "Dart Basic Types",
   "subject": "Dart",
   "questions": [
-    /* {
+    {
       "question": "In which places can `JS` be used",
       "answers": [
         "0",
@@ -29,14 +29,14 @@ export const QUIZ_1: IQuizInputFull = {
       "difficulty": "Beginner",
       "language": "javascript",
       "type": "MS",
-      "time_allocated": 60,
+      "time_allocated": 10,
       "_id": "ln5zMGBRPA",
       "quiz": {
         "subject": "Dart",
         "title": "Dart Basic Types",
         "_id": "-QIv_LbJ1"
       }
-    }, */
+    },
     {
       "question": "Write a code to\nCreate and checkout to a branch named `main`",
       "answers": [
@@ -55,7 +55,7 @@ export const QUIZ_1: IQuizInputFull = {
       "difficulty": "Beginner",
       "language": "javascript",
       "type": "Snippet",
-      "time_allocated": 120,
+      "time_allocated": 5,
       "_id": "ln5zMGBRPU",
       "quiz": {
         "subject": "Dart",
