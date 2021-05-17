@@ -31,8 +31,7 @@
   }
 
   .Table {
-    grid-area: 2/1/4/2;
-    width: calc(100% - 5px);
+    grid-area: 2/2/3/4;
     position: relative;
     height: 100%;
     tr {
@@ -51,7 +50,7 @@
     tfoot {
       position: absolute;
       top: 100%;
-      transform: translateY(-100px);
+      transform: translateY(-50px);
       width: 100%;
     }
   }

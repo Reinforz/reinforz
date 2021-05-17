@@ -1,6 +1,6 @@
 import { Button } from '@material-ui/core';
 import React, { useContext, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Table } from '../../shared';
 import { IQuizFull, TQuestionFull, TQuestionResult } from "../../types";
 import { createDefaultReportFilterState } from '../../utils';
 import { PlayContext } from '../Play/Play';
@@ -14,8 +14,7 @@ export interface Props {
 }
 
 export default function Report(props: Props) {
-  const history = useHistory();
-  const { setPlaying, setUploadedQuizzes, setSelectedQuizzes, selectedQuizzes, allQuestionsMap } = useContext(PlayContext);
+  const { setPlaying, setUploadedQuizzes, setSelectedQuizzes, allQuestionsMap } = useContext(PlayContext);
 
   const [reportFilter, setReportFilter] = useState(createDefaultReportFilterState());
 
@@ -72,12 +71,12 @@ export default function Report(props: Props) {
     <div className="Report">
       <ReportFilter reportFilter={reportFilter} setReportFilter={setReportFilter} />
       <ReportExport filteredResults={filteredResults} filteredQuizzes={Object.values(filteredQuizzes)} />
-      {/* <Table accumulator={accumulator} transformValue={transformValue} contents={filtered_results} collapseContents={["explanation"]} headers={["quiz", "subject", "question", "type", "difficulty", "verdict", "score", "time_allocated", "time_taken", "answers", "weight", "user_answers", "hints_used"].filter(report_stat => !ReportFilterState.excluded_columns.includes(report_stat))} onHeaderClick={(header, order) => {
+      <Table className="ReportTable" accumulator={accumulator} transformValue={transformValue} contents={filteredResults} collapseContents={["explanation"]} headers={["subject", "type", "difficulty", "verdict", "score", "time_allocated", "time_taken", "weight", "user_answers", "hints_used"].filter(report_stat => !reportFilter.excluded_columns.includes(report_stat))} onHeaderClick={(header, order) => {
         if (header.match(/(score|time|hints)/))
-          props.setResults(filtered_results.sort((a, b) => order === "DESC" ? (a as any)[header] - (b as any)[header] : (b as any)[header] - (a as any)[header]))
-        else if (header === "verdict") props.setResults(filtered_results.sort((a, b) => order === "DESC" ? (a as any)[header] === false ? -1 : 1 : (a as any)[header] === true ? -1 : 1))
-        else props.setResults(filtered_results.sort((a, b) => order === "DESC" ? (a as any)[header] > (b as any)[header] ? -1 : 1 : (a as any)[header] < (b as any)[header] ? -1 : 1))
-      }} /> */}
+          props.setResults(filteredResults.sort((a, b) => order === "DESC" ? (a as any)[header] - (b as any)[header] : (b as any)[header] - (a as any)[header]))
+        else if (header === "verdict") props.setResults(filteredResults.sort((a, b) => order === "DESC" ? (a as any)[header] === false ? -1 : 1 : (a as any)[header] === true ? -1 : 1))
+        else props.setResults(filteredResults.sort((a, b) => order === "DESC" ? (a as any)[header] > (b as any)[header] ? -1 : 1 : (a as any)[header] < (b as any)[header] ? -1 : 1))
+      }} />
       <div className="ReportBackButton">
         <Button variant="contained" color="primary" onClick={() => {
           localStorage.setItem("REPORT_FILTERS", JSON.stringify(reportFilter))
