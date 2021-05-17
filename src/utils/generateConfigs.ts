@@ -25,10 +25,6 @@ export default function generateQuestionInputConfigs(
     if ((questionFull as any)[field] === undefined) logs.errors.push(`Question ${field} is required`);
   })
 
-  if (!Array.isArray(questionFull.answers)) {
-    questionFull.answers = (questionFull.answers as any).toString().split(" ");
-    question.answers = (question.answers as any).toString().split(" ");
-  }
   questionFull.answers = questionFull.answers.map(answer => answer.toString());
   question.answers = question.answers.map(answer => answer.toString());
   if (questionFull.options && question.options) {

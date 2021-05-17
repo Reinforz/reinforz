@@ -36,19 +36,25 @@
       margin: 0px 0px 10px 0px;
       align-items: center;
       width: calc(100% - 20px);
-      height: fit-content;
+      height: 47.5px;
+
       &:nth-child(1) {
         margin-top: 10px;
       }
       &:last-child {
         margin-bottom: 10px;
       }
+
       .MuiTypography-body1 {
-        font-size: 1.25rem;
+        font-size: 18px;
       }
       .MuiFormControlLabel-root {
         width: 100%;
         margin: 0px;
+      }
+      pre{
+        padding: 0px 5px;
+        background: white;
       }
     }
   }

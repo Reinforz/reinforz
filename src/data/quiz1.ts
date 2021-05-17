@@ -4,11 +4,10 @@ export const QUIZ_1: IQuizInputFull = {
   "title": "Dart Basic Types",
   "subject": "Dart",
   "questions": [
-    {
+    /* {
       "question": "In which places can `JS` be used",
       "answers": [
         "0",
-        "1"
       ],
       "hints": [
         "Hint **1**\n## Heading\n## Hello World\n## Hello World\nHello World\nHello World\nHello World",
@@ -17,7 +16,7 @@ export const QUIZ_1: IQuizInputFull = {
       ],
       "options": [
         {
-          text: "Option 1",
+          text: "```js\nconsole.log(123)\n```",
           index: "0"
         },
         {
@@ -43,7 +42,7 @@ export const QUIZ_1: IQuizInputFull = {
       "weight": 1,
       "difficulty": "Beginner",
       "language": "javascript",
-      "type": "MS",
+      "type": "MCQ",
       "time_allocated": 120,
       "_id": "ln5zMGBRPA",
       "quiz": {
@@ -51,8 +50,8 @@ export const QUIZ_1: IQuizInputFull = {
         "title": "Dart Basic Types",
         "_id": "-QIv_LbJ1"
       }
-    },
-    /* {
+    }, */
+    {
       "question": ["git", "-b",""],
       "answers": [
         {
@@ -82,7 +81,7 @@ export const QUIZ_1: IQuizInputFull = {
         "title": "Dart Basic Types",
         "_id": "-QIv_LbJl"
       }
-    }, */
+    },
   ],
   "_id": "-QIv_LbJl"
 };

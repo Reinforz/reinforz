@@ -1,4 +1,6 @@
 import { Checkbox, FormControlLabel, FormGroup, Radio, RadioGroup } from "@material-ui/core";
+import DOMPurify from "dompurify";
+import marked from "marked";
 import React from 'react';
 import { useThemeSettings } from '../../../hooks';
 import { TQuestionInputFull } from '../../../types';
@@ -23,7 +25,7 @@ export default function QuestionOptions(props: Props) {
               <FormControlLabel
                 control={<Radio color="primary" />}
                 value={`${i}`}
-                label={option.text}
+                label={<div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked(option.text)) }}></div>}
                 labelPlacement="end"
               />
             </div>

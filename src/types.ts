@@ -85,7 +85,6 @@ export interface IQuestionInputPartial{
   hints?: string[],
   language?: Language,
   _id?: string,
-  answers: string[]
 }
 
 export interface SelectionQuestionOptions {
@@ -97,24 +96,28 @@ export interface IMcqQuestionInputPartial extends IQuestionInputPartial{
   question: string,
   options: string[],
   type?: "MCQ",
+  answers: string[]
 }
 
 export interface IMsQuestionInputPartial extends IQuestionInputPartial{
   question: string,
   options: string[],
   type?: "MS",
+  answers: string[]
 }
 
 export interface ISnippetQuestionInputPartial extends IQuestionInputPartial{
   question: string,
   options: undefined,
   type?: "Snippet",
+  answers: string[]
 }
 
 export interface IFibQuestionInputPartial extends IQuestionInputPartial{
   question: string[],
   options: undefined,
   type?: "FIB",
+  answers: string[]
 }
 
 export interface IQuestionAnswer {
@@ -125,29 +128,34 @@ export interface IMcqQuestionInputFull extends Required<IQuestionInputPartial>{
   question: string,
   options: SelectionQuestionOptions[],
   type: "MCQ",
+  answers: string[]
 }
 
 export interface IMsQuestionInputFull extends Required<IQuestionInputPartial>{
   question: string,
   options: SelectionQuestionOptions[],
   type: "MS",
+  answers: string[]
 }
 
 export interface ISnippetQuestionInputFull extends Required<IQuestionInputPartial>{
   question: string,
   options: undefined,
   type: "Snippet",
+  answers: IQuestionAnswer[]
 }
 
 export interface IFibQuestionInputFull extends Required<IQuestionInputPartial>{
   question: string[],
   options: undefined,
   type: "FIB",
+  answers: IQuestionAnswer[]
 }
 
 export type TQuestionInputPartial = IFibQuestionInputPartial | ISnippetQuestionInputPartial | IMsQuestionInputPartial | IMcqQuestionInputPartial;
 export type TQuestionInputFull = (IFibQuestionInputFull | ISnippetQuestionInputFull | IMsQuestionInputFull | IMcqQuestionInputFull ) & {quiz: QuizIdentifiers};
-
+export type TInputQuestionFull = ISnippetQuestionInputFull | IFibQuestionInputFull;
+export type TSelectionQuestionFull = IMcqQuestionInputFull | IMsQuestionInputFull;
 export interface HighlighterProps {
   code: string,
   language: Language,
@@ -156,7 +164,7 @@ export interface HighlighterProps {
 export interface QuestionHighlighterProps extends HighlighterProps {
   type: TQuestionType,
   fibRefs: React.MutableRefObject<React.RefObject<HTMLInputElement>[]>,
-  answers: QuestionAnswersType,
+  answers: string[],
   image?: string
 }
 
@@ -174,28 +182,25 @@ export interface IQuestionAnswerNode {
 }
 
 export type QuestionAnswersNodes = Array<IQuestionAnswerNode>
-export type QuestionAnswersType = string[];
 
-export interface Result {
+export interface IResult {
   user_answers: string[],
   verdict: boolean,
   score: number,
-  answers: QuestionAnswersType,
-  question: string | string[],
-  type: TQuestionType,
-  time_allocated: number,
   time_taken: number,
-  explanation: string,
   hints_used: number,
-  difficulty: TQuestionDifficulty,
-  _id: string,
   question_id: string,
-  quiz: QuizIdentifiers
-  weight: number
 }
 
+export interface IMsQuestionResult extends IMsQuestionInputFull, IResult{}
+export interface IMcqQuestionResult extends IMcqQuestionInputFull, IResult{}
+export interface ISnippetQuestionResult extends ISnippetQuestionInputFull, IResult{}
+export interface IFibQuestionResult extends IFibQuestionInputFull, IResult{}
+
+export type TResult = IMsQuestionResult | IMcqQuestionResult | ISnippetQuestionResult | IFibQuestionResult;
+
 export interface ReportProps {
-  results: Result[],
+  results: TResult[],
   all_questions_map: Record<string, TQuestionInputFull>,
   selected_quizzes: QuizIdentifiers[],
   setResults: (results: any[]) => any
@@ -217,7 +222,7 @@ export interface ReportFilterRProps {
 }
 
 export interface ReportExportProps {
-  filtered_results: Result[],
+  filtered_results: TResult[],
   filtered_quizzes: IQuizInputFull[]
 }
 

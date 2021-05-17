@@ -1,13 +1,13 @@
 import { TextField } from "@material-ui/core";
 import React from 'react';
 import { useThemeSettings } from '../../../hooks';
-import { TQuestionInputFull } from '../../../types';
+import { TInputQuestionFull } from '../../../types';
 import "./QuestionInputs.scss";
 
 interface Props {
   setUserAnswers: React.Dispatch<React.SetStateAction<string[]>>
   userAnswers: string[],
-  question: TQuestionInputFull,
+  question: TInputQuestionFull,
 }
 
 export default function QuestionInputs(props: Props) {
