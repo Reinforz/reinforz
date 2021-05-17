@@ -34,7 +34,7 @@ export default function generateQuestionInputConfigs(
   if (questionFull.options && question.options) {
     questionFull.options = questionFull.options.map((option, i) => ({
       text: option.toString(),
-      index: i
+      index: `${i}`
     }))
     question.options = question.options.map(option => option.toString())
   }

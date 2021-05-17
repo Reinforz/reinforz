@@ -10,12 +10,12 @@ export default function getAnswerResult (current_question: Pick<TQuestionInputFu
 
   switch (current_question.type) {
     case "MCQ":
-      verdict = answers.length === user_answers.length && answers[0].toString() === current_question.options![Number(user_answers[0])].index.toString();
+      verdict = answers.length === user_answers.length && answers[0].toString() === current_question.options![Number(user_answers[0])].index;
       totalCorrectAnswers = verdict ? 1 : 0
       break;
     case "MS":
       verdict = user_answers.length === answers.length && user_answers.every((user_answer) => {
-        const isCorrect = (answers as string[]).includes(user_answer);
+        const isCorrect = (answers as string[]).includes(current_question.options![Number(user_answer)].index);
         if (isCorrect) totalCorrectAnswers++
         return isCorrect
       });

@@ -90,7 +90,7 @@ export interface IQuestionInputPartial{
 
 export interface SelectionQuestionOptions {
   text: string
-  index: number
+  index: string
 }
 
 export interface IMcqQuestionInputPartial extends IQuestionInputPartial{
