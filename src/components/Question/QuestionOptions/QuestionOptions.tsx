@@ -1,26 +1,10 @@
 import { Checkbox, FormControlLabel, FormGroup, Radio, RadioGroup } from "@material-ui/core";
-import createDOMPurify from 'dompurify';
-import marked from "marked";
 import { Language } from 'prism-react-renderer';
 import React from 'react';
 import { useThemeSettings } from '../../../hooks';
 import { Highlighter } from "../../../shared";
 import { QuestionInputFull } from '../../../types';
 import "./QuestionOptions.scss";
-
-const DOMPurify = createDOMPurify(window);
-
-const optionLabelFormat = (option: string) => {
-  const matches = option.match(/_(.*?)_(.+)/);
-  let format = "text";
-  if (matches) {
-    option = matches[2];
-    format = matches[1];
-  }
-  if (format.startsWith("code")) return <Highlighter code={option.toString()} language={(format.split("=")[1] || "javascript") as Language} />;
-  else if (format === "md") return <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked(option.toString())) }}></span>
-  else return option.toString()
-}
 
 interface Props {
   changeOption: (val: string[]) => any,
@@ -63,18 +47,18 @@ export default function QuestionOptions(props: Props) {
           return <div key={`${_id}option${i}`} className={`QuestionOptions-container-item`} style={{ backgroundColor: theme.color.base }}>
             <FormControlLabel
               control={<Checkbox checked={user_answers.includes(`${i}`)} value={`${i}`} color="primary" />}
-              label={optionLabelFormat(option)}
+              label={option}
             /></div>
         })}
       </FormGroup>
     }
 
-    /*     else if (type === "Snippet")
-          return <div className="QuestionOptions-container QuestionOptions-container--Snippet" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}><div className={`QuestionOptions-container-item`} style={{ backgroundColor: theme.color.base }}>
-            <TextField fullWidth value={user_answers[0]} onChange={e => {
-              user_answers[0] = e.target.value;
-              changeOption([...user_answers])
-            }} /></div></div> */
+    /* else if (type === "Snippet")
+      return <div className="QuestionOptions-container QuestionOptions-container--Snippet" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}><div className={`QuestionOptions-container-item`} style={{ backgroundColor: theme.color.base }}>
+      <TextField fullWidth value={user_answers[0]} onChange={e => {
+        user_answers[0] = e.target.value;
+        changeOption([...user_answers])
+    }} /></div></div> */
   }
 
   return (

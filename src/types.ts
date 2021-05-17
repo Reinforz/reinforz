@@ -55,8 +55,19 @@ export interface IPlaySettingsOptionsState {
 
 export interface IPlaySettingsFiltersState {
   time_allocated: [number, number],
-  excluded_difficulty: QuestionDifficulty[],
-  excluded_types: QuestionType[],
+  excluded_difficulty: TQuestionDifficulty[],
+  excluded_types: TQuestionType[],
+}
+
+export interface IQuizInputPartial {
+  title: string,
+  subject: string,
+  questions: TQuestionInputPartial[],
+  _id: string,
+}
+
+export interface IQuizInputFull extends Required<IQuizInputPartial> {
+  questions: TQuestionInputFull[]
 }
 
 export interface IPlaySettings {
@@ -64,55 +75,57 @@ export interface IPlaySettings {
   filters: IPlaySettingsFiltersState
 }
 
-export interface QuizInputPartial {
-  title: string,
-  subject: string,
-  questions: QuestionInputPartial[],
-  _id: string,
-}
+export type TQuestionType = 'MCQ' | 'MS' | 'FIB' | 'Snippet';
+export type TQuestionFormat = 'text' | 'code';
+export type TQuestionDifficulty = 'Beginner' | 'Intermediate' | 'Advanced';
 
-export interface QuizInputFull extends Required<QuizInputPartial> {
-  questions: QuestionInputFull[]
-}
-
-export type QuestionType = 'MCQ' | 'MS' | 'FIB' | 'Snippet';
-export type QuestionFormat = 'text' | 'code';
-export type QuestionDifficulty = 'Beginner' | 'Intermediate' | 'Advanced';
-
-export interface QuestionInputCommon {
-  question: string | string[],
-  // Options for the answers, only required for MCQ and MS types
-  options?: string[],
-  answers: QuestionAnswersType,
-}
-export interface QuestionInput {
-  // Question Type, inferred from answers and options
-  type?: QuestionType,
-  // Question Format, inferred from the question itself
-  format?: QuestionFormat,
-  // Image to use alongside the questions
+export interface IQuestionInputPartial{
+  type?: TQuestionType,
+  format?: TQuestionFormat,
   image?: string,
-  // Weight of the question range 0 - 1, 0 to indicate it wont effect score 
   weight?: number,
-  // Time allocated for the qustion, range 10 - 60
   time_allocated?: number,
-  // Difficulty of the question, out of range gets converted to Beginner
-  difficulty?: QuestionDifficulty,
-  // Explanation of the answer
+  difficulty?: TQuestionDifficulty,
   explanation?: string,
-  // Hints provided for the question, max 3
   hints?: string[],
-  // Question language, only applicable for code format, inferred from question 
   language?: Language,
-  // Unique Id of the question, created if not provided
   _id?: string,
 }
+export interface IMcqQuestionInputPartial extends IQuestionInputPartial{
+  question: string,
+  options: string[],
+  answers: string[],
+  type?: "MCQ"
+}
 
-export interface QuestionInputPartial extends QuestionInputCommon, Partial<QuestionInput> { }
+export interface IMsQuestionInputPartial extends IQuestionInputPartial{
+  question: string,
+  options: string[],
+  answers: string[],
+  type?: "MS"
+}
 
-export type QuestionInputKeys = Array<keyof QuestionInputPartial>;
+export interface ISnippetQuestionInputPartial extends IQuestionInputPartial{
+  question: string,
+  options: undefined,
+  answers: string[],
+  type?: "Snippet"
+}
 
-export interface QuestionInputFull extends Required<QuestionInput & { quiz: QuizIdentifiers }>, QuestionInputCommon { }
+export interface IFibQuestionInputPartial extends IQuestionInputPartial{
+  question: string[],
+  options: undefined,
+  answers: string[],
+  type?: "FIB"
+}
+
+export type IMcqQuestionInputFull = Required<IMcqQuestionInputPartial>
+export type IMsQuestionInputFull = Required<IMsQuestionInputPartial>
+export type ISnippetQuestionInputFull = Required<ISnippetQuestionInputPartial>
+export type IFibQuestionInputFull = Required<IFibQuestionInputPartial>
+
+export type TQuestionInputPartial = IFibQuestionInputPartial | ISnippetQuestionInputPartial | IMsQuestionInputPartial | IMcqQuestionInputPartial;
+export type TQuestionInputFull = IFibQuestionInputFull | ISnippetQuestionInputFull | IMsQuestionInputFull | IMcqQuestionInputFull;
 
 export interface HighlighterProps {
   code: string,
@@ -120,7 +133,7 @@ export interface HighlighterProps {
 }
 
 export interface QuestionHighlighterProps extends HighlighterProps {
-  type: QuestionType,
+  type: TQuestionType,
   fibRefs: React.MutableRefObject<React.RefObject<HTMLInputElement>[]>,
   answers: QuestionAnswersType,
   image?: string
@@ -148,12 +161,12 @@ export interface Result {
   score: number,
   answers: QuestionAnswersType,
   question: string | string[],
-  type: QuestionType,
+  type: TQuestionType,
   time_allocated: number,
   time_taken: number,
   explanation: string,
   hints_used: number,
-  difficulty: QuestionDifficulty,
+  difficulty: TQuestionDifficulty,
   _id: string,
   question_id: string,
   quiz: string,
@@ -164,7 +177,7 @@ export interface Result {
 
 export interface ReportProps {
   results: Result[],
-  all_questions_map: Record<string, QuestionInputFull>,
+  all_questions_map: Record<string, TQuestionInputFull>,
   selected_quizzes: QuizIdentifiers[],
   setResults: (results: any[]) => any
 }
@@ -173,8 +186,8 @@ export interface IReportFilterState {
   time_taken: [number, number],
   verdict: boolean | 'mixed',
   hints_used: number | 'any',
-  excluded_types: QuestionType[],
-  excluded_difficulty: QuestionDifficulty[],
+  excluded_types: TQuestionType[],
+  excluded_difficulty: TQuestionDifficulty[],
   excluded_quizzes: string[],
   excluded_columns: string[]
 }
@@ -186,7 +199,7 @@ export interface ReportFilterRProps {
 
 export interface ReportExportProps {
   filtered_results: Result[],
-  filtered_quizzes: QuizInputFull[]
+  filtered_quizzes: IQuizInputFull[]
 }
 
 type color = {

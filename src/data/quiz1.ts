@@ -4,7 +4,7 @@ export const QUIZ_1: QuizInputFull = {
   "title": "Dart Basic Types",
   "subject": "Dart",
   "questions": [
-    {
+    /* {
       "question": "In which places can `JS` be used",
       "answers": [
         "0",
@@ -36,8 +36,8 @@ export const QUIZ_1: QuizInputFull = {
         "title": "Dart Basic Types",
         "_id": "-QIv_LbJ1"
       }
-    },
-    /* {
+    }, */
+    {
       "question": "Create and checkout to a branch named `main`",
       "answers": [
         "git checkout -b main"
@@ -62,8 +62,7 @@ export const QUIZ_1: QuizInputFull = {
         "title": "Dart Basic Types",
         "_id": "-QIv_LbJl"
       }
-    }, */
-    
+    },
   ],
   "_id": "-QIv_LbJl"
 };
