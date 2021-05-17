@@ -51,17 +51,17 @@ export interface IPlaySettingsFiltersState {
   excluded_types: TQuestionType[],
 }
 
-export interface IQuizInputPartial {
+export interface IQuizPartial {
   title: string,
   subject: string,
-  questions: TQuestionInputPartial[],
+  questions: TQuestionPartial[],
   _id: string,
 }
 
-export interface IQuizInputFull {
+export interface IQuizFull {
   title: string,
   subject: string,
-  questions: TQuestionInputFull[],
+  questions: TQuestionFull[],
   _id: string,
 }
 
@@ -74,7 +74,7 @@ export type TQuestionType = 'MCQ' | 'MS' | 'FIB' | 'Snippet';
 export type TQuestionFormat = 'text' | 'code';
 export type TQuestionDifficulty = 'Beginner' | 'Intermediate' | 'Advanced';
 
-export interface IQuestionInputPartial{
+export interface IQuestionPartial{
   type?: TQuestionType,
   format?: TQuestionFormat,
   image?: string,
@@ -92,28 +92,28 @@ export interface SelectionQuestionOptions {
   index: string
 }
 
-export interface IMcqQuestionInputPartial extends IQuestionInputPartial{
+export interface IMcqQuestionPartial extends IQuestionPartial{
   question: string,
   options: string[],
   type?: "MCQ",
   answers: string[]
 }
 
-export interface IMsQuestionInputPartial extends IQuestionInputPartial{
+export interface IMsQuestionPartial extends IQuestionPartial{
   question: string,
   options: string[],
   type?: "MS",
   answers: string[]
 }
 
-export interface ISnippetQuestionInputPartial extends IQuestionInputPartial{
+export interface ISnippetQuestionPartial extends IQuestionPartial{
   question: string,
   options: undefined,
   type?: "Snippet",
   answers: string[]
 }
 
-export interface IFibQuestionInputPartial extends IQuestionInputPartial{
+export interface IFibQuestionPartial extends IQuestionPartial{
   question: string[],
   options: undefined,
   type?: "FIB",
@@ -124,38 +124,42 @@ export interface IQuestionAnswer {
   text: string
 }
 
-export interface IMcqQuestionInputFull extends Required<IQuestionInputPartial>{
+export interface IMcqQuestionFull extends Required<IQuestionPartial>{
   question: string,
   options: SelectionQuestionOptions[],
   type: "MCQ",
   answers: string[]
+  quiz: QuizIdentifiers
 }
 
-export interface IMsQuestionInputFull extends Required<IQuestionInputPartial>{
+export interface IMsQuestionFull extends Required<IQuestionPartial>{
   question: string,
   options: SelectionQuestionOptions[],
   type: "MS",
   answers: string[]
+  quiz: QuizIdentifiers
 }
 
-export interface ISnippetQuestionInputFull extends Required<IQuestionInputPartial>{
+export interface ISnippetQuestionFull extends Required<IQuestionPartial>{
   question: string,
   options: undefined,
   type: "Snippet",
   answers: IQuestionAnswer[]
+  quiz: QuizIdentifiers
 }
 
-export interface IFibQuestionInputFull extends Required<IQuestionInputPartial>{
+export interface IFibQuestionFull extends Required<IQuestionPartial>{
   question: string[],
   options: undefined,
   type: "FIB",
   answers: IQuestionAnswer[]
+  quiz: QuizIdentifiers
 }
 
-export type TQuestionInputPartial = IFibQuestionInputPartial | ISnippetQuestionInputPartial | IMsQuestionInputPartial | IMcqQuestionInputPartial;
-export type TQuestionInputFull = (IFibQuestionInputFull | ISnippetQuestionInputFull | IMsQuestionInputFull | IMcqQuestionInputFull ) & {quiz: QuizIdentifiers};
-export type TInputQuestionFull = ISnippetQuestionInputFull | IFibQuestionInputFull;
-export type TSelectionQuestionFull = IMcqQuestionInputFull | IMsQuestionInputFull;
+export type TQuestionPartial = IFibQuestionPartial | ISnippetQuestionPartial | IMsQuestionPartial | IMcqQuestionPartial;
+export type TQuestionFull = (IFibQuestionFull | ISnippetQuestionFull | IMsQuestionFull | IMcqQuestionFull );
+export type TInputQuestionFull = ISnippetQuestionFull | IFibQuestionFull;
+export type TSelectionQuestionFull = IMcqQuestionFull | IMsQuestionFull;
 export interface HighlighterProps {
   code: string,
   language: Language,
@@ -192,16 +196,15 @@ export interface IResult {
   question_id: string,
 }
 
-export interface IMsQuestionResult extends IMsQuestionInputFull, IResult{}
-export interface IMcqQuestionResult extends IMcqQuestionInputFull, IResult{}
-export interface ISnippetQuestionResult extends ISnippetQuestionInputFull, IResult{}
-export interface IFibQuestionResult extends IFibQuestionInputFull, IResult{}
-
-export type TResult = IMsQuestionResult | IMcqQuestionResult | ISnippetQuestionResult | IFibQuestionResult;
+export interface IMsQuestionResult extends IMsQuestionFull, IResult{}
+export interface IMcqQuestionResult extends IMcqQuestionFull, IResult{}
+export interface ISnippetQuestionResult extends ISnippetQuestionFull, IResult{}
+export interface IFibQuestionResult extends IFibQuestionFull, IResult{}
+export type TQuestionResult = IMsQuestionResult | IMcqQuestionResult | ISnippetQuestionResult | IFibQuestionResult;
 
 export interface ReportProps {
-  results: TResult[],
-  all_questions_map: Record<string, TQuestionInputFull>,
+  results: TQuestionResult[],
+  all_questions_map: Record<string, TQuestionFull>,
   selected_quizzes: QuizIdentifiers[],
   setResults: (results: any[]) => any
 }
@@ -222,8 +225,8 @@ export interface ReportFilterRProps {
 }
 
 export interface ReportExportProps {
-  filtered_results: TResult[],
-  filtered_quizzes: IQuizInputFull[]
+  filtered_results: TQuestionResult[],
+  filtered_quizzes: IQuizFull[]
 }
 
 type color = {

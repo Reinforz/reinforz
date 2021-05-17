@@ -2,7 +2,7 @@ import { Button, useTheme } from "@material-ui/core";
 import DOMPurify from "dompurify";
 import marked from "marked";
 import React, { useEffect, useState } from "react";
-import { ExtendedTheme, TQuestionInputFull } from "../../types";
+import { ExtendedTheme, TQuestionFull } from "../../types";
 import { displayTime } from "../../utils";
 import "./Question.scss";
 import QuestionHints from "./QuestionHints/QuestionHints";
@@ -10,7 +10,7 @@ import QuestionInputs from "./QuestionInputs/QuestionInputs";
 import QuestionOptions from "./QuestionOptions/QuestionOptions";
 
 interface Props {
-  question: TQuestionInputFull,
+  question: TQuestionFull,
   changeCounter: (userAnswers: string[], time_taken: number, hints_used: number) => void,
   isLast: boolean,
 };

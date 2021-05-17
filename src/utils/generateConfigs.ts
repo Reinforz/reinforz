@@ -1,6 +1,6 @@
 import clone from "just-clone";
 import shortid from "shortid";
-import { TQuestionInputFull, TQuestionInputPartial } from '../types';
+import { TQuestionFull, TQuestionPartial } from '../types';
 
 
 function setObjectValues(
@@ -15,18 +15,18 @@ function setObjectValues(
 }
 
 export default function generateQuestionInputConfigs(
-  question: TQuestionInputPartial,
+  question: TQuestionPartial,
 ) {
   const logs: { warns: string[], errors: string[] } = { warns: [], errors: [] };
 
-  const questionFull: TQuestionInputFull = clone(question) as any;
+  const questionFull: TQuestionFull = clone(question) as any;
 
   ['question', 'answers'].forEach(field => {
     if ((questionFull as any)[field] === undefined) logs.errors.push(`Question ${field} is required`);
   })
 
-  questionFull.answers = questionFull.answers.map(answer => answer.toString());
   question.answers = question.answers.map(answer => answer.toString());
+
   if (questionFull.options && question.options) {
     questionFull.options = questionFull.options.map((option, i) => ({
       text: option.toString(),
@@ -63,14 +63,15 @@ export default function generateQuestionInputConfigs(
     if (questionFull.answers.length === 1) questionFull.type = questionFull.type || ((questionFull as any).options ? "MCQ" : "Snippet");
     else questionFull.type = questionFull.type || ((questionFull as any).options ? "MS" : "FIB");
 
-    questionFull.answers = questionFull.answers.map((answer: string) => answer.toString());
     switch (questionFull.type) {
       case "MCQ":
+        questionFull.answers = questionFull.answers.map((answer: string) => answer.toString());
         time_allocated = 15;
         if (!question.options) logs.errors.push(`Options must be provided for ${questionFull.type} questions`)
         if (parseInt(question.answers[0]) > (question as any).options.length - 1 || parseInt(question.answers[0]) < 0) logs.errors.push(`MCQ Answer must be within 0-${(question as any).options.length - 1}, provided ${questionFull.answers[0]}`);
         break;
       case "MS":
+        questionFull.answers = questionFull.answers.map((answer: string) => answer.toString());
         if (question.answers.length > (question as any).options.length) {
           logs.warns.push(`Provided more answers than options, truncating to ${(question as any).options.length}`);
           (question as any).answers.length = question.answers.length;
@@ -81,9 +82,11 @@ export default function generateQuestionInputConfigs(
         time_allocated = 30;
         break;
       case "Snippet":
+        questionFull.answers = questionFull.answers.map((answer) => ({...answer, text: answer.text.toString()}));
         time_allocated = 45;
         break;
       case "FIB":
+        questionFull.answers = questionFull.answers.map((answer) => ({...answer, text: answer.text.toString()}));
         time_allocated = 60;
         break;
     }

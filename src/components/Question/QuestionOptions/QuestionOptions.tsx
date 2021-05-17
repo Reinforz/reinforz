@@ -3,13 +3,13 @@ import DOMPurify from "dompurify";
 import marked from "marked";
 import React from 'react';
 import { useThemeSettings } from '../../../hooks';
-import { TQuestionInputFull } from '../../../types';
+import { TQuestionFull } from '../../../types';
 import "./QuestionOptions.scss";
 
 interface Props {
   setUserAnswers: (val: string[]) => any,
   userAnswers: string[],
-  question: TQuestionInputFull,
+  question: TQuestionFull,
 }
 
 export default function QuestionOptions(props: Props) {

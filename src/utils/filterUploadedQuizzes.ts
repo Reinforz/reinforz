@@ -1,13 +1,14 @@
 import shortid from "shortid";
 import { generateConfigs } from '.';
-import { IErrorLog, IQuizInputFull, IQuizInputPartial, TQuestionInputFull } from '../types';
+import { IErrorLog, IQuizFull, IQuizPartial, TQuestionFull } from '../types';
 
-export default function filterUploadedQuizzes(quizzes: IQuizInputPartial[]){
+export default function filterUploadedQuizzes(quizzes: IQuizPartial[]){
   const logMessages: IErrorLog[] = [];
-  const filteredUploadedQuizzes = quizzes.filter((quiz, index) => {
+  const filteredUploadedQuizzes: IQuizFull[] = [];
+  quizzes.forEach((quiz, index) => {
     if (quiz.title && quiz.subject && quiz.questions.length > 0) {
       quiz._id = shortid();
-      const generatedQuestions: TQuestionInputFull[] = [];
+      const generatedQuestions: TQuestionFull[] = [];
       quiz.questions.forEach((question, _index) => {
         const [generatedQuestion, logs] = generateConfigs(question);
         if (logs.errors.length === 0) {
@@ -22,7 +23,7 @@ export default function filterUploadedQuizzes(quizzes: IQuizInputPartial[]){
         })
       });
       quiz.questions = generatedQuestions as any;
-      return true
+      filteredUploadedQuizzes.push(quiz as any)
     } else {
       if (!quiz.title)
         logMessages.push({ _id: shortid(), level: "ERROR", quiz: `${quiz.subject} - ${quiz.title}`, target: `Quiz ${index + 1}`, message: "Quiz title absent" });
@@ -30,9 +31,8 @@ export default function filterUploadedQuizzes(quizzes: IQuizInputPartial[]){
         logMessages.push({ _id: shortid(), level: "ERROR", quiz: `${quiz.subject} - ${quiz.title}`, target: `Quiz ${index + 1}`, message: "Quiz subject absent" });
       if (quiz.questions.length <= 0)
         logMessages.push({ _id: shortid(), level: "ERROR", quiz: `${quiz.subject} - ${quiz.title}`, target: `Quiz ${index + 1}`, message: "Quiz must have atleast 1 question" });
-      return false
     }
-  }) as IQuizInputFull[];
+  });
 
   return [logMessages , filteredUploadedQuizzes] as const;
 }

@@ -1,8 +1,7 @@
 import shortid from "shortid";
-import { TQuestionInputFull } from "../types";
-import { checkTextAnswer } from "./";
+import { TQuestionFull } from "../types";
 
-export default function getAnswerResult (current_question: Pick<TQuestionInputFull, "weight" | "type" | "time_allocated" | "answers" | "options">, user_answers: string[], time_taken: number, hints_used: number, partial_score: boolean){
+export default function getAnswerResult (current_question: Pick<TQuestionFull, "weight" | "type" | "time_allocated" | "answers" | "options">, user_answers: string[], time_taken: number, hints_used: number, partial_score: boolean){
   let totalCorrectAnswers = 0;
   const { weight, time_allocated, answers } = current_question;
   user_answers = user_answers.filter(user_answer => user_answer !== "");
@@ -22,8 +21,9 @@ export default function getAnswerResult (current_question: Pick<TQuestionInputFu
       break;
     case "Snippet":
     case "FIB":
+      // ?: Fix answer checking
       verdict = user_answers.length === answers.length;
-      totalCorrectAnswers = checkTextAnswer(user_answers, answers);
+      totalCorrectAnswers = 1 /* checkTextAnswer(user_answers, answers) */;
       verdict = totalCorrectAnswers === answers.length;
       break;
   }

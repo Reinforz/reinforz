@@ -4,7 +4,7 @@ import React, { useContext } from 'react';
 import { DropzoneState, useDropzone } from 'react-dropzone';
 import styled from 'styled-components';
 import { useThemeSettings } from '../../../hooks';
-import { IQuizInputPartial } from '../../../types';
+import { IQuizPartial } from '../../../types';
 import { filterUploadedQuizzes } from "../../../utils";
 import { PlayContext } from '../Play';
 import "./PlayUpload.scss";
@@ -38,7 +38,7 @@ export default function PlayUpload() {
   const { theme } = useThemeSettings();
 
   const onDrop = (acceptedFiles: any) => {
-    let filePromises: Promise<IQuizInputPartial>[] = [];
+    let filePromises: Promise<IQuizPartial>[] = [];
 
     acceptedFiles.forEach((file: File) => {
       const reader = new FileReader();
