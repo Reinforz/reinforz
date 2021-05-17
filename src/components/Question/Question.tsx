@@ -4,6 +4,7 @@ import marked from "marked";
 import React, { useEffect, useState } from "react";
 import { ExtendedTheme, TQuestionFull } from "../../types";
 import { displayTime } from "../../utils";
+import FibQuestionDisplay from "./FibQuestionDisplay";
 import "./Question.scss";
 import QuestionHints from "./QuestionHints/QuestionHints";
 import QuestionInputs from "./QuestionInputs/QuestionInputs";
@@ -33,7 +34,7 @@ export default function Question(props: Props) {
   }
 
   if (timeout === 0) {
-    onNextButtonPress()
+    // onNextButtonPress()
   }
 
   useEffect(() => {
@@ -48,9 +49,11 @@ export default function Question(props: Props) {
 
 
   return <div className="Question">
-    <div className="Question-question" style={{ gridArea: image ? `1/1/2/2` : `1/1/2/3` }} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked(Array.isArray(question) ? question.join(" _ ") : question)) }}></div>
+    {props.question.type === "FIB" ? <FibQuestionDisplay question={props.question.question} userAnswers={userAnswers} image={props.question.image} /> : <div className="Question-question" style={{ gridArea: image ? `1/1/2/2` : `1/1/2/3` }} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked(Array.isArray(question) ? question.join(" _ ") : question)) }}></div>}
     {image && <div className="Question-image" style={{ gridArea: `1/2/2/3` }}><img src={image} alt="Question" /></div>}
-    {props.question.type === "MCQ" || props.question.type === "MS" ? <QuestionOptions setUserAnswers={setUserAnswers} userAnswers={userAnswers} question={props.question} /> : <QuestionInputs setUserAnswers={setUserAnswers} userAnswers={userAnswers} question={props.question} />}
+    {props.question.type === "MCQ" || props.question.type === "MS"
+      ? <QuestionOptions setUserAnswers={setUserAnswers} userAnswers={userAnswers} question={props.question} />
+      : <QuestionInputs setUserAnswers={setUserAnswers} userAnswers={userAnswers} question={props.question} />}
     <QuestionHints usedHints={usedHints} setUsedHints={setUsedHints} hints={hints} />
     {timeout && <div style={{ display: 'flex', gridArea: `3/2/4/3`, alignItems: `center`, height: '65px' }}>
       <Button className="QuestionButton" variant="contained" color="primary" onClick={onNextButtonPress}>{!isLast ? "Next" : "Report"}</Button>
