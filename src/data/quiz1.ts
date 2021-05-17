@@ -55,7 +55,7 @@ export const QUIZ_1: IQuizInputFull = {
       "difficulty": "Beginner",
       "language": "javascript",
       "type": "Snippet",
-      "time_allocated": 60,
+      "time_allocated": 120,
       "_id": "ln5zMGBRPU",
       "quiz": {
         "subject": "Dart",

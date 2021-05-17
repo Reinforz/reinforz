@@ -5,5 +5,5 @@ export function createDefaultPlaySettingsOptionsState(){
 }
 
 export function createDefaultPlaySettingsFiltersState(){
-  return { time_allocated: [15, 60], excluded_difficulty: [], excluded_types: [] } as IPlaySettingsFiltersState
+  return { time_allocated: [15, 120], excluded_difficulty: [], excluded_types: [] } as IPlaySettingsFiltersState
 }

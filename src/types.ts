@@ -3,8 +3,6 @@ import { Language } from "prism-react-renderer";
 
 // Basic Components
 
-export type ListAction = "add" | "remove";
-
 interface Table_RowsCommonProps {
   collapseContents?: string[]
   transformValue?: (header: string, content: any) => string
@@ -29,12 +27,6 @@ export interface TableHeaderProps {
   collapseContents?: string[]
   onHeaderClick: (header: string, order: "ASC" | "DESC") => any,
 }
-
-export interface TimerState {
-  timeout: number,
-  timer: undefined | number
-}
-
 
 export interface IErrorLog {
   quiz: string,
@@ -90,32 +82,29 @@ export interface IQuestionInputPartial{
   hints?: string[],
   language?: Language,
   _id?: string,
+  answers: string[],
 }
 export interface IMcqQuestionInputPartial extends IQuestionInputPartial{
   question: string,
   options: string[],
-  answers: string[],
   type?: "MCQ"
 }
 
 export interface IMsQuestionInputPartial extends IQuestionInputPartial{
   question: string,
   options: string[],
-  answers: string[],
   type?: "MS"
 }
 
 export interface ISnippetQuestionInputPartial extends IQuestionInputPartial{
   question: string,
   options: undefined,
-  answers: string[],
   type?: "Snippet"
 }
 
 export interface IFibQuestionInputPartial extends IQuestionInputPartial{
   question: string[],
   options: undefined,
-  answers: string[],
   type?: "FIB"
 }
 
@@ -244,17 +233,5 @@ export interface MenuRProps {
   MenuComponent: JSX.Element,
   MenuExtra: {
     content_elem_style: any
-  }
-}
-
-export interface ToggleItemsRProps {
-  ToggleButton: JSX.Element,
-  ToggleItems: JSX.Element,
-  ToggleItemsUtils: {
-    getNextIndex: () => void
-  },
-  ToggleItemsState: {
-    current_index: number,
-    is_disabled: boolean
   }
 }
