@@ -5,18 +5,18 @@ import { TQuestionInputFull } from '../../../types';
 import "./QuestionOptions.scss";
 
 interface Props {
-  changeOption: (val: string[]) => any,
-  user_answers: string[],
+  setUserAnswers: (val: string[]) => any,
+  userAnswers: string[],
   question: TQuestionInputFull,
 }
 
 export default function QuestionOptions(props: Props) {
   const { theme } = useThemeSettings();
-  const { changeOption, user_answers, question: { _id, type } } = props;
+  const { setUserAnswers, userAnswers, question: { _id, type } } = props;
   const generateOptions = () => {
     switch (props.question.type) {
       case "MCQ": {
-        return <RadioGroup className="QuestionOptions-container QuestionOptions-container--MCQ" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }} defaultValue={undefined} value={user_answers[0] === '' ? [''] : user_answers[0]} onChange={e => changeOption([e.target.value])}>
+        return <RadioGroup className="QuestionOptions-container QuestionOptions-container--MCQ" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }} defaultValue={undefined} value={userAnswers[0] === '' ? [''] : userAnswers[0]} onChange={e => setUserAnswers([e.target.value])}>
           {props.question.options.map((option, i) => {
             return <div key={`${_id}option${i}`} className="QuestionOptions-container-item" style={{ backgroundColor: theme.color.base }}>
               <FormControlLabel
@@ -32,27 +32,20 @@ export default function QuestionOptions(props: Props) {
       case "MS": {
         return <FormGroup className="QuestionOptions-container QuestionOptions-container--MS" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }} onChange={(e: any) => {
           if (e.target.checked)
-            changeOption(user_answers.concat(e.target.value))
+            setUserAnswers(userAnswers.concat(e.target.value))
           else
-            changeOption(user_answers.filter(user_answer => user_answer !== e.target.value));
+            setUserAnswers(userAnswers.filter(user_answer => user_answer !== e.target.value));
         }}>
           {props.question.options.map((option, i) => {
             return <div key={`${_id}option${i}`} className={`QuestionOptions-container-item`} style={{ backgroundColor: theme.color.base }}>
               <FormControlLabel
-                control={<Checkbox checked={user_answers.includes(`${i}`)} value={`${i}`} color="primary" />}
+                control={<Checkbox checked={userAnswers.includes(`${i}`)} value={`${i}`} color="primary" />}
                 label={option}
               /></div>
           })}
         </FormGroup>
       }
     }
-
-    /* else if (type === "Snippet")
-      return <div className="QuestionOptions-container QuestionOptions-container--Snippet" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}><div className={`QuestionOptions-container-item`} style={{ backgroundColor: theme.color.base }}>
-      <TextField fullWidth value={user_answers[0]} onChange={e => {
-        user_answers[0] = e.target.value;
-        changeOption([...user_answers])
-    }} /></div></div> */
   }
 
   return (

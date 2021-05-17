@@ -38,7 +38,7 @@ export const QUIZ_1: IQuizInputFull = {
       }
     }, */
     {
-      "question": "Create and checkout to a branch named `main`",
+      "question": "Write a code to\nCreate and checkout to a branch named `main`",
       "answers": [
         "git checkout -b main"
       ],

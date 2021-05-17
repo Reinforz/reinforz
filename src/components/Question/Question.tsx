@@ -12,14 +12,14 @@ interface Props {
 
 export default function Question(props: Props) {
   const { changeCounter, isLast, question: { type, time_allocated } } = props;
-  const [userAnswers, changeUserAnswers] = useState<string[]>([]);
+  const [userAnswers, setUserAnswers] = useState<string[]>([]);
   const [usedHints, setUsedHints] = useState<string[]>([]);
   const [timeout, setTimeout] = useState(time_allocated);
 
   const onNextButtonPress = () => {
     setTimeout(props.question.time_allocated)
     changeCounter(userAnswers, time_allocated - timeout, usedHints.length)
-    changeUserAnswers([])
+    setUserAnswers([])
     setUsedHints([])
   }
 
@@ -36,6 +36,7 @@ export default function Question(props: Props) {
     }, 1000);
     return () => {
       clearInterval(timer);
+      onNextButtonPress()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.question])
@@ -61,11 +62,11 @@ export default function Question(props: Props) {
   switch (type) {
     case "FIB":
     case "Snippet": {
-      return <InputQuestion />
+      return <InputQuestion currentTime={timeout} changeCounter={onNextButtonPress} isLast={isLast} usedHints={usedHints} setUsedHints={setUsedHints} question={props.question} userAnswers={userAnswers} setUserAnswers={setUserAnswers} />
     }
     case "MCQ":
     case "MS": {
-      return <ChoiceQuestion currentTime={timeout} changeCounter={onNextButtonPress} isLast={isLast} usedHints={usedHints} setUsedHints={setUsedHints} question={props.question} userAnswers={userAnswers} changeUserAnswers={changeUserAnswers} />
+      return <ChoiceQuestion currentTime={timeout} changeCounter={onNextButtonPress} isLast={isLast} usedHints={usedHints} setUsedHints={setUsedHints} question={props.question} userAnswers={userAnswers} setUserAnswers={setUserAnswers} />
     }
   }
 }
