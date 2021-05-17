@@ -190,9 +190,7 @@ export interface Result {
   difficulty: TQuestionDifficulty,
   _id: string,
   question_id: string,
-  quiz: string,
-  subject: string,
-  quizId: string,
+  quiz: QuizIdentifiers
   weight: number
 }
 
