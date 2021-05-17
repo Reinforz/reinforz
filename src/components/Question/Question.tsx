@@ -34,7 +34,7 @@ export default function Question(props: Props) {
   }
 
   if (timeout === 0) {
-    // onNextButtonPress()
+    onNextButtonPress()
   }
 
   useEffect(() => {

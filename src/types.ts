@@ -178,15 +178,6 @@ export interface QuizIdentifiers {
   subject: string
 }
 
-export type AnswerModifier = "IS" | "IC"
-
-export type IQuestionAnswerModifiers = Array<Array<string> | null>
-export interface IQuestionAnswerNode {
-  answers: Record<string, string>,
-}
-
-export type QuestionAnswersNodes = Array<IQuestionAnswerNode>
-
 export interface IResult {
   user_answers: string[],
   verdict: boolean,
@@ -202,13 +193,6 @@ export interface ISnippetQuestionResult extends ISnippetQuestionFull, IResult{}
 export interface IFibQuestionResult extends IFibQuestionFull, IResult{}
 export type TQuestionResult = IMsQuestionResult | IMcqQuestionResult | ISnippetQuestionResult | IFibQuestionResult;
 
-export interface ReportProps {
-  results: TQuestionResult[],
-  all_questions_map: Record<string, TQuestionFull>,
-  selected_quizzes: QuizIdentifiers[],
-  setResults: (results: any[]) => any
-}
-
 export interface IReportFilterState {
   time_taken: [number, number],
   verdict: boolean | 'mixed',
@@ -217,11 +201,6 @@ export interface IReportFilterState {
   excluded_difficulty: TQuestionDifficulty[],
   excluded_quizzes: string[],
   excluded_columns: string[]
-}
-
-export interface ReportFilterRProps {
-  ReportFilterState: IReportFilterState,
-  ReportFilter: JSX.Element
 }
 
 export interface ReportExportProps {

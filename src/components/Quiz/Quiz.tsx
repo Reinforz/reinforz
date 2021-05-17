@@ -1,4 +1,5 @@
 import React, { Fragment, useContext, useState } from "react";
+import { RESULTS_DATA } from "../../data/results";
 import { useCycle, useThemeSettings } from "../../hooks";
 import { Stats } from "../../shared";
 import { TQuestionFull, TQuestionResult } from "../../types";
@@ -9,8 +10,8 @@ import Report from "../Report/Report";
 import "./Quiz.scss";
 
 export default function Quiz() {
-  const { playSettings, selectedQuizzes, allQuestions } = useContext(PlayContext);
-  const [results, setResults] = useState([] as TQuestionResult[]);
+  const { playSettings, allQuestions } = useContext(PlayContext);
+  const [results, setResults] = useState(RESULTS_DATA as TQuestionResult[]);
   const { theme } = useThemeSettings();
   const { isLastItem, currentItem, getNextIndex, hasEnded, currentIndex } = useCycle(allQuestions);
 
@@ -18,7 +19,7 @@ export default function Quiz() {
     totalCorrectAnswers = results.filter(result => result.verdict).length;
 
   const generateContent = () => {
-    if (!hasEnded) {
+    if (hasEnded) {
       const currentQuestion = JSON.parse(JSON.stringify(currentItem)) as TQuestionFull;
       if (currentQuestion.options) {
         currentQuestion.options = playSettings.options.shuffle_options ? arrayShuffler(currentQuestion.options) : currentQuestion.options;
@@ -31,7 +32,7 @@ export default function Quiz() {
         }} />
       </Fragment>
     }
-    else return <Report setResults={setResults} selected_quizzes={selectedQuizzes as any} results={results} all_questions_map={allQuestions.reduce((acc, cur) => {
+    else return <Report setResults={setResults} results={results} all_questions_map={allQuestions.reduce((acc, cur) => {
       acc[cur._id] = cur;
       return acc;
     }, {} as any)} />
