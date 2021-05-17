@@ -2,7 +2,7 @@ import md5 from "md5";
 import React, { Fragment, useContext, useState } from "react";
 import { useCycle, useThemeSettings } from "../../hooks";
 import { Stats } from "../../shared";
-import { QuestionInputFull, Result } from "../../types";
+import { Result, TQuestionInputFull } from "../../types";
 import { arrayShuffler, getAnswerResult } from "../../utils";
 import { PlayContext } from "../Play/Play";
 import Question from "../Question/Question";
@@ -20,7 +20,7 @@ export default function Quiz() {
 
   const generateContent = () => {
     if (!hasEnded) {
-      const currentQuestion = JSON.parse(JSON.stringify(currentItem)) as QuestionInputFull;
+      const currentQuestion = JSON.parse(JSON.stringify(currentItem)) as TQuestionInputFull;
       const options_md5_map: Record<string, number> = {};
       if (currentQuestion.options) {
         currentQuestion.options.forEach((option, index) => options_md5_map[md5(option.toString())] = index);

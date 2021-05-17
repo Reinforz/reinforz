@@ -1,13 +1,13 @@
 import shortid from "shortid";
 import { generateConfigs } from '.';
-import { IErrorLog, QuestionInputFull, QuizInputFull, QuizInputPartial } from '../types';
+import { IErrorLog, IQuizInputFull, IQuizInputPartial, TQuestionInputFull } from '../types';
 
-export default function filterUploadedQuizzes(quizzes: QuizInputPartial[]){
+export default function filterUploadedQuizzes(quizzes: IQuizInputPartial[]){
   const logMessages: IErrorLog[] = [];
   const filteredUploadedQuizzes = quizzes.filter((quiz, index) => {
     if (quiz.title && quiz.subject && quiz.questions.length > 0) {
       quiz._id = shortid();
-      const generated_questions: QuestionInputFull[] = [];
+      const generated_questions: TQuestionInputFull[] = [];
       quiz.questions.forEach((question, _index) => {
         const [generatedQuestion, logs] = generateConfigs(question);
         if (logs.errors.length === 0) {
@@ -32,7 +32,7 @@ export default function filterUploadedQuizzes(quizzes: QuizInputPartial[]){
         logMessages.push({ _id: shortid(), level: "ERROR", quiz: `${quiz.subject} - ${quiz.title}`, target: `Quiz ${index + 1}`, message: "Quiz must have atleast 1 question" });
       return false
     }
-  }) as QuizInputFull[];
+  }) as IQuizInputFull[];
 
   return [logMessages , filteredUploadedQuizzes] as const;
 }

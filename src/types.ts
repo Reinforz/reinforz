@@ -125,7 +125,7 @@ export type ISnippetQuestionInputFull = Required<ISnippetQuestionInputPartial>
 export type IFibQuestionInputFull = Required<IFibQuestionInputPartial>
 
 export type TQuestionInputPartial = IFibQuestionInputPartial | ISnippetQuestionInputPartial | IMsQuestionInputPartial | IMcqQuestionInputPartial;
-export type TQuestionInputFull = IFibQuestionInputFull | ISnippetQuestionInputFull | IMsQuestionInputFull | IMcqQuestionInputFull;
+export type TQuestionInputFull = (IFibQuestionInputFull | ISnippetQuestionInputFull | IMsQuestionInputFull | IMcqQuestionInputFull ) & {quiz: QuizIdentifiers};
 
 export interface HighlighterProps {
   code: string,

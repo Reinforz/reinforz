@@ -1,9 +1,9 @@
 import md5 from "md5";
 import shortid from "shortid";
-import { QuestionInputFull } from "../types";
+import { TQuestionInputFull } from "../types";
 import { checkTextAnswer } from "./";
 
-export default function getAnswerResult (current_question: QuestionInputFull, user_answers: string[], time_taken: number, hints_used: number, options_md5_map: Record<string, number>, partial_score: boolean){
+export default function getAnswerResult (current_question: TQuestionInputFull, user_answers: string[], time_taken: number, hints_used: number, options_md5_map: Record<string, number>, partial_score: boolean){
   let total_correct_answers = 0;
   const { quiz: { title, _id: quizId, subject }, difficulty, _id, weight, type, question, format, time_allocated, answers, explanation } = current_question;
   user_answers = user_answers.filter(user_answer => user_answer !== "");

@@ -2,7 +2,7 @@ import { Button, useTheme } from "@material-ui/core";
 import createDOMPurify from 'dompurify';
 import marked from "marked";
 import React from "react";
-import { ExtendedTheme, QuestionInputFull } from "../../types";
+import { ExtendedTheme, TQuestionInputFull } from "../../types";
 import { displayTime } from "../../utils";
 import QuestionHints from "./QuestionHints/QuestionHints";
 import QuestionOptions from "./QuestionOptions/QuestionOptions";
@@ -10,7 +10,7 @@ import QuestionOptions from "./QuestionOptions/QuestionOptions";
 const DOMPurify = createDOMPurify(window);
 
 interface Props {
-  question: QuestionInputFull
+  question: TQuestionInputFull
   userAnswers: string[]
   changeUserAnswers: React.Dispatch<React.SetStateAction<string[]>>
   usedHints: string[]

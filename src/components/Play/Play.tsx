@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { QUIZ_1 } from "../../data/quiz1";
 import { List } from "../../shared";
 import {
-  IErrorLog, IPlaySettings, QuestionInputFull,
-  QuizInputFull
+  IErrorLog, IPlaySettings, IQuizInputFull, TQuestionInputFull
 } from "../../types";
 import { createDefaultPlaySettingsFiltersState, createDefaultPlaySettingsOptionsState } from "../../utils";
 import shuffle from "../../utils/arrayShuffler";
@@ -17,16 +16,16 @@ import PlayUpload from "./PlayUpload/PlayUpload";
 interface IPlayContext {
   playing: boolean
   setPlaying: React.Dispatch<React.SetStateAction<boolean>>
-  uploadedQuizzes: QuizInputFull[],
-  setUploadedQuizzes: React.Dispatch<React.SetStateAction<QuizInputFull[]>>
+  uploadedQuizzes: IQuizInputFull[],
+  setUploadedQuizzes: React.Dispatch<React.SetStateAction<IQuizInputFull[]>>
   selectedQuizzes: string[],
   setSelectedQuizzes: React.Dispatch<React.SetStateAction<string[]>>
-  filteredQuizzes: QuizInputFull[],
+  filteredQuizzes: IQuizInputFull[],
   errorLogs: IErrorLog[],
   setErrorLogs: React.Dispatch<React.SetStateAction<IErrorLog[]>>
   playSettings: IPlaySettings
   setPlaySettings: React.Dispatch<React.SetStateAction<IPlaySettings>>
-  allQuestions: QuestionInputFull[]
+  allQuestions: TQuestionInputFull[]
 }
 
 const quizzes = [
@@ -45,7 +44,7 @@ function Play() {
   });
 
   const [playing, setPlaying] = useState(true);
-  const [uploadedQuizzes, setUploadedQuizzes] = useState<QuizInputFull[]>(quizzes);
+  const [uploadedQuizzes, setUploadedQuizzes] = useState<IQuizInputFull[]>(quizzes);
   const [selectedQuizzes, setSelectedQuizzes] = useState<string[]>([QUIZ_1._id]);
   const [errorLogs, setErrorLogs] = useState<IErrorLog[]>([]);
 
@@ -53,7 +52,7 @@ function Play() {
 
   if (playSettings.options.shuffle_quizzes && !playSettings.options.flatten_mix) filteredQuizzes = shuffle(filteredQuizzes);
   if (playSettings.options.shuffle_questions && !playSettings.options.flatten_mix) filteredQuizzes.forEach(quiz => quiz.questions = shuffle(quiz.questions));
-  const allQuestions: QuestionInputFull[] = [];
+  const allQuestions: TQuestionInputFull[] = [];
   filteredQuizzes.forEach(filteredQuiz => {
     filteredQuiz.questions = filteredQuiz.questions.filter(question => !playSettings.filters.excluded_difficulty.includes(question.difficulty) && !playSettings.filters.excluded_types.includes(question.type) && playSettings.filters.time_allocated[0] <= question.time_allocated && playSettings.filters.time_allocated[1] >= question.time_allocated);
     allQuestions.push(...filteredQuiz.questions)

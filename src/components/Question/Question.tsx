@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { QuestionInputFull } from "../../types";
+import { TQuestionInputFull } from "../../types";
 import { ChoiceQuestion } from "./ChoiceQuestion";
 import { InputQuestion } from "./InputQuestion";
 import "./Question.scss";
 
 interface Props {
-  question: QuestionInputFull,
+  question: TQuestionInputFull,
   changeCounter: (userAnswers: string[], time_taken: number, hints_used: number) => void,
   isLast: boolean,
 };

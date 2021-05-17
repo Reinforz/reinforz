@@ -1,6 +1,6 @@
-import { QuizInputFull } from "../types";
+import { IQuizInputFull } from "../types";
 
-export const QUIZ_1: QuizInputFull = {
+export const QUIZ_1: IQuizInputFull = {
   "title": "Dart Basic Types",
   "subject": "Dart",
   "questions": [

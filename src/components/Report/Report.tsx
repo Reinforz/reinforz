@@ -4,7 +4,7 @@ import React, { Fragment, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useThemeSettings } from '../../hooks';
 import { Menu, Table } from "../../shared";
-import { MenuRProps, QuestionInputFull, QuizInputFull, ReportFilterRProps, ReportProps } from "../../types";
+import { IQuizInputFull, MenuRProps, ReportFilterRProps, ReportProps, TQuestionInputFull } from "../../types";
 import { PlayContext } from '../Play/Play';
 import "./Report.scss";
 import ReportExport from './ReportExport/ReportExport';
@@ -54,10 +54,10 @@ export default function Report(props: ReportProps) {
         {({ ReportFilterState, ReportFilter }: ReportFilterRProps) => {
           const { excluded_types, excluded_quizzes, excluded_difficulty, verdict, hints_used, time_taken } = ReportFilterState;
           const filtered_results = props.results.filter(result => !excluded_types.includes(result.type) && !excluded_difficulty.includes(result.difficulty) && (verdict === "mixed" || verdict.toString() === result.verdict?.toString()) && (hints_used === "any" || result.hints_used <= hints_used) && time_taken[0] <= result.time_taken && time_taken[1] >= result.time_taken && !excluded_quizzes.includes(result.quizId))
-          const filtered_quizzes: Record<string, QuizInputFull> = {};
+          const filtered_quizzes: Record<string, IQuizInputFull> = {};
           filtered_results.forEach(filtered_result => {
             const target_question = props.all_questions_map[filtered_result.question_id]
-            const obj = clone(target_question) as QuestionInputFull;
+            const obj = clone(target_question) as TQuestionInputFull;
 
             if (!filtered_quizzes[target_question.quiz._id]) filtered_quizzes[target_question.quiz._id] = {
               title: target_question.quiz.title,
@@ -66,7 +66,7 @@ export default function Report(props: ReportProps) {
               questions: [
                 obj
               ]
-            } as QuizInputFull;
+            } as IQuizInputFull;
             else filtered_quizzes[target_question.quiz._id].questions.push(obj)
             return obj;
           });

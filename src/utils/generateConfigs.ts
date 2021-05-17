@@ -1,6 +1,6 @@
 import clone from "just-clone";
 import shortid from "shortid";
-import { QuestionInputFull, QuestionInputPartial } from '../types';
+import { TQuestionInputFull, TQuestionInputPartial } from '../types';
 
 
 function setObjectValues(
@@ -15,7 +15,7 @@ function setObjectValues(
 }
 
 export default function generateQuestionInputConfigs(
-  question: QuestionInputPartial,
+  question: TQuestionInputPartial,
 ) {
   const logs: { warns: string[], errors: string[] } = { warns: [], errors: [] };
 
@@ -149,5 +149,5 @@ export default function generateQuestionInputConfigs(
       (res as any).difficulty = "Beginner";
     }
   }
-  return [res as QuestionInputFull, logs] as [QuestionInputFull, { warns: string[], errors: string[] }];
+  return [res as TQuestionInputFull, logs] as [TQuestionInputFull, { warns: string[], errors: string[] }];
 }
