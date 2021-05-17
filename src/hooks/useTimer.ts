@@ -9,8 +9,11 @@ export default function useTimer(limit: number, onTimerEnd: any) {
         setTimeout((seconds) => {
           return seconds - 1
         })
-      else
-        onTimerEnd()
+      else{
+        setTimeout(0)
+        onTimerEnd();
+        clearInterval(timer);
+      }
     }, 1000);
     return () => {
       clearInterval(timer);

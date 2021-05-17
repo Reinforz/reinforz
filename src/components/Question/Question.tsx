@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { useTimer } from '../../hooks';
+import React, { useEffect, useState } from "react";
 import { QuestionInputFull } from "../../types";
 import { ChoiceQuestion } from "./ChoiceQuestion";
 import { FIBQuestion } from "./FIBQuestion";
@@ -16,7 +15,31 @@ export default function Question(props: Props) {
   const { changeCounter, isLast, question: { type, time_allocated } } = props;
   const [userAnswers, changeUserAnswers] = useState<string[]>([]);
   const [usedHints, setUsedHints] = useState<string[]>([]);
-  const { timeout } = useTimer(time_allocated, changeCounter);
+  const [timeout, setTimeout] = useState(time_allocated);
+
+  const onNextButtonPress = () => {
+    setTimeout(props.question.time_allocated)
+    changeCounter(userAnswers, time_allocated - timeout, usedHints.length)
+    changeUserAnswers([])
+    setUsedHints([])
+  }
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (timeout !== 0)
+        setTimeout((seconds) => {
+          return seconds - 1
+        })
+      else {
+        clearInterval(timer);
+        onNextButtonPress()
+      }
+    }, 1000);
+    return () => {
+      clearInterval(timer);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.question])
 
   // const generateQuestion = () => {
   //   if (format === "code") return <QuestionHighlighter image={image} answers={answers} fibRefs={fibRefs} type={type} language={language} code={question} />
@@ -43,9 +66,7 @@ export default function Question(props: Props) {
     case "MCQ":
     case "MS": {
       return <ChoiceQuestion currentTime={timeout} changeCounter={(userAnswers, time_taken, hints_used) => {
-        changeCounter(userAnswers, time_taken, hints_used)
-        changeUserAnswers([])
-        setUsedHints([])
+        onNextButtonPress()
       }} isLast={isLast} usedHints={usedHints} setUsedHints={setUsedHints} question={props.question} userAnswers={userAnswers} changeUserAnswers={changeUserAnswers} />
     }
     case "Snippet": {
