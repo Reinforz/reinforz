@@ -1,8 +1,13 @@
+import { Button, useTheme } from "@material-ui/core";
+import DOMPurify from "dompurify";
+import marked from "marked";
 import React, { useEffect, useState } from "react";
-import { TQuestionInputFull } from "../../types";
-import { ChoiceQuestion } from "./ChoiceQuestion";
-import { InputQuestion } from "./InputQuestion";
+import { ExtendedTheme, TQuestionInputFull } from "../../types";
+import { displayTime } from "../../utils";
 import "./Question.scss";
+import QuestionHints from "./QuestionHints/QuestionHints";
+import QuestionInputs from "./QuestionInputs/QuestionInputs";
+import QuestionOptions from "./QuestionOptions/QuestionOptions";
 
 interface Props {
   question: TQuestionInputFull,
@@ -11,10 +16,11 @@ interface Props {
 };
 
 export default function Question(props: Props) {
-  const { changeCounter, isLast, question: { type, time_allocated } } = props;
+  const { changeCounter, isLast, question: { type, image, hints, question, time_allocated } } = props;
   const [userAnswers, setUserAnswers] = useState<string[]>([]);
   const [usedHints, setUsedHints] = useState<string[]>([]);
   const [timeout, setTimeout] = useState(time_allocated);
+  const theme = useTheme() as ExtendedTheme;
 
   const onNextButtonPress = () => {
     setTimeout(props.question.time_allocated)
@@ -41,32 +47,15 @@ export default function Question(props: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.question])
 
-  // const generateQuestion = () => {
-  //   if (format === "code") return <QuestionHighlighter image={image} answers={answers} fibRefs={fibRefs} type={type} language={language} code={question} />
-  //   else {
-  //     if (type !== "FIB") return <div className="Question-question" style={{ color: theme.palette.text.primary, backgroundColor: theme.color.dark, width: image ? "50%" : "100%" }} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked(question.toString())) }} />;
-  //     else {
-  //       const messages: string[] = question.split("%_%");
-  //       return <div className="Question-question" style={{ color: theme.palette.text.primary, backgroundColor: theme.color.dark }}>
-  //         {messages.map((message, i) => {
-  //           return <Fragment key={`${_id}option${i}`}>
-  //             <span className="Question-question--FIB" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked(message.toString())) }} />
-  //             {i !== messages.length - 1 && <input style={{ color: theme.palette.text.primary, backgroundColor: theme.color.light }} spellCheck={false} className="Highlighter-FIB-Code" />}
-  //           </Fragment>
-  //         })}
-  //       </div>
-  //     }
-  //   }
-  // }
 
-  switch (type) {
-    case "FIB":
-    case "Snippet": {
-      return <InputQuestion currentTime={timeout} changeCounter={onNextButtonPress} isLast={isLast} usedHints={usedHints} setUsedHints={setUsedHints} question={props.question} userAnswers={userAnswers} setUserAnswers={setUserAnswers} />
-    }
-    case "MCQ":
-    case "MS": {
-      return <ChoiceQuestion currentTime={timeout} changeCounter={onNextButtonPress} isLast={isLast} usedHints={usedHints} setUsedHints={setUsedHints} question={props.question} userAnswers={userAnswers} setUserAnswers={setUserAnswers} />
-    }
-  }
+  return <div className="Question">
+    <div className="Question-question" style={{ gridArea: image ? `1/1/2/2` : `1/1/2/3` }} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked(question.toString())) }}></div>
+    {image && <div className="Question-image" style={{ gridArea: `1/2/2/3` }}><img src={image} alt="Question" /></div>}
+    {type.match(/(MCQ|MS)/) ? <QuestionOptions setUserAnswers={setUserAnswers} userAnswers={userAnswers} question={props.question} /> : <QuestionInputs setUserAnswers={setUserAnswers} userAnswers={userAnswers} question={props.question} />}
+    <QuestionHints usedHints={usedHints} setUsedHints={setUsedHints} hints={hints} />
+    <div style={{ display: 'flex', gridArea: `3/2/4/3`, alignItems: `center`, height: '65px' }}>
+      <Button className="QuestionButton" variant="contained" color="primary" onClick={onNextButtonPress}>{!isLast ? "Next" : "Report"}</Button>
+      <div style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }} className="QuestionTimer">{displayTime(timeout)}</div>
+    </div>
+  </div>
 }
