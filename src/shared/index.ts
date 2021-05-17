@@ -1,3 +1,4 @@
+import CheckboxGroup from "./CheckboxGroup";
 import Cycle from "./Cycle";
 import Highlighter from "./Highlighter";
 import Icon from "./Icon";
@@ -10,6 +11,7 @@ import Toggles from "./Toggles";
 import View from "./View";
 
 export {
+  CheckboxGroup,
   Toggles,
   View,
   Cycle,

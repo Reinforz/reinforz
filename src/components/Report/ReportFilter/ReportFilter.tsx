@@ -1,6 +1,7 @@
-import { Button, Checkbox, FormControlLabel, FormGroup, InputLabel, MenuItem, Radio, RadioGroup, Select, TextField } from '@material-ui/core';
+import { Button, FormControlLabel, FormGroup, InputLabel, MenuItem, Radio, RadioGroup, Select, TextField } from '@material-ui/core';
 import React, { useContext, useState } from "react";
-import { IReportFilterState, TQuestionDifficulty, TQuestionType } from "../../../types";
+import { CheckboxGroup } from '../../../shared';
+import { IReportFilterState } from "../../../types";
 import { createDefaultReportFilterState } from '../../../utils';
 import { PlayContext } from '../../Play/Play';
 import "./ReportFilter.scss";
@@ -39,30 +40,8 @@ export default function ReportFilter() {
         setReportFilterState({ ...report_filter_state, hints_used: e.target.value })
       }} key={hints + index} value={hints} control={<Radio color="primary" />} label={hints} />)}
     </RadioGroup>
-    <FormGroup>
-      <InputLabel>Exluded Difficulty</InputLabel>
-      {['Beginner', 'Intermediate', 'Advanced'].map((difficulty, index) => <FormControlLabel key={difficulty + index} label={difficulty} control={<Checkbox checked={report_filter_state.excluded_difficulty.includes(difficulty as TQuestionDifficulty)} name={difficulty} onChange={(e) => {
-        if ((e.target as any).checked) {
-          setReportFilterState({ ...report_filter_state, excluded_difficulty: report_filter_state.excluded_difficulty.concat(difficulty as TQuestionDifficulty) });
-        }
-        else {
-          setReportFilterState({ ...report_filter_state, excluded_difficulty: report_filter_state.excluded_difficulty.filter(excluded_difficulty => excluded_difficulty !== difficulty) })
-        }
-      }}
-        color="primary" />} />)}
-    </FormGroup>
-    <FormGroup>
-      <InputLabel>Exluded Type</InputLabel>
-      {['FIB', 'MS', 'MCQ', "Snippet"].map((type, index) => <FormControlLabel key={type + index} label={type} control={<Checkbox checked={report_filter_state.excluded_types.includes(type as TQuestionType)} name={type} onChange={(e) => {
-        if ((e.target as any).checked) {
-          setReportFilterState({ ...report_filter_state, excluded_types: report_filter_state.excluded_types.concat(type as TQuestionType) });
-        }
-        else {
-          setReportFilterState({ ...report_filter_state, excluded_types: report_filter_state.excluded_types.filter(excluded_type => excluded_type !== type) })
-        }
-      }}
-        color="primary" />} />)}
-    </FormGroup>
+    <CheckboxGroup label={'Excluded Difficulty'} items={['Beginner', 'Intermediate', 'Advanced']} setState={setReportFilterState} stateKey={'excluded_difficulty'} state={report_filter_state} />
+    <CheckboxGroup label={'Excluded Type'} items={['FIB', 'MS', 'MCQ', "Snippet"]} setState={setReportFilterState} stateKey={'excluded_types'} state={report_filter_state} />
     <FormGroup>
       <InputLabel>Exluded Quizzes</InputLabel>
       <Select value={report_filter_state.excluded_quizzes}
