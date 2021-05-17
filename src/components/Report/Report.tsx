@@ -1,3 +1,4 @@
+import { Button } from '@material-ui/core';
 import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { IQuizFull, TQuestionFull, TQuestionResult } from "../../types";
@@ -76,13 +77,14 @@ export default function Report(props: Props) {
           props.setResults(filtered_results.sort((a, b) => order === "DESC" ? (a as any)[header] - (b as any)[header] : (b as any)[header] - (a as any)[header]))
         else if (header === "verdict") props.setResults(filtered_results.sort((a, b) => order === "DESC" ? (a as any)[header] === false ? -1 : 1 : (a as any)[header] === true ? -1 : 1))
         else props.setResults(filtered_results.sort((a, b) => order === "DESC" ? (a as any)[header] > (b as any)[header] ? -1 : 1 : (a as any)[header] < (b as any)[header] ? -1 : 1))
-      }} />
-
-      <Button className="Report-buttons-item" variant="contained" color="primary" onClick={() => {
-        localStorage.setItem("REPORT_FILTERS", JSON.stringify(ReportFilterState))
-        setPlaying(false);
-        setUploadedQuizzes(Object.values(filtered_quizzes))
-        setSelectedQuizzes(Object.values(filtered_quizzes).map(quiz => quiz._id))
-      }}>Back to Home</Button> */}
+      }} /> */}
+      <div className="ReportBackButton">
+        <Button variant="contained" color="primary" onClick={() => {
+          localStorage.setItem("REPORT_FILTERS", JSON.stringify(reportFilter))
+          setPlaying(false);
+          setUploadedQuizzes(Object.values(filteredQuizzes))
+          setSelectedQuizzes(Object.values(filteredQuizzes).map(quiz => quiz._id))
+        }}>Back to Home</Button>
+      </div>
     </div>)
 }
