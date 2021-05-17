@@ -48,7 +48,7 @@ export default function Question(props: Props) {
 
 
   return <div className="Question">
-    <div className="Question-question" style={{ gridArea: image ? `1/1/2/2` : `1/1/2/3` }} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked(question.toString())) }}></div>
+    <div className="Question-question" style={{ gridArea: image ? `1/1/2/2` : `1/1/2/3` }} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked(Array.isArray(question) ? question.join(" _ ") : question)) }}></div>
     {image && <div className="Question-image" style={{ gridArea: `1/2/2/3` }}><img src={image} alt="Question" /></div>}
     {type.match(/(MCQ|MS)/) ? <QuestionOptions setUserAnswers={setUserAnswers} userAnswers={userAnswers} question={props.question} /> : <QuestionInputs setUserAnswers={setUserAnswers} userAnswers={userAnswers} question={props.question} />}
     <QuestionHints usedHints={usedHints} setUsedHints={setUsedHints} hints={hints} />

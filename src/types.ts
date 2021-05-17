@@ -58,8 +58,11 @@ export interface IQuizInputPartial {
   _id: string,
 }
 
-export interface IQuizInputFull extends Required<IQuizInputPartial> {
-  questions: TQuestionInputFull[]
+export interface IQuizInputFull {
+  title: string,
+  subject: string,
+  questions: TQuestionInputFull[],
+  _id: string,
 }
 
 export interface IPlaySettings {
@@ -82,36 +85,65 @@ export interface IQuestionInputPartial{
   hints?: string[],
   language?: Language,
   _id?: string,
-  answers: string[],
+  answers: string[]
 }
+
+export interface SelectionQuestionOptions {
+  text: string
+  isCorrect: boolean
+}
+
 export interface IMcqQuestionInputPartial extends IQuestionInputPartial{
   question: string,
   options: string[],
-  type?: "MCQ"
+  type?: "MCQ",
 }
 
 export interface IMsQuestionInputPartial extends IQuestionInputPartial{
   question: string,
   options: string[],
-  type?: "MS"
+  type?: "MS",
 }
 
 export interface ISnippetQuestionInputPartial extends IQuestionInputPartial{
   question: string,
   options: undefined,
-  type?: "Snippet"
+  type?: "Snippet",
 }
 
 export interface IFibQuestionInputPartial extends IQuestionInputPartial{
   question: string[],
   options: undefined,
-  type?: "FIB"
+  type?: "FIB",
 }
 
-export type IMcqQuestionInputFull = Required<IMcqQuestionInputPartial>
-export type IMsQuestionInputFull = Required<IMsQuestionInputPartial>
-export type ISnippetQuestionInputFull = Required<ISnippetQuestionInputPartial>
-export type IFibQuestionInputFull = Required<IFibQuestionInputPartial>
+export interface IQuestionAnswer {
+  text: string
+}
+
+export interface IMcqQuestionInputFull extends Required<IQuestionInputPartial>{
+  question: string,
+  options: SelectionQuestionOptions[],
+  type: "MCQ",
+}
+
+export interface IMsQuestionInputFull extends Required<IQuestionInputPartial>{
+  question: string,
+  options: SelectionQuestionOptions[],
+  type: "MS",
+}
+
+export interface ISnippetQuestionInputFull extends Required<IQuestionInputPartial>{
+  question: string,
+  options: undefined,
+  type: "Snippet",
+}
+
+export interface IFibQuestionInputFull extends Required<IQuestionInputPartial>{
+  question: string[],
+  options: undefined,
+  type: "FIB",
+}
 
 export type TQuestionInputPartial = IFibQuestionInputPartial | ISnippetQuestionInputPartial | IMsQuestionInputPartial | IMcqQuestionInputPartial;
 export type TQuestionInputFull = (IFibQuestionInputFull | ISnippetQuestionInputFull | IMsQuestionInputFull | IMcqQuestionInputFull ) & {quiz: QuizIdentifiers};

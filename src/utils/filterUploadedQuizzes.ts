@@ -7,12 +7,12 @@ export default function filterUploadedQuizzes(quizzes: IQuizInputPartial[]){
   const filteredUploadedQuizzes = quizzes.filter((quiz, index) => {
     if (quiz.title && quiz.subject && quiz.questions.length > 0) {
       quiz._id = shortid();
-      const generated_questions: TQuestionInputFull[] = [];
+      const generatedQuestions: TQuestionInputFull[] = [];
       quiz.questions.forEach((question, _index) => {
         const [generatedQuestion, logs] = generateConfigs(question);
         if (logs.errors.length === 0) {
           generatedQuestion.quiz = { subject: quiz.subject, title: quiz.title, _id: quiz._id };
-          generated_questions.push(generatedQuestion);
+          generatedQuestions.push(generatedQuestion);
         }
         logs.warns.forEach(warn => {
           logMessages.push({ _id: shortid(), level: "WARN", quiz: `${quiz.subject} - ${quiz.title}`, target: `Question ${_index + 1}`, message: warn })
@@ -21,7 +21,7 @@ export default function filterUploadedQuizzes(quizzes: IQuizInputPartial[]){
           logMessages.push({ _id: shortid(), level: "ERROR", quiz: `${quiz.subject} - ${quiz.title}`, target: `Question ${_index + 1}`, message: error })
         })
       });
-      quiz.questions = generated_questions;
+      quiz.questions = generatedQuestions as any;
       return true
     } else {
       if (!quiz.title)

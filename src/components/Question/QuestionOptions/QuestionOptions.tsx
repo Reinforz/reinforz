@@ -22,7 +22,7 @@ export default function QuestionOptions(props: Props) {
               <FormControlLabel
                 control={<Radio color="primary" />}
                 value={`${i}`}
-                label={option}
+                label={option.text}
                 labelPlacement="end"
               />
             </div>
@@ -40,7 +40,7 @@ export default function QuestionOptions(props: Props) {
             return <div key={`${_id}option${i}`} className={`QuestionOptions-container-item`} style={{ backgroundColor: theme.color.base }}>
               <FormControlLabel
                 control={<Checkbox checked={userAnswers.includes(`${i}`)} value={`${i}`} color="primary" />}
-                label={option}
+                label={option.text}
               /></div>
           })}
         </FormGroup>

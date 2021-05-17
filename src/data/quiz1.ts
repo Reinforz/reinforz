@@ -16,11 +16,26 @@ export const QUIZ_1: IQuizInputFull = {
         "Hint 3"
       ],
       "options": [
-        "Option 1",
-        "Option 2",
-        "Option 3",
-        "Option 4",
-        "Option 5",
+        {
+          text: "Option 1",
+          isCorrect: true
+        },
+        {
+          text: "Option 2",
+          isCorrect: true
+        },
+        {
+          text: "Option 3",
+          isCorrect: false
+        },
+        {
+          text: "Option 4",
+          isCorrect: false
+        },
+        {
+          text: "Option 5",
+          isCorrect: false
+        }
       ],
       "explanation": "* List item 1\n* List item 2\n",
       "format": "text",
@@ -37,10 +52,15 @@ export const QUIZ_1: IQuizInputFull = {
         "_id": "-QIv_LbJ1"
       }
     },
-    {
-      "question": "Write a code to\nCreate and checkout to a branch named `main`",
+    /* {
+      "question": ["git", "-b",""],
       "answers": [
-        "git checkout -b main"
+        {
+          text: "checkout",
+        },
+        {
+          text:  "main",
+        }
       ],
       "hints": [
         "Hint **1**\n## Heading\n## Hello World\n## Hello World\nHello World\nHello World\nHello World",
@@ -54,15 +74,15 @@ export const QUIZ_1: IQuizInputFull = {
       "weight": 1,
       "difficulty": "Beginner",
       "language": "javascript",
-      "type": "Snippet",
-      "time_allocated": 5,
+      "type": "FIB",
+      "time_allocated": 120,
       "_id": "ln5zMGBRPU",
       "quiz": {
         "subject": "Dart",
         "title": "Dart Basic Types",
         "_id": "-QIv_LbJl"
       }
-    },
+    }, */
   ],
   "_id": "-QIv_LbJl"
 };
