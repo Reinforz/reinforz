@@ -90,7 +90,7 @@ export interface IQuestionInputPartial{
 
 export interface SelectionQuestionOptions {
   text: string
-  isCorrect: boolean
+  index: number
 }
 
 export interface IMcqQuestionInputPartial extends IQuestionInputPartial{

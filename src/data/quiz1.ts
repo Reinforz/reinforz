@@ -8,7 +8,6 @@ export const QUIZ_1: IQuizInputFull = {
       "question": "In which places can `JS` be used",
       "answers": [
         "0",
-        "1"
       ],
       "hints": [
         "Hint **1**\n## Heading\n## Hello World\n## Hello World\nHello World\nHello World\nHello World",
@@ -18,23 +17,23 @@ export const QUIZ_1: IQuizInputFull = {
       "options": [
         {
           text: "Option 1",
-          isCorrect: true
+          index: 0
         },
         {
           text: "Option 2",
-          isCorrect: true
+          index: 1
         },
         {
           text: "Option 3",
-          isCorrect: false
+          index: 2
         },
         {
           text: "Option 4",
-          isCorrect: false
+          index: 3
         },
         {
           text: "Option 5",
-          isCorrect: false
+          index: 4
         }
       ],
       "explanation": "* List item 1\n* List item 2\n",
@@ -43,8 +42,8 @@ export const QUIZ_1: IQuizInputFull = {
       "weight": 1,
       "difficulty": "Beginner",
       "language": "javascript",
-      "type": "MS",
-      "time_allocated": 10,
+      "type": "MCQ",
+      "time_allocated": 120,
       "_id": "ln5zMGBRPA",
       "quiz": {
         "subject": "Dart",

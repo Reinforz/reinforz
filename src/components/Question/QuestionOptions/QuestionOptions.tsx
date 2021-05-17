@@ -13,10 +13,11 @@ interface Props {
 export default function QuestionOptions(props: Props) {
   const { theme } = useThemeSettings();
   const { setUserAnswers, userAnswers, question: { _id, type } } = props;
+
   const generateOptions = () => {
     switch (props.question.type) {
       case "MCQ": {
-        return <RadioGroup className="QuestionOptions-container QuestionOptions-container--MCQ" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }} defaultValue={undefined} value={userAnswers[0] === '' ? [''] : userAnswers[0]} onChange={e => setUserAnswers([e.target.value])}>
+        return <RadioGroup className="QuestionOptions-container QuestionOptions-container--MCQ" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }} value={userAnswers.length === 0 ? [''] : userAnswers[0]} onChange={e => setUserAnswers([e.target.value])}>
           {props.question.options.map((option, i) => {
             return <div key={`${_id}option${i}`} className="QuestionOptions-container-item" style={{ backgroundColor: theme.color.base }}>
               <FormControlLabel

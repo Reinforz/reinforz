@@ -2,15 +2,15 @@ import shortid from "shortid";
 import { TQuestionInputFull } from "../types";
 import { checkTextAnswer } from "./";
 
-export default function getAnswerResult (current_question: Pick<TQuestionInputFull, "weight" | "type" | "time_allocated" | "answers">, user_answers: string[], time_taken: number, hints_used: number, partial_score: boolean){
+export default function getAnswerResult (current_question: Pick<TQuestionInputFull, "weight" | "type" | "time_allocated" | "answers" | "options">, user_answers: string[], time_taken: number, hints_used: number, partial_score: boolean){
   let totalCorrectAnswers = 0;
-  const { weight, type, time_allocated, answers } = current_question;
+  const { weight, time_allocated, answers } = current_question;
   user_answers = user_answers.filter(user_answer => user_answer !== "");
   let verdict = false;
 
-  switch (type) {
+  switch (current_question.type) {
     case "MCQ":
-      verdict = answers.length === user_answers.length && answers[0].toString() === user_answers[0].toString();
+      verdict = answers.length === user_answers.length && answers[0].toString() === current_question.options![Number(user_answers[0])].index.toString();
       totalCorrectAnswers = verdict ? 1 : 0
       break;
     case "MS":
