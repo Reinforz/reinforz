@@ -1,27 +1,12 @@
 import yaml from 'js-yaml';
 import { OptionsObject, useSnackbar } from "notistack";
 import React, { useContext } from 'react';
-import { DropzoneState, useDropzone } from 'react-dropzone';
-import styled from 'styled-components';
+import { useDropzone } from 'react-dropzone';
 import { useThemeSettings } from '../../../hooks';
 import { IQuizPartial } from '../../../types';
 import { filterUploadedQuizzes } from "../../../utils";
 import { PlayContext } from '../Play';
 import "./PlayUpload.scss";
-
-const getColor = (props: DropzoneState) => {
-  if (props.isDragAccept)
-    return '#00e676';
-  if (props.isDragReject)
-    return '#ff1744';
-  if (props.isDragActive)
-    return '#2196f3';
-  return '#404040';
-}
-
-const Container = styled.div`
-  border-color: ${(props: DropzoneState) => getColor(props)};
-` as any;
 
 const trimLower = (data: string) => data.replace(/\s/g, '').toLowerCase();
 const centerBottomErrorNotistack = {
@@ -74,24 +59,20 @@ export default function PlayUpload() {
   };
 
   const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({ onDrop, accept: [".yml", ".yaml", "application/json"] })
-  return <Container style={{ backgroundColor: theme.color.light, color: theme.palette.text.secondary }} className="PlayUpload" {...getRootProps({ isDragActive, isDragAccept, isDragReject })}>
+  let borderColor = '#404040';
+  if (isDragAccept)
+    borderColor = '#00e676';
+  if (isDragReject)
+    borderColor = '#ff1744';
+  if (isDragActive)
+    borderColor = '#2196f3';
+
+  return <div style={{ borderColor, backgroundColor: theme.color.light, color: theme.palette.text.secondary }} className="PlayUpload" {...getRootProps({ isDragActive, isDragAccept, isDragReject })}>
     <input {...getInputProps()} />
     {
       isDragActive ?
         <p>Drop the files here ...</p> :
         <p>Drag 'n' drop some files here, or click to upload files (.json or .yaml files)</p>
     }
-  </Container>
+  </div>
 }
-
-
-// PlayUploadUtils: {
-//   setItems,
-//   removeErrorLogs: (items: any) => {
-//     const target_quizzes: any = {};
-//     items.forEach((item: any) => { target_quizzes[`${item.subject} - ${item.title}`] = false });
-//     setErrorLogs(error_logs.filter(error_log => {
-//       return target_quizzes[error_log.quiz] === undefined
-//     }))
-//   },
-// }
