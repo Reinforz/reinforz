@@ -21,7 +21,7 @@ export default function Question(props: Props) {
   const [userAnswers, setUserAnswers] = useState<string[]>([]);
   const [usedHints, setUsedHints] = useState<string[]>([]);
   const [timeout, setTimeout] = useState<null | number>(null);
-  const [timer, setTimer] = useState<null | number>(null);
+  const [timer, setTimer] = useState<null | NodeJS.Timeout>(null);
   const theme = useTheme() as ExtendedTheme;
 
   const onNextButtonPress = () => {
