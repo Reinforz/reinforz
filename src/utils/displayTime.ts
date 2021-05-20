@@ -1,5 +1,11 @@
-export default function displayTime(timeout: number){
+function padZero(num: number) {
+  return num < 10 ? `0${num}` : num;
+}
+
+export default function displayTime(timeout: number) {
+  const isNegative = timeout < 0;
+  timeout = Math.abs(timeout);
   const min = Math.floor(timeout / 60);
   const sec = timeout % 60;
-  return `0${min}:${sec < 10 ? '0' + sec : sec}`;
+  return `${isNegative ? '-' : ''}${padZero(min)}:${padZero(sec)}`;
 }
