@@ -1,4 +1,3 @@
-import clone from "just-clone";
 import shortid from "shortid";
 import { TQuestionFull, TQuestionPartial } from '../types';
 
@@ -19,7 +18,7 @@ export default function generateQuestionInputConfigs(
 ) {
   const logs: { warns: string[], errors: string[] } = { warns: [], errors: [] };
 
-  const questionFull: TQuestionFull = clone(question) as any;
+  const questionFull: TQuestionFull = JSON.parse(JSON.stringify(question)) as any;
 
   ['question', 'answers'].forEach(field => {
     if ((questionFull as any)[field] === undefined) logs.errors.push(`Question ${field} is required`);
