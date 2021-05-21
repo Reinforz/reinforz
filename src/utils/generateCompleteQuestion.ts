@@ -132,6 +132,16 @@ export default function generateQuestionInputConfigs(
           ...answer,
           text: answer.text.toString()
         }));
+        if (
+          completeQuestion.answers.length + 1 !==
+          completeQuestion.question.length
+        ) {
+          logs.errors.push(
+            `Unmatched blanks in question, given ${
+              completeQuestion.answers.length
+            }, required ${completeQuestion.question.length - 1}`
+          );
+        }
         time_allocated = 60;
         break;
     }

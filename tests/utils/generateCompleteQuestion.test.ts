@@ -206,7 +206,7 @@ describe('FIB type questions', () => {
         }
       ],
       type: 'FIB',
-      question: ['Question']
+      question: ['Question', 'Question 2']
     });
     expect(completeQuestion).toStrictEqual({
       answers: [
@@ -215,7 +215,7 @@ describe('FIB type questions', () => {
         }
       ],
       type: 'FIB',
-      question: ['Question'],
+      question: ['Question', 'Question 2'],
       image: null,
       weight: 1,
       difficulty: 'Beginner',
@@ -225,6 +225,27 @@ describe('FIB type questions', () => {
       _id: expect.any(String)
     });
     expect(logs).toStrictEqual({ warns: [], errors: [] });
+  });
+
+  describe('Populate error and warns', () => {
+    it(`Should catch error when options not provided`, () => {
+      const [, logs] = generateCompleteQuestion({
+        answers: [
+          {
+            text: '1'
+          },
+          {
+            text: '2'
+          }
+        ],
+        type: 'FIB',
+        question: ['Question', 'Question 2']
+      });
+      expect(logs).toStrictEqual({
+        warns: [],
+        errors: [`Unmatched blanks in question, given 2, required 1`]
+      });
+    });
   });
 });
 
