@@ -273,3 +273,48 @@ it(`Should populate warns if wrong difficulty, weight and time_allocated are giv
     errors: []
   });
 });
+
+it(`Should auto detect MCQ type`, () => {
+  const [completeQuestion] = generateCompleteQuestion({
+    answers: ['1'],
+    question: 'Question',
+    options: ['Option 1', 'Option 2', 'Option 3']
+  });
+  expect(completeQuestion.type).toStrictEqual('MCQ');
+});
+
+it(`Should auto detect Snippet type`, () => {
+  const [completeQuestion] = generateCompleteQuestion({
+    answers: [
+      {
+        text: '1'
+      }
+    ],
+    question: 'Question'
+  });
+  expect(completeQuestion.type).toStrictEqual('Snippet');
+});
+
+it(`Should auto detect MS type`, () => {
+  const [completeQuestion] = generateCompleteQuestion({
+    answers: ['1', '2'],
+    question: 'Question',
+    options: ['Option 1', 'Option 2', 'Option 3']
+  });
+  expect(completeQuestion.type).toStrictEqual('MS');
+});
+
+it(`Should auto detect FIB type`, () => {
+  const [completeQuestion] = generateCompleteQuestion({
+    answers: [
+      {
+        text: '1'
+      },
+      {
+        text: '1'
+      }
+    ],
+    question: ['Question']
+  });
+  expect(completeQuestion.type).toStrictEqual('FIB');
+});
