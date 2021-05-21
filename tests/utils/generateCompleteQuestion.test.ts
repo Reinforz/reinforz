@@ -63,7 +63,7 @@ describe('MCQ type questions', () => {
       });
     });
 
-    it(`Should catch error when answer is more than options`, () => {
+    it(`Should catch error when answer is not present in options`, () => {
       const [, logs] = generateCompleteQuestion({
         answers: ['6'],
         type: 'MCQ',
@@ -112,6 +112,57 @@ describe('MS type questions', () => {
       _id: expect.any(String)
     });
     expect(logs).toStrictEqual({ warns: [], errors: [] });
+  });
+
+  describe('Populate error and warns', () => {
+    it(`Should catch error when options not provided`, () => {
+      const [, logs] = generateCompleteQuestion({
+        answers: ['1', '2'],
+        type: 'MS',
+        question: 'Question'
+      } as any);
+      expect(logs).toStrictEqual({
+        warns: [],
+        errors: [`Options must be provided for MS questions`]
+      });
+    });
+
+    it(`Should catch error when options provided is more than 6`, () => {
+      const [, logs] = generateCompleteQuestion({
+        answers: ['1', '2'],
+        type: 'MS',
+        question: 'Question',
+        options: [
+          'Option 1',
+          'Option 2',
+          'Option 3',
+          'Option 4',
+          'Option 5',
+          'Option 6',
+          'Option 7'
+        ]
+      });
+      expect(logs).toStrictEqual({
+        warns: [],
+        errors: [`Question must have 2-6 options, but given 7`]
+      });
+    });
+
+    it(`Should catch error when answers are more than options`, () => {
+      const [, logs] = generateCompleteQuestion({
+        answers: ['0', '1', '2', '3'],
+        type: 'MS',
+        question: 'Question',
+        options: ['Option 1', 'Option 2', 'Option 3']
+      });
+      expect(logs).toStrictEqual({
+        warns: [],
+        errors: [
+          `Provided more answers than options, given 3 options, but provided 4 answers`,
+          'MS Answer must be within 0-2, provided 3'
+        ]
+      });
+    });
   });
 });
 

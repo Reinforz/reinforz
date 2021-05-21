@@ -102,7 +102,7 @@ export default function generateQuestionInputConfigs(
           // If more answers are given than options
           if (dummyQuestion.answers.length > dummyQuestion.options.length) {
             logs.errors.push(
-              `Provided more answers than options, given ${dummyQuestion.options.length} options, while giving ${dummyQuestion.answers.length} answers`
+              `Provided more answers than options, given ${dummyQuestion.options.length} options, but provided ${dummyQuestion.answers.length} answers`
             );
           }
           completeQuestion.answers.forEach((answer) => {
