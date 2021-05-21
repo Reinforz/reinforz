@@ -60,40 +60,65 @@ export default function generateQuestionInputConfigs(
           logs.errors.push(
             `Options must be provided for ${dummyQuestion.type} questions`
           );
-        // If the answer index is greater than total options, or negative add an error
-        if (
-          parseInt(dummyQuestion.answers[0]) >
-            dummyQuestion.options.length - 1 ||
-          parseInt(dummyQuestion.answers[0]) < 0
-        )
-          logs.errors.push(
-            `MCQ Answer must be within 0-${
+        else {
+          // If the answer index is greater than total options, or negative add an error
+          if (
+            parseInt(dummyQuestion.answers[0]) < 0 ||
+            parseInt(dummyQuestion.answers[0]) >
               dummyQuestion.options.length - 1
-            }, provided ${dummyQuestion.answers[0]}`
-          );
+          )
+            logs.errors.push(
+              `MCQ Answer must be within 0-${
+                dummyQuestion.options.length - 1
+              }, provided ${dummyQuestion.answers[0]}`
+            );
+
+          if (
+            dummyQuestion.options.length < 2 ||
+            dummyQuestion.options.length > 6
+          )
+            logs.errors.push(
+              `Question must have 2-6 options, but given ${dummyQuestion.options.length}`
+            );
+        }
         break;
       case 'MS':
         completeQuestion.answers = completeQuestion.answers.map((answer) =>
           answer.toString()
         );
-        // If more answers are given than options
-        if (dummyQuestion.answers.length > dummyQuestion.options.length) {
+        if (!dummyQuestion.options)
           logs.errors.push(
-            `Provided more answers than options, given ${dummyQuestion.options.length} options, while giving ${dummyQuestion.answers.length} answers`
+            `Options must be provided for ${dummyQuestion.type} questions`
           );
-        }
-        completeQuestion.answers.forEach((answer) => {
+        else {
           if (
-            parseInt(answer) < 0 ||
-            parseInt(answer) > dummyQuestion.options.length - 1
+            dummyQuestion.options.length < 2 ||
+            dummyQuestion.options.length > 6
           )
             logs.errors.push(
-              `MS Answer must be within 0-${
-                dummyQuestion.options.length - 1
-              }, provided ${answer}`
+              `Question must have 2-6 options, but given ${dummyQuestion.options.length}`
             );
-        });
+
+          // If more answers are given than options
+          if (dummyQuestion.answers.length > dummyQuestion.options.length) {
+            logs.errors.push(
+              `Provided more answers than options, given ${dummyQuestion.options.length} options, while giving ${dummyQuestion.answers.length} answers`
+            );
+          }
+          completeQuestion.answers.forEach((answer) => {
+            if (
+              parseInt(answer) < 0 ||
+              parseInt(answer) > dummyQuestion.options.length - 1
+            )
+              logs.errors.push(
+                `MS Answer must be within 0-${
+                  dummyQuestion.options.length - 1
+                }, provided ${answer}`
+              );
+          });
+        }
         time_allocated = 30;
+
         break;
       case 'Snippet':
         completeQuestion.answers = completeQuestion.answers.map((answer) => ({
@@ -125,14 +150,6 @@ export default function generateQuestionInputConfigs(
       );
       completeQuestion.time_allocated = 120;
     }
-
-    if (
-      completeQuestion.type.match(/(MS|MCQ)/) &&
-      (dummyQuestion.options.length < 2 || dummyQuestion.options.length > 6)
-    )
-      logs.errors.push(
-        `Question must have 2-6 options, but given ${dummyQuestion.options.length}`
-      );
 
     if (dummyQuestion.weight < 0 || dummyQuestion.weight > 1) {
       logs.warns.push(

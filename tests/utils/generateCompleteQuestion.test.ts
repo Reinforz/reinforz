@@ -18,17 +18,70 @@ describe('MCQ type questions', () => {
         { text: 'Option 4', index: '3' }
       ],
       question: 'Question',
-      format: 'text',
       image: null,
       weight: 1,
       difficulty: 'Beginner',
       explanation: 'No explanation available',
       hints: [],
-      language: undefined,
       time_allocated: 15,
       _id: expect.any(String)
     });
     expect(logs).toStrictEqual({ warns: [], errors: [] });
+  });
+
+  describe('Populate error and warns', () => {
+    it(`Should catch error when options not provided`, () => {
+      const [, logs] = generateCompleteQuestion({
+        answers: ['1'],
+        type: 'MCQ',
+        question: 'Question'
+      } as any);
+      expect(logs).toStrictEqual({
+        warns: [],
+        errors: [`Options must be provided for MCQ questions`]
+      });
+    });
+
+    it(`Should catch error when options provided is more than 6`, () => {
+      const [, logs] = generateCompleteQuestion({
+        answers: ['1'],
+        type: 'MCQ',
+        question: 'Question',
+        options: [
+          'Option 1',
+          'Option 2',
+          'Option 3',
+          'Option 4',
+          'Option 5',
+          'Option 6',
+          'Option 7'
+        ]
+      });
+      expect(logs).toStrictEqual({
+        warns: [],
+        errors: [`Question must have 2-6 options, but given 7`]
+      });
+    });
+
+    it(`Should catch error when answer is more than options`, () => {
+      const [, logs] = generateCompleteQuestion({
+        answers: ['6'],
+        type: 'MCQ',
+        question: 'Question',
+        options: [
+          'Option 1',
+          'Option 2',
+          'Option 3',
+          'Option 4',
+          'Option 5',
+          'Option 6'
+        ]
+      });
+      expect(logs).toStrictEqual({
+        warns: [],
+        errors: [`MCQ Answer must be within 0-5, provided 6`]
+      });
+    });
   });
 });
 
@@ -50,13 +103,11 @@ describe('MS type questions', () => {
         { text: 'Option 4', index: '3' }
       ],
       question: 'Question',
-      format: 'text',
       image: null,
       weight: 1,
       difficulty: 'Beginner',
       explanation: 'No explanation available',
       hints: [],
-      language: undefined,
       time_allocated: 30,
       _id: expect.any(String)
     });
@@ -83,13 +134,11 @@ describe('Snippet type questions', () => {
       ],
       type: 'Snippet',
       question: 'Question',
-      format: 'text',
       image: null,
       weight: 1,
       difficulty: 'Beginner',
       explanation: 'No explanation available',
       hints: [],
-      language: undefined,
       time_allocated: 45,
       _id: expect.any(String)
     });
@@ -116,16 +165,22 @@ describe('FIB type questions', () => {
       ],
       type: 'FIB',
       question: ['Question'],
-      format: 'text',
       image: null,
       weight: 1,
       difficulty: 'Beginner',
       explanation: 'No explanation available',
       hints: [],
-      language: undefined,
       time_allocated: 60,
       _id: expect.any(String)
     });
     expect(logs).toStrictEqual({ warns: [], errors: [] });
+  });
+});
+
+it(`Should populate errors if question and answers field are not given`, () => {
+  const [, logs] = generateCompleteQuestion({} as any);
+  expect(logs).toStrictEqual({
+    errors: [`Question question is required`, `Question answers is required`],
+    warns: []
   });
 });
