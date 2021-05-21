@@ -235,3 +235,41 @@ it(`Should populate errors if question and answers field are not given`, () => {
     warns: []
   });
 });
+
+it(`Should populate warns if wrong difficulty, weight and time_allocated are given`, () => {
+  const [completeQuestion, logs] = generateCompleteQuestion({
+    weight: 1.5,
+    difficulty: 'Medium' as any,
+    time_allocated: 450,
+    answers: ['1'],
+    type: 'MCQ',
+    question: 'Question',
+    options: ['Option 1', 'Option 2', 'Option 3']
+  });
+
+  expect(completeQuestion).toStrictEqual({
+    answers: ['1'],
+    type: 'MCQ',
+    options: [
+      { text: 'Option 1', index: '0' },
+      { text: 'Option 2', index: '1' },
+      { text: 'Option 3', index: '2' }
+    ],
+    question: 'Question',
+    image: null,
+    weight: 0,
+    difficulty: 'Beginner',
+    explanation: 'No explanation available',
+    hints: [],
+    time_allocated: 60,
+    _id: expect.any(String)
+  });
+  expect(logs).toStrictEqual({
+    warns: [
+      'Question time allocated must be within 10-120 but given 450, changing to 60',
+      'Question weights must be within 0-1 but given 1.5, changing to 0',
+      'Question difficulty must be one of Beginner, Intermediate or Advanced, but given Medium, changing to Beginner'
+    ],
+    errors: []
+  });
+});

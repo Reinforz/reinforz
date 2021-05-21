@@ -139,16 +139,14 @@ export default function generateQuestionInputConfigs(
       completeQuestion.time_allocated ?? time_allocated;
     completeQuestion._id = shortid();
 
-    if (completeQuestion.time_allocated < 10) {
+    if (
+      completeQuestion.time_allocated < 10 ||
+      completeQuestion.time_allocated > 120
+    ) {
       logs.warns.push(
-        `Question time allocated must be >=10 but given ${completeQuestion.time_allocated}, changing to 10`
+        `Question time allocated must be within 10-120 but given ${completeQuestion.time_allocated}, changing to 60`
       );
-      completeQuestion.time_allocated = 10;
-    } else if (completeQuestion.time_allocated > 120) {
-      logs.warns.push(
-        `Question time allocated must be <=120 but given ${completeQuestion.time_allocated}, changing to 120`
-      );
-      completeQuestion.time_allocated = 120;
+      completeQuestion.time_allocated = 60;
     }
 
     if (dummyQuestion.weight < 0 || dummyQuestion.weight > 1) {
