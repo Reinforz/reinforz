@@ -30,7 +30,6 @@ export default function generateQuestionInputConfigs(
     time_allocated = 15;
 
   setObjectValues(completeQuestion, [
-    ['options', null],
     ['format', format],
     ['image', null],
     ['weight', 1],
