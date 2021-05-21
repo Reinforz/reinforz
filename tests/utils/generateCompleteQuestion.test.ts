@@ -1,8 +1,8 @@
-import { generateConfigs } from '../../src/utils';
+import { generateCompleteQuestion } from '../../src/utils';
 
 describe('MCQ type questions', () => {
   it(`Should generate default configs`, () => {
-    const [completeQuestion, logs] = generateConfigs({
+    const [completeQuestion, logs] = generateCompleteQuestion({
       answers: ['1'],
       type: 'MCQ',
       options: ['Option 1', 'Option 2', 'Option 3', 'Option 4'],
