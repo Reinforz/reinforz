@@ -19,30 +19,15 @@ export default function generateQuestionInputConfigs(
       logs.errors.push(`Question ${field} is required`);
   });
 
-  question.answers = question.answers.map((answer) => answer.toString());
-
-  if (completeQuestion.options && question.options) {
+  if (completeQuestion.options) {
     completeQuestion.options = completeQuestion.options.map((option, i) => ({
       text: option.toString(),
       index: `${i}`
     }));
-    question.options = question.options.map((option) => option.toString());
   }
 
   let format = 'text',
-    time_allocated = 15,
-    language = undefined;
-
-  const lines = Array.isArray(completeQuestion.question)
-    ? completeQuestion.question
-    : completeQuestion.question.split('\n');
-
-  language = lines[0].match(/\[(\w+)\]/);
-  if (language) {
-    completeQuestion.question = lines.splice(1).join('\n');
-    format = 'code';
-    language = language[1];
-  } else language = 'javascript';
+    time_allocated = 15;
 
   setObjectValues(completeQuestion, [
     ['options', null],
@@ -52,62 +37,64 @@ export default function generateQuestionInputConfigs(
     ['difficulty', 'Beginner'],
     ['explanation', 'No explanation available'],
     ['hints', []],
-    ['language', language]
+    ['language', completeQuestion.language]
   ]);
+
+  const dummyQuestion: any = completeQuestion;
 
   // Auto generation of Question Configs
   if (logs.errors.length === 0) {
+    // Auto infer question type
     if (completeQuestion.answers.length === 1)
       completeQuestion.type =
-        completeQuestion.type ||
-        ((completeQuestion as any).options ? 'MCQ' : 'Snippet');
+        completeQuestion.type || (dummyQuestion.options ? 'MCQ' : 'Snippet');
     else
       completeQuestion.type =
-        completeQuestion.type ||
-        ((completeQuestion as any).options ? 'MS' : 'FIB');
+        completeQuestion.type || (dummyQuestion.options ? 'MS' : 'FIB');
 
     switch (completeQuestion.type) {
       case 'MCQ':
-        completeQuestion.answers = completeQuestion.answers.map(
-          (answer: string) => answer.toString()
+        // Convert all the answers to string
+        completeQuestion.answers = completeQuestion.answers.map((answer) =>
+          answer.toString()
         );
         time_allocated = 15;
-        if (!question.options)
+        // If there are no options for MCQ question, add an error
+        if (!dummyQuestion.options)
           logs.errors.push(
-            `Options must be provided for ${completeQuestion.type} questions`
+            `Options must be provided for ${dummyQuestion.type} questions`
           );
+        // If the answer index is greater than total options, or negative add an error
         if (
-          parseInt(question.answers[0]) >
-            (question as any).options.length - 1 ||
-          parseInt(question.answers[0]) < 0
+          parseInt(dummyQuestion.answers[0]) >
+            dummyQuestion.options.length - 1 ||
+          parseInt(dummyQuestion.answers[0]) < 0
         )
           logs.errors.push(
             `MCQ Answer must be within 0-${
-              (question as any).options.length - 1
-            }, provided ${completeQuestion.answers[0]}`
+              dummyQuestion.options.length - 1
+            }, provided ${dummyQuestion.answers[0]}`
           );
         break;
       case 'MS':
-        completeQuestion.answers = completeQuestion.answers.map(
-          (answer: string) => answer.toString()
+        completeQuestion.answers = completeQuestion.answers.map((answer) =>
+          answer.toString()
         );
-        if (question.answers.length > (question as any).options.length) {
-          logs.warns.push(
-            `Provided more answers than options, truncating to ${
-              (question as any).options.length
-            }`
+        // If more answers are given than options
+        if (dummyQuestion.answers.length > dummyQuestion.options.length) {
+          logs.errors.push(
+            `Provided more answers than options, given ${dummyQuestion.options.length} options, while giving ${dummyQuestion.answers.length} answers`
           );
-          (question as any).answers.length = question.answers.length;
         }
-        question.answers.forEach((answer) => {
+        completeQuestion.answers.forEach((answer) => {
           if (
             parseInt(answer) < 0 ||
-            parseInt(answer) > (question as any).options.length - 1
+            parseInt(answer) > dummyQuestion.options.length - 1
           )
             logs.errors.push(
               `MS Answer must be within 0-${
-                (question as any).options.length - 1
-              }, provided ${completeQuestion.answers[0]}`
+                dummyQuestion.options.length - 1
+              }, provided ${answer}`
             );
         });
         time_allocated = 30;
@@ -127,78 +114,46 @@ export default function generateQuestionInputConfigs(
         time_allocated = 60;
         break;
     }
-    if (!completeQuestion.time_allocated)
-      completeQuestion.time_allocated = time_allocated;
+    completeQuestion.time_allocated =
+      completeQuestion.time_allocated ?? time_allocated;
     completeQuestion._id = shortid();
 
-    if (
-      completeQuestion.format !== question.format &&
-      question.format !== undefined
-    )
-      logs.warns.push(
-        `Question is of format ${completeQuestion.format} but given ${question.format}`
-      );
     if (completeQuestion.time_allocated < 10) {
       logs.warns.push(
         `Question time allocated must be >=10 but given ${completeQuestion.time_allocated}, changing to 10`
       );
       completeQuestion.time_allocated = 10;
-    } else if (completeQuestion.time_allocated > 60) {
+    } else if (completeQuestion.time_allocated > 120) {
       logs.warns.push(
-        `Question time allocated must be <=60 but given ${completeQuestion.time_allocated}, changing to 60`
+        `Question time allocated must be <=120 but given ${completeQuestion.time_allocated}, changing to 120`
       );
-      completeQuestion.time_allocated = 60;
-    }
-    if ((completeQuestion as any).hints.length > 3) {
-      logs.warns.push(
-        `Question hints can be 3 at most, but given ${
-          (completeQuestion as any).hints.length
-        }, changing to 3`
-      );
-      (completeQuestion as any).hints.length = 3;
-    }
-    if (
-      completeQuestion.type.match(/(MS|MCQ)/) &&
-      (completeQuestion as any).options.length < 2
-    )
-      logs.errors.push(
-        `Question must have at least 2 options, but given ${
-          (completeQuestion as any).options.length
-        }`
-      );
-    else if (
-      completeQuestion.type.match(/(MS|MCQ)/) &&
-      (completeQuestion as any).options.length > 6
-    ) {
-      logs.errors.push(
-        `Question must have at most 6 options, but given ${
-          (completeQuestion as any).options.length
-        }, changing to 6`
-      );
-      (completeQuestion as any).options.length = 3;
+      completeQuestion.time_allocated = 120;
     }
 
-    if ((completeQuestion as any).weight < 0) {
+    if (
+      completeQuestion.type.match(/(MS|MCQ)/) &&
+      (dummyQuestion.options.length < 2 || dummyQuestion.options.length > 6)
+    )
+      logs.errors.push(
+        `Question must have 2-6 options, but given ${dummyQuestion.options.length}`
+      );
+
+    if (dummyQuestion.weight < 0 || dummyQuestion.weight > 1) {
       logs.warns.push(
-        `Question weights must be >=0 but given ${completeQuestion.weight}, changing to 0`
+        `Question weights must be within 0-1 but given ${completeQuestion.weight}, changing to 0`
       );
       completeQuestion.weight = 0;
-    } else if ((completeQuestion as any).weight > 1) {
-      logs.warns.push(
-        `Question weight must be <=1 but given ${completeQuestion.weight}, changing to 1`
-      );
-      completeQuestion.weight = 1;
     }
 
     if (
       !['Beginner', 'Intermediate', 'Advanced'].includes(
-        (completeQuestion as any).difficulty
+        completeQuestion.difficulty
       )
     ) {
       logs.warns.push(
-        `Question difficulty must be one of Beginner,Intermediate or  Advanced ${completeQuestion.difficulty}, changing to Beginner`
+        `Question difficulty must be one of Beginner, Intermediate or Advanced, but given ${completeQuestion.difficulty}, changing to Beginner`
       );
-      (completeQuestion as any).difficulty = 'Beginner';
+      completeQuestion.difficulty = 'Beginner';
     }
   }
   return [completeQuestion, logs] as const;

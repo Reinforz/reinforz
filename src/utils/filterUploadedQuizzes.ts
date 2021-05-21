@@ -8,35 +8,39 @@ export default function filterUploadedQuizzes(quizzes: IQuizPartial[]) {
   quizzes.forEach((quiz, index) => {
     if (quiz.title && quiz.subject && quiz.questions.length > 0) {
       quiz._id = shortid();
-      quiz.questions = quiz.questions.map((question, _index) => {
-        const [generatedQuestion, logs] = generateConfigs(question);
-        if (logs.errors.length === 0) {
-          generatedQuestion.quiz = {
-            subject: quiz.subject,
-            title: quiz.title,
-            _id: quiz._id
-          };
-        }
-        logs.warns.forEach((warn) => {
-          logMessages.push({
-            _id: shortid(),
-            level: 'WARN',
-            quiz: `${quiz.subject} - ${quiz.title}`,
-            target: `Question ${_index + 1}`,
-            message: warn
+      quiz.questions = quiz.questions
+        .map((question, _index) => {
+          const [generatedQuestion, logs] = generateConfigs(question);
+          if (logs.errors.length === 0) {
+            generatedQuestion.quiz = {
+              subject: quiz.subject,
+              title: quiz.title,
+              _id: quiz._id
+            };
+          }
+          logs.warns.forEach((warn) => {
+            logMessages.push({
+              _id: shortid(),
+              level: 'WARN',
+              quiz: `${quiz.subject} - ${quiz.title}`,
+              target: `Question ${_index + 1}`,
+              message: warn
+            });
           });
-        });
-        logs.errors.forEach((error) => {
-          logMessages.push({
-            _id: shortid(),
-            level: 'ERROR',
-            quiz: `${quiz.subject} - ${quiz.title}`,
-            target: `Question ${_index + 1}`,
-            message: error
+          logs.errors.forEach((error) => {
+            logMessages.push({
+              _id: shortid(),
+              level: 'ERROR',
+              quiz: `${quiz.subject} - ${quiz.title}`,
+              target: `Question ${_index + 1}`,
+              message: error
+            });
           });
-        });
-        return generatedQuestion as any;
-      });
+          return logs.errors.length !== 0
+            ? undefined
+            : (generatedQuestion as any);
+        })
+        .filter((question) => question);
       filteredUploadedQuizzes.push(quiz as any);
     } else {
       if (!quiz.title)
