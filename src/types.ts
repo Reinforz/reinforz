@@ -71,19 +71,16 @@ export interface IPlaySettings {
 }
 
 export type TQuestionType = 'MCQ' | 'MS' | 'FIB' | 'Snippet';
-export type TQuestionFormat = 'text' | 'code';
 export type TQuestionDifficulty = 'Beginner' | 'Intermediate' | 'Advanced';
 
 export interface IQuestionPartial {
   type?: TQuestionType;
-  format?: TQuestionFormat;
   image?: string;
   weight?: number;
   time_allocated?: number;
   difficulty?: TQuestionDifficulty;
   explanation?: string;
   hints?: string[];
-  language?: Language;
   _id?: string;
 }
 

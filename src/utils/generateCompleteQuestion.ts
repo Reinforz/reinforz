@@ -26,17 +26,14 @@ export default function generateQuestionInputConfigs(
     }));
   }
 
-  let format = 'text',
-    time_allocated = 15;
+  let time_allocated = 15;
 
   setObjectValues(completeQuestion, [
-    ['format', format],
     ['image', null],
     ['weight', 1],
     ['difficulty', 'Beginner'],
     ['explanation', 'No explanation available'],
-    ['hints', []],
-    ['language', completeQuestion.language]
+    ['hints', []]
   ]);
 
   const dummyQuestion: any = completeQuestion;
