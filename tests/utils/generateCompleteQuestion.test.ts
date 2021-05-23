@@ -228,7 +228,7 @@ describe('FIB type questions', () => {
   });
 
   describe('Populate error and warns', () => {
-    it(`Should catch error when options not provided`, () => {
+    it(`Should catch error when blanks provided doesn't match blanks required`, () => {
       const [, logs] = generateCompleteQuestion({
         answers: [
           {
