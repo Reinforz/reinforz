@@ -143,3 +143,54 @@ describe('MS Questions', () => {
     });
   });
 });
+
+describe('FIB Questions', () => {
+  it(`Should work for correct answers`, () => {
+    const info = getAnswerResult(
+      {
+        type: 'FIB',
+        answers: [
+          {
+            text: 'chunk 1'
+          },
+          {
+            text: 'chunk 2'
+          }
+        ],
+        time_allocated: 30,
+        weight: 1,
+        hints: ['Hint 1', 'Hint 2', 'Hint 3']
+      } as any,
+      ['chunk 1', 'chunk 2'],
+      14,
+      0,
+      true
+    );
+    expect(info).toStrictEqual({
+      verdict: true,
+      score: 1,
+      _id: expect.any(String)
+    });
+  });
+
+  it(`Should work for wrong answers`, () => {
+    const info = getAnswerResult(
+      {
+        type: 'Snippet',
+        answers: ['chunk 1'],
+        time_allocated: 30,
+        weight: 1,
+        hints: ['Hint 1', 'Hint 2', 'Hint 3']
+      } as any,
+      ['chunk 2'],
+      14,
+      0,
+      false
+    );
+    expect(info).toStrictEqual({
+      verdict: false,
+      score: 0,
+      _id: expect.any(String)
+    });
+  });
+});
