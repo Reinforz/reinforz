@@ -9,7 +9,7 @@ export default function getAnswerResult(
   partial_score: boolean
 ) {
   let totalCorrectAnswers = 0;
-  const { weight, time_allocated, answers } = current_question;
+  const { hints, weight, time_allocated, answers } = current_question;
   user_answers = user_answers.filter((user_answer) => user_answer !== '');
   let verdict = false;
 
@@ -43,12 +43,14 @@ export default function getAnswerResult(
   }
 
   const correct_answers_score = 0.5 * (totalCorrectAnswers / answers.length);
-  const hints_score =
-    (correct_answers_score / 0.5) * (0.2 - hints_used * 0.067);
-  const time_taken_score =
-    (correct_answers_score / 0.5) *
-    0.3 *
-    (1 / Math.ceil((time_taken + 1) / (time_allocated / 4)));
+  const hints_score = verdict
+    ? (0.2 / hints.length) * (hints.length - hints_used)
+    : 0;
+  const totalTimeDivisions = Math.ceil(time_allocated / 15),
+    timeDivisions = Math.floor(time_taken / 15);
+  const time_taken_score = verdict
+    ? (0.3 / totalTimeDivisions) * (totalTimeDivisions - timeDivisions)
+    : 0;
 
   return {
     verdict,
