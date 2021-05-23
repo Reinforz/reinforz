@@ -1,5 +1,6 @@
 import shortid from 'shortid';
 import { TQuestionFull } from '../types';
+import { calculateScore } from './calculateScore';
 
 export default function getAnswerResult(
   current_question: TQuestionFull,
@@ -18,7 +19,7 @@ export default function getAnswerResult(
       verdict =
         current_question.answers.length === user_answers.length &&
         answers[0].toString() ===
-          current_question.options![Number(user_answers[0])].index;
+          current_question.options![parseInt(user_answers[0])].index;
       totalCorrectAnswers = verdict ? 1 : 0;
       break;
     case 'MS':
@@ -26,7 +27,7 @@ export default function getAnswerResult(
         user_answers.length === answers.length &&
         user_answers.every((user_answer) => {
           const isCorrect = current_question.answers.includes(
-            current_question.options![Number(user_answer)].index
+            current_question.options![parseInt(user_answer)].index
           );
           if (isCorrect) totalCorrectAnswers++;
           return isCorrect;
@@ -42,27 +43,19 @@ export default function getAnswerResult(
       break;
   }
 
-  const correct_answers_score = 0.5 * (totalCorrectAnswers / answers.length);
-  const hints_score = verdict
-    ? (0.2 / hints.length) * (hints.length - hints_used)
-    : 0;
-  const totalTimeDivisions = Math.ceil(time_allocated / 15),
-    timeDivisions = Math.floor(time_taken / 15);
-  const time_taken_score = verdict
-    ? (0.3 / totalTimeDivisions) * (totalTimeDivisions - timeDivisions)
-    : 0;
-
   return {
     verdict,
-    score:
-      weight *
-      (partial_score
-        ? Number(
-            (correct_answers_score + hints_score + time_taken_score).toFixed(2)
-          )
-        : verdict
-        ? 1
-        : 0),
+    score: calculateScore({
+      weight,
+      time_allocated,
+      time_taken,
+      hints_used,
+      partial_score,
+      verdict,
+      totalAnswers: answers.length,
+      totalCorrectAnswers,
+      totalHints: hints.length
+    }),
     _id: shortid()
   };
 }
