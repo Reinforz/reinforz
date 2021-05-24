@@ -43,7 +43,7 @@ function Play() {
   const [selectedQuizzes, setSelectedQuizzes] = useState<string[]>([]);
   const [errorLogs, setErrorLogs] = useState<IErrorLog[]>([]);
 
-  let filteredQuizzes = uploadedQuizzes.filter(quiz => selectedQuizzes.includes(quiz._id));
+  let filteredQuizzes = JSON.parse(JSON.stringify(uploadedQuizzes.filter(quiz => selectedQuizzes.includes(quiz._id)))) as IQuizFull[];
 
   if (playSettings.options.shuffle_quizzes && !playSettings.options.flatten_mix) filteredQuizzes = arrayShuffler(filteredQuizzes);
   if (playSettings.options.shuffle_questions && !playSettings.options.flatten_mix) filteredQuizzes.forEach(quiz => quiz.questions = arrayShuffler(quiz.questions));
