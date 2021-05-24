@@ -35,7 +35,6 @@ export default function getAnswerResult(
       break;
     case 'Snippet':
     case 'FIB':
-      verdict = user_answers.length === answers.length;
       current_question.answers.forEach((answer, i) => {
         if (user_answers[i] === answer.text) totalCorrectAnswers++;
       });

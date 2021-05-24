@@ -6,6 +6,7 @@ import filterUploadedQuizzes from './filterUploadedQuizzes';
 import generateCompleteQuestion from './generateCompleteQuestion';
 import generateTheme from './generateTheme';
 import getAnswerResult from './getAnswerResult';
+export * from './calculateScore';
 export * from './createDefaultState';
 export * from './getSettings';
 export {
@@ -18,3 +19,4 @@ export {
   checkTextAnswer,
   arrayShuffler
 };
+
