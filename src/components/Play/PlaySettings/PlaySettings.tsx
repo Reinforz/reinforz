@@ -2,7 +2,8 @@ import { Button, Checkbox, FormControlLabel, FormGroup, InputLabel, TextField } 
 import { OptionsObject, useSnackbar } from "notistack";
 import React, { useContext } from "react";
 import { useThemeSettings } from "../../../hooks";
-import { IPlaySettingsOptionsState, TQuestionDifficulty, TQuestionType } from "../../../types";
+import { CheckboxGroup } from '../../../shared';
+import { IPlaySettingsOptionsState } from "../../../types";
 import { createDefaultPlaySettingsFiltersState, createDefaultPlaySettingsOptionsState } from "../../../utils";
 import { PlayContext } from "../Play";
 import "./PlaySettings.scss";
@@ -74,34 +75,14 @@ export default function PlaySettings() {
             setPlaySettings({ ...playSettings, filters: { ...playSettings.filters, time_allocated: [playSettings.filters.time_allocated[0], (e.target as any).value] } })
           }} />
         </FormGroup>
-        <FormGroup>
-          <InputLabel>Excluded Difficulty</InputLabel>
-          {['Beginner', 'Intermediate', 'Advanced'].map((difficulty, index) => <FormControlLabel key={difficulty + index} label={difficulty} control={<Checkbox checked={playSettings.filters.excluded_difficulty.includes(difficulty as TQuestionDifficulty)} name={difficulty} onChange={(e) => {
-            if ((e.target as any).checked) {
-              if (settings.sound) pop_on.play()
-              setPlaySettings({ ...playSettings, filters: { ...playSettings.filters, excluded_difficulty: playSettings.filters.excluded_difficulty.concat(difficulty as TQuestionDifficulty) } });
-            }
-            else {
-              if (settings.sound) pop_off.play()
-              setPlaySettings({ ...playSettings, filters: { ...playSettings.filters, excluded_difficulty: playSettings.filters.excluded_difficulty.filter(excluded_difficulty => excluded_difficulty !== difficulty) } })
-            }
-          }}
-            color="primary" />} />)}
-        </FormGroup>
-        <FormGroup>
-          <InputLabel>Excluded Type</InputLabel>
-          {['FIB', 'MS', 'MCQ', "Snippet"].map((type, index) => <FormControlLabel key={type + index} label={type} control={<Checkbox checked={playSettings.filters.excluded_types.includes(type as TQuestionType)} name={type} onChange={(e) => {
-            if ((e.target as any).checked) {
-              if (settings.sound) pop_on.play()
-              setPlaySettings({ ...playSettings, filters: { ...playSettings.filters, excluded_types: playSettings.filters.excluded_types.concat(type as TQuestionType) } });
-            }
-            else {
-              if (settings.sound) pop_off.play()
-              setPlaySettings({ ...playSettings, filters: { ...playSettings.filters, excluded_types: playSettings.filters.excluded_types.filter(excluded_type => excluded_type !== type) } })
-            }
-          }}
-            color="primary" />} />)}
-        </FormGroup>
+
+        <CheckboxGroup label={'Excluded Difficulty'} items={['Beginner', 'Intermediate', 'Advanced']} setState={(filters: any) => {
+          setPlaySettings({ ...playSettings, filters })
+        }} stateKey={'excluded_difficulty'} state={playSettings.filters} />
+
+        <CheckboxGroup label={'Excluded Type'} items={['FIB', 'MS', 'MCQ', "Snippet"]} setState={(filters: any) => {
+          setPlaySettings({ ...playSettings, filters })
+        }} stateKey={'excluded_types'} state={playSettings.filters} />
       </div>
       <Button className="PlaySettings-group-button" variant="contained" color="primary" onClick={() => {
         if (settings.sound) reset.play()
