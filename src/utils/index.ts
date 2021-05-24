@@ -1,3 +1,4 @@
+export * from './applyReportFilters';
 export * from './arrayShuffler';
 export * from './calculateScore';
 export * from './checkInputAnswer';

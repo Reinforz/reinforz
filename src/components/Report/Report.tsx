@@ -1,8 +1,8 @@
 import { Button } from '@material-ui/core';
 import React, { useContext, useState } from 'react';
 import { Table } from '../../shared';
-import { IQuizFull, TQuestionFull, TQuestionResult } from "../../types";
-import { createDefaultReportFilterState } from '../../utils';
+import { TQuestionResult } from "../../types";
+import { applyReportFilters, createDefaultReportFilterState } from '../../utils';
 import { PlayContext } from '../Play/Play';
 import "./Report.scss";
 import ReportExport from './ReportExport/ReportExport';
@@ -35,20 +35,7 @@ export default function Report(props: Props) {
     }
   }
 
-  const { excluded_types, excluded_quizzes, excluded_difficulty, verdict, hints_used, time_taken } = reportFilter;
-  const filteredResults = props.results.filter(result => !excluded_types.includes(result.type) && !excluded_difficulty.includes(result.difficulty) && (verdict === "mixed" || verdict.toString() === result.verdict?.toString()) && (hints_used === "any" || result.hints_used <= hints_used) && time_taken[0] <= result.time_taken && time_taken[1] >= result.time_taken && !excluded_quizzes.includes(result.quiz._id))
-  const filteredQuizzes: Record<string, IQuizFull> = {};
-  filteredResults.forEach(filteredResult => {
-    const targetQuestion = allQuestionsMap.get(filteredResult.question_id)!
-    const clonedTargetQuestion = JSON.parse(JSON.stringify(targetQuestion)) as TQuestionFull;
-    if (!filteredQuizzes[targetQuestion.quiz._id]) filteredQuizzes[targetQuestion.quiz._id] = {
-      ...targetQuestion.quiz,
-      questions: [
-        clonedTargetQuestion
-      ]
-    };
-    else filteredQuizzes[targetQuestion.quiz._id].questions.push(clonedTargetQuestion)
-  });
+  const [filteredResults, filteredQuizzes] = applyReportFilters(props.results, reportFilter, allQuestionsMap);
 
   const total_weights = props.results.reduce((acc, cur) => acc + cur.weight, 0);
 
