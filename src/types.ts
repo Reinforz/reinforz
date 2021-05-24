@@ -117,11 +117,15 @@ export interface IFibQuestionPartial extends IQuestionPartial {
 
 export type TQuestionAnswerModifiers = 'IC' | 'IS';
 
+interface IRegex {
+  regex: string;
+  flags: string;
+}
 export interface IQuestionAnswerPartial {
   text: string;
   modifiers?: TQuestionAnswerModifiers[];
-  regex?: string;
-  alts?: string[];
+  regexes?: IRegex[];
+  alts?: Omit<IQuestionAnswerFull, 'alts' | 'modifiers'>[];
 }
 
 export interface IMcqQuestionFull extends Required<IQuestionPartial> {
@@ -143,8 +147,8 @@ export interface IMsQuestionFull extends Required<IQuestionPartial> {
 export interface IQuestionAnswerFull {
   text: string;
   modifiers: TQuestionAnswerModifiers[];
-  regex: string | null;
-  alts: string[];
+  regexes: IRegex[];
+  alts: Omit<IQuestionAnswerFull, 'alts' | 'modifiers'>[];
 }
 
 export interface ISnippetQuestionFull extends Required<IQuestionPartial> {

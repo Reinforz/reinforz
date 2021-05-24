@@ -1,17 +1,23 @@
+import { IQuestionAnswerFull, TQuestionAnswerModifiers } from '../types';
+
 function extractGlobalMods(answer: string) {
   const matches = answer.match(/\((.*?)\)(.+)/);
-  const global_modifiers = matches ? matches[1].split(" ") : [""];
-  const correct_answers = matches ? (matches[2].split(",")) : "";
+  const global_modifiers = matches ? matches[1].split(' ') : [''];
+  const correct_answers = matches ? matches[2].split(',') : '';
   let alts: number[] = [];
-  global_modifiers.forEach((global_mod => {
+  global_modifiers.forEach((global_mod) => {
     const match = global_mod.match(/ALT=(\d)/);
-    if (match) alts = match[1].replace("ALT=", '').split(",").map(alt => parseInt(alt))
-  }));
+    if (match)
+      alts = match[1]
+        .replace('ALT=', '')
+        .split(',')
+        .map((alt) => parseInt(alt));
+  });
   return {
     correct_answers,
     alts,
     global_modifiers
-  }
+  };
 }
 
 function matchAnswer(answer: string, user_answer: string) {
@@ -23,35 +29,70 @@ function matchAnswer(answer: string, user_answer: string) {
     let correct_answer = correct_answers[i];
     const matches = correct_answer.match(/_?(.*?)_?(.+)/);
     if (matches || global_modifiers.length !== 0) {
-      correct_answer = matches ? matches[2] : "";
-      const local_modifiers = (matches ? matches[1] : "").split(" ");
-      const contains_regex_mod = local_modifiers.includes("REGEX") || global_modifiers.includes("REGEX");
-      if (local_modifiers.includes("IC") || global_modifiers.includes("IC")) {
-        if (!contains_regex_mod)
-          correct_answer = correct_answer.toLowerCase();
+      correct_answer = matches ? matches[2] : '';
+      const local_modifiers = (matches ? matches[1] : '').split(' ');
+      const contains_regex_mod =
+        local_modifiers.includes('REGEX') || global_modifiers.includes('REGEX');
+      if (local_modifiers.includes('IC') || global_modifiers.includes('IC')) {
+        if (!contains_regex_mod) correct_answer = correct_answer.toLowerCase();
         mod_user_answer = mod_user_answer.toLowerCase();
       }
-      if (local_modifiers.includes("IS") || global_modifiers.includes("IS")) {
+      if (local_modifiers.includes('IS') || global_modifiers.includes('IS')) {
         if (!contains_regex_mod)
           correct_answer = correct_answer.replace(/\s/g, '');
         mod_user_answer = mod_user_answer.replace(/\s/g, '');
       }
       if (contains_regex_mod) {
-        const flags = local_modifiers.concat(global_modifiers).find(modifier => modifier.match(/FLAGS=\w+/));
-        const does_match = Boolean(mod_user_answer.match(new RegExp(String(correct_answer), flags?.split("=")[1] ?? "")));
+        const flags = local_modifiers
+          .concat(global_modifiers)
+          .find((modifier) => modifier.match(/FLAGS=\w+/));
+        const does_match = Boolean(
+          mod_user_answer.match(
+            new RegExp(String(correct_answer), flags?.split('=')[1] ?? '')
+          )
+        );
         if (does_match) correct_answer = mod_user_answer;
       }
     }
     isCorrect = correct_answer === mod_user_answer;
-    if (isCorrect)
-      break
+    if (isCorrect) break;
   }
   return [isCorrect, alts] as [boolean, number[]];
 }
 
-export default function checkTextAnswer(user_answer: string[], answers: string[]) {
+export function modifyUserAnswer(
+  user_answer: string,
+  answer: IQuestionAnswerFull,
+  modifiers: TQuestionAnswerModifiers[]
+) {
+  modifiers.forEach((modifier) => {
+    switch (modifier) {
+      case 'IC': {
+        user_answer = user_answer.toLowerCase();
+        answer.text = answer.text.toLowerCase();
+        answer.alts.forEach((alt) => {
+          alt.text = alt.text.toLowerCase();
+        });
+        break;
+      }
+      case 'IS': {
+        user_answer = user_answer.replace(/\s/g, '');
+        answer.text = answer.text.replace(/\s/g, '');
+        answer.alts.forEach((alt) => {
+          alt.text = alt.text.replace(/\s/g, '');
+        });
+        break;
+      }
+    }
+  });
+}
+
+export default function checkTextAnswer(
+  user_answers: string[],
+  answers: IQuestionAnswerFull[]
+) {
   const checked_answers: number[] = [];
-  user_answer.forEach((user_answer, i) => {
+  user_answers.forEach((user_answer, i) => {
     let isCorrect = false;
     const res = matchAnswer(answers[i], user_answer);
     const alts = res[1];
@@ -62,10 +103,9 @@ export default function checkTextAnswer(user_answer: string[], answers: string[]
     while (isCorrect === false) {
       const last_alt = alts.pop();
       if (last_alt === undefined || checked_answers.includes(last_alt)) break;
-      else
-        isCorrect = matchAnswer(answers[last_alt], user_answer)[0];
-      if (isCorrect) checked_answers.push(last_alt)
+      else isCorrect = matchAnswer(answers[last_alt], user_answer)[0];
+      if (isCorrect) checked_answers.push(last_alt);
     }
-  })
+  });
   return checked_answers.length;
 }
