@@ -1,4 +1,4 @@
-export default function download(filename: string, text: string) {
+export function download(filename: string, text: string) {
   filename = filename ? filename : `${Date.now()}.json`;
   const element = document.createElement('a');
   element.setAttribute(

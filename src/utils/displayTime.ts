@@ -2,7 +2,7 @@ function padZero(num: number) {
   return num < 10 ? `0${num}` : num;
 }
 
-export default function displayTime(timeout: number) {
+export function displayTime(timeout: number) {
   const isNegative = timeout < 0;
   timeout = Math.abs(timeout);
   const min = Math.floor(timeout / 60);

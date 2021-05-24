@@ -2,7 +2,7 @@ import shortid from 'shortid';
 import { TQuestionFull } from '../types';
 import { calculateScore } from './calculateScore';
 
-export default function getAnswerResult(
+export function getAnswerResult(
   current_question: TQuestionFull,
   user_answers: string[],
   time_taken: number,

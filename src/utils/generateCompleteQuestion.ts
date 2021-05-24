@@ -7,9 +7,7 @@ function setObjectValues(parent: any, arr: [string, any][]) {
   });
 }
 
-export default function generateQuestionInputConfigs(
-  question: TQuestionPartial
-) {
+export function generateCompleteQuestion(question: TQuestionPartial) {
   const logs: { warns: string[]; errors: string[] } = { warns: [], errors: [] };
 
   const completeQuestion: TQuestionFull = JSON.parse(JSON.stringify(question));

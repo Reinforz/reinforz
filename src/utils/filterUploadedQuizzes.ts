@@ -2,7 +2,7 @@ import shortid from 'shortid';
 import { IErrorLog, IQuizFull, IQuizPartial, TQuestionFull } from '../types';
 import { generateCompleteQuestion } from './';
 
-export default function filterUploadedQuizzes(quizzes: IQuizPartial[]) {
+export function filterUploadedQuizzes(quizzes: IQuizPartial[]) {
   const logMessages: IErrorLog[] = [];
   const filteredUploadedQuizzes: IQuizFull[] = [];
   quizzes.forEach((quiz, quizIndex) => {
