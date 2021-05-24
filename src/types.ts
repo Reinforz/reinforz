@@ -58,7 +58,7 @@ export interface IQuizPartial {
   _id?: string;
 }
 
-export interface IQuizFull{
+export interface IQuizFull {
   title: string;
   subject: string;
   questions: TQuestionFull[];

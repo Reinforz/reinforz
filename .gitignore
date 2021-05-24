@@ -25,6 +25,5 @@ yarn-error.log*
 **/*.log
 
 feature.md
-**/*.yaml
 
 experiment

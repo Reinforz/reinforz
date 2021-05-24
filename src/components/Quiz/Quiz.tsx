@@ -1,5 +1,4 @@
 import React, { Fragment, useContext, useState } from "react";
-import { RESULTS_DATA } from "../../data/results";
 import { useCycle, useThemeSettings } from "../../hooks";
 import { Stats } from "../../shared";
 import { TQuestionFull, TQuestionResult } from "../../types";
@@ -11,7 +10,7 @@ import "./Quiz.scss";
 
 export default function Quiz() {
   const { playSettings, allQuestions } = useContext(PlayContext);
-  const [results, setResults] = useState(RESULTS_DATA as TQuestionResult[]);
+  const [results, setResults] = useState(/* RESULTS_DATA */[] as TQuestionResult[]);
   const { theme } = useThemeSettings();
   const { isLastItem, currentItem, getNextIndex, hasEnded, currentIndex } = useCycle(allQuestions);
 
@@ -19,7 +18,7 @@ export default function Quiz() {
     totalCorrectAnswers = results.filter(result => result.verdict).length;
 
   const generateContent = () => {
-    if (hasEnded) {
+    if (!hasEnded) {
       const currentQuestion = JSON.parse(JSON.stringify(currentItem)) as TQuestionFull;
       if (currentQuestion.options) {
         currentQuestion.options = playSettings.options.shuffle_options ? arrayShuffler(currentQuestion.options) : currentQuestion.options;
