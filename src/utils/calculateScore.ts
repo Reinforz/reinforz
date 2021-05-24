@@ -23,12 +23,12 @@ export function calculateScore(parameter: Parameter) {
     totalCorrectAnswers
   } = parameter;
   const correct_answers_score = 0.7 * (totalCorrectAnswers / totalAnswers);
-  const hints_score = (0.15 / totalHints) * (totalHints - hints_used);
+  const hints_score = (0.15 / (totalHints + 1)) * (totalHints + 1 - hints_used);
   const totalTimeDivisions = Math.ceil(time_allocated / 15),
     timeDivisions = Math.floor(time_taken / 15);
   const time_taken_score =
     (0.15 / totalTimeDivisions) * (totalTimeDivisions - timeDivisions);
-  return (
+  const score =
     weight *
     (partial_score
       ? Number(
@@ -36,6 +36,7 @@ export function calculateScore(parameter: Parameter) {
         )
       : verdict
       ? 1
-      : 0)
-  );
+      : 0);
+
+  return score;
 }

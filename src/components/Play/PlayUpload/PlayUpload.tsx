@@ -67,7 +67,7 @@ export default function PlayUpload() {
   if (isDragActive)
     borderColor = '#2196f3';
 
-  return <div style={{ borderColor, backgroundColor: theme.color.light, color: theme.palette.text.secondary }} className="PlayUpload" {...getRootProps({ isDragActive, isDragAccept, isDragReject })}>
+  return <div style={{ borderColor, backgroundColor: theme.color.light, color: theme.palette.text.secondary }} className="PlayUpload" {...getRootProps()}>
     <input {...getInputProps()} />
     {
       isDragActive ?

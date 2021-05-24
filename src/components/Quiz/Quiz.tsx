@@ -10,7 +10,7 @@ import "./Quiz.scss";
 
 export default function Quiz() {
   const { playSettings, allQuestions } = useContext(PlayContext);
-  const [results, setResults] = useState(/* RESULTS_DATA */[] as TQuestionResult[]);
+  const [results, setResults] = useState([] as TQuestionResult[]);
   const { theme } = useThemeSettings();
   const { isLastItem, currentItem, getNextIndex, hasEnded, currentIndex } = useCycle(allQuestions);
 
