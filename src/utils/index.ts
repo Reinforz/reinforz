@@ -8,6 +8,7 @@ import getAnswerResult from './getAnswerResult';
 export * from './calculateScore';
 export * from './checkInputAnswer';
 export * from './createDefaultState';
+export * from './generateQuestionsMap';
 export * from './getSettings';
 export {
   displayTime,

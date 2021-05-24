@@ -3,7 +3,7 @@ import { List } from "../../shared";
 import {
   IErrorLog, IPlaySettings, IQuizFull, TQuestionFull
 } from "../../types";
-import { createDefaultPlaySettingsFiltersState, createDefaultPlaySettingsOptionsState } from "../../utils";
+import { createDefaultPlaySettingsFiltersState, createDefaultPlaySettingsOptionsState, generateQuestionsMap } from "../../utils";
 import shuffle from "../../utils/arrayShuffler";
 import Quiz from "../Quiz/Quiz";
 import "./Play.scss";
@@ -48,14 +48,8 @@ function Play() {
 
   if (playSettings.options.shuffle_quizzes && !playSettings.options.flatten_mix) filteredQuizzes = shuffle(filteredQuizzes);
   if (playSettings.options.shuffle_questions && !playSettings.options.flatten_mix) filteredQuizzes.forEach(quiz => quiz.questions = shuffle(quiz.questions));
-  const allQuestions: TQuestionFull[] = [];
-  const allQuestionsMap: Map<string, TQuestionFull> = new Map();
 
-  filteredQuizzes.forEach(filteredQuiz => {
-    filteredQuiz.questions = filteredQuiz.questions.filter(question => !playSettings.filters.excluded_difficulty.includes(question.difficulty) && !playSettings.filters.excluded_types.includes(question.type) && playSettings.filters.time_allocated[0] <= question.time_allocated && playSettings.filters.time_allocated[1] >= question.time_allocated);
-    allQuestions.push(...filteredQuiz.questions)
-    filteredQuiz.questions.forEach(question => allQuestionsMap.set(question._id, question))
-  });
+  const [allQuestions, allQuestionsMap] = generateQuestionsMap(filteredQuizzes, playSettings)
 
   return <PlayContext.Provider value={{ allQuestionsMap, allQuestions, filteredQuizzes, setPlaySettings, playSettings, errorLogs, setErrorLogs, setPlaying, playing, uploadedQuizzes, selectedQuizzes, setUploadedQuizzes, setSelectedQuizzes }}>
     {!playing ? <div className="Play">
