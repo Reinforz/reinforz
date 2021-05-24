@@ -1,11 +1,19 @@
 import { Button, Checkbox, FormControlLabel, FormGroup, InputLabel, TextField } from "@material-ui/core";
-import { useSnackbar } from "notistack";
+import { OptionsObject, useSnackbar } from "notistack";
 import React, { useContext } from "react";
 import { useThemeSettings } from "../../../hooks";
 import { IPlaySettingsOptionsState, TQuestionDifficulty, TQuestionType } from "../../../types";
 import { createDefaultPlaySettingsFiltersState, createDefaultPlaySettingsOptionsState } from "../../../utils";
 import { PlayContext } from "../Play";
 import "./PlaySettings.scss";
+
+const enqueueSnackbarOptionsObject: OptionsObject = {
+  variant: 'error',
+  anchorOrigin: {
+    vertical: 'bottom',
+    horizontal: 'center',
+  },
+}
 
 export default function PlaySettings() {
   const { setPlaying, selectedQuizzes, playSettings, setPlaySettings, filteredQuizzes } = useContext(PlayContext);
@@ -109,23 +117,11 @@ export default function PlaySettings() {
       }
       else if (filteredQuestions === 0 && selectedQuizzes.length !== 0) {
         if (settings.sound) horn.play()
-        enqueueSnackbar('You must have at least one question to play', {
-          variant: 'error',
-          anchorOrigin: {
-            vertical: 'bottom',
-            horizontal: 'center',
-          },
-        })
+        enqueueSnackbar('You must have at least one question to play', enqueueSnackbarOptionsObject)
       }
       else if (selectedQuizzes.length === 0) {
         if (settings.sound) horn.play()
-        enqueueSnackbar('You must have at least one quiz selected', {
-          variant: 'error',
-          anchorOrigin: {
-            vertical: 'bottom',
-            horizontal: 'center',
-          },
-        })
+        enqueueSnackbar('You must have at least one quiz selected', enqueueSnackbarOptionsObject)
       }
     }}>Start</Button>
   </div>
