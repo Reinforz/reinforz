@@ -106,17 +106,22 @@ export interface IMsQuestionPartial extends IQuestionPartial {
 export interface ISnippetQuestionPartial extends IQuestionPartial {
   question: string;
   type?: 'Snippet';
-  answers: IQuestionAnswer[];
+  answers: IQuestionAnswerPartial[];
 }
 
 export interface IFibQuestionPartial extends IQuestionPartial {
   question: string[];
   type?: 'FIB';
-  answers: IQuestionAnswer[];
+  answers: IQuestionAnswerPartial[];
 }
 
-export interface IQuestionAnswer {
+export type TQuestionAnswerModifiers = 'IC' | 'IS';
+
+export interface IQuestionAnswerPartial {
   text: string;
+  modifiers?: TQuestionAnswerModifiers[];
+  regex?: string;
+  alts?: string[];
 }
 
 export interface IMcqQuestionFull extends Required<IQuestionPartial> {
@@ -135,11 +140,18 @@ export interface IMsQuestionFull extends Required<IQuestionPartial> {
   quiz: QuizIdentifiers;
 }
 
+export interface IQuestionAnswerFull {
+  text: string;
+  modifiers: TQuestionAnswerModifiers[];
+  regex: string | null;
+  alts: string[];
+}
+
 export interface ISnippetQuestionFull extends Required<IQuestionPartial> {
   question: string;
   options: undefined;
   type: 'Snippet';
-  answers: IQuestionAnswer[];
+  answers: IQuestionAnswerFull[];
   quiz: QuizIdentifiers;
 }
 
@@ -147,7 +159,7 @@ export interface IFibQuestionFull extends Required<IQuestionPartial> {
   question: string[];
   options: undefined;
   type: 'FIB';
-  answers: IQuestionAnswer[];
+  answers: IQuestionAnswerFull[];
   quiz: QuizIdentifiers;
 }
 
