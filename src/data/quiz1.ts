@@ -53,10 +53,16 @@ export const QUIZ_1: IQuizFull = {
       question: ['git', '-b', ''],
       answers: [
         {
-          text: 'checkout'
+          text: 'checkout',
+          alts: [],
+          modifiers: [],
+          regexes: []
         },
         {
-          text: 'main'
+          text: 'main',
+          alts: [],
+          modifiers: [],
+          regexes: []
         }
       ],
       hints: [

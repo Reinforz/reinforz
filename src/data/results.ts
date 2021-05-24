@@ -5,10 +5,16 @@ export const RESULTS_DATA: TQuestionResult[] = [
     question: ['git', '-b', ''],
     answers: [
       {
-        text: 'checkout'
+        text: 'checkout',
+        alts: [],
+        regexes: [],
+        modifiers: []
       },
       {
-        text: 'main'
+        text: 'main',
+        alts: [],
+        regexes: [],
+        modifiers: []
       }
     ],
     hints: [

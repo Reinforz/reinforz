@@ -1,6 +1,6 @@
 import { IQuestionAnswerFull } from '../types';
 
-function checkAnswer(
+export function checkAnswer(
   userAnswer: string,
   answer: Omit<IQuestionAnswerFull, 'alts' | 'modifiers'>
 ) {
@@ -18,7 +18,7 @@ function checkAnswer(
   return isCorrect;
 }
 
-function matchAnswer(userAnswer: string, answer: IQuestionAnswerFull) {
+export function matchAnswer(userAnswer: string, answer: IQuestionAnswerFull) {
   let isCorrect = checkAnswer(userAnswer, answer);
 
   if (!isCorrect) {
