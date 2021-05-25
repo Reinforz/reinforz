@@ -1,15 +1,7 @@
 import { IReportFilterState, TQuestionResult } from '../types';
 
 export function applyResultFilters(
-  results: (Pick<
-    TQuestionResult,
-    | 'type'
-    | 'difficulty'
-    | 'verdict'
-    | 'hints_used'
-    | 'time_taken'
-    | 'question_id'
-  > & { quiz: { _id: string } })[],
+  results: TQuestionResult[],
   reportFilter: Omit<IReportFilterState, 'excluded_columns'>
 ) {
   const {
@@ -26,7 +18,7 @@ export function applyResultFilters(
       !excluded_types.includes(result.type) &&
       !excluded_difficulty.includes(result.difficulty) &&
       (verdict === 'mixed' ||
-        verdict.toString() === result.verdict?.toString()) &&
+        verdict.toString() === result.verdict.toString()) &&
       (hints_used === 'any' || result.hints_used <= hints_used) &&
       time_taken[0] <= result.time_taken &&
       time_taken[1] >= result.time_taken &&

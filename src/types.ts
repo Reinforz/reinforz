@@ -75,11 +75,11 @@ export type TQuestionDifficulty = 'Beginner' | 'Intermediate' | 'Advanced';
 
 export interface IQuestionPartial {
   type?: TQuestionType;
-  image?: string;
+  image?: string | null;
   weight?: number;
   time_allocated?: number;
   difficulty?: TQuestionDifficulty;
-  explanation?: string;
+  explanation?: string | null;
   hints?: string[];
   _id?: string;
 }

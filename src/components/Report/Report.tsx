@@ -2,7 +2,7 @@ import { Button } from '@material-ui/core';
 import React, { useContext, useState } from 'react';
 import { Table } from '../../shared';
 import { TQuestionResult } from "../../types";
-import { applyReportFilters, createDefaultReportFilterState } from '../../utils';
+import { applyResultFilters, createDefaultReportFilterState, generateQuizzesFromResults } from '../../utils';
 import { PlayContext } from '../Play/Play';
 import "./Report.scss";
 import ReportExport from './ReportExport/ReportExport';
@@ -35,8 +35,8 @@ export default function Report(props: Props) {
     }
   }
 
-  const [filteredResults, filteredQuizzes] = applyReportFilters(props.results, reportFilter, allQuestionsMap);
-
+  const filteredResults = applyResultFilters(props.results, reportFilter,);
+  const filteredQuizzes = generateQuizzesFromResults(filteredResults, allQuestionsMap);
   const total_weights = props.results.reduce((acc, cur) => acc + cur.weight, 0);
 
   const accumulator = (header: string, contents: Array<any>) => {
