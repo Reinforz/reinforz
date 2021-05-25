@@ -1,8 +1,8 @@
-import { Button, Checkbox, FormControlLabel, FormGroup, InputLabel, TextField } from "@material-ui/core";
+import { Button, Checkbox, FormControlLabel } from "@material-ui/core";
 import { OptionsObject, useSnackbar } from "notistack";
 import React, { useContext } from "react";
 import { useThemeSettings } from "../../../hooks";
-import { CheckboxGroup } from '../../../shared';
+import { CheckboxGroup, InputRange } from '../../../shared';
 import { IPlaySettingsOptionsState } from "../../../types";
 import { createDefaultPlaySettingsFiltersState, createDefaultPlaySettingsOptionsState } from "../../../utils";
 import { PlayContext } from "../Play";
@@ -57,15 +57,9 @@ export default function PlaySettings() {
         Filters
       </div>
       <div className="PlaySettings-group-content PlaySettings-group-content--filters">
-        <FormGroup>
-          <InputLabel>Time Allocated range</InputLabel>
-          <TextField type="number" inputProps={{ max: playSettings.filters.time_allocated[1], step: 5, min: 0 }} value={playSettings.filters.time_allocated[0]} onChange={(e) => {
-            setPlaySettings({ ...playSettings, filters: { ...playSettings.filters, time_allocated: [(e.target as any).value, playSettings.filters.time_allocated[1]] } })
-          }} />
-          <TextField type="number" inputProps={{ min: playSettings.filters.time_allocated[0], step: 5, max: 60 }} value={playSettings.filters.time_allocated[1]} onChange={(e) => {
-            setPlaySettings({ ...playSettings, filters: { ...playSettings.filters, time_allocated: [playSettings.filters.time_allocated[0], (e.target as any).value] } })
-          }} />
-        </FormGroup>
+        <InputRange label={"Time Allocated range"} min={0} max={60} setState={(filters: any) => {
+          setPlaySettings({ ...playSettings, filters })
+        }} state={playSettings.filters} stateKey={"time_allocated"} />
 
         <CheckboxGroup label={'Excluded Difficulty'} items={['Beginner', 'Intermediate', 'Advanced']} setState={(filters: any) => {
           setPlaySettings({ ...playSettings, filters })
