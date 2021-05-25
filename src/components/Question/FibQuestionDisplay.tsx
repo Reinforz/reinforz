@@ -5,7 +5,7 @@ import React from "react";
 interface Props {
   question: string[]
   userAnswers: string[]
-  image?: string
+  image?: string | null
 }
 
 export default function FibQuestionDisplay(props: Props) {

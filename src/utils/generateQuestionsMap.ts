@@ -2,7 +2,7 @@ import { IPlaySettings, IQuizFull, TQuestionFull } from '../types';
 
 export function generateQuestionsMap(
   filteredQuizzes: IQuizFull[],
-  playSettings: IPlaySettings
+  playSettingsFilters: IPlaySettings['filters']
 ) {
   const allQuestions: TQuestionFull[] = [];
   const allQuestionsMap: Map<string, TQuestionFull> = new Map();
@@ -10,12 +10,12 @@ export function generateQuestionsMap(
   filteredQuizzes.forEach((filteredQuiz) => {
     filteredQuiz.questions = filteredQuiz.questions.filter(
       (question) =>
-        !playSettings.filters.excluded_difficulty.includes(
+        !playSettingsFilters.excluded_difficulty.includes(
           question.difficulty
         ) &&
-        !playSettings.filters.excluded_types.includes(question.type) &&
-        playSettings.filters.time_allocated[0] <= question.time_allocated &&
-        playSettings.filters.time_allocated[1] >= question.time_allocated
+        !playSettingsFilters.excluded_types.includes(question.type) &&
+        playSettingsFilters.time_allocated[0] <= question.time_allocated &&
+        playSettingsFilters.time_allocated[1] >= question.time_allocated
     );
     allQuestions.push(...filteredQuiz.questions);
     filteredQuiz.questions.forEach((question) =>
