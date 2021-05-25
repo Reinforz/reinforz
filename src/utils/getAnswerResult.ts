@@ -1,7 +1,7 @@
 import shortid from 'shortid';
 import { TQuestionFull } from '../types';
 import { calculateScore } from './calculateScore';
-import { checkInputAnswer } from './checkInputAnswer';
+import { checkInputAnswers } from './checkInputAnswers';
 
 export function getAnswerResult(
   currentQuestions: TQuestionFull,
@@ -36,7 +36,7 @@ export function getAnswerResult(
       break;
     case 'Snippet':
     case 'FIB':
-      verdict = checkInputAnswer(userAnswers, currentQuestions.answers);
+      verdict = checkInputAnswers(userAnswers, currentQuestions.answers);
       break;
   }
 

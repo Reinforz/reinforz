@@ -6,15 +6,18 @@ import { IQuestionAnswerFull } from '../types';
  * @param answer An answer object containing actual modified answer text, regexes and alternates
  * @returns whether user's answer matches any of the answers
  */
-export function checkUserAnswer(
+export function checkInputAnswer(
   userAnswer: string,
   answers: IQuestionAnswerFull[]
 ) {
   let isCorrect = false;
 
   for (let index = 0; index < answers.length; index++) {
-    const modifiedUserAnswer = modifyAnswers(userAnswer, answers[index]);
-    if (modifiedUserAnswer === answers[index].text) {
+    const [modifiedUserAnswer, modifiedAnswerText] = modifyAnswers(
+      userAnswer,
+      answers[index]
+    );
+    if (modifiedUserAnswer === modifiedAnswerText) {
       isCorrect = true;
       break;
     } else {
@@ -35,22 +38,26 @@ export function checkUserAnswer(
  * @param userAnswer user's answer to check against
  * @param answer answer info object
  */
-export function modifyAnswers(userAnswer: string, answer: IQuestionAnswerFull) {
+export function modifyAnswers(
+  userAnswer: string,
+  answer: Omit<IQuestionAnswerFull, 'regex'>
+) {
+  let answerText = answer.text;
   answer.modifiers.forEach((modifier) => {
     switch (modifier) {
       case 'IC': {
         userAnswer = userAnswer.toLowerCase();
-        answer.text = answer.text.toLowerCase();
+        answerText = answerText.toLowerCase();
         break;
       }
       case 'IS': {
         userAnswer = userAnswer.replace(/\s/g, '');
-        answer.text = answer.text.replace(/\s/g, '');
+        answerText = answerText.replace(/\s/g, '');
         break;
       }
     }
   });
-  return userAnswer;
+  return [userAnswer, answerText] as const;
 }
 
 /**
@@ -59,13 +66,13 @@ export function modifyAnswers(userAnswer: string, answer: IQuestionAnswerFull) {
  * @param answers answer info object
  * @returns Whether or not user's answer is correct
  */
-export function checkInputAnswer(
+export function checkInputAnswers(
   userAnswers: string[],
   answers: IQuestionAnswerFull[][]
 ) {
   let isCorrect = false;
   for (let index = 0; index < userAnswers.length; index++) {
-    isCorrect = checkUserAnswer(userAnswers[index], answers[index]);
+    isCorrect = checkInputAnswer(userAnswers[index], answers[index]);
     if (!isCorrect) break;
   }
   return isCorrect;
