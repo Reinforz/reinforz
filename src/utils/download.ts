@@ -1,5 +1,4 @@
 export function download(filename: string, text: string) {
-  filename = filename ? filename : `${Date.now()}.json`;
   const element = document.createElement('a');
   element.setAttribute(
     'href',

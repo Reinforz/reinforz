@@ -5,7 +5,7 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-it(`Should download file`, () => {
+it(`Should download file when no filename is given`, () => {
   const clickStub = jest.spyOn(HTMLAnchorElement.prototype, 'click');
   const appendChildStub = jest.spyOn(document.body, 'appendChild');
   const removeChildStub = jest.spyOn(document.body, 'removeChild');

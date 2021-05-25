@@ -72,7 +72,7 @@ export const QUIZ_1: IQuizFull = {
         'Hint 2',
         'Hint 3'
       ],
-      options: undefined,
+      options: null,
       explanation: '* List item 1\n* List item 2\n',
       image:
         'https://www.freecodecamp.org/news/content/images/2020/02/Ekran-Resmi-2019-11-18-18.08.13.png',

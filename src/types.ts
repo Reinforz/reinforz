@@ -152,7 +152,7 @@ export interface IQuestionAnswerFull {
 
 export interface ISnippetQuestionFull extends Required<IQuestionPartial> {
   question: string;
-  options: undefined;
+  options: null;
   type: 'Snippet';
   answers: IQuestionAnswerFull[][];
   quiz: QuizIdentifiers;
@@ -160,7 +160,7 @@ export interface ISnippetQuestionFull extends Required<IQuestionPartial> {
 
 export interface IFibQuestionFull extends Required<IQuestionPartial> {
   question: string[];
-  options: undefined;
+  options: null;
   type: 'FIB';
   answers: IQuestionAnswerFull[][];
   quiz: QuizIdentifiers;

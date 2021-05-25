@@ -48,7 +48,7 @@ function Play() {
   if (playSettings.options.shuffle_quizzes && !playSettings.options.flatten_mix) filteredQuizzes = arrayShuffler(filteredQuizzes);
   if (playSettings.options.shuffle_questions && !playSettings.options.flatten_mix) filteredQuizzes.forEach(quiz => quiz.questions = arrayShuffler(quiz.questions));
 
-  const [allQuestions, allQuestionsMap] = generateQuestionsMap(filteredQuizzes, playSettings)
+  const [allQuestions, allQuestionsMap] = generateQuestionsMap(filteredQuizzes, playSettings.filters)
 
   return <PlayContext.Provider value={{ allQuestionsMap, allQuestions, filteredQuizzes, setPlaySettings, playSettings, errorLogs, setErrorLogs, setPlaying, playing, uploadedQuizzes, selectedQuizzes, setUploadedQuizzes, setSelectedQuizzes }}>
     {!playing ? <div className="Play">
