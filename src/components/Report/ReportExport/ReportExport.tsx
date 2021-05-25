@@ -30,6 +30,7 @@ export default function ReportExport(props: Props) {
 
   const { export_type, export_as } = exportState;
 
+  // ? Convert to a util function
   const clonedDownload = useCallback((type) => {
     Object.values(filteredQuizzes).forEach(quiz => {
       quiz.questions = quiz.questions.map(question => {
