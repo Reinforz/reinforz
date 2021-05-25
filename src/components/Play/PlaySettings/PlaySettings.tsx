@@ -18,8 +18,7 @@ const enqueueSnackbarOptionsObject: OptionsObject = {
 
 export default function PlaySettings() {
   const { setPlaying, selectedQuizzes, playSettings, setPlaySettings, filteredQuizzes } = useContext(PlayContext);
-  const { theme, settings, sounds } = useThemeSettings();
-  const { pop_off, pop_on, swoosh, reset, horn, click } = sounds;
+  const { theme } = useThemeSettings();
   const { enqueueSnackbar } = useSnackbar();
 
   const filteredQuestions = filteredQuizzes.reduce((acc, filteredQuiz) => acc += filteredQuiz.questions.length, 0);
@@ -43,11 +42,6 @@ export default function PlaySettings() {
                 }}
                 name={key}
                 color="primary"
-                onClick={(e) => {
-                  if ((e.target as any).checked && settings.sound)
-                    pop_on.play();
-                  else if (settings.sound) pop_off.play()
-                }}
               />
             }
             label={key.split("_").map(k => k.charAt(0).toUpperCase() + k.substr(1)).join(" ")}
@@ -55,7 +49,6 @@ export default function PlaySettings() {
         })}
       </div>
       <Button className="PlaySettings-group-button" variant="contained" color="primary" onClick={() => {
-        if (settings.sound) reset.play()
         setPlaySettings({ ...playSettings, options: createDefaultPlaySettingsOptionsState() })
       }}>Reset</Button>
     </div>
@@ -67,11 +60,9 @@ export default function PlaySettings() {
         <FormGroup>
           <InputLabel>Time Allocated range</InputLabel>
           <TextField type="number" inputProps={{ max: playSettings.filters.time_allocated[1], step: 5, min: 0 }} value={playSettings.filters.time_allocated[0]} onChange={(e) => {
-            if (settings.sound) click.play()
             setPlaySettings({ ...playSettings, filters: { ...playSettings.filters, time_allocated: [(e.target as any).value, playSettings.filters.time_allocated[1]] } })
           }} />
           <TextField type="number" inputProps={{ min: playSettings.filters.time_allocated[0], step: 5, max: 60 }} value={playSettings.filters.time_allocated[1]} onChange={(e) => {
-            if (settings.sound) click.play()
             setPlaySettings({ ...playSettings, filters: { ...playSettings.filters, time_allocated: [playSettings.filters.time_allocated[0], (e.target as any).value] } })
           }} />
         </FormGroup>
@@ -85,7 +76,6 @@ export default function PlaySettings() {
         }} stateKey={'excluded_types'} state={playSettings.filters} />
       </div>
       <Button className="PlaySettings-group-button" variant="contained" color="primary" onClick={() => {
-        if (settings.sound) reset.play()
         setPlaySettings({ ...playSettings, filters: createDefaultPlaySettingsFiltersState() })
       }}>Reset</Button>
 
@@ -93,15 +83,12 @@ export default function PlaySettings() {
     <div className="PlaySettings-total" style={{ backgroundColor: theme.color.dark, color: filteredQuestions === 0 ? theme.palette.error.main : theme.palette.success.main }}>{filteredQuestions} Questions</div>
     <Button disabled={(filteredQuestions === 0 && selectedQuizzes.length !== 0) || selectedQuizzes.length === 0} className="PlaySettings-button" color="primary" variant="contained" onClick={() => {
       if (selectedQuizzes.length > 0 && filteredQuestions > 0) {
-        if (settings.sound) swoosh.play();
         setPlaying(true)
       }
       else if (filteredQuestions === 0 && selectedQuizzes.length !== 0) {
-        if (settings.sound) horn.play()
         enqueueSnackbar('You must have at least one question to play', enqueueSnackbarOptionsObject)
       }
       else if (selectedQuizzes.length === 0) {
-        if (settings.sound) horn.play()
         enqueueSnackbar('You must have at least one quiz selected', enqueueSnackbarOptionsObject)
       }
     }}>Start</Button>

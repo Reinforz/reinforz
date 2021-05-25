@@ -25,7 +25,6 @@ interface Props<I extends Record<string, any>> {
   items: (keyof I)[]
   itemsMap: I
   setItems: (item: I) => void
-  sound?: boolean
   classNames?: {
     FormGroup?: string
     InputLabel?: string
@@ -33,16 +32,14 @@ interface Props<I extends Record<string, any>> {
 }
 
 export default function Toggles<I extends Record<string, any>>(props: Props<I>) {
-  const { theme: THEME, sounds: { switch_on, switch_off } } = useThemeSettings();
-  const { sound, items, itemsMap, setItems } = props;
+  const { theme: THEME } = useThemeSettings();
+  const { items, itemsMap, setItems } = props;
   return <> {items.map((item) =>
     <FormGroup row className={clsx("Toggles-item", props?.classNames?.FormGroup && props.classNames.FormGroup)} style={{ backgroundColor: THEME.color.base }}>
       <InputLabel className={clsx("Toggles-item-label", props?.classNames?.InputLabel && props.classNames.InputLabel)}>{(item as string).charAt(0).toUpperCase() + (item as string).substr(1)}</InputLabel>
       <OnOffSwitch
         checked={itemsMap[item]}
         onChange={(e) => {
-          if (!itemsMap[item] && sound) switch_on.play();
-          else if (itemsMap[item] && sound) switch_off.play();
           setItems({ ...itemsMap, [item]: !itemsMap[item] })
         }}
       />

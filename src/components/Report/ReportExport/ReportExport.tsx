@@ -21,7 +21,7 @@ export default function ReportExport(props: Props) {
   const { filteredResults, filteredQuizzes } = props;
   let REPORT_EXPORT: any = localStorage.getItem('REPORT_EXPORT');
   REPORT_EXPORT = REPORT_EXPORT ? JSON.parse(REPORT_EXPORT) : undefined;
-  const { theme, settings, sounds: { click } } = useThemeSettings();
+  const { theme } = useThemeSettings();
 
   const [exportState, setExportState] = useState<IReportExportState>({
     export_type: REPORT_EXPORT ? REPORT_EXPORT.export_type : 'Original',
@@ -59,7 +59,6 @@ export default function ReportExport(props: Props) {
       <Select items={['YAML', 'JSON']} label={"Export As"} menuItemLabel={(item) => item} setState={setExportState} state={exportState} stateKey={"export_as"} />
       <Icon popoverText={`Export ${export_type} as ${export_as}`} >
         <GetAppIcon style={{ fill: theme.color.opposite_dark }} onClick={() => {
-          if (settings.sound) click.play()
           downloadFiles()
         }} />
       </Icon>

@@ -18,18 +18,15 @@ export interface Props<T extends { _id: string } & Record<string, any>> {
 
 export default function List<T extends { _id: string }>(props: Props<T>) {
   const { items, selectedItems, setItems, setSelectedItems, header, fields } = props;
-  const { theme, settings, sounds } = useThemeSettings();
-  const { pop_on, pop_off, remove } = sounds;
+  const { theme } = useThemeSettings();
 
   return <div className="List" style={{ backgroundColor: theme.color.base }}>
     <div className="List-header" style={{ backgroundColor: theme.color.dark, color: theme.palette.text.primary }}>
       <Checkbox color="primary" key={"checkbox"} onClick={(e) => {
         if ((e.target as any).checked) {
-          if (settings.sound) pop_on.play();
           setSelectedItems(items.map(item => item._id))
         }
         else {
-          if (settings.sound) pop_off.play();
           setSelectedItems([])
         }
       }} checked={items.length !== 0 && selectedItems.length === items.length} />
@@ -38,7 +35,6 @@ export default function List<T extends { _id: string }>(props: Props<T>) {
       <div className="List-header-icons">
         <Icon popoverText={`Remove ${selectedItems.length} selected items`} key={"deleteicon"} >
           <CancelIcon className={"List-header-icons--cancel"} onClick={() => {
-            if (settings.sound) remove.play();
             const remainingItems = items.filter(item => !selectedItems.includes(item._id))
             setItems(remainingItems)
             props.onDelete && props.onDelete(remainingItems)
@@ -54,17 +50,14 @@ export default function List<T extends { _id: string }>(props: Props<T>) {
             <div className="List-content-item-icons">
               <Checkbox color="primary" className="List-content-item-icons--checkbox" key={_id + "checkbox" + index} onClick={(e) => {
                 if ((e.target as any).checked) {
-                  if (settings.sound) pop_on.play();
                   setSelectedItems([...selectedItems, _id])
                 }
                 else {
-                  if (settings.sound) pop_off.play();
                   setSelectedItems(selectedItems.filter(selectedItem => selectedItem !== _id))
                 }
               }} checked={selectedItems.includes(_id)} value={_id} />
               <Icon key={_id + "icon" + index} popoverText="Delete this item">
                 <CancelIcon className="List-content-item-icons--cancel" onClick={() => {
-                  if (settings.sound) remove.play();
                   props.onDelete && props.onDelete([item])
                   setItems(items.filter(_item => _item._id !== _id))
                 }} style={{ fill: theme.palette.error.dark }} />
