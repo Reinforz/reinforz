@@ -1,33 +1,34 @@
 import shortid from 'shortid';
 import { TQuestionFull } from '../types';
 import { calculateScore } from './calculateScore';
+import { checkInputAnswer } from './checkInputAnswer';
 
 export function getAnswerResult(
-  current_question: TQuestionFull,
-  user_answers: string[],
+  currentQuestions: TQuestionFull,
+  userAnswers: string[],
   time_taken: number,
   hints_used: number,
   partial_score: boolean
 ) {
   let totalCorrectAnswers = 0;
-  const { hints, weight, time_allocated, answers } = current_question;
-  user_answers = user_answers.filter((user_answer) => user_answer !== '');
+  const { hints, weight, time_allocated, answers } = currentQuestions;
+  userAnswers = userAnswers.filter((user_answer) => user_answer !== '');
   let verdict = false;
 
-  switch (current_question.type) {
+  switch (currentQuestions.type) {
     case 'MCQ':
       verdict =
-        current_question.answers.length === user_answers.length &&
+        currentQuestions.answers.length === userAnswers.length &&
         answers[0].toString() ===
-          current_question.options![parseInt(user_answers[0])].index;
+          currentQuestions.options![parseInt(userAnswers[0])].index;
       totalCorrectAnswers = verdict ? 1 : 0;
       break;
     case 'MS':
       verdict =
-        user_answers.length === answers.length &&
-        user_answers.every((user_answer) => {
-          const isCorrect = current_question.answers.includes(
-            current_question.options![parseInt(user_answer)].index
+        userAnswers.length === answers.length &&
+        userAnswers.every((user_answer) => {
+          const isCorrect = currentQuestions.answers.includes(
+            currentQuestions.options![parseInt(user_answer)].index
           );
           if (isCorrect) totalCorrectAnswers++;
           return isCorrect;
@@ -35,10 +36,7 @@ export function getAnswerResult(
       break;
     case 'Snippet':
     case 'FIB':
-      current_question.answers.forEach((answer, i) => {
-        if (user_answers[i] === answer.text) totalCorrectAnswers++;
-      });
-      verdict = totalCorrectAnswers === answers.length;
+      verdict = checkInputAnswer(userAnswers, currentQuestions.answers);
       break;
   }
 

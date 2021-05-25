@@ -106,7 +106,7 @@ export interface IMsQuestionPartial extends IQuestionPartial {
 export interface ISnippetQuestionPartial extends IQuestionPartial {
   question: string;
   type?: 'Snippet';
-  answers: IQuestionAnswerPartial[];
+  answers: IQuestionAnswerPartial[][];
 }
 
 export interface IFibQuestionPartial extends IQuestionPartial {
@@ -162,7 +162,7 @@ export interface IFibQuestionFull extends Required<IQuestionPartial> {
   question: string[];
   options: undefined;
   type: 'FIB';
-  answers: IQuestionAnswerFull[];
+  answers: IQuestionAnswerFull[][];
   quiz: QuizIdentifiers;
 }
 

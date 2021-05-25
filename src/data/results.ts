@@ -4,18 +4,20 @@ export const RESULTS_DATA: TQuestionResult[] = [
   {
     question: ['git', '-b', ''],
     answers: [
-      {
-        text: 'checkout',
-        alts: [],
-        regexes: [],
-        modifiers: []
-      },
-      {
-        text: 'main',
-        alts: [],
-        regexes: [],
-        modifiers: []
-      }
+      [
+        {
+          text: 'checkout',
+          regex: null,
+          modifiers: []
+        }
+      ],
+      [
+        {
+          text: 'main',
+          regex: null,
+          modifiers: []
+        }
+      ]
     ],
     hints: [
       'Hint **1**\n## Heading\n## Hello World\n## Hello World\nHello World\nHello World\nHello World',

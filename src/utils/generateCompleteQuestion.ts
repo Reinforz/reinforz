@@ -119,17 +119,19 @@ export function generateCompleteQuestion(question: TQuestionPartial) {
 
         break;
       case 'Snippet':
-        completeQuestion.answers = completeQuestion.answers.map((answer) => ({
-          ...answer,
-          text: answer.text.toString()
-        }));
+        completeQuestion.answers.forEach((answers) => {
+          answers.forEach(answer=> {
+            answer.text = answer.text.toString()
+          })
+        });
         time_allocated = 45;
         break;
       case 'FIB':
-        completeQuestion.answers = completeQuestion.answers.map((answer) => ({
-          ...answer,
-          text: answer.text.toString()
-        }));
+        completeQuestion.answers.forEach((answers) => {
+          answers.forEach(answer=> {
+            answer.text = answer.text.toString()
+          })
+        });
         if (
           completeQuestion.answers.length + 1 !==
           completeQuestion.question.length
