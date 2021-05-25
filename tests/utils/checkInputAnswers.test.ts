@@ -1,4 +1,8 @@
-import { checkInputAnswer, modifyAnswers } from '../../src/utils';
+import {
+  checkInputAnswer,
+  checkInputAnswers,
+  modifyAnswers
+} from '../../src/utils';
 
 describe('modifyAnswers', () => {
   it(`Should modify all answers`, () => {
@@ -77,5 +81,46 @@ describe('checkInputAnswer', () => {
       ]);
       expect(isCorrect).toStrictEqual(false);
     });
+  });
+});
+
+describe('checkInputAnswers', () => {
+  it(`Should work when answers matches`, () => {
+    const isCorrect = checkInputAnswers(
+      ['Hello World', 'helloworld'],
+      [
+        [
+          {
+            modifiers: [],
+            regex: null,
+            text: 'Hello World'
+          }
+        ],
+        [
+          {
+            modifiers: ['IC', 'IS'],
+            regex: null,
+            text: 'Hello World'
+          }
+        ]
+      ]
+    );
+    expect(isCorrect).toStrictEqual(true);
+  });
+
+  it(`Should work when answer doesn't match`, () => {
+    const isCorrect = checkInputAnswers(
+      ['Hello World', 'helloworld'],
+      [
+        [
+          {
+            modifiers: [],
+            regex: null,
+            text: 'helloworld'
+          }
+        ]
+      ]
+    );
+    expect(isCorrect).toStrictEqual(false);
   });
 });
