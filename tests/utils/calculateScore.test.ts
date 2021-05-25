@@ -38,7 +38,7 @@ describe('partial_score=true', () => {
         totalCorrectAnswers: 1
       });
 
-      expect(score).toStrictEqual(0.85);
+      expect(score).toStrictEqual(0.89);
     });
 
     it(`Should work when some hints are used`, () => {
@@ -49,7 +49,7 @@ describe('partial_score=true', () => {
         totalCorrectAnswers: 1
       });
 
-      expect(score).toStrictEqual(0.95);
+      expect(score).toStrictEqual(0.96);
     });
 
     it(`Should work when full time allocated is used`, () => {

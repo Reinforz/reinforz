@@ -75,6 +75,7 @@ export function modifyAnswers(userAnswer: string, answer: IQuestionAnswerFull) {
       }
     }
   });
+  return userAnswer;
 }
 
 /**
@@ -89,8 +90,7 @@ export function checkInputAnswer(
 ) {
   let isCorrect = false;
   for (let index = 0; index < userAnswers.length; index++) {
-    const userAnswer = userAnswers[index];
-    modifyAnswers(userAnswer, answers[index]);
+    const userAnswer = modifyAnswers(userAnswers[index], answers[index]);
     isCorrect = checkUserAnswerAgainstAllGivenAnswers(
       userAnswer,
       answers[index]

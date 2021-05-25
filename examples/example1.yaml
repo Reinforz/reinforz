@@ -8,6 +8,9 @@ questions:
     answers:
       - text: DOM
       - text: UI
+        modifiers:
+          - IC
+          - IS
   - question: For many applications, using React will lead to a fast user interface without doing much work to specifically optimize for performance
     options:
       - True
