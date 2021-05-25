@@ -35,8 +35,8 @@ export default function ReportFilter(props: Props) {
     <RadioGroup items={["0", "1", "2", "any"]} label={"Hints Used"} setState={setReportFilter} state={reportFilter} stateKey={"hints_used"} />
     <CheckboxGroup label={'Excluded Difficulty'} items={['Beginner', 'Intermediate', 'Advanced']} setState={setReportFilter} stateKey={'excluded_difficulty'} state={reportFilter} />
     <CheckboxGroup label={'Excluded Type'} items={['FIB', 'MS', 'MCQ', "Snippet"]} setState={setReportFilter} stateKey={'excluded_types'} state={reportFilter} />
-    <Select label={"Excluded Quizzes"} items={selectedQuizzes} menuItemLabel={(item) => item} setState={setReportFilter} state={reportFilter} stateKey={"excluded_quizzes"} />
-    <Select label={"Excluded Columns"}
+    <Select multiple label={"Excluded Quizzes"} items={selectedQuizzes} menuItemLabel={(item) => item} setState={setReportFilter} state={reportFilter} stateKey={"excluded_quizzes"} />
+    <Select multiple label={"Excluded Columns"}
       renderValue={(selected) => (selected as string[]).map((report_stat, index) => <div key={report_stat + "excluded_columns" + index}>{transformLabel(report_stat)}</div>)}
       items={["quiz", "subject", "question", "type", "difficulty", "verdict", "score", "time_allocated", "time_taken", "answers", "weight", "user_answers", "hints_used"]}
       menuItemLabel={(item) => transformLabel(item)}
