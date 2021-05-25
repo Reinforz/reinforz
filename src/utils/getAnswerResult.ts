@@ -36,7 +36,9 @@ export function getAnswerResult(
       break;
     case 'Snippet':
     case 'FIB':
-      verdict = checkInputAnswers(userAnswers, currentQuestions.answers);
+      const result = checkInputAnswers(userAnswers, currentQuestions.answers);
+      verdict = result[0];
+      totalCorrectAnswers = result[1];
       break;
   }
 

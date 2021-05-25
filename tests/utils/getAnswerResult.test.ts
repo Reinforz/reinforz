@@ -150,12 +150,18 @@ describe('FIB Questions', () => {
       {
         type: 'FIB',
         answers: [
-          {
-            text: 'chunk 1'
-          },
-          {
-            text: 'chunk 2'
-          }
+          [
+            {
+              modifiers: [],
+              text: 'chunk 1'
+            }
+          ],
+          [
+            {
+              modifiers: [],
+              text: 'chunk 2'
+            }
+          ]
         ],
         time_allocated: 30,
         weight: 1,
@@ -177,7 +183,14 @@ describe('FIB Questions', () => {
     const info = getAnswerResult(
       {
         type: 'Snippet',
-        answers: ['chunk 1'],
+        answers: [
+          [
+            {
+              modifiers: [],
+              text: 'chunk 1'
+            }
+          ]
+        ],
         time_allocated: 30,
         weight: 1,
         hints: ['Hint 1', 'Hint 2', 'Hint 3']

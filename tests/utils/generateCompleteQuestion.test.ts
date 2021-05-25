@@ -170,18 +170,22 @@ describe('Snippet type questions', () => {
   it(`Should generate default configs`, () => {
     const [completeQuestion, logs] = generateCompleteQuestion({
       answers: [
-        {
-          text: '1'
-        }
+        [
+          {
+            text: '1'
+          }
+        ]
       ],
       type: 'Snippet',
       question: 'Question'
     });
     expect(completeQuestion).toStrictEqual({
       answers: [
-        {
-          text: '1'
-        }
+        [
+          {
+            text: '1'
+          }
+        ]
       ],
       type: 'Snippet',
       question: 'Question',
@@ -201,18 +205,22 @@ describe('FIB type questions', () => {
   it(`Should generate default configs`, () => {
     const [completeQuestion, logs] = generateCompleteQuestion({
       answers: [
-        {
-          text: '1'
-        }
+        [
+          {
+            text: '1'
+          }
+        ]
       ],
       type: 'FIB',
       question: ['Question', 'Question 2']
     });
     expect(completeQuestion).toStrictEqual({
       answers: [
-        {
-          text: '1'
-        }
+        [
+          {
+            text: '1'
+          }
+        ]
       ],
       type: 'FIB',
       question: ['Question', 'Question 2'],
@@ -231,12 +239,16 @@ describe('FIB type questions', () => {
     it(`Should catch error when blanks provided doesn't match blanks required`, () => {
       const [, logs] = generateCompleteQuestion({
         answers: [
-          {
-            text: '1'
-          },
-          {
-            text: '2'
-          }
+          [
+            {
+              text: '1'
+            }
+          ],
+          [
+            {
+              text: '2'
+            }
+          ]
         ],
         type: 'FIB',
         question: ['Question', 'Question 2']
@@ -307,9 +319,11 @@ it(`Should auto detect MCQ type`, () => {
 it(`Should auto detect Snippet type`, () => {
   const [completeQuestion] = generateCompleteQuestion({
     answers: [
-      {
-        text: '1'
-      }
+      [
+        {
+          text: '1'
+        }
+      ]
     ],
     question: 'Question'
   });
@@ -328,12 +342,16 @@ it(`Should auto detect MS type`, () => {
 it(`Should auto detect FIB type`, () => {
   const [completeQuestion] = generateCompleteQuestion({
     answers: [
-      {
-        text: '1'
-      },
-      {
-        text: '1'
-      }
+      [
+        {
+          text: '1'
+        }
+      ],
+      [
+        {
+          text: '1'
+        }
+      ]
     ],
     question: ['Question']
   });

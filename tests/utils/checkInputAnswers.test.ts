@@ -86,7 +86,7 @@ describe('checkInputAnswer', () => {
 
 describe('checkInputAnswers', () => {
   it(`Should work when answers matches`, () => {
-    const isCorrect = checkInputAnswers(
+    const [isCorrect, totalCorrectAnswers] = checkInputAnswers(
       ['Hello World', 'helloworld'],
       [
         [
@@ -106,10 +106,11 @@ describe('checkInputAnswers', () => {
       ]
     );
     expect(isCorrect).toStrictEqual(true);
+    expect(totalCorrectAnswers).toStrictEqual(2);
   });
 
   it(`Should work when answer doesn't match`, () => {
-    const isCorrect = checkInputAnswers(
+    const [isCorrect, totalCorrectAnswers] = checkInputAnswers(
       ['Hello World', 'helloworld'],
       [
         [
@@ -122,5 +123,6 @@ describe('checkInputAnswers', () => {
       ]
     );
     expect(isCorrect).toStrictEqual(false);
+    expect(totalCorrectAnswers).toStrictEqual(0);
   });
 });
