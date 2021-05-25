@@ -125,7 +125,7 @@ interface IRegex {
 export interface IQuestionAnswerPartial {
   text: string;
   modifiers?: TQuestionAnswerModifiers[];
-  regexes?: IRegex;
+  regex?: IRegex;
 }
 
 export interface IMcqQuestionFull extends Required<IQuestionPartial> {
@@ -147,7 +147,7 @@ export interface IMsQuestionFull extends Required<IQuestionPartial> {
 export interface IQuestionAnswerFull {
   text: string;
   modifiers: TQuestionAnswerModifiers[];
-  regexes: IRegex | null;
+  regex: IRegex | null;
 }
 
 export interface ISnippetQuestionFull extends Required<IQuestionPartial> {
